@@ -67,9 +67,9 @@
 <h2>System Calls</h2>
 
 <ul class="simple">
-<li>Linux system calls implementation</li>
-<li>VDSO and virtual syscalls</li>
-<li>Accessing user space from system calls</li>
+<li>Linux 系统调用实现</li>
+<li>VDSO and 虚拟系统调用</li>
+<li>通过系统调用访问用户空间</li>
 </ul>
 
 
@@ -81,7 +81,7 @@
 <h2>System Calls as Kernel services</h2>
 
 <p>&nbsp;</p>
-<img alt="../_images/ditaa-e76e44cad2e92f2134ab77f6a09605b29524d039.png" src="../_images/ditaa-e76e44cad2e92f2134ab77f6a09605b29524d039.png" />
+<img alt="../_images/ditaa-455f7d054162098df8b5f70d3db186627ed38c97.png" src="../_images/ditaa-455f7d054162098df8b5f70d3db186627ed38c97.png" />
 
 
 
@@ -92,9 +92,9 @@
 <h2>System Call Setup</h2>
 
 <ul class="simple">
-<li>setup information to identify the system call and its parameters</li>
-<li>trigger a kernel mode switch</li>
-<li>retrieve the result of the system call</li>
+<li>用于识别系统调用及其参数的设置信息</li>
+<li>触发内核模式切换</li>
+<li>获取系统调用的结果</li>
 </ul>
 
 
@@ -106,11 +106,9 @@
 <h2>Linux system call setup</h2>
 
 <ul class="simple">
-<li>System calls are identified by numbers</li>
-<li>The parameters for system calls are machine word sized (32 or 64
-bit) and they are limited to a maximum of 6</li>
-<li>Uses registers to store them both (e.g. for 32bit x86: EAX for
-system call and EBX, ECX, EDX, ESI, EDI, EBP for parameters)</li>
+<li>系统调用通过数字进行标识</li>
+<li>系统调用的参数为机器字大小（32位或64位）并且最多可以有6个系统调用参数。</li>
+<li>使用寄存器同时存储它们（例如，对于 32 位 x86 架构：系统调用标识符使用 EAX 寄存器，参数使用 EBX、ECX、EDX、ESI、EDI 和 EBP 寄存器）。</li>
 </ul>
 
 
@@ -121,7 +119,7 @@ system call and EBX, ECX, EDX, ESI, EDI, EBP for parameters)</li>
 
 <h2>Example of Linux system call setup and handling</h2>
 
-<img alt="../_images/ditaa-eeb919cd078d0ba5021028fa628bb47d7d6866e2.png" src="../_images/ditaa-eeb919cd078d0ba5021028fa628bb47d7d6866e2.png" />
+<img alt="../_images/ditaa-8936555a7ca97cb06cc378577ac46e316d9057be.png" src="../_images/ditaa-8936555a7ca97cb06cc378577ac46e316d9057be.png" />
 
 
 
@@ -131,7 +129,7 @@ system call and EBX, ECX, EDX, ESI, EDI, EBP for parameters)</li>
 
 <h2>Linux System Call Dispatcher</h2>
 
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Handles int $0x80 */</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 处理（handle）int $0x80 */</span>
 <span class="n">__visible</span> <span class="kt">void</span> <span class="nf">do_int80_syscall_32</span><span class="p">(</span><span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">enter_from_user_mode</span><span class="p">();</span>
@@ -139,7 +137,7 @@ system call and EBX, ECX, EDX, ESI, EDI, EBP for parameters)</li>
     <span class="n">do_syscall_32_irqs_on</span><span class="p">(</span><span class="n">regs</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="cm">/* simplified version of the Linux x86 32bit System Call Dispatcher */</span>
+<span class="cm">/* Linux x86 32 位系统调用分发器的简化版本 */</span>
 <span class="k">static</span> <span class="n">__always_inline</span> <span class="kt">void</span> <span class="nf">do_syscall_32_irqs_on</span><span class="p">(</span><span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">nr</span> <span class="o">=</span> <span class="n">regs</span><span class="o">-&gt;</span><span class="n">orig_ax</span><span class="p">;</span>
@@ -172,17 +170,12 @@ system call and EBX, ECX, EDX, ESI, EDI, EBP for parameters)</li>
 <h2>System Call Flow Summary</h2>
 
 <ul class="simple">
-<li>The application is setting up the system call number and
-parameters and it issues a trap instruction</li>
-<li>The execution mode switches from user to kernel; the CPU switches
-to a kernel stack; the user stack and the return address to user
-space is saved on the kernel stack</li>
-<li>The kernel entry point saves registers on the kernel stack</li>
-<li>The system call dispatcher identifies the system call function
-and runs it</li>
-<li>The user space registers are restored and execution is switched
-back to user (e.g. calling IRET)</li>
-<li>The user space application resumes</li>
+<li>应用程序设置系统调用编号和参数，并触发陷阱（trap）指令</li>
+<li>执行模式从用户模式切换到内核模式；CPU 切换到内核堆栈；用户堆栈和返回地址保存在内核堆栈中</li>
+<li>内核入口点将寄存器保存在内核堆栈中</li>
+<li>系统调用分发器识别系统调用函数并运行它</li>
+<li>恢复用户空间寄存器并切换回用户空间（例如，调用 IRET 指令）</li>
+<li>用户空间应用程序恢复执行</li>
 </ul>
 
 
@@ -219,61 +212,54 @@ back to user (e.g. calling IRET)</li>
 
 
 </article>
-<article class="admonition-system-calls-pointer-parameters slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>System Calls Pointer Parameters</h2>
+<h2>系统调用指针参数</h2>
 
 <ul class="simple">
-<li>Never allow pointers to kernel-space</li>
-<li>Check for invalid pointers</li>
+<li>绝不允许指向内核空间的指针</li>
+<li>检查无效指针</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-pointers-to-kernel-space slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Pointers to Kernel Space</h2>
+<h2>指向内核空间的指针</h2>
 
 <ul class="simple">
-<li>User access to kernel data if allowed in a write system call</li>
-<li>User corrupting kernel data if allowed in a read system call</li>
+<li>如果允许指向内核空间的指针存在，那么用户会通过写入系统调用访问内核数据</li>
+<li>如果允许指向内核空间的指针存在，那么用户会通过读取系统调用破坏内核数据</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-invalid-pointers-handling-approaches slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Invalid pointers handling approaches</h2>
+<h2>处理无效指针的方法</h2>
 
 <ul class="simple">
-<li>Check the pointer against the user address space before using it,
-or</li>
-<li>Avoid checking the pointer and rely on the MMU to detect when the
-pointer is invalid and use the page fault handler to determine
-that the pointer was invalid</li>
+<li>在使用指针之前对照用户地址空间检查指针，或者</li>
+<li>避免检查指针，并依赖于内存管理单元（MMU）来检测指针是否无效，并使用页面故障处理程序确定指针是否无效</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-page-fault-handling slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Page fault handling</h2>
+<h2>页面故障处理</h2>
 
 <blockquote>
 <div><ul class="simple">
-<li>Copy on write, demand paging, swapping: both the fault and
-faulting addresses are in user space; the fault address is
-valid (checked against the user address space)</li>
-<li>Invalid pointer used in system call: the faulting address is
-in kernel space; the fault address is in user space and it is
-invalid</li>
-<li>Kernel bug (kernel accesses invalid pointer): same as above</li>
+<li>写时复制（Copy on Write）、需求分页（demand paging）、交换（swapping）：故障地址和引发故障的地址都在用户空间；故障地址有效（在用户地址空间进行检查）。</li>
+<li>在系统调用中使用无效指针：引发故障的地址在内核空间；故障地址在用户空间且无效。</li>
+<li>内核错误（内核访问无效指针）：与上述情况相同。</li>
 </ul>
 </div></blockquote>
 
@@ -281,24 +267,22 @@ invalid</li>
 
 
 </article>
-<article class="admonition-marking-kernel-code-that-accesses-user-space slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Marking kernel code that accesses user space</h2>
+<h2>标记访问用户空间的内核代码</h2>
 
 <ul class="simple">
-<li>The exact instructions that access user space are recorded in a
-table (exception table)</li>
-<li>When a page fault occurs the faulting address is checked against
-this table</li>
+<li>访问用户空间的确切指令被记录在一个表格中（异常表）</li>
+<li>当发生页故障时，会用该表格检查引发故障的地址</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-cost-analysis-for-pointer-checks-vs-fault-handling slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Cost analysis for pointer checks vs fault handling</h2>
+<h2>指针检查与故障处理的成本分析</h2>
 
 <table border="1" class="docutils">
 <colgroup>
@@ -307,19 +291,19 @@ this table</li>
 <col width="37%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Cost</th>
-<th class="head">Pointer checks</th>
-<th class="head">Fault handling</th>
+<tr class="row-odd"><th class="head">成本</th>
+<th class="head">指针检查</th>
+<th class="head">故障处理</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>Valid address</td>
-<td>address space search</td>
-<td>negligible</td>
+<tr class="row-even"><td>有效地址</td>
+<td>地址空间搜索</td>
+<td>可忽略的</td>
 </tr>
-<tr class="row-odd"><td>Invalid address</td>
-<td>address space search</td>
-<td>exception table search</td>
+<tr class="row-odd"><td>无效地址</td>
+<td>地址空间搜索</td>
+<td>异常表搜索</td>
 </tr>
 </tbody>
 </table>
@@ -328,27 +312,23 @@ this table</li>
 
 
 </article>
-<article class="admonition-virtual-dynamic-shared-object-vdso slide level-2">
+<article class="admonition-vdso slide level-2">
 
-<h2>Virtual Dynamic Shared Object (VDSO)</h2>
+<h2>虚拟动态共享对象（VDSO）</h2>
 
 <ul class="simple">
-<li>a stream of instructions to issue the system call is generated by
-the kernel in a special memory area (formatted as an ELF shared
-object)</li>
-<li>that memory area is mapped towards the end of the user address
-space</li>
-<li>libc searches for VDSO and if present will use it to issue the
-system call</li>
+<li>内核在一个特殊的内存区域生成一系列用来触发系统调用的指令（格式化为 ELF 共享对象）</li>
+<li>该内存区域映射到用户地址空间的末尾</li>
+<li>libc 搜索 VDSO，如果存在，则使用它来发出系统调用</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-inspecting-vdso slide level-2">
+<article class="admonition-vdso slide level-2">
 
-<h2>Inspecting VDSO</h2>
+<h2>检查 VDSO</h2>
 
 <p>&nbsp;</p>
 <asciinema-player src="../_images/syscalls-vdso.cast"></asciinema-player>
@@ -356,30 +336,29 @@ system call</li>
 
 
 </article>
-<article class="admonition-virtual-system-calls-vsyscalls slide level-2">
+<article class="admonition-vsyscalls slide level-2">
 
-<h2>Virtual System Calls (vsyscalls)</h2>
+<h2>虚拟系统调用（vsyscalls）</h2>
 
 <ul class="simple">
-<li>&quot;System calls&quot; that run directly from user space, part of the VDSO</li>
-<li>Static data (e.g. getpid())</li>
-<li>Dynamic data update by the kernel a in RW map of the VDSO
-(e.g. gettimeofday(), time(), )</li>
+<li>直接从用户空间运行的“系统调用”，属于 VDSO 的一部分</li>
+<li>静态数据（例如，getpid（））</li>
+<li>内核通过VDSO的读写映射进行动态数据更新（例如，gettimeofday（），time（））</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-accessing-user-space-from-system-calls slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Accessing user space from system calls</h2>
+<h2>通过系统调用访问用户空间</h2>
 
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* OK: return -EFAULT if user_ptr is invalid */</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 如果 user_ptr 无效，则返回 -EFAULT */</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">copy_from_user</span><span class="p">(</span><span class="o">&amp;</span><span class="n">kernel_buffer</span><span class="p">,</span> <span class="n">user_ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
 
-<span class="cm">/* NOK: only works if user_ptr is valid otherwise crashes kernel */</span>
+<span class="cm">/* 只有当 user_ptr 有效时才能工作，否则会导致内核崩溃 */</span>
 <span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">kernel_buffer</span><span class="p">,</span> <span class="n">user_ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -388,9 +367,9 @@ system call</li>
 
 
 </article>
-<article class="admonition-get-user-implementation slide level-2">
+<article class="admonition-get-user slide level-2">
 
-<h2>get_user implementation</h2>
+<h2><cite>get_user</cite> 实现</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define get_user(x, ptr)                                          \</span>
 <span class="cp">({                                                                \</span>
@@ -412,9 +391,9 @@ system call</li>
 
 
 </article>
-<article class="admonition-get-user-pseudo-code slide level-2">
+<article class="admonition-get-user slide level-2">
 
-<h2>get_user pseudo code</h2>
+<h2>get_user 伪代码</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define get_user(x, ptr)                \</span>
 <span class="cp">    movl ptr, %eax                      \</span>
@@ -428,9 +407,9 @@ system call</li>
 
 
 </article>
-<article class="admonition-get-user-1-implementation slide level-2">
+<article class="admonition-get-user-1 slide level-2">
 
-<h2>get_user_1 implementation</h2>
+<h2>get_user_1 实现</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>.text
 ENTRY(__get_user_1)
@@ -459,11 +438,11 @@ _ASM_EXTABLE(1b,bad_get_user)
 
 
 </article>
-<article class="admonition-exception-table-entry slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Exception table entry</h2>
+<h2>异常表条目</h2>
 
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Exception table entry */</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 异常表条目 */</span>
 <span class="cp"># define _ASM_EXTABLE_HANDLE(from, to, handler)           \</span>
 <span class="cp">  .pushsection &quot;__ex_table&quot;,&quot;a&quot; ;                         \</span>
 <span class="cp">  .balign 4 ;                                             \</span>
@@ -481,9 +460,9 @@ _ASM_EXTABLE(1b,bad_get_user)
 
 
 </article>
-<article class="admonition-exception-table-building slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Exception table building</h2>
+<h2>异常表构建</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define EXCEPTION_TABLE(align)                                    \</span>
 <span class="cp">  . = ALIGN(align);                                               \</span>
@@ -499,9 +478,9 @@ _ASM_EXTABLE(1b,bad_get_user)
 
 
 </article>
-<article class="admonition-exception-table-handling slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Exception table handling</h2>
+<h2>异常表处理</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ex_handler_default</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="n">exception_table_entry</span> <span class="o">*</span><span class="n">fixup</span><span class="p">,</span>
                         <span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">,</span> <span class="kt">int</span> <span class="n">trapnr</span><span class="p">)</span>
