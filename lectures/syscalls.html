@@ -147,7 +147,7 @@
 <h2>Linux 系统调用实现<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
 <p>从高层视角来看，系统调用是内核向用户应用程序提供的“服务”，它们类似于库 API，因为它们被描述为具有名称、参数和返回值的函数调用。</p>
 <p class="admonition-system-calls-as-kernel-services">&nbsp;</p>
-<img alt="../_images/ditaa-455f7d054162098df8b5f70d3db186627ed38c97.png" src="../_images/ditaa-455f7d054162098df8b5f70d3db186627ed38c97.png" />
+<img alt="../_images/ditaa-e76e44cad2e92f2134ab77f6a09605b29524d039.png" src="../_images/ditaa-e76e44cad2e92f2134ab77f6a09605b29524d039.png" />
 <p>然而，从底层视角看的话，我们会发现系统调用实际上并不是函数调用，而是特定的汇编指令（与体系结构和内核相关），其功能如下：</p>
 <ul class="admonition-system-call-setup simple">
 <li>用于识别系统调用及其参数的设置信息</li>
@@ -163,7 +163,7 @@
 <p class="first admonition-title">Note</p>
 <p class="last">在用户模式和内核模式之间的切换过程中，还会将堆栈从用户堆栈切换到内核堆栈。这一点在中断课程中有更详细的解释。</p>
 </div>
-<img alt="../_images/ditaa-8936555a7ca97cb06cc378577ac46e316d9057be.png" class="admonition-example-of-linux-system-call-setup-and-handling" src="../_images/ditaa-8936555a7ca97cb06cc378577ac46e316d9057be.png" />
+<img alt="../_images/ditaa-eeb919cd078d0ba5021028fa628bb47d7d6866e2.png" class="admonition-example-of-linux-system-call-setup-and-handling" src="../_images/ditaa-eeb919cd078d0ba5021028fa628bb47d7d6866e2.png" />
 <p>系统调用分发器的作用是验证系统调用编号，并执行与该系统调用相关的内核函数。</p>
 <div class="admonition-linux-system-call-dispatcher highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 处理（handle）int $0x80 */</span>
 <span class="n">__visible</span> <span class="kt">void</span> <span class="nf">do_int80_syscall_32</span><span class="p">(</span><span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">)</span>
