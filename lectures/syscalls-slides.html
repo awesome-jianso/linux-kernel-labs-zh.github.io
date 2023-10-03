@@ -71,7 +71,18 @@
 <h2>System Calls as Kernel services</h2>
 
 <p>&nbsp;</p>
-<img alt="../_images/ditaa-e76e44cad2e92f2134ab77f6a09605b29524d039.png" src="../_images/ditaa-e76e44cad2e92f2134ab77f6a09605b29524d039.png" />
+<div class="highlight-text"><div class="highlight"><pre><span></span>+-------------+           +-------------+
+|   应用程序   |              |   应用程序   |
++-------------+           +-------------+
+  |                           |
+  |read(fd, buff, len)        |fork()
+  |                           |
+  v                           v
++---------------------------------------+
+|                 内核                  |
++---------------------------------------+
+</pre></div>
+</div>
 
 
 
@@ -109,7 +120,38 @@
 
 <h2>Example of Linux system call setup and handling</h2>
 
-<img alt="../_images/ditaa-eeb919cd078d0ba5021028fa628bb47d7d6866e2.png" src="../_images/ditaa-eeb919cd078d0ba5021028fa628bb47d7d6866e2.png" />
+<div class="highlight-text"><div class="highlight"><pre><span></span>     +-------------+   dup2    +-----------------------------+
+     |   应用程序   |-----+     |  libc                       |
+     +-------------+     |     |                             |
+                         +----&gt;| C7590 dup2:                 |
+                               | ...                         |
+                               | C7592 movl 0x8(%esp),%ecx   |
+                               | C7596 movl 0x4(%esp),%ebx   |
+                               | C759a movl $0x3f,%eax       |
++------------------------------+ C759f int $0x80             |
+|                              | ...                         +&lt;-----+
+|                              +-----------------------------+      |
+|                                                                   |
+|                                                                   |
+|                                                                   |
+|                                                                   |
+|    +------------------------------------------------------------+ |
+|    |                         内核                               | |
+|    |                                                            | |
++---&gt;|ENTRY(entry_INT80_32)                                       | |
+     | ASM_CLAC                                                   | |
+     | pushl   %eax                    # pt_regs-&gt;orig_ax         | |
+     | SAVE_ALL pt_regs_ax=$-ENOSYS    # save rest                | |
+     | ...                                                        | |
+     | movl   %esp, %eax                                          | |
+     | call   do_int80_syscall_32                                 | |
+     | ....                                                       | |
+     | RESTORE_REGS 4                  # skip orig_eax/error_code | |
+     | ...                                                        | |
+     | INTERRUPT_RETURN                                           +-+
+     +------------------------------------------------------------+
+</pre></div>
+</div>
 
 
 
