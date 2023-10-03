@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SO2 Lecture 02 - System calls &mdash; The Linux Kernel  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/single.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
+    
+    <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/asciinema-player.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="The Linux Kernel  documentation" href="../index.html" />
+    <link rel="up" title="Operating Systems 2" href="index.html" />
+    <link rel="next" title="SO2 Lecture 03 - Processes" href="lec3-processes.html" />
+    <link rel="prev" title="SO2 课程 01 - 课程概要以及 Linux 内核介绍" href="lec1-intro.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="admonition-so2-lecture-02-system-calls slide level-1">
+
+<h1>SO2 Lecture 02 - System calls</h1>
+
+
+
+
+
+</article>
+<article class="admonition-system-calls slide level-2">
+
+<h2>System Calls</h2>
+
+<ul class="simple">
+<li>Linux 系统调用实现</li>
+<li>VDSO and 虚拟系统调用</li>
+<li>通过系统调用访问用户空间</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition-system-calls-as-kernel-services slide level-2">
+
+<h2>System Calls as Kernel services</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-455f7d054162098df8b5f70d3db186627ed38c97.png" src="../_images/ditaa-455f7d054162098df8b5f70d3db186627ed38c97.png" />
+
+
+
+
+</article>
+<article class="admonition-system-call-setup slide level-2">
+
+<h2>System Call Setup</h2>
+
+<ul class="simple">
+<li>用于识别系统调用及其参数的设置信息</li>
+<li>触发内核模式切换</li>
+<li>获取系统调用的结果</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition-linux-system-call-setup slide level-2">
+
+<h2>Linux system call setup</h2>
+
+<ul class="simple">
+<li>系统调用通过数字进行标识</li>
+<li>系统调用的参数为机器字大小（32位或64位）并且最多可以有6个系统调用参数。</li>
+<li>使用寄存器同时存储它们（例如，对于 32 位 x86 架构：系统调用标识符使用 EAX 寄存器，参数使用 EBX、ECX、EDX、ESI、EDI 和 EBP 寄存器）。</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition-example-of-linux-system-call-setup-and-handling slide level-2">
+
+<h2>Example of Linux system call setup and handling</h2>
+
+<img alt="../_images/ditaa-8936555a7ca97cb06cc378577ac46e316d9057be.png" src="../_images/ditaa-8936555a7ca97cb06cc378577ac46e316d9057be.png" />
+
+
+
+
+</article>
+<article class="admonition-linux-system-call-dispatcher slide level-2">
+
+<h2>Linux System Call Dispatcher</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 处理（handle）int $0x80 */</span>
+<span class="n">__visible</span> <span class="kt">void</span> <span class="nf">do_int80_syscall_32</span><span class="p">(</span><span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">enter_from_user_mode</span><span class="p">();</span>
+    <span class="n">local_irq_enable</span><span class="p">();</span>
+    <span class="n">do_syscall_32_irqs_on</span><span class="p">(</span><span class="n">regs</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* Linux x86 32 位系统调用分发器的简化版本 */</span>
+<span class="k">static</span> <span class="n">__always_inline</span> <span class="kt">void</span> <span class="nf">do_syscall_32_irqs_on</span><span class="p">(</span><span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">nr</span> <span class="o">=</span> <span class="n">regs</span><span class="o">-&gt;</span><span class="n">orig_ax</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">nr</span> <span class="o">&lt;</span> <span class="n">IA32_NR_syscalls</span><span class="p">)</span>
+        <span class="n">regs</span><span class="o">-&gt;</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ia32_sys_call_table</span><span class="p">[</span><span class="n">nr</span><span class="p">](</span><span class="n">regs</span><span class="o">-&gt;</span><span class="n">bx</span><span class="p">,</span> <span class="n">regs</span><span class="o">-&gt;</span><span class="n">cx</span><span class="p">,</span>
+                                           <span class="n">regs</span><span class="o">-&gt;</span><span class="n">dx</span><span class="p">,</span> <span class="n">regs</span><span class="o">-&gt;</span><span class="n">si</span><span class="p">,</span>
+                                           <span class="n">regs</span><span class="o">-&gt;</span><span class="n">di</span><span class="p">,</span> <span class="n">regs</span><span class="o">-&gt;</span><span class="n">bp</span><span class="p">);</span>
+    <span class="n">syscall_return_slowpath</span><span class="p">(</span><span class="n">regs</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition-inspecting-dup2-system-call slide level-2">
+
+<h2>Inspecting dup2 system call</h2>
+
+<p>&nbsp;</p>
+<asciinema-player src="../_images/syscalls-inspection.cast"></asciinema-player>
+
+
+
+</article>
+<article class="admonition-system-call-flow-summary slide level-2">
+
+<h2>System Call Flow Summary</h2>
+
+<ul class="simple">
+<li>应用程序设置系统调用编号和参数，并触发陷阱（trap）指令</li>
+<li>执行模式从用户模式切换到内核模式；CPU 切换到内核堆栈；用户堆栈和返回地址保存在内核堆栈中</li>
+<li>内核入口点将寄存器保存在内核堆栈中</li>
+<li>系统调用分发器识别系统调用函数并运行它</li>
+<li>恢复用户空间寄存器并切换回用户空间（例如，调用 IRET 指令）</li>
+<li>用户空间应用程序恢复执行</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition-system-call-table slide level-2">
+
+<h2>System Call Table</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define __SYSCALL_I386(nr, sym, qual) [nr] = sym,</span>
+
+<span class="k">const</span> <span class="n">sys_call_ptr_t</span> <span class="n">ia32_sys_call_table</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="mi">0</span> <span class="p">...</span> <span class="n">__NR_syscall_compat_max</span><span class="p">]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sys_ni_syscall</span><span class="p">,</span>
+  <span class="cp">#include</span> <span class="cpf">&lt;asm/syscalls_32.h&gt;</span><span class="cp"></span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sys_restart_syscall</span><span class="p">)</span>
+<span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sys_exit</span><span class="p">)</span>
+<span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sys_fork</span><span class="p">)</span>
+<span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">sys_read</span><span class="p">)</span>
+<span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">sys_write</span><span class="p">)</span>
+<span class="cp">#ifdef CONFIG_X86_32</span>
+<span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">sys_open</span><span class="p">)</span>
+<span class="cp">#else</span>
+<span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">compat_sys_open</span><span class="p">)</span>
+<span class="cp">#endif</span>
+<span class="n">__SYSCALL_I386</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">sys_close</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>系统调用指针参数</h2>
+
+<ul class="simple">
+<li>绝不允许指向内核空间的指针</li>
+<li>检查无效指针</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>指向内核空间的指针</h2>
+
+<ul class="simple">
+<li>如果允许指向内核空间的指针存在，那么用户会通过写入系统调用访问内核数据</li>
+<li>如果允许指向内核空间的指针存在，那么用户会通过读取系统调用破坏内核数据</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>处理无效指针的方法</h2>
+
+<ul class="simple">
+<li>在使用指针之前对照用户地址空间检查指针，或者</li>
+<li>避免检查指针，并依赖于内存管理单元（MMU）来检测指针是否无效，并使用页面故障处理程序确定指针是否无效</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>页面故障处理</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li>写时复制（Copy on Write）、需求分页（demand paging）、交换（swapping）：故障地址和引发故障的地址都在用户空间；故障地址有效（在用户地址空间进行检查）。</li>
+<li>在系统调用中使用无效指针：引发故障的地址在内核空间；故障地址在用户空间且无效。</li>
+<li>内核错误（内核访问无效指针）：与上述情况相同。</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>标记访问用户空间的内核代码</h2>
+
+<ul class="simple">
+<li>访问用户空间的确切指令被记录在一个表格中（异常表）</li>
+<li>当发生页故障时，会用该表格检查引发故障的地址</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>指针检查与故障处理的成本分析</h2>
+
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="35%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">成本</th>
+<th class="head">指针检查</th>
+<th class="head">故障处理</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>有效地址</td>
+<td>地址空间搜索</td>
+<td>可忽略的</td>
+</tr>
+<tr class="row-odd"><td>无效地址</td>
+<td>地址空间搜索</td>
+<td>异常表搜索</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+</article>
+<article class="admonition-vdso slide level-2">
+
+<h2>虚拟动态共享对象（VDSO）</h2>
+
+<ul class="simple">
+<li>内核在一个特殊的内存区域生成一系列用来触发系统调用的指令（格式化为 ELF 共享对象）</li>
+<li>该内存区域映射到用户地址空间的末尾</li>
+<li>libc 搜索 VDSO，如果存在，则使用它来发出系统调用</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition-vdso slide level-2">
+
+<h2>检查 VDSO</h2>
+
+<p>&nbsp;</p>
+<asciinema-player src="../_images/syscalls-vdso.cast"></asciinema-player>
+
+
+
+</article>
+<article class="admonition-vsyscalls slide level-2">
+
+<h2>虚拟系统调用（vsyscalls）</h2>
+
+<ul class="simple">
+<li>直接从用户空间运行的“系统调用”，属于 VDSO 的一部分</li>
+<li>静态数据（例如，getpid（））</li>
+<li>内核通过VDSO的读写映射进行动态数据更新（例如，gettimeofday（），time（））</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>通过系统调用访问用户空间</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 如果 user_ptr 无效，则返回 -EFAULT */</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">copy_from_user</span><span class="p">(</span><span class="o">&amp;</span><span class="n">kernel_buffer</span><span class="p">,</span> <span class="n">user_ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
+
+<span class="cm">/* 只有当 user_ptr 有效时才能工作，否则会导致内核崩溃 */</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">kernel_buffer</span><span class="p">,</span> <span class="n">user_ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition-get-user slide level-2">
+
+<h2><cite>get_user</cite> 实现</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define get_user(x, ptr)                                          \</span>
+<span class="cp">({                                                                \</span>
+<span class="cp">  int __ret_gu;                                                   \</span>
+<span class="cp">  register __inttype(*(ptr)) __val_gu asm(&quot;%&quot;_ASM_DX);            \</span>
+<span class="cp">  __chk_user_ptr(ptr);                                            \</span>
+<span class="cp">  might_fault();                                                  \</span>
+<span class="cp">  asm volatile(&quot;call __get_user_%P4&quot;                              \</span>
+<span class="cp">               : &quot;=a&quot; (__ret_gu), &quot;=r&quot; (__val_gu),                \</span>
+<span class="cp">                  ASM_CALL_CONSTRAINT                             \</span>
+<span class="cp">               : &quot;0&quot; (ptr), &quot;i&quot; (sizeof(*(ptr))));                \</span>
+<span class="cp">  (x) = (__force __typeof__(*(ptr))) __val_gu;                    \</span>
+<span class="cp">  __builtin_expect(__ret_gu, 0);                                  \</span>
+<span class="cp">})</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition-get-user slide level-2">
+
+<h2>get_user 伪代码</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define get_user(x, ptr)                \</span>
+<span class="cp">    movl ptr, %eax                      \</span>
+<span class="cp">    call __get_user_1                   \</span>
+<span class="cp">    movl %edx, x                        \</span>
+<span class="cp">    movl %eax, result                   \</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition-get-user-1 slide level-2">
+
+<h2>get_user_1 实现</h2>
+
+<div class="highlight-none"><div class="highlight"><pre><span></span>.text
+ENTRY(__get_user_1)
+    mov PER_CPU_VAR(current_task), %_ASM_DX
+    cmp TASK_addr_limit(%_ASM_DX),%_ASM_AX
+    jae bad_get_user
+    ASM_STAC
+1:  movzbl (%_ASM_AX),%edx
+    xor %eax,%eax
+    ASM_CLAC
+    ret
+ENDPROC(__get_user_1)
+
+bad_get_user:
+    xor %edx,%edx
+    mov $(-EFAULT),%_ASM_AX
+    ASM_CLAC
+    ret
+END(bad_get_user)
+
+_ASM_EXTABLE(1b,bad_get_user)
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>异常表条目</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 异常表条目 */</span>
+<span class="cp"># define _ASM_EXTABLE_HANDLE(from, to, handler)           \</span>
+<span class="cp">  .pushsection &quot;__ex_table&quot;,&quot;a&quot; ;                         \</span>
+<span class="cp">  .balign 4 ;                                             \</span>
+<span class="cp">  .long (from) - . ;                                      \</span>
+<span class="cp">  .long (to) - . ;                                        \</span>
+<span class="cp">  .long (handler) - . ;                                   \</span>
+<span class="cp">  .popsection</span>
+
+<span class="cp"># define _ASM_EXTABLE(from, to)                           \</span>
+<span class="cp">  _ASM_EXTABLE_HANDLE(from, to, ex_handler_default)</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>异常表构建</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define EXCEPTION_TABLE(align)                                    \</span>
+<span class="cp">  . = ALIGN(align);                                               \</span>
+<span class="cp">  __ex_table : AT(ADDR(__ex_table) - LOAD_OFFSET) {               \</span>
+<span class="cp">          VMLINUX_SYMBOL(__start___ex_table) = .;                 \</span>
+<span class="cp">          KEEP(*(__ex_table))                                     \</span>
+<span class="cp">          VMLINUX_SYMBOL(__stop___ex_table) = .;                  \</span>
+<span class="cp">  }</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>异常表处理</h2>
+
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">ex_handler_default</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="n">exception_table_entry</span> <span class="o">*</span><span class="n">fixup</span><span class="p">,</span>
+                        <span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">,</span> <span class="kt">int</span> <span class="n">trapnr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">regs</span><span class="o">-&gt;</span><span class="n">ip</span> <span class="o">=</span> <span class="n">ex_fixup_addr</span><span class="p">(</span><span class="n">fixup</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">fixup_exception</span><span class="p">(</span><span class="k">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">,</span> <span class="kt">int</span> <span class="n">trapnr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">struct</span> <span class="n">exception_table_entry</span> <span class="o">*</span><span class="n">e</span><span class="p">;</span>
+    <span class="n">ex_handler_t</span> <span class="n">handler</span><span class="p">;</span>
+
+    <span class="n">e</span> <span class="o">=</span> <span class="n">search_exception_tables</span><span class="p">(</span><span class="n">regs</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">ex_fixup_handler</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">regs</span><span class="p">,</span> <span class="n">trapnr</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+
+
+
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>
