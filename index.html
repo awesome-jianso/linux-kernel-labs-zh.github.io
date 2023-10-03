@@ -132,13 +132,12 @@
 <p>这些内容基于布加勒斯特理工大学自动控制与计算机学院计算机科学与工程系的“操作系统 2”&lt;<a class="reference external" href="http://ocw.cs.pub.ro/courses/so2">http://ocw.cs.pub.ro/courses/so2</a>&gt;`_ 课程。</p>
 <p>你可以在 <a class="reference external" href="https://github.com/linux-kernel-labs">https://github.com/linux-kernel-labs</a> 获取最新版本。</p>
 <p>在你的主机上安装 docker-compose 后，可以从源代码构建文档:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> tools/labs <span class="o">&amp;&amp;</span> make docker-docs
 </pre></div>
 </div>
-<p>cd tools/labs &amp;&amp; make docker-docs</p>
 <p>然后用你的浏览器中打开 <strong>Documentation/output/labs/index.html</strong>。</p>
 <p>或者，你可以直接在主机上构建(参见 tools/labs/docs/Dockerfile 中的依赖项)：</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">tools</span><span class="o">/</span><span class="n">labs</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="n">docs</span>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> tools/labs <span class="o">&amp;&amp;</span> make docs
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">
