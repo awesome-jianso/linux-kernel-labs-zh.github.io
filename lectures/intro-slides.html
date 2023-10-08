@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Introduction &mdash; The Linux Kernel  documentation</title>
+    <title>介绍 &mdash; The Linux Kernel  documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -57,111 +57,27 @@
 <h2>Introduction</h2>
 
 <ul class="simple">
-<li>Basic operating systems terms and concepts</li>
-<li>Overview of the Linux kernel</li>
+<li>基本的操作系统名词和概念</li>
+<li>Linux 内核概述</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-user-vs-kernel slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>User vs Kernel</h2>
+<h2>用户与内核的比较</h2>
 
 <ul class="simple">
-<li>Execution modes<ul>
-<li>Kernel mode</li>
-<li>User mode</li>
+<li>执行模式<ul>
+<li>内核模式</li>
+<li>用户模式</li>
 </ul>
 </li>
-<li>Memory protection<ul>
-<li>Kernel-space</li>
-<li>User-space</li>
-</ul>
-</li>
-</ul>
-
-
-
-
-</article>
-<article class="admonition-typical-operating-system-architecture slide level-2">
-
-<h2>Typical operating system architecture</h2>
-
-<img alt="../_images/ditaa-48374873962ca32ada36c14ab9a83b60f112a1e0.png" src="../_images/ditaa-48374873962ca32ada36c14ab9a83b60f112a1e0.png" />
-
-
-
-
-</article>
-<article class="admonition-monolithic-kernel slide level-2">
-
-<h2>Monolithic kernel</h2>
-
-<img alt="../_images/ditaa-3dc899167df5e16a230c434cf5d6964cb5868482.png" src="../_images/ditaa-3dc899167df5e16a230c434cf5d6964cb5868482.png" />
-
-
-
-
-</article>
-<article class="admonition-micro-kernel slide level-2">
-
-<h2>Micro-kernel</h2>
-
-<img alt="../_images/ditaa-c8a3d93d0109b7be6f608871d16adff4aaa933da.png" src="../_images/ditaa-c8a3d93d0109b7be6f608871d16adff4aaa933da.png" />
-
-
-
-
-</article>
-<article class="admonition-monolithic-kernels-can-be-modular slide level-2">
-
-<h2>Monolithic kernels <em>can</em> be modular</h2>
-
-<ul class="simple">
-<li>Components can enabled or disabled at compile time</li>
-<li>Support of loadable kernel modules (at runtime)</li>
-<li>Organize the kernel in logical, independent subsystems</li>
-<li>Strict interfaces but with low performance overhead: macros,
-inline functions, function pointers</li>
-</ul>
-
-
-
-
-</article>
-<article class="admonition-hybrid-kernels slide level-2">
-
-<h2>&quot;Hybrid&quot; kernels</h2>
-
-<p>Many operating systems and kernel experts have dismissed the label
-as meaningless, and just marketing. Linus Torvalds said of this
-issue:</p>
-<p>&quot;As to the whole 'hybrid kernel' thing - it's just marketing. It's
-'oh, those microkernels had good PR, how can we try to get good PR
-for our working kernel? Oh, I know, let's use a cool name and try
-to imply that it has all the PR advantages that that other system
-has'.&quot;</p>
-
-
-
-
-</article>
-<article class="admonition-address-space slide level-2">
-
-<h2>Address space</h2>
-
-<ul class="simple">
-<li>Physical address space<ul>
-<li>RAM and peripheral memory</li>
-</ul>
-</li>
-<li>Virtual address space<ul>
-<li>How the CPU sees the memory (when in protected / paging mode)</li>
-<li>Process address space</li>
-<li>Kernel address space</li>
+<li>内存保护<ul>
+<li>内核空间</li>
+<li>用户空间</li>
 </ul>
 </li>
 </ul>
@@ -170,30 +86,191 @@ has'.&quot;</p>
 
 
 </article>
-<article class="admonition-user-and-kernel-sharing-the-virtual-address-space slide level-2">
+<article class="admonition- slide level-1">
 
-<h2>User and kernel sharing the virtual address space</h2>
+<h1>典型操作系统架构</h1>
 
-<img alt="../_images/ditaa-a5f93e0d17ccdc2ba24828b620d7227f7fc75e33.png" src="../_images/ditaa-a5f93e0d17ccdc2ba24828b620d7227f7fc75e33.png" />
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">level:</th><td class="field-body">2</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">inline-contents:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">True</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-text"><div class="highlight"><pre><span></span>+---------------+  +--------------+      +---------------+  -\
+|   应用程序 1   |  |   应用程序 2  | ...  |   应用程序 n  |   |
++---------------+  +--------------+      +---------------+   |&gt; 用户空间
+        |                 |                      |           |
+        v                 v                      v          -/
++--------------------------------------------------------+  -\
+|                     系统调用接口                        |   |
++--------------------------------------------------------+   |
+        |                 |                      |           |
+        v                 v                      v           |&gt; 内核空间
++--------------------------------------------------------+   |
+|                        内核                            |   |
++--------------------------------------------------------+   |
+|                      设备驱动                           |   |
++--------------------------------------------------------+  -/
+        |                 |                      |          -\
+        v                 v                      v           |&gt; 硬件
+                                                            -/
+</pre></div>
+</div>
 
 
 
 
 </article>
-<article class="admonition-execution-contexts slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Execution contexts</h2>
+<h2>单体内核</h2>
+
+<div class="highlight-text"><div class="highlight"><pre><span></span>+-----+          +-----+          +-----+
+| 应用 |         | 应用 |          | 应用 |
++-----+          +-----+          +-----+
+   |                |                |                用户
+=--|-------=--------|--------=-------|-------------------=-
+   |                |                |                内核
+   v                v                v
++--------------------------------------------------------+
+|                   系统调用接口                          |
++--------------------------------------------------------+
+          |                                    |
+          v                                    v
+       +-----+                              +-----+
+       |     |&lt;----------------------------&gt;|     |  内核
+       |     |&lt;---+                +-------&gt;|     |  函数
+       +--+--+    |                |        +-----+
+          |       |                |           ^
+          |       |     +-----+    |           |
+          |+------+----&gt;|     |&lt;---+           |
+          ||      |     +-----+                |
+          ||      |                            |
+          vv      |                            v
+       +--++-+    |                         +-----+
+       |     |    +------------------------&gt;|     |  设备
+       |     |&lt;----------------------------&gt;|     |  驱动
+       +--+--+                              +--+--+
+          |                                    |
+          v                                    v
++--------------------------------------------------------+
+|                           应用                         |
++--------------------------------------------------------+
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>单体内核*可以*是模块化的</h2>
 
 <ul class="simple">
-<li>Process context<ul>
-<li>Code that runs in user mode, part of a process</li>
-<li>Code that runs in kernel mode, as a result of a system call
-issued by a process</li>
+<li>组件可以在编译时启用或禁用</li>
+<li>支持可加载的内核模块（在运行时）</li>
+<li>将内核组织成逻辑上独立的子系统</li>
+<li>严格的接口，但其性能开销低：宏、内联函数以及函数指针</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>“混合”内核</h2>
+
+<p>许多操作系统和内核专家认为这个标签毫无意义，只是营销手段。Linus Torvalds 对此问题说：</p>
+<p>“至于所谓的‘混合内核’，那只是营销而已。‘哦，那些微内核有很好的公关，我们怎么能给我们的工作内核也弄点好公关呢？哦，我知道了，让我们用一个酷酷的名字，来暗示它具有其他系统所拥有的所有公关优势’。”</p>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>地址空间</h2>
+
+<ul class="simple">
+<li>物理地址空间</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>RAM和外设内存</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>虚拟地址空间<ul>
+<li>CPU 在受保护/分页模式下看到的内存</li>
+<li>进程地址空间</li>
+<li>内核地址空间</li>
 </ul>
 </li>
-<li>Interrupt context<ul>
-<li>Code that runs as a result of an interrupt</li>
-<li>Always runs in kernel mode</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-1">
+
+<h1>用户和内核共享虚拟地址空间</h1>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">level:</th><td class="field-body">2</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">inline-contents:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">True</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-text"><div class="highlight"><pre><span></span>            +-------------------+  ^
+0xFFFFFFFF  |                   |  |
+            |                   |  | 内核空间
+            |                   |  |
+            +-------------------+  v
+0xC0000000  |                   |  ^
+            |                   |  | 用户空间
+            |                   |  |
+            |                   |  |
+            |                   |  |
+            |                   |  |
+            |                   |  |
+            |                   |  |
+            |                   |  |
+0x00000000  +-------------------+  v
+
+             32 位虚拟地址空间
+</pre></div>
+</div>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>执行上下文</h2>
+
+<ul class="simple">
+<li>进程上下文<ul>
+<li>在用户模式下运行的代码，属于进程的一部分</li>
+<li>作为进程发出的系统调用的结果，在内核模式下运行的代码</li>
+</ul>
+</li>
+<li>中断上下文：<ul>
+<li>作为中断的结果而运行的代码</li>
+<li>总是在内核模式下运行</li>
 </ul>
 </li>
 </ul>
@@ -202,17 +279,16 @@ issued by a process</li>
 
 
 </article>
-<article class="admonition-multi-tasking slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Multi-tasking</h2>
+<h2>多任务处理</h2>
 
 <ul class="simple">
-<li>An OS that supports the &quot;simultaneous&quot; execution of multiple processes</li>
-<li>Implemented by fast switching between running processes to allow
-the user to interact with each program</li>
-<li>Implementation:<ul>
-<li>Cooperative</li>
-<li>Preemptive</li>
+<li>支持“同时”执行多个进程的操作系统</li>
+<li>通过快速切换运行进程来实现，以允许用户与每个程序进行交互</li>
+<li>实现方式：<ul>
+<li>合作式</li>
+<li>抢占式</li>
 </ul>
 </li>
 </ul>
@@ -221,56 +297,48 @@ the user to interact with each program</li>
 
 
 </article>
-<article class="admonition-preemptive-kernel slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Preemptive kernel</h2>
+<h2>抢占式内核</h2>
 
-<p>Preemptive multitasking and preemptive kernels are different terms.</p>
-<p>A kernel is preemptive if a process can be preempted while running
-in kernel mode.</p>
-<p>However, note that non-preemptive kernels may support preemptive
-multitasking.</p>
+<p>抢占式多任务处理和抢占式内核是不同的术语。</p>
+<p>如果一个进程在内核模式下运行时可以被抢占，则内核是抢占式的。</p>
+<p>然而，请注意非抢占式内核可能支持抢占式多任务处理。</p>
 
 
 
 
 </article>
-<article class="admonition-pageable-kernel-memory slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Pageable kernel memory</h2>
+<h2>可分页的内核内存</h2>
 
-<p>A kernel supports pageable kernel memory if parts of kernel memory
-(code, data, stack or dynamically allocated memory) can be swapped
-to disk.</p>
+<p>如果内核内存的某些部分（代码、数据、堆栈或动态分配内存）可以交换到磁盘上，则内核支持可分页的内核内存。</p>
 
 
 
 
 </article>
-<article class="admonition-kernel-stack slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Kernel stack</h2>
+<h2>内核堆栈</h2>
 
-<p>Each process has a kernel stack that is used to maintain the
-function call chain and local variables state while it is executing
-in kernel mode, as a result of a system call.</p>
-<p>The kernel stack is small (4KB - 12 KB) so the kernel developer has
-to avoid allocating large structures on stack or recursive calls
-that are not properly bounded.</p>
+<p>每个进程都有一个内核堆栈，用于在执行系统调用时，保持函数调用链和局部变量状态。内核栈在进程处于内核模式时使用。</p>
+<p>内核堆栈很小（4 KB - 12 KB），因此内核开发人员必须避免在堆栈上分配大型结构或未适当限定的递归调用。</p>
 
 
 
 
 </article>
-<article class="admonition-portability slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Portability</h2>
+<h2>可移植性</h2>
 
 <ul class="simple">
-<li>Architecture and machine specific code (C &amp; ASM)</li>
-<li>Independent architecture code (C):<ul>
-<li>kernel core (further split in multiple subsystems)</li>
-<li>device drivers</li>
+<li>架构和机器特定代码（C 和 汇编）</li>
+<li>独立于架构的代码（C）：<ul>
+<li>内核核心（进一步分为多个子系统）</li>
+<li>设备驱动程序</li>
 </ul>
 </li>
 </ul>
@@ -279,95 +347,216 @@ that are not properly bounded.</p>
 
 
 </article>
-<article class="admonition-asymmetric-multiprocessing-asmp slide level-2">
+<article class="admonition-asmp slide level-2">
 
-<h2>Asymmetric MultiProcessing (ASMP)</h2>
+<h2>非对称多处理（ASMP）</h2>
 
-<img alt="../_images/ditaa-cb16db58a2489307b74d4f70256a48c81c65f6c6.png" src="../_images/ditaa-cb16db58a2489307b74d4f70256a48c81c65f6c6.png" />
+<div class="highlight-text"><div class="highlight"><pre><span></span>                            +-----------+
+                            |           |
+        +------------------&gt;|   内存    |&lt;-----------------+
+        |                   |           |                  |
+        |                   +-----------+                  |
+        |                         ^                        |
+        |                         |                        |
+        v                         v                        v
++--------------+          +---------------+         +---------------+
+|              |          |               |         |               |
+|   处理器 A    |          |  处理器 B     |         |  处理器 C     |
+|              |          |               |         |               |
+|              |          | +-----------+ |         | +-----------+ |
+|              |          | | 进程 1    | |         | | 进程 1    | |
+|              |          | +-----------+ |         | +-----------+ |
+|              |          |               |         |               |
+| +----------+ |          | +-----------+ |         | +-----------+ |
+| |  内核    | |          | | 进程 2    | |         | | 进程 2    | |
+| +----------+ |          | +-----------+ |         | +-----------+ |
+|              |          |               |         |               |
+|              |          | +-----------+ |         | +-----------+ |
+|              |          | | 进程 3    | |         | | 进程 3    | |
+|              |          | +-----------+ |         | +-----------+ |
++--------------+          +---------------+         +---------------+
+</pre></div>
+</div>
 
 
 
 
 </article>
-<article class="admonition-symmetric-multiprocessing-smp slide level-2">
+<article class="admonition-smp slide level-2">
 
-<h2>Symmetric MultiProcessing (SMP)</h2>
+<h2>对称多处理（SMP）</h2>
 
-<img alt="../_images/ditaa-08aff771b3ff7a5525df7b0c090e28c836502788.png" src="../_images/ditaa-08aff771b3ff7a5525df7b0c090e28c836502788.png" />
+<div class="highlight-text"><div class="highlight"><pre><span></span>                             +-----------+
+                             |           |
+        +-------------------&gt;|   内存    |&lt;------------------+
+        |                    |           |                   |
+        |                    +-----------+                   |
+        |                          ^                         |
+        |                          |                         |
+        v                          v                         v
++---------------+          +---------------+         +---------------+
+|               |          |               |         |               |
+|  处理器 A      |          |  处理器 B      |         |  处理器 C     |
+|               |          |               |         |               |
+| +-----------+ |          | +-----------+ |         | +-----------+ |
+| | 进程 1    | |          | | 进程 1    | |          | | 进程 1    | |
+| +-----------+ |          | +-----------+ |         | +-----------+ |
+|               |          |               |         |               |
+| +-----------+ |          | +-----------+ |         | +-----------+ |
+| | 进程 2    | |          | | 进程 2     | |         | | 进程 2    | |
+| +-----------+ |          | +-----------+ |         | +-----------+ |
+|               |          |               |         |               |
+| +-----------+ |          | +-----------+ |         | +-----------+ |
+| |   内核    | |          | |   内核    | |          | |   内核    | |
+| +-----------+ |          | +-----------+ |         | +-----------+ |
++---------------+          +---------------+         +---------------+
+</pre></div>
+</div>
 
 
 
 
 </article>
-<article class="admonition-cpu-scalability slide level-2">
+<article class="admonition-cpu slide level-2">
 
-<h2>CPU Scalability</h2>
+<h2>CPU 可扩展性</h2>
 
 <ul class="simple">
-<li>Use lock free algorithms when possible</li>
-<li>Use fine grained locking for high contention areas</li>
-<li>Pay attention to algorithm complexity</li>
+<li>尽可能使用无锁（lock free）算法</li>
+<li>对于高争用区域（high contention areas）使用细粒度锁（fine grained locking）</li>
+<li>注意算法复杂度</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-linux-development-model slide level-2">
+<article class="admonition-linux slide level-2">
 
-<h2>Linux development model</h2>
+<h2>Linux开发模型</h2>
 
 <ul class="simple">
-<li>Open source, GPLv2 License</li>
-<li>Contributors: companies, academia and independent developers</li>
-<li>Development cycle: 3 – 4 months which consists of a 1 - 2 week
-merge window followed by bug fixing</li>
-<li>Features are only allowed in the merge window</li>
-<li>After the merge window a release candidate is done on a weekly
-basis (rc1, rc2, etc.)</li>
+<li>开源，采用 GPLv2 许可证</li>
+<li>贡献者：公司、学术界和独立开发者</li>
+<li>开发周期：3 - 4 个月，包括 1 - 2 周的合并窗口（merge window）和错误修复阶段</li>
+<li>新功能只允许在合并窗口期间合并</li>
+<li>合并窗口结束后,每周会制作一个发行候选（release candidate）版本（rc1、rc2等）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-maintainer-hierarchy slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Maintainer hierarchy</h2>
+<h2>维护者层次结构</h2>
 
 <ul class="simple">
-<li>Linus Torvalds is the maintainer of the Linux kernel and merges pull
-requests from subsystem maintainers</li>
-<li>Each subsystem has one or more maintainers that accept patches or
-pull requests from developers or device driver maintainers</li>
-<li>Each maintainer has its own git tree, e.g.:<ul>
+<li>Linus Torvalds 是 Linux 内核的维护者，他从子系统维护者那里合并拉取请求（pull request）</li>
+<li>每个子系统都有一个或多个维护者，他们接受开发者或设备驱动程序维护者的补丁或拉取请求</li>
+<li>每个维护者都有自己的 git 树，例如：<ul>
 <li>Linux Torvalds: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git</li>
-<li>David Miller (networking): git://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git/</li>
+<li>David Miller（网络）：git://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git/</li>
 </ul>
 </li>
-<li>Each subsystem may maintain a -next tree where developers can submit
-patches for the next merge window</li>
+<li>每个子系统可能维护一个 -next 树，开发者可以在其中提交下一个合并窗口的补丁（patch）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-linux-source-code-layout slide level-2">
+<article class="admonition-linux slide level-2">
 
-<h2>Linux source code layout</h2>
+<h2>Linux 源代码布局</h2>
 
-<img alt="../_images/ditaa-f45246aade5ecc7cfb71f7f103a57f95fc7c2b9e.png" src="../_images/ditaa-f45246aade5ecc7cfb71f7f103a57f95fc7c2b9e.png" />
+<div class="highlight-text"><div class="highlight"><pre><span></span>+-------+
+| linux |
++-+-----+
+  |
+  +------+--------+---------+---------+--------------+--------------+
+  |      |        |         |         |              |              |
+  |      v        v         v         v              v              v
+  |  +------+ +-------+ +-------+ +--------+ +---------------+ +---------+
+  |  | arch | | block | | certs | | crypto | | Documentation | | drivers |
+  |  +------+ +-------+ +-------+ +--------+ +---------------+ +---------+
+  |
+  +-------+----------+--------+---------+--------+--------+---------+
+  |       |          |        |         |        |        |         |
+  |       v          v        v         v        v        v         v
+  |  +----------+ +----+ +---------+ +------+ +-----+ +--------+ +-----+
+  |  | firmware | | fs | | include | | init | | ipc | | kernel | | lib |
+  |  +----------+ +----+ +---------+ +------+ +-----+ +--------+ +-----+
+  |
+  +-----+------+---------+------------+------------+------------+
+  |     |      |         |            |            |            |
+  |     v      v         v            v            v            v
+  |  +----+ +-----+ +---------+ +---------+  +----------+ +-------+
+  |  | mm | | net | | samples | | scripts |  | security | | sound |
+  |  +----+ +-----+ +---------+ +---------+  +----------+ +-------+
+  |
+  +------+--------+--------+
+         |        |        |
+         v        v        v
+     +-------+ +-----+ +------+
+     | tools | | usr | | virt |
+     +-------+ +-----+ +------+
+</pre></div>
+</div>
 
 
 
 
 </article>
-<article class="admonition-linux-kernel-architecture slide level-2">
+<article class="admonition-linux slide level-2">
 
-<h2>Linux kernel architecture</h2>
+<h2>Linux 内核结构</h2>
 
-<a class="reference internal image-reference" href="../_images/ditaa-b9ffae65be16d30be11b5eca188a7a143b1b8227.png"><img alt="../_images/ditaa-b9ffae65be16d30be11b5eca188a7a143b1b8227.png" src="../_images/ditaa-b9ffae65be16d30be11b5eca188a7a143b1b8227.png" style="height: 100%;" /></a>
+<div class="highlight-text"><div class="highlight"><pre><span></span>+---------------+  +--------------+      +---------------+
+| 应用程序 1    |   | 应用程序 2   | ...  |   应用程序 n   |
++---------------+  +--------------+      +---------------+
+        |                 |                      |
+        v                 v                      v
++--------------------------------------------------------+
+|                       内核                             |
+|                                                        |
+|   +----------------------+     +-------------------+   |
+|   |     进程管理         |      |      内存管理      |   |
+|   +----------------------+     +-------------------+   |
+|                                                        |
+|   +------------+    +------------+    +------------+   |
+|   | Block I/O  |    |    VFS     |    | Networking |   |
+|   +------------+    +------------+    +------------+   |
+|                                                        |
+|   +------------+    +------------+    +------------+   |
+|   |    IPC     |    |  Security  |    |   Crypto   |   |
+|   +------------+    +------------+    +------------+   |
+|                                                        |
+|   +------------+    +------------+    +------------+   |
+|   |    DRM     |    |    ALSA    |    |    USB     |   |
+|   +------------+    +------------+    +------------+   |
+|                        ...                             |
++--------------------------------------+-----------------+
+|              设备驱动程序             |      arch       |
+|                                      |                 |
+| +----+  +-----+  +--------+ +----+   |  +----------+   |
+| |字符 | |块设备 | |以太网  | |wifi |   | |   机器 1   |  |
+| +----+  +-----+  +--------+ +----+   |  +----------+   |
+| +--------+ +-----+   +----+ +---+    |  +----------+   |
+| |文件系统| |输入设备| |IIO | |USB |    | |  机器 2   |   |
+| +--------+ +-----+   +----+ +---+    |  +----------+   |
+| +-----------+ +----------+  +---+    |                 |
+| |帧缓冲区    | |平台设备  |  |DRM |   |     ...         |
+| +-----------+ +----------+  +---+    |                 |
++-------------------------+----+-------+-----------------+
+        |                 |                      |
+        v                 v                      v
+
++--------------------------------------------------------+
+|                         硬件                           |
++--------------------------------------------------------+
+</pre></div>
+</div>
 
 
 
@@ -378,46 +567,41 @@ patches for the next merge window</li>
 <h2>arch</h2>
 
 <ul class="simple">
-<li>Architecture specific code</li>
-<li>May be further sub-divided in machine specific code</li>
-<li>Interfacing with the boot loader and architecture specific
-initialization</li>
-<li>Access to various hardware bits that are architecture or machine
-specific such as interrupt controller, SMP controllers, BUS
-controllers, exceptions and interrupt setup, virtual memory handling</li>
-<li>Architecture optimized functions (e.g. memcpy, string operations,
-etc.)</li>
+<li>针对架构的特定代码</li>
+<li>可能进一步细分为针对机器的特定代码</li>
+<li>与引导加载程序（boot loader）以及特定于架构的初始化程序进行交互</li>
+<li>访问各种硬件位，这些硬件位是架构或机器特定的，例如中断控制器、SMP 控制器、总线控制器、异常和中断设置以及虚拟内存处理</li>
+<li>针对架构优化的函数（例如 memcpy，字符串操作等）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-device-drivers slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Device drivers</h2>
+<h2>设备驱动程序</h2>
 
 <ul class="simple">
-<li>Unified device model</li>
-<li>Each subsystem has its own specific driver interfaces</li>
-<li>Many device driver types (TTY, serial, SCSI, fileystem, ethernet,
-USB, framebuffer, input, sound, etc.)</li>
+<li>统一的设备模型</li>
+<li>每个子系统都有自己特定的驱动程序接口</li>
+<li>许多设备驱动程序类型（TTY、串行设备、SCSI、文件系统、以太网、USB 设备、帧缓冲区、输入设备以及声音设备等）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-process-management slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Process management</h2>
+<h2>进程管理</h2>
 
 <ul class="simple">
-<li>Unix basic process management and POSIX threads support</li>
-<li>Processes and threads are abstracted as tasks</li>
-<li>Operating system level virtualization<ul>
-<li>Namespaces</li>
-<li>Control groups</li>
+<li>Unix 基本进程管理和 POSIX 线程支持</li>
+<li>进程和线程被抽象为任务</li>
+<li>操作系统级虚拟化<ul>
+<li>命名空间（namespace）</li>
+<li>控制组</li>
 </ul>
 </li>
 </ul>
@@ -426,61 +610,144 @@ USB, framebuffer, input, sound, etc.)</li>
 
 
 </article>
-<article class="admonition-memory-management slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Memory management</h2>
+<h2>内存管理</h2>
 
 <ul class="simple">
-<li>Management of the physical memory: allocating and freeing memory</li>
-<li>Management of the virtual memory: paging, swapping, demand
-paging, copy on write</li>
-<li>User services: user address space management (e.g. mmap(), brk(),
-shared memory)</li>
-<li>Kernel services: SL*B allocators, vmalloc</li>
+<li>物理内存的管理：分配和释放内存</li>
+<li>虚拟内存的管理：分页，交换，需求分页（demand paging），写时复制（copy on write）</li>
+<li>用户服务：用户地址空间管理（例如 mmap()，brk()，共享内存）</li>
+<li>内核服务：SL*B 分配器，vmalloc</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-block-i-o-management slide level-2">
+<article class="admonition-i-o slide level-2">
 
-<h2>Block I/O management</h2>
+<h2>块I/O管理</h2>
 
-<a class="reference internal image-reference" href="../_images/ditaa-0a96997f269a7a9cd0cdc9c9125f6e62e549be94.png"><img alt="../_images/ditaa-0a96997f269a7a9cd0cdc9c9125f6e62e549be94.png" src="../_images/ditaa-0a96997f269a7a9cd0cdc9c9125f6e62e549be94.png" style="height: 100%;" /></a>
+<div class="highlight-text"><div class="highlight"><pre><span></span>+---------------------------------+
+|       虚拟文件系统切换           |
++---------------------------------+
+               ^
+               |
+               v
++---------------------------------+
+|         设备映射器               |
++---------------------------------+
+               ^
+               |
+               v
++---------------------------------+
+|           通用块层               |
++---------------------------------+
+               ^
+               |
+               v
++--------------------------------+
+|          I/O 调度程序           |
++--------------------------------+
+       ^                ^
+       |                |
+       v                v
++--------------+  +--------------+
+|块设备驱动程序 |  | 块设备驱动程序 |
++--------------+  +--------------+
+</pre></div>
+</div>
 
 
 
 
 </article>
-<article class="admonition-virtual-filesystem-switch slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Virtual Filesystem Switch</h2>
+<h2>虚拟文件系统切换</h2>
 
-<a class="reference internal image-reference" href="../_images/ditaa-afa57a07e21b1b842554278abe30fea575278452.png"><img alt="../_images/ditaa-afa57a07e21b1b842554278abe30fea575278452.png" src="../_images/ditaa-afa57a07e21b1b842554278abe30fea575278452.png" style="height: 100%;" /></a>
+<div class="highlight-text"><div class="highlight"><pre><span></span>       ^                    ^                    ^
+       | stat               | open               | read
+       v                    v                    v
++------------------------------------------------------------+
+|                   虚拟文件系统切换                          |
+|                                                            |
+|                                                            |
+|    /-------\           /--------\           /--------\     |
+|    | inode |&lt;----------+ dentry |&lt;----------+  FILE  |     |
+|    \---+---/           \----+---/           \---+----/     |
+|        |                    |                   |          |
+|        |                    |                   |          |
+|        v                    v                   v          |
+|    +-------+           +--------+           +-------+      |
+|    | inode |           | dentry |           | page  |      |
+|    | cache |           | cache  |           | cache |      |
+|    +-------+           +--------+           +-------+      |
+|                                                            |
++------------------------------------------------------------+
+             ^                                  ^
+             |                                  |
+             v                                  v
+      +-------------+                    +-------------+
+      | 文件系统驱动 |                    | 文件系统驱动 |
+      +-------------+                    +-------------+
+</pre></div>
+</div>
 
 
 
 
 </article>
-<article class="admonition-networking-stack slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Networking stack</h2>
+<h2>网络堆栈</h2>
 
-<a class="reference internal image-reference" href="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png"><img alt="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png" src="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png" style="height: 100%;" /></a>
+<div class="highlight-text"><div class="highlight"><pre><span></span>  +---------------------------+
+  | 伯克利套接字（socket）接口  |
+  +---------------------------+
+
+  +---------------------------+
+  | 传输层（Transport layer）  |
+  +-------------+-------------+
+  |      TCP    |     UDP     |
+  +-------------+-------------+
+
+  +---------------------------+
+  |  网络层（Network layer）   |
+  +-----+---------+-----------+
+  | IP  | 路由    | NetFilter |
+  +-----+---------+-----------+
+
+  +---------------------------+
+  |数据链路层（Data link layer）|
+  +-------+-------+-----------+
+  |  ETH  |  ARP  | BRIDGING  |
+  +-------+-------+-----------+
+
++--------------------------------+
+|           队列调度机制          |
+|   （Queuing discipline，qdisc） |
++--------------------------------+
+
+  +---------------------------+
+  |     网络设备驱动程序        |
+  +---------------------------+
+</pre></div>
+</div>
 
 
 
 
 </article>
-<article class="admonition-linux-security-modules slide level-2">
+<article class="admonition-linux slide level-2">
 
-<h2>Linux Security Modules</h2>
+<h2>Linux 安全模块</h2>
 
 <ul class="simple">
-<li>Hooks to extend the default Linux security model</li>
-<li>Used by several Linux security extensions:<ul>
-<li>Security Enhancened Linux</li>
+<li>扩展默认的 Linux 安全模型的钩子</li>
+<li>被几个 Linux 安全扩展使用:<ul>
+<li>安全增强型 Linux（Security Enhanced Linux，SELinux）</li>
 <li>AppArmor</li>
 <li>Tomoyo</li>
 <li>Smack</li>
