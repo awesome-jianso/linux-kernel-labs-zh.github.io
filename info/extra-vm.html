@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customizing the Virtual Machine Setup &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>自定义虚拟机设置 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -94,11 +94,11 @@
 <p class="caption"><span class="caption-text">有用信息</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="vm.html">虚拟机设置</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Customizing the Virtual Machine Setup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#connect-to-the-virtual-machine-via-ssh">Connect to the Virtual Machine via SSH</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#connecting-a-debugger-to-the-virtual-machine-kernel">Connecting a Debugger to the Virtual Machine Kernel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rebuild-the-kernel-image">Rebuild the Kernel Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#using-docker-containers">Using Docker containers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">自定义虚拟机设置</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ssh">通过 SSH 连接到虚拟机</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugger">将调试器（debugger）连接到虚拟机内核</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-2">重建内核镜像</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker">使用 Docker 容器</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to linux-kernel-labs</a></li>
@@ -118,7 +118,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Customizing the Virtual Machine Setup</li>
+      <li class="breadcrumb-item active">自定义虚拟机设置</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/info/extra-vm.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -128,25 +128,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="customizing-the-virtual-machine-setup">
-<h1>Customizing the Virtual Machine Setup<a class="headerlink" href="#customizing-the-virtual-machine-setup" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="connect-to-the-virtual-machine-via-ssh">
-<h2>Connect to the Virtual Machine via SSH<a class="headerlink" href="#connect-to-the-virtual-machine-via-ssh" title="Permalink to this headline">¶</a></h2>
-<p>The default Yocto image for the QEMU virtual machine
-(<code class="docutils literal"><span class="pre">core-image-minimal-qemu</span></code>) provides the minimal functionality to run the
-kernel and kernel modules. For extra features, such as an SSH connection,
-a more complete image is required, such as <code class="docutils literal"><span class="pre">core-image-sato-dev-qemu</span></code>.</p>
-<p>To use the new image, update the <code class="docutils literal"><span class="pre">YOCTO_IMAGE</span></code> variable in
-<code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code>:</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span><span class="nv">YOCTO_IMAGE</span> <span class="o">=</span> core-image-sato-qemu<span class="k">$(</span>ARCH<span class="k">)</span>.ext4
-</pre></div>
-</div>
-<p>When you start the virtual machine the first time using <code class="docutils literal"><span class="pre">make</span> <span class="pre">boot</span></code> with the
-new image configuration, it will download the image and then boot the virtual
-machine. The image is larger (around 400MB) than the minimal image so expect
-some time for the download.</p>
-<p>You then enter the virtual machine via <code class="docutils literal"><span class="pre">minicom</span></code>, determine the IP address of
-the <code class="docutils literal"><span class="pre">eth0</span></code> interface an then you can connect to the virtual machine via SSH:</p>
+  <div class="section" id="section-1">
+<h1>自定义虚拟机设置<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ssh">
+<h2>通过 SSH 连接到虚拟机<a class="headerlink" href="#ssh" title="Permalink to this headline">¶</a></h2>
+<p>QEMU 虚拟机的默认 Yocto 镜像（core-image-minimal-qemu）仅提供了运行内核和内核模块所需要的最小功能。要使用额外的功能，例如 SSH 连接，需要一个更完整的镜像，例如 core-image-sato-dev-qemu。</p>
+<p>要使用新的镜像，需要更改 <code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code> 中的 <code class="docutils literal"><span class="pre">YOCTO_IMAGE</span></code> 变量：</p>
+<p>… code-block:: shell</p>
+<blockquote>
+<div>YOCTO_IMAGE = core-image-sato-qemu$(ARCH).ext4</div></blockquote>
+<p>当你第一次使用新的镜像配置通过 <code class="docutils literal"><span class="pre">make</span> <span class="pre">boot</span></code> 命令启动虚拟机时，它会下载相应的镜像文件，然后启动虚拟机。这个镜像比最小的镜像要大（大约400MB），所以下载需要一些时间。</p>
+<p>然后你可以通过 <code class="docutils literal"><span class="pre">minicom</span></code> 进入虚拟机，确定 eth0 接口的 IP 地址，之后你就可以通过 SSH 连接到虚拟机了：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>$ minicom -D serial.pts
 Poky (Yocto Project Reference Distro) 2.3 qemux86 /dev/hvc0
 
@@ -177,10 +169,8 @@ Linux qemux86 4.19.0+ #3 SMP Sat Apr 4 22:45:18 EEST 2020 i686 GNU/Linux
 </pre></div>
 </div>
 </div>
-<div class="section" id="connecting-a-debugger-to-the-virtual-machine-kernel">
-<h2>Connecting a Debugger to the Virtual Machine Kernel<a class="headerlink" href="#connecting-a-debugger-to-the-virtual-machine-kernel" title="Permalink to this headline">¶</a></h2>
-<p>You can use GDB to connect to the running virtual machine kernel and inspect
-the state of the kernel. You run <code class="docutils literal"><span class="pre">make</span> <span class="pre">gdb</span></code> in <code class="docutils literal"><span class="pre">tools/labs/</span></code>:</p>
+<div class="section" id="debugger">
+<h2>将调试器（debugger）连接到虚拟机内核<a class="headerlink" href="#debugger" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>.../linux/tools/labs$ make gdb
 ln -fs /home/tavi/src/linux/vmlinux vmlinux
 gdb -ex <span class="s2">&quot;target remote localhost:1234&quot;</span> vmlinux
@@ -219,52 +209,41 @@ at kernel/sched/idle.c:350
 </pre></div>
 </div>
 </div>
-<div class="section" id="rebuild-the-kernel-image">
-<h2>Rebuild the Kernel Image<a class="headerlink" href="#rebuild-the-kernel-image" title="Permalink to this headline">¶</a></h2>
-<p>The kernel image is built the first time the VM is started. To rebuild the
-kernel remove the kernel image file defined by the <code class="docutils literal"><span class="pre">ZIMAGE</span></code> variable in
-<code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code>:</p>
+<div class="section" id="section-2">
+<h2>重建内核镜像<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<p>内核镜像是在虚拟机第一次启动时构建的。要重建内核，删除由在 <code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code> 中的 <code class="docutils literal"><span class="pre">ZIMAGE</span></code> 变量定义的内核镜像文件：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span><span class="nv">ZIMAGE</span> <span class="o">=</span> <span class="k">$(</span>KDIR<span class="k">)</span>/arch/<span class="k">$(</span>ARCH<span class="k">)</span>/boot/<span class="k">$(</span>b<span class="k">)</span>zImage
 </pre></div>
 </div>
-<p>Typically the full path of the kernel is <code class="docutils literal"><span class="pre">arch/x86/boot/bzImage</span></code>.</p>
-<p>Once removed the kernel image is rebuild by using:</p>
+<p>通常，内核的完整路径是 <code class="docutils literal"><span class="pre">arch/x86/boot/bzImage</span></code>。</p>
+<p>删除后，可以使用以下命令重新构建内核镜像：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>~/src/linux/tools/labs$ make zImage
 </pre></div>
 </div>
-<p>or simply starting the virtual machine</p>
+<p>或者简单地启动虚拟机</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>~/src/linux/tools/labs$ make boot
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-docker-containers">
-<h2>Using Docker containers<a class="headerlink" href="#using-docker-containers" title="Permalink to this headline">¶</a></h2>
-<p>If your setup doesn't allow the installation of the packages required for the
-laboratory setup, you can build and run a container that has all the setup
-already prepared for the virtual machine environment.</p>
-<p>In order to run the containerized setup, you need to install the following
-packages:</p>
+<div class="section" id="docker">
+<h2>使用 Docker 容器<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>如果你的设备不允许安装实验室配置所需的软件包，你可以构建和运行一个容器，它已经为虚拟机环境准备好了所有的配置。</p>
+<p>为了运行容器化的配置，你需要安装以下软件包：</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">docker</span></code></li>
 <li><code class="docutils literal"><span class="pre">docker-compose</span></code></li>
 </ul>
-<p>In order to run the container infrastructure run the following command in the
-<code class="docutils literal"><span class="pre">tools/labs/</span></code> directory:</p>
+<p>为了运行容器基础设施，在 <code class="docutils literal"><span class="pre">tools/labs/</span></code> 目录下运行以下命令：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>sergiu@local:~/src/linux/tools/labs$ make docker-kernel
 ...
 ubuntu@so2:~$
 </pre></div>
 </div>
-<p>The first time you run the command above, it will take a long time, because you
-will have to build the container environment and install the required
-applications.</p>
-<p>Every time you run the <code class="docutils literal"><span class="pre">make</span> <span class="pre">docker-kernel</span></code> command, another shell will
-connect to the container. This will allow you to work with multiple tabs.</p>
-<p>All the commands that you would use in the regular environment can be used in
-the containerized environment.</p>
-<p>The linux repository is mounted in the <code class="docutils literal"><span class="pre">/linux</span></code> directory. All changes
-you will make here will also be seen on your local instance.</p>
-<p>In order to stop the container use the following command:</p>
+<p>你第一次运行上面的命令时，会花很长时间，因为你需要构建容器环境并安装所需的应用程序。</p>
+<p>每次你运行 <code class="docutils literal"><span class="pre">make</span> <span class="pre">docker-kernel</span></code> 命令时，另一个 shell 会连接到容器。这将允许你在多个窗口中工作。</p>
+<p>你在常规环境中使用的所有命令都可以在容器化环境中使用。</p>
+<p>linux 仓库被挂载在 <code class="docutils literal"><span class="pre">/linux</span></code> 目录下。你在这里做的所有更改也会在你的本地实例上看到。</p>
+<p>要停止容器运行，可以使用以下命令：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>make stop-docker-kernel
 </pre></div>
 </div>
