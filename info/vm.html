@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>虚拟机设置 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>虚拟机配置 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -29,7 +29,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="自定义虚拟机设置" href="extra-vm.html" />
+    <link rel="next" title="自定义虚拟机配置" href="extra-vm.html" />
     <link rel="prev" title="Kernel Profiling" href="../labs/kernel_profiling.html" /> 
 </head>
 
@@ -93,12 +93,12 @@
 </ul>
 <p class="caption"><span class="caption-text">有用信息</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">虚拟机设置</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">虚拟机配置</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#section-2">启动虚拟机</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#section-3">连接到虚拟机</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extra-vm.html">自定义虚拟机设置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-vm.html">自定义虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to linux-kernel-labs</a></li>
 </ul>
 
@@ -116,7 +116,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">虚拟机设置</li>
+      <li class="breadcrumb-item active">虚拟机配置</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/info/vm.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -127,7 +127,7 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<span id="vm-link"></span><h1>虚拟机设置<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<span id="vm-link"></span><h1>虚拟机配置<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
 <p>实践工作是在基于 QEMU 的虚拟机上运行的。内核代码在主机上开发和构建，然后部署和运行在虚拟机上。</p>
 <p>为了运行和使用虚拟机，以下软件包在 Debian/Ubuntu 系统上是必需的：</p>
 <ul class="simple">
@@ -142,7 +142,7 @@
 <li><code class="docutils literal"><span class="pre">minicom</span></code></li>
 </ul>
 <p><code class="docutils literal"><span class="pre">kvm</span></code> 软件包不是严格必需的，但是它会通过使用 KVM 支持（使用 QEMU 的 <code class="docutils literal"><span class="pre">-enable-kvm</span></code> 选项）来加快虚拟机的速度。如果缺少 <code class="docutils literal"><span class="pre">kvm</span></code>，虚拟机仍然会使用模拟运行（尽管较慢）。</p>
-<p>虚拟机设置使用它下载的预构建的 Yocto 镜像和它自己构建的内核镜像。支持以下镜像：</p>
+<p>虚拟机配置使用它下载的预构建的 Yocto 镜像和它自己构建的内核镜像。支持以下镜像：</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">core-image-minimal-qemu</span></code></li>
 <li><code class="docutils literal"><span class="pre">core-image-minimal-dev-qemu</span></code></li>
@@ -150,7 +150,7 @@
 <li><code class="docutils literal"><span class="pre">core-image-sato-qemu</span></code></li>
 <li><code class="docutils literal"><span class="pre">core-image-sato-sdk-qemu</span></code></li>
 </ul>
-<p>默认情况下，使用 <code class="docutils literal"><span class="pre">core-image-minimal-qemu</span></code>。可以通过更新 <code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code> 中的 <code class="docutils literal"><span class="pre">YOCTO_IMAGE</span></code> 变量来更改这个设置。</p>
+<p>默认情况下，使用 <code class="docutils literal"><span class="pre">core-image-minimal-qemu</span></code>。可以通过更新 <code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code> 中的 <code class="docutils literal"><span class="pre">YOCTO_IMAGE</span></code> 变量来更改这个配置。</p>
 <div class="section" id="section-2">
 <h2>启动虚拟机<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <p>你可以在 <code class="docutils literal"><span class="pre">tools/labs/</span></code> 文件夹中通过运行 <code class="docutils literal"><span class="pre">make</span> <span class="pre">boot</span></code> 来启动虚拟机：</p>
@@ -197,7 +197,7 @@ qemu-system-i386: -chardev pty,id<span class="o">=</span>virtiocon0: char device
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">虚拟机设置脚本和配置文件位于 <code class="docutils literal"><span class="pre">tools/labs/qemu/</span></code>。</p>
+<p class="last">虚拟机配置脚本和配置文件位于 <code class="docutils literal"><span class="pre">tools/labs/qemu/</span></code>。</p>
 </div>
 </div>
 <div class="section" id="section-3">
@@ -232,7 +232,7 @@ root@qemux86:~#
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../labs/kernel_profiling.html" class="btn btn-neutral float-left" title="Kernel Profiling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="extra-vm.html" class="btn btn-neutral float-right" title="自定义虚拟机设置" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="extra-vm.html" class="btn btn-neutral float-right" title="自定义虚拟机配置" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
