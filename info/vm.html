@@ -186,10 +186,18 @@ nttcp-l: service-socket: bind:: Address already in use, <span class="nv">errno</
 qemu-system-i386: -chardev pty,id<span class="o">=</span>virtiocon0: char device redirected to /dev/pts/68 <span class="o">(</span>label virtiocon0<span class="o">)</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">要显示 QEMU 控制台，请使用</p>
+</div>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>.../linux/tools/labs$ <span class="nv">QEMU_DISPLAY</span><span class="o">=</span>gtk make boot
 
        这将显示 VGA 输出，并且还可以访问标准键盘。
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">虚拟机设置脚本和配置文件位于 <code class="docutils literal"><span class="pre">tools/labs/qemu/</span></code>。</p>
 </div>
 </div>
 <div class="section" id="section-3">
@@ -207,6 +215,14 @@ Poky <span class="o">(</span>Yocto Project Reference Distro<span class="o">)</sp
 qemux86 login: root
 root@qemux86:~#
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">当你连接到虚拟机时，只需在登录提示处输入 <code class="docutils literal"><span class="pre">root</span></code>，你就会得到一个 root 控制台，不需要密码。</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">你可以通过按 <code class="docutils literal"><span class="pre">Ctrl+a</span></code> 然后按 <code class="docutils literal"><span class="pre">x</span></code> 来退出 <code class="docutils literal"><span class="pre">minicom</span></code>。你会得到一个确认提示，然后你就会退出 <code class="docutils literal"><span class="pre">minicom</span></code>。</p>
 </div>
 </div>
 </div>
