@@ -71,9 +71,9 @@
 <li class="toctree-l2"><a class="reference internal" href="lec12-virtualization.html">SO2 Lecture 12 - Virtualization</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lab 01 - Introduction</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#about-this-laboratory">About this laboratory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">关于本实验</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">参考资料</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">文档</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#kernel-modules-overview">Kernel Modules Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#an-example-of-a-kernel-module">An example of a kernel module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#compiling-kernel-modules">Compiling kernel modules</a></li>
@@ -89,8 +89,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#remarks">Remarks</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booting-the-virtual-machine">Booting the virtual machine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-4">备注</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-5">启动虚拟机</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#kernel-module">1. Kernel module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#printk">2. Printk</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#error">3. Error</a></li>
@@ -101,7 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#good-to-know-1">Good to know</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source-code-navigation">Source code navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">源代码导航</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#cscope">cscope</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#clangd">clangd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#kscope">Kscope</a></li>
@@ -109,9 +109,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#sourceweb">SourceWeb</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#kernel-debugging">Kernel Debugging</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#gdb-linux">gdb (Linux)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#getting-a-stack-trace">Getting a stack trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-7">内核调试</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gdb-linux">gdb（Linux）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">获取堆栈跟踪</a></li>
 </ul>
 </li>
 </ul>
@@ -155,7 +155,7 @@
 <p class="caption"><span class="caption-text">实验</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../labs/infrastructure.html">Infrastructure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../labs/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../labs/introduction.html">介绍</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/kernel_modules.html">Kernel modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/kernel_api.html">Kernel API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/device_drivers.html">Character device drivers</a></li>
@@ -216,64 +216,47 @@
 <li>simple kernel debugging methods</li>
 </ul>
 </div>
-<div class="section" id="about-this-laboratory">
-<h2>About this laboratory<a class="headerlink" href="#about-this-laboratory" title="Permalink to this headline">¶</a></h2>
-<p>The Operating Systems 2 lab is a kernel programming and driver development lab.
-The objectives of the laboratory are:</p>
+<div class="section" id="section-1">
+<h2>关于本实验<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<p>操作系统 2 实验是一个内核编程和驱动程序开发实验。本实验的目标是：</p>
 <ul class="simple">
-<li>deepening the notions presented in the course</li>
-<li>presentation of kernel programming interfaces (kernel API)</li>
-<li>gaining documenting, development and debugging skills on a freestanding
-environment</li>
-<li>acquiring knowledge and skills for drivers development</li>
+<li>加深课程中介绍的概念</li>
+<li>展示内核编程接口（内核 API）</li>
+<li>获取在一个独立的环境中记录、开发和调试的技能</li>
+<li>获取驱动程序开发的知识和技能</li>
 </ul>
-<p>A laboratory will present a set of concepts, applications and commands
-specific to a given problem. The lab will start with a presentation
-(each lab will have a set of slides) (15 minutes) and the remaining
-time will be allocated to the lab exercises (80 minutes).</p>
-<p>For best laboratory performance, we recommend that you read the related slides.
-To fully understand a laboratory, we recommend going through the lab support. For
-in-depth study, use the supporting documentation.</p>
+<p>每个实验将呈现一组特定问题的概念、应用和命令。实验将以演示开始（每个实验都会有一组幻灯片）（15分钟），其余时间将用于实验室练习（80分钟）。</p>
+<p>为了获得最佳的实验效果，我们建议你阅读相关幻灯片。要完全理解一个实验，我们建议你查阅实验技术支持材料。如果需要深入学习，可以使用辅助文档。</p>
 </div>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-2">
+<h2>参考资料<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Linux<ul>
-<li><a class="reference external" href="http://www.amazon.com/Linux-Kernel-Development-Robert-Love/dp/0672329468/">Linux Kernel Development, 3rd
-Edition</a></li>
-<li><a class="reference external" href="http://free-electrons.com/doc/books/ldd3.pdf">Linux Device Drivers, 3rd
-Edition</a></li>
-<li><a class="reference external" href="http://www.amazon.com/Essential-Device-Drivers-Sreekrishnan-Venkateswaran/dp/0132396556">Essential Linux Device
-Drivers</a></li>
+<li><a class="reference external" href="http://www.amazon.com/Linux-Kernel-Development-Robert-Love/dp/0672329468/">Linux 内核开发（第 3 版）</a></li>
+<li><a class="reference external" href="http://free-electrons.com/doc/books/ldd3.pdf">Linux设备驱动（第 3 版）</a></li>
+<li><a class="reference external" href="http://www.amazon.com/Essential-Device-Drivers-Sreekrishnan-Venkateswaran/dp/0132396556">精通 Linux 设备驱动程序</a></li>
 </ul>
 </li>
-<li>General<ul>
-<li><a class="reference external" href="http://cursuri.cs.pub.ro/cgi-bin/mailman/listinfo/pso">mailing list</a>
-(<a class="reference external" href="http://blog.gmane.org/gmane.education.region.romania.operating-systems-design">searching the mailing list</a>)</li>
+<li>通用<ul>
+<li><a class="reference external" href="http://cursuri.cs.pub.ro/cgi-bin/mailman/listinfo/pso">邮件列表</a>
+（<a class="reference external" href="http://blog.gmane.org/gmane.education.region.romania.operating-systems-design">搜索邮件列表</a> ）</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>Kernel development is a difficult process, compared to user space
-programming. The API is different and the complexity of the subsystems
-in kernel requires additional preparation. The associated documentation
-is heterogeneous, sometimes requiring the inspection of multiple sources
-to have a more complete understanding of a certain aspect.</p>
-<p>The main advantages of the Linux kernel are the access to sources and
-the open development system. Because of this, the Internet offers a
-larger number of documentation for the kernel.</p>
-<p>A few links related to the Linux kernel are shown bellow:</p>
+<div class="section" id="section-3">
+<h2>文档<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>与用户空间编程相比，内核开发是一个困难的过程。内核的 API 和用户空间不同，内核子系统的复杂性也更高，因此需要额外的准备工作。相关的文档比较零散，有时候需要查阅多个来源才能对某个方面有较全面的了解。</p>
+<p>Linux 内核的主要优势是可以访问源代码和其开放式开发系统。因此，互联网上提供了大量的内核文档。</p>
+<p>以下是与 Linux 内核相关的一些链接：</p>
 <ul class="simple">
 <li><a class="reference external" href="http://kernelnewbies.org">KernelNewbies</a></li>
-<li><a class="reference external" href="http://kernelnewbies.org/KernelHacking">KernelNewbies - Kernel Hacking</a></li>
-<li><a class="reference external" href="http://www.tldp.org/HOWTO/KernelAnalysis-HOWTO.html">Kernel Analysis - HOWTO</a></li>
-<li><a class="reference external" href="http://web.archive.org/web/20090228191439/http://www.linuxhq.com/lkprogram.html">Linux Kernel Programming</a></li>
-<li><a class="reference external" href="http://en.wikibooks.org/wiki/Linux_kernel">Linux kernel - Wikibooks</a></li>
+<li><a class="reference external" href="http://kernelnewbies.org/KernelHacking">KernelNewbies——内核编程</a></li>
+<li><a class="reference external" href="http://www.tldp.org/HOWTO/KernelAnalysis-HOWTO.html">内核分析——HOWTO</a></li>
+<li><a class="reference external" href="http://web.archive.org/web/20090228191439/http://www.linuxhq.com/lkprogram.html">Linux 内核编程</a></li>
+<li><a class="reference external" href="http://en.wikibooks.org/wiki/Linux_kernel">Linux 内核——Wikibooks</a></li>
 </ul>
-<p>The links are not comprehensive. Using  <a class="reference external" href="http://www.google.com">The Internet</a> and
-<a class="reference external" href="http://lxr.free-electrons.com/">kernel source code</a> is essential.</p>
+<p>这些链接并不全面。使用 <a class="reference external" href="http://www.google.com">互联网</a> 和 <a class="reference external" href="http://lxr.free-electrons.com/">内核源代码</a> 是必不可少的。</p>
 </div>
 <div class="section" id="kernel-modules-overview">
 <h2>Kernel Modules Overview<a class="headerlink" href="#kernel-modules-overview" title="Permalink to this headline">¶</a></h2>
@@ -1086,32 +1069,26 @@ section.</p>
 </div>
 <div class="section" id="exercises">
 <h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="remarks">
-<h3>Remarks<a class="headerlink" href="#remarks" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="section-4">
+<h3>备注<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <ul class="last simple">
-<li>Usually, the steps used to develop a kernel module are the
-following:<ul>
-<li>editing the module source code (on the physical machine);</li>
-<li>module compilation (on the physical machine);</li>
-<li>generation of the minimal image for the virtual machine;
-this image contains the kernel, your module, busybox and
-eventually test programs;</li>
-<li>starting the virtual machine using QEMU;</li>
-<li>running the tests in the virtual machine.</li>
+<li>通常，开发内核模块的步骤如下：<ul>
+<li>编辑模块源代码（在物理机上）；</li>
+<li>编译模块（在物理机上）；</li>
+<li>生成用于虚拟机的最小镜像；该镜像包含内核、你的模块、busybox 以及测试程序；</li>
+<li>使用 QEMU 启动虚拟机；</li>
+<li>在虚拟机中运行测试。</li>
 </ul>
 </li>
-<li>When using cscope, use <code class="file docutils literal"><span class="pre">~/src/linux</span></code>.
-If there is no <code class="file docutils literal"><span class="pre">cscope.out</span></code> file, you can generate it using
-the command <strong class="command">make ARCH=x86 cscope</strong>.</li>
-<li>You can find more details about the virtual machine at
-<a class="reference internal" href="../info/vm.html#vm-link"><span class="std std-ref">虚拟机配置</span></a>.</li>
+<li>当使用 cscope 时，请使用文件 <code class="file docutils literal"><span class="pre">~/src/linux</span></code>。如果没有文件 <code class="file docutils literal"><span class="pre">cscope.out</span></code>，可以使用命令 <strong class="command">make ARCH=x86 cscope</strong> 来生成它。</li>
+<li>你可以在 <a class="reference internal" href="../info/vm.html#vm-link"><span class="std std-ref">虚拟机配置</span></a> 找到有关虚拟机的更多详细信息。</li>
 </ul>
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">Before solving an exercice, <strong>carefully</strong> read all its bullets.</p>
+<p class="last">在解决练习之前，<a href="#system-message-1"><span class="problematic" id="problematic-1">**</span></a>仔细**阅读所有要点。</p>
 </div>
 <div class="admonition important" id="exercises-summary">
 <p class="first admonition-title">Important</p>
@@ -1160,39 +1137,31 @@ To discard the changes, run <code class="docutils literal"><span class="pre">git
 <p class="last">If you already generated the skeleton before <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> you will need to generate it again.</p>
 </div>
 </div>
-<div class="section" id="booting-the-virtual-machine">
-<h3>Booting the virtual machine<a class="headerlink" href="#booting-the-virtual-machine" title="Permalink to this headline">¶</a></h3>
-<p>A summary of the virtual machine infrastructure:</p>
+<div class="section" id="section-5">
+<h3>启动虚拟机<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
+<p>虚拟机基础设施摘要：</p>
 <ul class="simple">
-<li><code class="file docutils literal"><span class="pre">~/src/linux</span></code> - Linux kernel sources, needed to
-compile modules. The directory contains the file <code class="file docutils literal"><span class="pre">cscope.out</span></code>,
-used for navigation in the source tree.</li>
-<li><code class="file docutils literal"><span class="pre">~/src/linux/tools/labs/qemu</span></code>- scripts and auxiliary
-files used to generate and run the QEMU VM.</li>
+<li><code class="file docutils literal"><span class="pre">~/src/linux</span></code> ——Linux 内核源代码，用于编译模块。该目录包含文件 <code class="file docutils literal"><span class="pre">cscope.out</span></code>，用于在源代码树中导航。</li>
+<li><code class="file docutils literal"><span class="pre">~/src/linux/tools/labs/qemu</span></code> ——用于生成和运行 QEMU 虚拟机的脚本和辅助文件。</li>
 </ul>
-<p>To start the VM, run <strong class="command">make boot</strong> in the directory <code class="file docutils literal"><span class="pre">~/src/linux/tools/labs</span></code>:</p>
+<p>要启动虚拟机，请在目录 <code class="file docutils literal"><span class="pre">~/src/linux/tools/labs</span></code> 中运行 <strong class="command">make boot</strong>：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>student@eg106:~$ <span class="nb">cd</span> ~/src/linux/tools/labs
 student@eg106:~/src/linux/tools/labs$ make boot
 </pre></div>
 </div>
-<p>By default, you will not get a prompt or any graphical interface, but you can connect to
-a console exposed by the virtual machine using <strong class="command">minicom</strong> or <strong class="command">screen</strong>.</p>
+<p>默认情况下，你将不会获得提示符或任何图形界面，但你可以使用 <strong class="command">minicom</strong> 或 <strong class="command">screen</strong> 连接到虚拟机提供的控制台。</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>student@eg106:~/src/linux/tools/labs$ minicom -D serial.pts
 
-&lt;press enter&gt;
+&lt;按回车键&gt;
 
 qemux86 login:
 Poky <span class="o">(</span>Yocto Project Reference Distro<span class="o">)</span> <span class="m">2</span>.3 qemux86 /dev/hvc0
 </pre></div>
 </div>
-<p>Alternatively, you can start the virtual machine with graphical interface support, using
-the <strong class="command">QEMU_DISPLAY=gtk make boot</strong>.</p>
+<p>另外，也可以使用命令 <strong class="command">QEMU_DISPLAY=gtk make boot</strong> 启动虚拟机，这种情况下虚拟机带有图形界面支持。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">To access the virtual machine, at the login prompt, enter the
-username <code class="code docutils literal"><span class="pre">root</span></code>; there is no need to enter a password.
-The virtual machine will start with the permissions of the
-root account.</p>
+<p class="last">要访问虚拟机，请在登录提示符处输入用户名 <code class="code docutils literal"><span class="pre">root</span></code>；无需输入密码。虚拟机将以 root 帐户的权限启动。</p>
 </div>
 </div>
 <div class="section" id="kernel-module">
@@ -1284,7 +1253,7 @@ C source file. Notice where the problem will occur. Add the compilation flag
 address at which the oops appeared.</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Read <a href="#system-message-1"><span class="problematic" id="problematic-1">`Debugging`_</span></a> section of the lab.  To identify the
+<p class="last">Read <a href="#system-message-3"><span class="problematic" id="problematic-3">`Debugging`_</span></a> section of the lab.  To identify the
 address, follow the oops message and extract the value of
 the instructions pointer (<code class="docutils literal"><span class="pre">EIP</span></code>) register.</p>
 </div>
@@ -1358,26 +1327,13 @@ when the module is unloaded a process is created from the executable
 <p>The following sections contain useful information for getitng used to the Linux
 kernel code and debugging techniques.</p>
 </div>
-<div class="section" id="source-code-navigation">
-<h2>Source code navigation<a class="headerlink" href="#source-code-navigation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-6">
+<h2>源代码导航<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="cscope">
 <span id="cscope-intro"></span><h3>cscope<a class="headerlink" href="#cscope" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://cscope.sourceforge.net/">Cscope</a> is a tool for
-efficient navigation of C sources. To use it, a cscope database must
-be generated from the existing sources. In a Linux tree, the command
-<strong class="command">make ARCH=x86 cscope</strong> is sufficient. Specification of the
-architecture through the ARCH variable is optional but recommended;
-otherwise, some architecture dependent functions will appear multiple
-times in the database.</p>
-<p>You can build the cscope database with the command <strong class="command">make
-ARCH=x86 COMPILED_SOURCE=1 cscope</strong>. This way, the cscope database will
-only contain symbols that have already been used in the compile
-process before, thus resulting in better performance when searching
-for symbols.</p>
-<p>Cscope can also be used as stand-alone, but it is more useful when
-combined with an editor. To use cscope with <strong class="command">vim</strong>, it is necessary to
-install both packages and add the following lines to the file
-<code class="file docutils literal"><span class="pre">.vimrc</span></code> (the machine in the lab already has the settings):</p>
+<p>Cscope &lt;<a class="reference external" href="http://cscope.sourceforge.net/">http://cscope.sourceforge.net/</a>&gt; 是一个用于高效导航 C 源代码的工具。要使用它，必须从现有的源代码生成一个 cscope 数据库。在 Linux 树中，执行命令 <strong class="command">make ARCH=x86 cscope</strong> 就足够了。通过 ARCH 变量指定架构不是必须的，但建议这样做；否则，一些依赖于架构的函数会在数据库中出现多次。</p>
+<p>你可以使用命令 <strong class="command">make ARCH=x86 COMPILED_SOURCE=1 cscope</strong> 构建 cscope 数据库。这样，cscope 数据库中只包含在编译过程中已经使用过的符号（symbol），从而在搜索符号时可以获得更好的性能。</p>
+<p>Cscope 也可以作为独立工具使用，但与编辑器结合使用时更加有用。要在 <strong class="command">vim</strong> 中使用 cscope，需要安装两个软件包，并在文件 <code class="file docutils literal"><span class="pre">.vimrc</span></code> 中添加以下几行（实验室中的机器已经进行了设置）：</p>
 <div class="highlight-vim"><div class="highlight"><pre><span></span><span class="k">if</span> has<span class="p">(</span><span class="s2">&quot;cscope&quot;</span><span class="p">)</span>
 <span class="c">        &quot; Look for a &#39;cscope.out&#39; file starting from the current directory,</span>
 <span class="c">        &quot; going up to the root directory.</span>
@@ -1411,117 +1367,57 @@ install both packages and add the following lines to the file
 <span class="k">endif</span>
 </pre></div>
 </div>
-<p>The script searches for a file called <code class="file docutils literal"><span class="pre">cscope.out</span></code> in the current directory, or
-in parent directories. If <strong class="command">vim</strong> finds this file, you can use the shortcut <code class="code docutils literal"><span class="pre">Ctrl</span> <span class="pre">+]</span></code>
-or <code class="code docutils literal"><span class="pre">Ctrl+\</span> <span class="pre">g</span></code> (the combination control-\ followed by g) to jump directly to
-the definition of the word under the cursor (function, variable, structure, etc.).
-Similarly, you can use <code class="code docutils literal"><span class="pre">Ctrl+\</span> <span class="pre">s</span></code> to go where the word under the cursor is used.</p>
-<p>You can take a cscope-enabled <code class="file docutils literal"><span class="pre">.vimrc</span></code> file (also contains other goodies) from
-<a class="reference external" href="https://github.com/ddvlad/cfg/blob/master/_vimrc">https://github.com/ddvlad/cfg/blob/master/_vimrc</a>.
-The following guidelines are based on this file, but also show basic <strong class="command">vim</strong> commands
-that have the same effect.</p>
-<p>If there are more than one results (usually there are) you can move between them
-using <code class="code docutils literal"><span class="pre">F6</span></code> and <code class="code docutils literal"><span class="pre">F5</span></code> (<code class="code docutils literal"><span class="pre">:ccnext</span></code>  and <code class="code docutils literal"><span class="pre">:cprev</span></code>).
-You can also open a new panel showing the results using <code class="code docutils literal"><span class="pre">:copen</span></code>. To close
-the panel, use the <code class="code docutils literal"><span class="pre">:cclose</span></code> command.</p>
-<p>To return to the previous location, use <code class="code docutils literal"><span class="pre">Ctrl+o</span></code> (o, not zero).
-The command can be used multiple times and works even if cscope changed the
-file you are currently editing.</p>
-<p>To go to a symbol definition directly when <strong class="command">vim</strong> starts, use <code class="code docutils literal"><span class="pre">vim</span> <span class="pre">-t</span> <span class="pre">&lt;symbol_name&gt;</span></code>
-(for example <code class="code docutils literal"><span class="pre">vim</span> <span class="pre">-t</span> <span class="pre">task_struct</span></code>). Otherwise, if you started <strong class="command">vim</strong> and want
-to search for a symbol by name, use <code class="code docutils literal"><span class="pre">cs</span> <span class="pre">find</span> <span class="pre">g</span> <span class="pre">&lt;symbol_name&gt;</span></code> (for example
-<code class="code docutils literal"><span class="pre">cs</span> <span class="pre">find</span> <span class="pre">g</span> <span class="pre">task_struct</span></code>).</p>
-<p>If you found more than one results and opened a panel showing all the matches
-(using <code class="code docutils literal"><span class="pre">:copen</span></code>) and you want to find a symbol of type structure,
-it is recommended to search in the results panel (using <code class="code docutils literal"><span class="pre">/</span></code> -- slash)
-the character <code class="code docutils literal"><span class="pre">{</span></code> (opening brace).</p>
+<p>脚本在当前目录或父目录中搜索名为 <code class="file docutils literal"><span class="pre">cscope.out</span></code> 的文件。如果 <strong class="command">vim</strong> 找到该文件，你可以使用快捷键 <code class="code docutils literal"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">]</span></code> 或 <code class="code docutils literal"><span class="pre">Ctrl+\</span> <span class="pre">g`（按下</span> <span class="pre">control-\\</span> <span class="pre">然后按</span> <span class="pre">g）直接跳转到光标所在单词的定义（函数、变量、结构等）。类似地，你可以使用</span> <span class="pre">:code:`Ctrl+\</span> <span class="pre">s</span></code> 前往光标所在单词的使用位置。</p>
+<p>你可以从以下网址获取一个启用了 cscope 的 <code class="file docutils literal"><span class="pre">.vimrc</span></code> 文件（还包含其他好用的东西）：<a class="reference external" href="https://github.com/ddvlad/cfg/blob/master/_vimrc">https://github.com/ddvlad/cfg/blob/master/_vimrc</a>。以下指南基于该文件，同时也展示了具有相同效果的基本 <strong class="command">vim</strong> 命令。</p>
+<p>如果有多个结果（通常会有），你可以使用 <code class="code docutils literal"><span class="pre">F6</span></code> 和 <code class="code docutils literal"><span class="pre">F5</span></code> （<code class="code docutils literal"><span class="pre">:ccnext</span></code> 和 <code class="code docutils literal"><span class="pre">:cprev</span></code>）在它们之间切换。你还可以使用命令 <code class="code docutils literal"><span class="pre">:copen</span></code> 打开一个新的面板来显示结果。要关闭面板，可以使用 <code class="code docutils literal"><span class="pre">:cclose</span></code> 命令。</p>
+<p>要返回到先前的位置，可以使用 <a href="#system-message-2"><span class="problematic" id="problematic-2">`</span></a>Ctrl+o`（是字母 o，不是零）。该命令可以多次使用，即使 cscope 更改了你当前正在编辑的文件也有效。</p>
+<p>要在 <strong class="command">vim</strong> 启动时直接跳转到符号定义，可以使用 <code class="code docutils literal"><span class="pre">vim</span> <span class="pre">-t</span> <span class="pre">&lt;symbol_name&gt;`（例如</span> <span class="pre">:code:`vim</span> <span class="pre">-t</span> <span class="pre">task_struct</span></code>）。如果你已经启动了 <strong class="command">vim</strong> 并想按名称搜索符号，可以使用 <code class="code docutils literal"><span class="pre">cs</span> <span class="pre">find</span> <span class="pre">g</span> <span class="pre">&lt;symbol_name&gt;</span></code> (例如 <code class="code docutils literal"><span class="pre">cs</span> <span class="pre">find</span> <span class="pre">g</span> <span class="pre">task_struct</span></code>)。</p>
+<p>如果你找到了多个结果，并且用 <code class="code docutils literal"><span class="pre">:copen</span></code> 命令打开了一个显示所有匹配项的面板，如果你想在面板中找到一种结构类型的符号，建议你用 <code class="code docutils literal"><span class="pre">/</span></code> ——斜杠命令在面板中搜索字符 <code class="code docutils literal"><span class="pre">{</span></code> （左花括号）。</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p>You can get a summary of all the <strong class="command">cscope</strong> commands using <strong class="command">:cs help</strong>.</p>
-<p class="last">For more info, use the <strong class="command">vim</strong> built-in help command: <strong class="command">:h cscope</strong> or <strong class="command">:h copen</strong>.</p>
+<p>你可以使用命令 <strong class="command">:cs help</strong> 获取所有 <strong class="command">cscope</strong> 命令的摘要。</p>
+<p class="last">若要了解更多信息，请使用 <strong class="command">vim</strong> 内置的帮助命令：<strong class="command">:h cscope</strong> 或 <strong class="command">:h copen</strong>。</p>
 </div>
-<p>If you use <strong class="command">emacs</strong>, install the <code class="code docutils literal"><span class="pre">xcscope-el</span></code> package and
-add the following lines in <code class="file docutils literal"><span class="pre">~/.emacs</span></code>.</p>
+<p>如果你使用 <strong class="command">emacs</strong>，请安装 <strong class="command">xcscope-el</strong> 包，并在 <code class="file docutils literal"><span class="pre">~/.emacs</span></code> 文件中添加以下行。</p>
 <div class="highlight-vim"><div class="highlight"><pre><span></span><span class="p">(</span>require ‘xcscope<span class="p">)</span>
 <span class="p">(</span><span class="k">cscope</span><span class="p">-</span>setup<span class="p">)</span>
 </pre></div>
 </div>
-<p>These commands will activate cscope for the C and C++ modes automatically.
-<code class="code docutils literal"><span class="pre">C-s</span> <span class="pre">s</span></code> is the key bindings prefix and <code class="code docutils literal"><span class="pre">C-s</span> <span class="pre">s</span> <span class="pre">s</span></code> is used to
-search for a symbol (if you call it when the cursor is over a word,
-it will use that). For more details, check <cite>https://github.com/dkogan/xcscope.el</cite></p>
+<p>这些命令将自动为 C 和 C++ 模式激活 cscope。<code class="code docutils literal"><span class="pre">C-s</span> <span class="pre">s</span></code> 是按键绑定前缀，<code class="code docutils literal"><span class="pre">C-s</span> <span class="pre">s</span> <span class="pre">s</span></code> 用于搜索符号（如果光标位置在单词上，调用它时将使用该位置的单词）。有关详细信息，请查看 <cite>https://github.com/dkogan/xcscope.el</cite>。</p>
 </div>
 <div class="section" id="clangd">
 <h3>clangd<a class="headerlink" href="#clangd" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://clangd.llvm.org/">Clangd</a> is a language server that provides tools
-for navigating C and C++ code.
-<a class="reference external" href="https://microsoft.github.io/language-server-protocol/">Language Server Protocol</a>
-facilitates features like go-to-definition, find-references, hover, completion, etc.,
-using semantic whole project analysis.</p>
-<p>Clangd requires a compilation database to understand the kernel source code.
-It can be generated with:</p>
+<p><a class="reference external" href="https://clangd.llvm.org/">Clangd</a> 是一个语言服务器，提供了一些用于浏览 C 和 C++ 代码的工具。<a class="reference external" href="https://microsoft.github.io/language-server-protocol/">语言服务器协议</a> 利用语义全项目分析，实现了诸如跳转到定义、查找引用、悬停提示、代码补全等功能。</p>
+<p>Clangd 需要一个编译数据库来理解内核源代码。可以通过以下方式生成编译数据库：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>make defconfig
 make
 scripts/clang-tools/gen_compile_commands.py
 </pre></div>
 </div>
-<p>LSP clients:</p>
+<p>LSP 客户端：</p>
 <ul class="simple">
-<li>Vim/Neovim (<a class="reference external" href="https://github.com/neoclide/coc.nvim">coc.nvim</a>, <a class="reference external" href="https://github.com/neovim/nvim-lspconfig">nvim-lsp</a>, <a class="reference external" href="https://github.com/natebosch/vim-lsc">vim-lsc</a>, <a class="reference external" href="https://github.com/prabirshrestha/vim-lsp">vim-lsp</a>)</li>
+<li>Vim/Neovim (<a class="reference external" href="https://github.com/neoclide/coc.nvim">coc.nvim</a>、 <a class="reference external" href="https://github.com/neovim/nvim-lspconfig">nvim-lsp</a>、 <a class="reference external" href="https://github.com/prabirshrestha/vim-lsp">vim-lsc &lt;https://github.com/natebosch/vim-lsc&gt;`__以及 `vim-lsp</a>)</li>
 <li>Emacs (<a class="reference external" href="https://github.com/emacs-lsp/lsp-mode">lsp-mode</a>)</li>
 <li>VSCode (<a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd">clangd extension</a>)</li>
 </ul>
 </div>
 <div class="section" id="kscope">
 <h3>Kscope<a class="headerlink" href="#kscope" title="Permalink to this headline">¶</a></h3>
-<p>For a simpler interface, <a class="reference external" href="http://sourceforge.net/projects/kscope/">Kscope</a>
-is a cscope frontend which uses QT. It is lightweight, very fast and very
-easy to use. It allows searching using regular expressions, call graphs, etc.
-Kscope is no longer mantained.</p>
-<p>There is also a <a class="reference external" href="https///opendesktop.org/content/show.php/Kscope4?content=156987">port</a>
-of version 1.6 for Qt4 and KDE 4 which keeps the integration of the text
-editor Kate and is easier to use than the last version on SourceForge.</p>
+<p>如果想要一个更简单的界面的话，可以尝试 Kscope。<a class="reference external" href="http://sourceforge.net/projects/kscope/">Kscope</a> 是一个使用 QT 的 cscope 前端。它轻便、快速、易用。它支持使用正则表达式、调用图等方式进行搜索。Kscope 已经停止维护了。</p>
+<p>还有一个适用于 Qt4 和 KDE 4 的 <a class="reference external" href="https///opendesktop.org/content/show.php/Kscope4?content=156987">移植版本</a> ，其保留了与文本编辑器 Kate 的集成，并且比 SourceForge 上的最新版本更易于使用。</p>
 </div>
 <div class="section" id="lxr-cross-reference">
 <h3>LXR Cross-Reference<a class="headerlink" href="#lxr-cross-reference" title="Permalink to this headline">¶</a></h3>
-<p>LXR (LXR Cross-Reference) is a tool that allows indexing and
-referencing the symbols in the source code of a program using
-a web interface. The web interface shows links to
-locations in files where a symbol is defined or used. Development website
-for LXR is <a class="reference external" href="http://sourceforge.net/projects/lxr">http://sourceforge.net/projects/lxr</a>. Similar tools
-are <a class="reference external" href="http://oracle.github.io/opengrok/">OpenGrok</a> and
-<a class="reference external" href="http://en.wikipedia.org/wiki/Gonzui">Gonzui</a>.</p>
-<p>Although LXR was originally intended for the Linux kernel sources, it is
-also used in the sources of <a class="reference external" href="http://lxr.mozilla.org/">Mozilla</a>,
-<a class="reference external" href="http://apache.wirebrain.de/lxr/">Apache HTTP Server</a> and
-<a class="reference external" href="http://lxr.linux.no/freebsd/source">FreeBSD</a>.</p>
-<p>There are a number of sites that use LXR for cross-referencing the
-the sources of the Linux kernel, the main site being <a class="reference external" href="http://lxr.linux.no/linux/">the original site of
-development</a> which does not work anymore. You can
-use <a class="reference external" href="https://elixir.bootlin.com/">https://elixir.bootlin.com/</a>.</p>
-<p>LXR allows searching for an identifier (symbol), after a free text
-or after a file name. The main feature and, at the same
-time, the main advantage provided is the ease of finding the declaration
-of any global identifier. This way, it facilitates quick access to function
-declarations, variables, macro definitions and the code can be easily
-navigated. Also, the fact that it can detect what code areas are affected
-when a variable or function is changed is a real advantage in the development
-and debugging phase.</p>
+<p>LXR（LXR Cross-Reference）是一种工具，允许使用 Web 界面来索引和引用程序源代码中的符号。Web 界面显示了符号在文件中定义或使用的位置的链接。LXR 的开发网站是 <a class="reference external" href="http://sourceforge.net/projects/lxr">http://sourceforge.net/projects/lxr</a>。类似的工具有 <a class="reference external" href="http://oracle.github.io/opengrok/">OpenGrok</a> 和 <a class="reference external" href="http://en.wikipedia.org/wiki/Gonzui">Gonzui</a>。</p>
+<p>尽管 LXR 最初是用于 Linux 内核源代码的，但也用于 <a class="reference external" href="http://lxr.mozilla.org/">Mozilla</a>、 <a class="reference external" href="http://apache.wirebrain.de/lxr/">Apache HTTP 服务器</a> 和 <a class="reference external" href="http://lxr.linux.no/freebsd/source">FreeBSD</a> 的源代码。</p>
+<p>有许多网站使用 LXR 来进行 Linux 内核源代码的交叉引用，主要网站是 <a class="reference external" href="http://lxr.linux.no/linux/">开发原址</a>，然而该网站已不再运作。你可以使用 <a class="reference external" href="https://elixir.bootlin.com/">https://elixir.bootlin.com/</a>。</p>
+<p>LXR 允许在任意文本或文件名上搜索标识符（符号）。它提供的主要特点和优势是可以轻松地找到任何全局标识符的声明。这样，它便于快速访问函数声明、变量、宏定义，以及轻松地浏览代码。此外，它还能够检测当变量或函数发生变化时，哪些代码区域会受到影响，这对于开发和调试阶段是一个真正的优势。</p>
 </div>
 <div class="section" id="sourceweb">
 <h3>SourceWeb<a class="headerlink" href="#sourceweb" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://rprichard.github.io/sourceweb/">SourceWeb</a> is a source code indexer
-for C and C++. It uses the
-<a class="reference external" href="http://clang.llvm.org/docs/IntroductionToTheClangAST.html">framework</a>
-provided by the Clang compiler to index the code.</p>
-<p>The main difference between cscope and SourceWeb is the fact that SourceWeb
-is, in a way, a compiler pass. SourceWeb doesn't index all the code, but
-only the code that was efectively compiled by the compiler. This way, some
-problems are eliminated, such as ambiguities about which variant of a function
-defined in multiple places is used. This also means that the indexing takes
-more time, because the compiled files must pass one more time through
-the indexer to generate the references.</p>
-<p>Usage example:</p>
+<p><a class="reference external" href="http://rprichard.github.io/sourceweb/">SourceWeb</a> 是一个用于 C 和 C++ 的源代码索引器。它使用 Clang 编译器提供的 <a class="reference external" href="http://clang.llvm.org/docs/IntroductionToTheClangAST.html">框架</a> 来索引代码。</p>
+<p>cscope 和 SourceWeb 之间的主要区别在于，SourceWeb 在某种程度上是一个编译器插件。SourceWeb 不会索引所有的代码，而只会索引实际被编译器编译的代码。这样的话，一些问题就没有了，例如在多个位置定义的函数变体中的的哪个被使用的歧义。这也意味着索引需要更多的时间，因为编译后的文件必须再次通过索引器以生成引用。</p>
+<p>使用示例：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>make oldconfig
 sw-btrace make -j4
 sw-btrace-to-compile-db
@@ -1529,55 +1425,26 @@ sw-clang-indexer --index-project
 sourceweb index
 </pre></div>
 </div>
-<p><code class="file docutils literal"><span class="pre">sw-btrace</span></code> is a script that adds the <code class="file docutils literal"><span class="pre">libsw-btrace.so</span></code>
-library to <code class="code docutils literal"><span class="pre">LD_PRELOAD</span></code>. This way, the library is loaded by
-every process started by <code class="code docutils literal"><span class="pre">make</span></code> (basically, the compiler),
-registers the commands used to start the processes and generates
-a filed called <code class="file docutils literal"><span class="pre">btrace.log</span></code>. This file is then used by
-<code class="code docutils literal"><span class="pre">sw-btrace-to-compile-db</span></code> which converts it to a format defined
-by clang: <a class="reference external" href="http://clang.llvm.org/docs/JSONCompilationDatabase.html">JSON Compilation Database</a>.
-This JSON Compilation Database resulted from the above steps is then
-used by the indexer, which makes one more pass through the compiled
-source files and generates the index used by the GUI.</p>
-<p>Word of advice: don't index the sources you are working with, but use
-a copy, because SourceWeb doesn't have, at this moment, the capability
-to regenerate the index for a single file and you will have to regenerate
-the complete index.</p>
+<p><code class="file docutils literal"><span class="pre">sw-btrace</span></code> 是一个添加 <code class="file docutils literal"><span class="pre">libsw-btrace.so</span></code> 库到 <code class="code docutils literal"><span class="pre">LD_PRELOAD</span></code> 的脚本。这样，该库将被 <code class="code docutils literal"><span class="pre">make</span></code> 启动的每个进程（基本上是编译器）加载， 注册用于启动进程的命令，并生成一个名为 <code class="file docutils literal"><span class="pre">btrace.log</span></code> 的文件。然后，<code class="code docutils literal"><span class="pre">sw-btrace-to-compile-db</span></code> 使用该文件将其转换为 clang 定义的格式： <a class="reference external" href="http://clang.llvm.org/docs/JSONCompilationDatabase.html">JSON Compilation Database</a> 。 然后上述步骤生成的 JSON 编译数据库由索引器使用，索引器通过已编译的源文件再进行一次遍历，生成 GUI 使用的索引。</p>
+<p>建议：不要对正在使用的源代码进行索引，而是使用其副本，因为 SourceWeb 目前没有单独重新生成单个文件的索引的功能，你将不得不重新生成完整的索引。</p>
 </div>
 </div>
-<div class="section" id="kernel-debugging">
-<h2>Kernel Debugging<a class="headerlink" href="#kernel-debugging" title="Permalink to this headline">¶</a></h2>
-<p>Debugging a kernel is a much more difficult process than the debugging
-of a program, because there is no support from the operating system.
-This is why this process is usually done using two computers, connected
-on serial interfaces.</p>
+<div class="section" id="section-7">
+<h2>内核调试<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<p>与调试程序相比，调试内核是一个更加困难的过程，因为操作系统没有提供支持。这就是为什么通常使用两台通过串行接口相互连接的计算机进行此过程。</p>
 <div class="section" id="gdb-linux">
-<span id="gdb-intro"></span><h3>gdb (Linux)<a class="headerlink" href="#gdb-linux" title="Permalink to this headline">¶</a></h3>
-<p>A simpler debug method on Linux, but with many disadvantages,
-is local debugging, using <a class="reference external" href="http://www.gnu.org/software/gdb/">gdb</a>,
-the uncompressed kernel image (<code class="file docutils literal"><span class="pre">vmlinux</span></code>) and <code class="file docutils literal"><span class="pre">/proc/kcore</span></code>
-(the real-time kernel image). This method is usually used to inspect
-the kernel and detect certain inconsistencies while it runs. The
-method is useful especially if the kernel was compiled using the
-<code class="code docutils literal"><span class="pre">-g</span></code> option, which keeps debug information. Some well-known
-debug techniques can't be used by this method, such as breakpoints
-of data modification.</p>
+<span id="gdb-intro"></span><h3>gdb（Linux）<a class="headerlink" href="#gdb-linux" title="Permalink to this headline">¶</a></h3>
+<p>在 Linux 上，一种更简单但也具有许多缺点的调试方法是使用 <a class="reference external" href="http://www.gnu.org/software/gdb/">gdb</a> 进行本地调试，其中涉及到未压缩的内核镜像（<code class="file docutils literal"><span class="pre">vmlinux</span></code> ）和文件：<code class="file docutils literal"><span class="pre">/proc/kcore</span></code> （实时内核镜像）。这种方法通常用于检查内核并在其运行时检测特定的不一致性。特别是如果内核是使用 <code class="code docutils literal"><span class="pre">-g</span></code> 选项编译的（该选项会保留调试信息）这种方法就非常有用。但是，这种方法无法使用一些众所周知的调试技术，例如数据修改的断点。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Because <code class="file docutils literal"><span class="pre">/proc</span></code> is a virtual filesystem, <code class="file docutils literal"><span class="pre">/proc/kcore</span></code>
-does not physically exist on the disk. It is generated on-the-fly
-by the kernel when a program tries to access <code class="file docutils literal"><span class="pre">proc/kcore</span></code>.</p>
-<p>It is used for debugging purposes.</p>
-<p>From <strong class="command">man proc</strong>, we have:</p>
+<p>因为 <code class="file docutils literal"><span class="pre">/proc</span></code> 是一个虚拟文件系统，<code class="file docutils literal"><span class="pre">/proc/kcore</span></code> 在磁盘上并不存在。当程序尝试访问 <code class="file docutils literal"><span class="pre">/proc/kcore</span></code> 时，内核会即时生成它。它用于调试目的。</p>
+<p>根据 <strong class="command">man proc</strong> 的说明：</p>
 <div class="last highlight-none"><div class="highlight"><pre><span></span>/proc/kcore
-This file represents the physical memory of the system and is stored in the ELF core file format.  With this pseudo-file, and
-an unstripped kernel (/usr/src/linux/vmlinux) binary, GDB can be used to examine the current state of any kernel data struc‐
-tures.
+此文件代表系统的物理内存，并以 ELF 核心文件格式存储。借助这个伪文件（pseudo-file）和未剥离（unstripped）的内核（/usr/src/linux/vmlinux）二进制文件，可以使用 GDB 来检查任何内核数据结构的当前状态。
 </pre></div>
 </div>
 </div>
-<p>The uncompressed kernel image offers information about the data structures
-and symbols it contains.</p>
+<p>未压缩的内核镜像提供关于其中所包含的数据结构和符号的信息。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>student@eg106$ <span class="nb">cd</span> ~/src/linux
 student@eg106$ file vmlinux
 vmlinux: ELF <span class="m">32</span>-bit LSB executable, Intel <span class="m">80386</span>, ...
@@ -1587,12 +1454,8 @@ student@eg106$ cat System.map <span class="p">|</span> grep sys_call_table
 c02e535c R sys_call_table
 </pre></div>
 </div>
-<p>The <strong class="command">nm</strong> utility is used to show the symbols in an object or
-executable file. In our case, <code class="file docutils literal"><span class="pre">vmlinux</span></code> is an ELF file. Alternately,
-we can use the file <code class="file docutils literal"><span class="pre">System.map</span></code> to view information about the
-symbols in kernel.</p>
-<p>Then we use <strong class="command">gdb</strong> to inspect the symbols using the uncompressed
-kernel image. A simple <strong class="command">gdb</strong> session is the following:</p>
+<p><strong class="command">nm</strong> 程序用于显示对象或可执行文件中的符号。在我们的例子中，<code class="file docutils literal"><span class="pre">vmlinux</span></code> 是一个 ELF 文件。或者，我们可以使用文件 <code class="file docutils literal"><span class="pre">System.map</span></code> 来查看内核中的符号信息。</p>
+<p>然后，我们使用 <strong class="command">gdb</strong> 来使用未压缩的内核镜像检查这些符号。一个简单的 <strong class="command">gdb</strong> 会话如下所示：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>student@eg106$ <span class="nb">cd</span> ~/src/linux
 stduent@eg106$ gdb --quiet vmlinux
 Using host libthread_db library <span class="s2">&quot;/lib/tls/libthread_db.so.1&quot;</span>.
@@ -1628,27 +1491,14 @@ Dump of assembler code <span class="k">for</span> <span class="k">function</span
 End of assembler dump.
 </pre></div>
 </div>
-<p>It can be noticed that the uncompressed kernel image was used as an argument
-for <strong class="command">gdb</strong>. The image can be found in the root of the kernel sources
-after compilation.</p>
-<p>A few commands used for debugging using <strong class="command">gdb</strong> are:</p>
+<p>可以注意到未压缩的内核映像被用作 <strong class="command">gdb</strong> 的参数。在编译后，可以在内核源代码的根目录中找到该映像。</p>
+<p>使用 <strong class="command">gdb</strong> 进行调试的几个命令如下：</p>
 <ul class="simple">
-<li><strong class="command">x</strong> (examine) - Used to show the contents of the memory area
-whose address is specified as an argument to the command (this address
-can be the value of a physical address, a symbol or the address of a
-symbol). It can take as arguments (preceded by <code class="code docutils literal"><span class="pre">/</span></code>): the format
-to display the data in (<code class="code docutils literal"><span class="pre">x</span></code> for hexadecimal, <code class="code docutils literal"><span class="pre">d</span></code> for
-decimal, etc.), how many memory units to display and the size of a
-memory unit.</li>
-<li><strong class="command">disassemble</strong> - Used to disassemble a function.</li>
-<li><strong class="command">p</strong> (print) - Used to evaluate and show the value of an
-expression. The format to show the data in can be specified as
-an argument (<code class="code docutils literal"><span class="pre">/x</span></code> for hexadecimal, <code class="code docutils literal"><span class="pre">/d</span></code> for decimal, etc.).</li>
+<li><strong class="command">x</strong> （examine）——用于显示指定地址的内存区域的内容（该地址可以是物理地址的值、符号或符号的地址）。它可以接受以下参数（以 <code class="code docutils literal"><span class="pre">/</span></code> 开头）：要显示数据的格式（<code class="code docutils literal"><span class="pre">x</span></code> 表示十六进制，<code class="code docutils literal"><span class="pre">d</span></code> 表示十进制，等等）、要显示的内存单元（memory unit）数量以及单个内存单元的大小。</li>
+<li><strong class="command">disassemble</strong> ——用于反汇编函数。</li>
+<li><strong class="command">p</strong> （print）——用于评估并显示表达式的值。可以通过参数指定要显示数据的格式（<code class="code docutils literal"><span class="pre">/x</span></code> 表示十六进制，<code class="code docutils literal"><span class="pre">/d</span></code> 表示十进制，等等）。</li>
 </ul>
-<p>The analysis of the kernel image is a method of static analysis. If we
-want to perform dynamic analysis (analyzing how the kernel runs, not
-only its static image) we can use <code class="file docutils literal"><span class="pre">/proc/kcore</span></code>; this is a dynamic
-image (in memory) of the kernel.</p>
+<p>对内核映像的分析是一种静态分析方法。如果我们想进行动态分析（分析内核的运行情况，而不仅仅是静态映像），我们可以使用 <code class="file docutils literal"><span class="pre">/proc/kcore</span></code>；这是内核的动态映像（存储在内存中）。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>student@eg106$ gdb ~/src/linux/vmlinux /proc/kcore
 Core was generated by `root=/dev/hda3 ro&#39;.
 #0  0x00000000 in ?? ()
@@ -1665,21 +1515,17 @@ $3 = 0xc02e535c
 0xc02e538c `&lt;sys_call_table+48&gt;`: 0xc014249e      0xc0115c6c      0xc014fee7     0xc0142725
 </pre></div>
 </div>
-<p>Using the dynamic image of the kernel is useful for detecting <a class="reference external" href="http://en.wikipedia.org/wiki/Rootkit">rootkits</a>.</p>
+<p>使用内核的动态镜像有助于检测 <a class="reference external" href="http://zh.wikipedia.org/wiki/Rootkit">rootkit</a> 。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://linuxdriver.co.il/ldd3/linuxdrive3-CHP-4-SECT-6.html">Linux Device Drivers 3rd Edition - Debuggers and Related Tools</a></li>
-<li><a class="reference external" href="http://www.securityfocus.com/infocus/1811">Detecting Rootkits and Kernel-level Compromises in Linux</a></li>
-<li><a class="reference external" href="http://user-mode-linux.sf.net/">User-Mode Linux</a></li>
+<li><a class="reference external" href="http://linuxdriver.co.il/ldd3/linuxdrive3-CHP-4-SECT-6.html">Linux设备驱动程序第 3 版——调试器和相关工具</a></li>
+<li><a class="reference external" href="http://www.securityfocus.com/infocus/1811">在 Linux 中检测 Rootkit 和内核级入侵</a></li>
+<li><a class="reference external" href="http://user-mode-linux.sf.net/">用户模式 Linux</a></li>
 </ul>
 </div>
-<div class="section" id="getting-a-stack-trace">
-<h3>Getting a stack trace<a class="headerlink" href="#getting-a-stack-trace" title="Permalink to this headline">¶</a></h3>
-<p>Sometimes, you will want information about the trace the execution
-reaches a certain point. You can determine this information using
-<strong class="command">cscope</strong> or LXR, but some function are called from many
-execution paths, which makes this method difficult.</p>
-<p>In these situations, it is useful to get a stack trace, which can be
-simply done using the function <code class="code docutils literal"><span class="pre">dump_stack()</span></code>.</p>
+<div class="section" id="section-8">
+<h3>获取堆栈跟踪<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<p>有时，你需要获取有关执行路径到达某个特定点的信息。你可以使用 <strong class="command">cscope</strong> 或 LXR 来确定这些信息，但某些函数从许多执行路径调用，这使得这种方法变得困难。</p>
+<p>在这些情况下，使用函数 <code class="code docutils literal"><span class="pre">dump_stack()</span></code> 获取堆栈跟踪非常有用。</p>
 </div>
 </div>
 </div>
