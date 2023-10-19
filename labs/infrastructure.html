@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Infrastructure &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>基础设施 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -75,7 +75,7 @@
 </ul>
 <p class="caption"><span class="caption-text">实验</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Infrastructure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">基础设施</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">介绍</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kernel_modules.html">Kernel modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kernel_api.html">Kernel API</a></li>
@@ -112,7 +112,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Infrastructure</li>
+      <li class="breadcrumb-item active">基础设施</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/labs/infrastructure.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -122,20 +122,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="infrastructure">
-<h1>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h1>
-<p>In order to facilitate learning each topic has a hands-on exercises
-section which will contain in-depth, incremental clues on how to solve
-one or multiple tasks. To focus on a particular issue most of the
-tasks will be performed on existing skeleton drivers. Each skeleton
-driver has clearly marked sections that needs to be filled in order to
-complete the tasks.</p>
-<p>The skeleton drivers are generated from full source examples located
-in tools/labs/templates. To solve tasks you start by generating the
-skeleton drivers, running the <strong>skels</strong> target in <em>tools/labs</em>. To
-keep the workspace clean it is recommended to generate the skeletons
-for one lab only and clean the workspace before start working on a new
-lab. Labs can be selected by using the <strong>LABS</strong> variable:</p>
+  <div class="section" id="section-1">
+<h1>基础设施<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<p>为了帮助学习，我们每个主题都有一个实践练习部分，其中包含详细的、逐步的提示，以解决一个或多个任务。为了便于专注于特定问题，大多数任务将在现有的骨架（skeleton）驱动程序上执行。每个骨架驱动程序都有清晰标记的部分，需要填写之以完成任务。</p>
+<p>骨架驱动程序是从位于 tools/labs/templates 目录中的完整源代码示例生成的。要解决任务，你可以通过在 <em>tools/labs</em> 目录下运行**skels**目标来生成骨架驱动程序。为了保持工作空间的干净，建议一次只为一个实验生成骨架，然后在开始新的实验之前清理工作空间。你可以使用**LABS**变量来选择实验：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>kernel_modules make skels
 
@@ -144,29 +134,20 @@ tools/labs $ ls skels/kernel_modules/
 <span class="m">7</span>-list-proc  <span class="m">8</span>-kprobes  <span class="m">9</span>-kdb
 </pre></div>
 </div>
-<p>You can also use the same variable to generate skeletons for specific
-tasks:</p>
+<p>你还可以使用相同的变量来生成特定任务的骨架：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ <span class="nv">LABS</span><span class="o">=</span><span class="s2">&quot;kernel_modules/6-cmd-mod kernel_modules/8-kprobes&quot;</span> make skels
 
 tools/labs$ ls skels/kernel_modules
 <span class="m">6</span>-cmd-mod  <span class="m">8</span>-kprobes
 </pre></div>
 </div>
-<p>For each task you may have multiple steps to perform, usually
-incremental. These steps are marked in the source code as well as in
-the lab exercises with the keyword <em>TODO</em>. If we have multiple steps
-to perform they will be prefixed by a number, like <em>TODO1</em>, <em>TODO2</em>,
-etc. If no number is used it is assumed to be the one and only
-step. If you want to resume a task from a certain step, you can using
-the <strong>TODO</strong> variable. The following example will generate the
-skeleton with the first <em>TODO</em> step resolved:</p>
+<p>对于每个任务，你可能需要执行多个步骤，这通常是逐步进行的。这些步骤在源代码中以及实验练习中都用关键字*TODO*标记。如果我们有多个步骤要执行，它们将以数字作为前缀，例如 <em>TODO1</em>、 <em>TODO2</em> 等。如果没有使用数字，则是只有一个步骤。如果你想从某个特定步骤开始执行任务，可以使用 <strong>TODO</strong> 变量。以下示例将生成解决了第一个 <em>TODO</em> 步骤的骨架：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ <span class="nv">TODO</span><span class="o">=</span><span class="m">2</span> <span class="nv">LABS</span><span class="o">=</span><span class="s2">&quot;kernel_modules/8-kprobes&quot;</span> skels
 </pre></div>
 </div>
-<p>Once the skelton drivers are generated you can build them with the
-<strong>build</strong> make target:</p>
+<p>生成骨架驱动程序后，可以使用 <strong>build</strong> make 目标来构建它们：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make build
-<span class="nb">echo</span> <span class="s2">&quot;# autogenerated, do not edit &quot;</span> &gt; skels/Kbuild
+<span class="nb">echo</span> <span class="s2">&quot;# 自动生成的，不要编辑 &quot;</span> &gt; skels/Kbuild
 <span class="k">for</span> i in ./kernel_modules/8-kprobes<span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="s2">&quot;obj-m += </span><span class="nv">$i</span><span class="s2">/&quot;</span> &gt;&gt; skels/Kbuild<span class="p">;</span> <span class="k">done</span>
 make -C /home/tavi/src/linux <span class="nv">M</span><span class="o">=</span>/home/tavi/src/linux/tools/labs/skels <span class="nv">ARCH</span><span class="o">=</span>x86 modules
 make<span class="o">[</span><span class="m">1</span><span class="o">]</span>: Entering directory <span class="s1">&#39;/home/tavi/src/linux&#39;</span>
@@ -178,8 +159,7 @@ LD <span class="o">[</span>M<span class="o">]</span>  /home/tavi/src/linux/tools
 make<span class="o">[</span><span class="m">1</span><span class="o">]</span>: Leaving directory <span class="s1">&#39;/home/tavi/src/linux&#39;</span>
 </pre></div>
 </div>
-<p>To copy the drivers to the VM you can use either use ssh or update the
-VM image directly using the <strong>copy</strong> target:</p>
+<p>要将驱动程序复制到虚拟机中，你可以使用 ssh 或直接使用 <strong>copy</strong> 目标来更新虚拟机映像：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make copy
 ...
 <span class="s1">&#39;skels/kernel_modules/8-kprobes/kprobes.ko&#39;</span> -&gt; <span class="s1">&#39;/tmp/tmp.4UMKcISmQM/home/root/skels/kernel_modules/8-kprobes/kprobes.ko&#39;</span>
@@ -187,9 +167,7 @@ VM image directly using the <strong>copy</strong> target:</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">The <strong>copy</strong> target will fail if the VM is
-running. This is intentional so that we avoid corrupting the
-filesystem.</p>
+<p class="last">如果虚拟机正在运行，<strong>copy</strong> 目标将失败。这是有意为之，以避免破坏文件系统。</p>
 </div>
 </div>
 
