@@ -1331,7 +1331,7 @@ kernel code and debugging techniques.</p>
 <h2>源代码导航<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="cscope">
 <span id="cscope-intro"></span><h3>cscope<a class="headerlink" href="#cscope" title="Permalink to this headline">¶</a></h3>
-<p>Cscope &lt;<a class="reference external" href="http://cscope.sourceforge.net/">http://cscope.sourceforge.net/</a>&gt; 是一个用于高效导航 C 源代码的工具。要使用它，必须从现有的源代码生成一个 cscope 数据库。在 Linux 树中，执行命令 <strong class="command">make ARCH=x86 cscope</strong> 就足够了。通过 ARCH 变量指定架构不是必须的，但建议这样做；否则，一些依赖于架构的函数会在数据库中出现多次。</p>
+<p><a class="reference external" href="http://cscope.sourceforge.net/">Cscope</a> 是一个用于高效导航 C 源代码的工具。要使用它，必须从现有的源代码生成一个 cscope 数据库。在 Linux 树中，执行命令 <strong class="command">make ARCH=x86 cscope</strong> 就足够了。通过 ARCH 变量指定架构不是必须的，但建议这样做；否则，一些依赖于架构的函数会在数据库中出现多次。</p>
 <p>你可以使用命令 <strong class="command">make ARCH=x86 COMPILED_SOURCE=1 cscope</strong> 构建 cscope 数据库。这样，cscope 数据库中只包含在编译过程中已经使用过的符号（symbol），从而在搜索符号时可以获得更好的性能。</p>
 <p>Cscope 也可以作为独立工具使用，但与编辑器结合使用时更加有用。要在 <strong class="command">vim</strong> 中使用 cscope，需要安装两个软件包，并在文件 <code class="file docutils literal"><span class="pre">.vimrc</span></code> 中添加以下几行（实验室中的机器已经进行了设置）：</p>
 <div class="highlight-vim"><div class="highlight"><pre><span></span><span class="k">if</span> has<span class="p">(</span><span class="s2">&quot;cscope&quot;</span><span class="p">)</span>
@@ -1370,7 +1370,7 @@ kernel code and debugging techniques.</p>
 <p>脚本在当前目录或父目录中搜索名为 <code class="file docutils literal"><span class="pre">cscope.out</span></code> 的文件。如果 <strong class="command">vim</strong> 找到该文件，你可以使用快捷键 <code class="code docutils literal"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">]</span></code> 或 <code class="code docutils literal"><span class="pre">Ctrl+\</span> <span class="pre">g`（按下</span> <span class="pre">control-\\</span> <span class="pre">然后按</span> <span class="pre">g）直接跳转到光标所在单词的定义（函数、变量、结构等）。类似地，你可以使用</span> <span class="pre">:code:`Ctrl+\</span> <span class="pre">s</span></code> 前往光标所在单词的使用位置。</p>
 <p>你可以从以下网址获取一个启用了 cscope 的 <code class="file docutils literal"><span class="pre">.vimrc</span></code> 文件（还包含其他好用的东西）：<a class="reference external" href="https://github.com/ddvlad/cfg/blob/master/_vimrc">https://github.com/ddvlad/cfg/blob/master/_vimrc</a>。以下指南基于该文件，同时也展示了具有相同效果的基本 <strong class="command">vim</strong> 命令。</p>
 <p>如果有多个结果（通常会有），你可以使用 <code class="code docutils literal"><span class="pre">F6</span></code> 和 <code class="code docutils literal"><span class="pre">F5</span></code> （<code class="code docutils literal"><span class="pre">:ccnext</span></code> 和 <code class="code docutils literal"><span class="pre">:cprev</span></code>）在它们之间切换。你还可以使用命令 <code class="code docutils literal"><span class="pre">:copen</span></code> 打开一个新的面板来显示结果。要关闭面板，可以使用 <code class="code docutils literal"><span class="pre">:cclose</span></code> 命令。</p>
-<p>要返回到先前的位置，可以使用 <a href="#system-message-2"><span class="problematic" id="problematic-2">`</span></a>Ctrl+o`（是字母 o，不是零）。该命令可以多次使用，即使 cscope 更改了你当前正在编辑的文件也有效。</p>
+<p>要返回到先前的位置，可以使用 :code:<a href="#system-message-2"><span class="problematic" id="problematic-2">`</span></a>Ctrl+o`（是字母 o，不是零）。该命令可以多次使用，即使 cscope 更改了你当前正在编辑的文件也有效。</p>
 <p>要在 <strong class="command">vim</strong> 启动时直接跳转到符号定义，可以使用 <code class="code docutils literal"><span class="pre">vim</span> <span class="pre">-t</span> <span class="pre">&lt;symbol_name&gt;`（例如</span> <span class="pre">:code:`vim</span> <span class="pre">-t</span> <span class="pre">task_struct</span></code>）。如果你已经启动了 <strong class="command">vim</strong> 并想按名称搜索符号，可以使用 <code class="code docutils literal"><span class="pre">cs</span> <span class="pre">find</span> <span class="pre">g</span> <span class="pre">&lt;symbol_name&gt;</span></code> (例如 <code class="code docutils literal"><span class="pre">cs</span> <span class="pre">find</span> <span class="pre">g</span> <span class="pre">task_struct</span></code>)。</p>
 <p>如果你找到了多个结果，并且用 <code class="code docutils literal"><span class="pre">:copen</span></code> 命令打开了一个显示所有匹配项的面板，如果你想在面板中找到一种结构类型的符号，建议你用 <code class="code docutils literal"><span class="pre">/</span></code> ——斜杠命令在面板中搜索字符 <code class="code docutils literal"><span class="pre">{</span></code> （左花括号）。</p>
 <div class="admonition important">
@@ -1396,9 +1396,9 @@ scripts/clang-tools/gen_compile_commands.py
 </div>
 <p>LSP 客户端：</p>
 <ul class="simple">
-<li>Vim/Neovim (<a class="reference external" href="https://github.com/neoclide/coc.nvim">coc.nvim</a>、 <a class="reference external" href="https://github.com/neovim/nvim-lspconfig">nvim-lsp</a>、 <a class="reference external" href="https://github.com/prabirshrestha/vim-lsp">vim-lsc &lt;https://github.com/natebosch/vim-lsc&gt;`__以及 `vim-lsp</a>)</li>
-<li>Emacs (<a class="reference external" href="https://github.com/emacs-lsp/lsp-mode">lsp-mode</a>)</li>
-<li>VSCode (<a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd">clangd extension</a>)</li>
+<li>Vim/Neovim（ <a class="reference external" href="https://github.com/neoclide/coc.nvim">coc.nvim</a>、 <a class="reference external" href="https://github.com/neovim/nvim-lspconfig">nvim-lsp</a>、 <a class="reference external" href="https://github.com/natebosch/vim-lsc">vim-lsc</a> 以及 <a class="reference external" href="https://github.com/prabirshrestha/vim-lsp">vim-lsp</a> ）</li>
+<li>Emacs（ <a class="reference external" href="https://github.com/emacs-lsp/lsp-mode">lsp-mode</a> ）</li>
+<li>VSCode（ <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd">clangd extension</a> ）</li>
 </ul>
 </div>
 <div class="section" id="kscope">
