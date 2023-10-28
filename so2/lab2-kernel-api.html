@@ -71,33 +71,33 @@
 <li class="toctree-l2"><a class="reference internal" href="lec12-virtualization.html">SO2 Lecture 12 - Virtualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab1-intro.html">SO2 Lab 01 - Introduction</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lab 02 - Kernel API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#accessing-memory">Accessing memory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#contexts-of-execution">Contexts of execution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#locking">Locking</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#preemptivity">Preemptivity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#linux-kernel-api">Linux Kernel API</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#convention-indicating-errors">Convention indicating errors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#strings-of-characters">Strings of characters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">访问内存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">执行上下文</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">锁定</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preemptivity">可抢占性（preemptivity）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-api">Linux 内核 API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-6">表示错误的约定</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">字符串处理</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#printk">printk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#memory-allocation">Memory allocation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#lists">lists</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spinlock">Spinlock</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mutex">mutex</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#atomic-variables-1">Atomic variables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#atomic-bitwise-operations">Atomic bitwise operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">内存分配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">列表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-10">自旋锁</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mutex">互斥锁（Mutex）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-11">原子变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">原子位操作</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#memory-allocation-in-linux-kernel">1. Memory allocation in Linux kernel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sleeping-in-atomic-context">2. Sleeping in atomic context</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#working-with-kernel-memory">3. Working with kernel memory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#working-with-kernel-lists">4. Working with kernel lists</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#working-with-kernel-lists-for-process-handling">5. Working with kernel lists for process handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#synchronizing-list-work">6. Synchronizing list work</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#test-module-calling-in-our-list-module">7. Test module calling in our list module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-14">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-15">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux">1. Linux 内核中的内存分配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-16">2. 在原子上下文中睡眠</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-17">3. 使用内核内存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-18">4. 使用内核列表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-19">5. 使用内核列表进行进程处理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-20">6. 同步列表工作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-21">7. 在我们的列表模块中测试模块调用</a></li>
 </ul>
 </li>
 </ul>
@@ -142,7 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../labs/infrastructure.html">基础设施</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/introduction.html">介绍</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/kernel_modules.html">内核模块</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../labs/kernel_api.html">Kernel API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../labs/kernel_api.html">内核 API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/device_drivers.html">Character device drivers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/interrupts.html">I/O access and Interrupts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/deferred_work.html">Deferred work</a></li>
@@ -189,125 +189,52 @@
              
   <div class="section" id="so2-lab-02-kernel-api">
 <h1>SO2 Lab 02 - Kernel API<a class="headerlink" href="#so2-lab-02-kernel-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="lab-objectives">
-<h2>Lab objectives<a class="headerlink" href="#lab-objectives" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>Familiarize yourself with the basic Linux kernel API</li>
-<li>Description of memory allocation mechanisms</li>
-<li>Description of locking mechanisms</li>
+<div class="section" id="section-1">
+<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>熟悉基本的 Linux 内核 API</li>
+<li>描述内存分配机制</li>
+<li>描述锁定（locking）机制</li>
 </ul>
-</div></blockquote>
 </div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>Inside the current lab we present a set of concepts and basic functions required
-for starting Linux kernel programming. It is important to note that kernel
-programming differs greatly from user space programming. The kernel is a
-stand-alone entity that can not use libraries in user-space (not even libc).
-As a result, the usual user-space functions (printf, malloc, free, open, read,
-write, memcpy, strcpy, etc.) can no longer be used. In conclusion, kernel
-programming is based on a totally new and independent API that is unrelated to
-the user-space API, whether we refer to POSIX or ANSI C (standard C language
-library functions).</p>
+<div class="section" id="section-2">
+<h2>概述<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<p>本实验旨在帮助你掌握 Linux 内核编程的一些基本概念和函数。你需要注意，内核编程和用户空间编程有很多不同之处。内核是一个独立运行的实体，不能调用用户空间的任何库，包括 libc 在内。所以，你不能使用 printf、malloc、free、open、read、write、memcpy、strcpy 等常见的用户空间函数。简而言之，内核编程需要使用一套全新的、与用户空间 API 没有关联的独立 API，无论是 POSIX 还是 ANSI C 都不适用于内核编程。</p>
 </div>
-<div class="section" id="accessing-memory">
-<h2>Accessing memory<a class="headerlink" href="#accessing-memory" title="Permalink to this headline">¶</a></h2>
-<p>An important difference in kernel programming is how to access and allocate
-memory. Due to the fact that kernel programming is very close to the physical
-machine, there are important rules for memory management. First, it works with
-several types of memory:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Physical memory</li>
-<li>Virtual memory from the kernel address space</li>
-<li>Virtual memory from a process's address space</li>
-<li>Resident memory - we know for sure that the accessed pages are present in
-physical memory</li>
+<div class="section" id="section-3">
+<h2>访问内存<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>内存的访问和分配是内核编程中一个重要且不同的方面。内核编程与物理机器紧密相关，因此对内存管理的规则非常重要。首先，它涉及以下几种类型的内存：</p>
+<ul class="simple">
+<li>物理内存</li>
+<li>内核地址空间中的虚拟内存</li>
+<li>进程地址空间中的虚拟内存</li>
+<li>常驻内存（resident memory）——可以确定所访问的页面存在于物理内存中</li>
 </ul>
-</div></blockquote>
-<p>Virtual memory in a process's address space can not be considered resident due
-to the virtual memory mechanisms implemented by the operating system: pages may
-be swapped or simply may not be present in physical memory as a result of the
-demand paging mechanism. The memory in the kernel address space can be resident
-or not. Both the data and code segments of a module and the kernel stack of a
-process are resident. Dynamic memory may or may not be resident, depending on
-how it is allocated.</p>
-<p>When working with resident memory, things are simple: memory can be accessed at
-any time. But if working with non-resident memory, then it can only be accessed
-from certain contexts. Non-resident memory can only be accessed from the
-process context. Accessing non-resident memory from the context of an
-interrupt has unpredictable results and, therefore, when the operating
-system detects such access, it will take drastic measures: blocking or
-resetting the system to prevent serious corruption.</p>
-<p>The virtual memory of a process can not be accessed directly from the kernel.
-In general, it is totally discouraged to access the address space of a process,
-but there are situations where a device driver needs to do it. The typical case
-is where the device driver needs to access a buffer from the user-space. In
-this case, the device driver must use special features and not directly access
-the buffer. This is necessary to prevent access to invalid memory areas.</p>
-<p>Another difference from the user-space scheduling, relative to memory, is due to
-the stack, a stack whose size is fixed and limited. A stack of 4K is used in
-Linux, and a stack of 12K is used in Windows. For this reason, the
-allocation of large structures on stack or the use of recursive calls should
-be avoided.</p>
+<p>由于操作系统实现的虚拟内存机制，进程地址空间中的虚拟内存不能被视为常驻内存：页面可能会被交换出去，或者由于需求分页机制的原因可能根本不存在于物理内存中。内核地址空间中的内存可以是常驻或非常驻的。模块的数据和代码段以及进程的内核栈是常驻的。动态内存可能是常驻或非常驻的，具体取决于它是如何被分配的。</p>
+<p>在使用常驻内存时，一切都很简单：可以随时访问内存。但是如果使用非常驻内存，则只能从特定的上下文中访问。只能从进程上下文中访问非常驻内存。从中断上下文访问非常驻内存会导致不可预知的结果，因此当操作系统检测到此类访问时，将采取严厉的措施：阻塞或重置系统，以防止严重破坏。</p>
+<p>内核不能直接访问进程的虚拟内存。一般来说，强烈不建议访问进程的地址空间，但是在某些情况下，设备驱动程序需要这样做。典型情况是设备驱动程序需要访问用户空间的缓冲（buffer）区。为了避免访问无效的内存区域，设备驱动程序不能直接访问缓冲区，而要通过特殊功能。</p>
+<p>内存方面，内核与用户空间的另一个区别是堆栈（stack），内核堆栈的大小是固定且有限的。例如，Linux 的堆栈大小为 4K，而 Windows 的堆栈大小为 12K。因此，我们应该避免在堆栈上分配大型结构或进行递归调用。</p>
 </div>
-<div class="section" id="contexts-of-execution">
-<h2>Contexts of execution<a class="headerlink" href="#contexts-of-execution" title="Permalink to this headline">¶</a></h2>
-<p>In relation to kernel execution, we distinguish two contexts: process context
-and interrupt context. We are in the process context when we run code as a
-result of a system call or when we run in the context of a kernel thread. When
-we run in a routine to handle an interrupt or a deferrable action, we run in
-an interrupt context.</p>
-<p>Some of the kernel API calls can block the current process. Common examples are
-using a semaphore or waiting for a condition. In this case, the process is
-put into the <code class="docutils literal"><span class="pre">WAITING</span></code> state and another process is running. An interesting
-situation occurs when a function that can lead to the current process to be
-suspended, is called from an interrupt context. In this case, there is no
-current process, and therefore the results are unpredictable. Whenever the
-operating system detects this condition will generate an error condition that
-will cause the operating system to shut down.</p>
+<div class="section" id="section-4">
+<h2>执行上下文<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<p>我们可以根据内核执行的情况，把上下文分为两种：进程上下文和中断上下文。如果我们是因为系统调用而在内核中运行代码，或者是在内核线程中运行，那么我们就在进程上下文中。如果我们是在响应中断或执行延迟操作的函数时运行，那么我们就在中断上下文中。</p>
+<p>一些内核 API 调用可以阻塞当前进程。常见的例子是使用信号量（semaphore）或等待条件。在这种情况下，进程被置于“等待”状态，而另一个进程在运行。当从中断上下文中调用可能导致当前进程被挂起的函数时，就会出现有趣的情况。在这种情况下，没有当前进程，因此结果是不可预测的。每当操作系统检测到这种情况时，将生成一个错误条件，导致操作系统关闭。</p>
 </div>
-<div class="section" id="locking">
-<h2>Locking<a class="headerlink" href="#locking" title="Permalink to this headline">¶</a></h2>
-<p>One of the most important features of kernel programming is parallelism. Linux
-supports SMP systems with multiple processors and kernel preemptivity. This
-makes kernel programming more difficult because access to global variables must
-be synchronized with either spinlock primitives or blocking primitives. Although
-it is recommended to use blocking primitives, they can not be used in an
-interrupt context, so the only locking solution in the context of an interrupt
-is spinlocks.</p>
-<p>Spinlocks are used in order to achieve mutual exclusion. When it can not get
-access to the critical region, it does not suspend the current process, but it
-uses the busy-waiting mechanism (waiting in a <code class="xref c c-func docutils literal"><span class="pre">while()</span></code> loop for the lock
-to be released).
-The code that runs in the critical region protected by a spinlock is not allowed
-to suspend the current process (it must adhere to the execution conditions in
-the interrupt context). Moreover, the CPU will not be released except for
-the case of an interrupt. Due to the mechanism used, it is important that a
-spinlock is being held as little time as possible.</p>
+<div class="section" id="section-5">
+<h2>锁定<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<p>内核编程中最重要的特性之一是并行性（parallelism）。Linux 支持具有多个处理器和内核可抢占性的 SMP 系统。这使得内核编程更加困难，因为对全局变量的访问必须与自旋锁原语（primitives）或阻塞原语同步。虽然建议使用阻塞原语，但在中断上下文中无法使用它们，因此在中断的上下文中唯一的锁定解决方案是自旋锁。</p>
+<p>自旋锁是一种实现互斥的方法。它不会让当前进程进入挂起状态，而是让它一直忙等待（在一个 c:func:<cite>while</cite> 循环中检查锁是否可用）。运行在由自旋锁保护的临界区域的代码不允许挂起当前进程（它必须遵守中断上下文中的执行条件）。此外，除非发生中断，否则 CPU 不会被释放。由于此机制，最好尽可能使持有自旋锁的时长短一些。</p>
 </div>
 <div class="section" id="preemptivity">
-<h2>Preemptivity<a class="headerlink" href="#preemptivity" title="Permalink to this headline">¶</a></h2>
-<p>Linux uses preemptive kernels. The notion of preemptive multitasking should not
-be confused with the notion of a preemptive kernel. The notion of preemptive
-multitasking refers to the fact that the operating system forcefully interrupts
-a process running in user space when its quantum (time slice) expires, in order
-to run another process.
-A kernel is preemptive if a process running in kernel mode (as a result of a
-system call) can be interrupted so that another process is being run.</p>
-<p>Because of preemptivity, when we share resources between two portions of code
-that can run from different process contexts, we need to protect ourselves with
-synchronization primitives, even in the case of a single processor.</p>
+<h2>可抢占性（preemptivity）<a class="headerlink" href="#preemptivity" title="Permalink to this headline">¶</a></h2>
+<p>Linux 使用的是可抢占内核。这里，我们需要明确区分可抢占多任务（preemptive multitasking）和可抢占内核两个概念。可抢占多任务是指，当一个进程在用户空间运行时，一旦其分配的时间片（时间片段）到期，操作系统会强制中断该进程，转而运行另一个进程。而如果一个在内核模式下运行的进程（通常是作为系统调用的结果），可以被中断以便运行另一个进程，那么我们就说这个内核具有可抢占性。</p>
+<p>由于内核的可抢占性，即使在单处理器环境下，当我们需要在可能来自不同进程上下文的两段代码之间共享资源时，我们也必须使用同步原语进行保护。</p>
 </div>
-<div class="section" id="linux-kernel-api">
-<h2>Linux Kernel API<a class="headerlink" href="#linux-kernel-api" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="convention-indicating-errors">
-<h3>Convention indicating errors<a class="headerlink" href="#convention-indicating-errors" title="Permalink to this headline">¶</a></h3>
-<p>For Linux kernel programming, the convention used for calling functions to
-indicate success is the same as in UNIX programming: 0 for success, or a value
-other than 0 for failure.
-For failures, negative values are returned as shown in the example below:</p>
+<div class="section" id="linux-api">
+<h2>Linux 内核 API<a class="headerlink" href="#linux-api" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-6">
+<h3>表示错误的约定<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
+<p>在 Linux 内核编程中，调用函数的返回值被用来表示成功与否，这个约定与 UNIX 编程相同：0 代表成功，非 0 值代表失败。如果失败，返回值应该是负数，如下面的例子所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">alloc_memory</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
 
@@ -315,103 +242,66 @@ For failures, negative values are returned as shown in the example below:</p>
     <span class="k">return</span> <span class="o">-</span><span class="n">EINVAL</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>The exhaustive list of errors and a summary explanation can be found in
-<code class="file docutils literal"><span class="pre">include/uapi/asm-generic/errno-base.h</span></code> and in
-<code class="file docutils literal"><span class="pre">include/uapi/asm-generic/ernno.h</span></code>.</p>
+<p>可在 <code class="file docutils literal"><span class="pre">include/uapi/asm-generic/errno-base.h</span></code> 和 <code class="file docutils literal"><span class="pre">include/uapi/asm-generic/ernno.h</span></code> 中找到错误的详尽列表和摘要解释。</p>
 </div>
-<div class="section" id="strings-of-characters">
-<h3>Strings of characters<a class="headerlink" href="#strings-of-characters" title="Permalink to this headline">¶</a></h3>
-<p>In Linux, the kernel programmer is provided with the usual routine functions:
-<code class="xref c c-func docutils literal"><span class="pre">strcpy()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strncpy()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strlcpy()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strcat()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">strncat()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strlcat()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strcmp()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strncmp()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">strnicmp()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strchr()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strnchr()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strrchr()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">strstr()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">strlen()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">memset()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">memmove()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">memcmp()</span></code>, etc. These functions are declared in the
-<code class="file docutils literal"><span class="pre">include/linux/string.h</span></code> header and are implemented in the kernel in the
-<code class="file docutils literal"><span class="pre">lib/string.c</span></code> file.</p>
+<div class="section" id="section-7">
+<h3>字符串处理<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<p>在 Linux 中，内核程序员可以使用常见的常规函数来处理字符串，包括：<code class="xref c c-func docutils literal"><span class="pre">strcpy()</span></code> 、 <code class="xref c c-func docutils literal"><span class="pre">strncpy()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strlcpy()</span></code> 、<code class="xref c c-func docutils literal"><span class="pre">strcat()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strncat()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strlcat()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strcmp()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strncmp()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strnicmp()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strchr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strnchr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strrchr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strstr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strlen()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">memset()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">memmove()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">memcmp()</span></code> 等。这些函数在 <code class="file docutils literal"><span class="pre">include/linux/string.h</span></code> 头文件中声明，并在内核的 <code class="file docutils literal"><span class="pre">lib/string.c</span></code> 文件中实现。</p>
 </div>
 <div class="section" id="printk">
 <h3>printk<a class="headerlink" href="#printk" title="Permalink to this headline">¶</a></h3>
-<p>The printf equivalent in the kernel is printk, defined in
-<code class="file docutils literal"><span class="pre">include/linux/printk.h</span></code>. The <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> syntax is very similar
-to <code class="xref c c-func docutils literal"><span class="pre">printf()</span></code>. The first
-parameter of <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> decides the log category in which the current log
-falls into:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define KERN_EMERG   &quot;&lt;0&gt;&quot;  </span><span class="cm">/* system is unusable */</span><span class="cp"></span>
-<span class="cp">#define KERN_ALERT   &quot;&lt;1&gt;&quot;  </span><span class="cm">/* action must be taken immediately */</span><span class="cp"></span>
-<span class="cp">#define KERN_CRIT    &quot;&lt;2&gt;&quot;  </span><span class="cm">/* critical conditions */</span><span class="cp"></span>
-<span class="cp">#define KERN_ERR     &quot;&lt;3&gt;&quot;  </span><span class="cm">/* error conditions */</span><span class="cp"></span>
-<span class="cp">#define KERN_WARNING &quot;&lt;4&gt;&quot;  </span><span class="cm">/* warning conditions */</span><span class="cp"></span>
-<span class="cp">#define KERN_NOTICE  &quot;&lt;5&gt;&quot;  </span><span class="cm">/* normal but significant condition */</span><span class="cp"></span>
-<span class="cp">#define KERN_INFO    &quot;&lt;6&gt;&quot;  </span><span class="cm">/* informational */</span><span class="cp"></span>
-<span class="cp">#define KERN_DEBUG   &quot;&lt;7&gt;&quot;  </span><span class="cm">/* debug-level messages */</span><span class="cp"></span>
+<p>在内核中，与 printf 等效的函数是 printk，它在 <code class="file docutils literal"><span class="pre">include/linux/printk.h</span></code> 中定义。<code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 的语法与 <cite>printf</cite> 非常相似。<code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 的第一个参数决定了当前日志所属的日志类别：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define KERN_EMERG   &quot;&lt;0&gt;&quot;  </span><span class="cm">/* 系统不可用 */</span><span class="cp"></span>
+<span class="cp">#define KERN_ALERT   &quot;&lt;1&gt;&quot;  </span><span class="cm">/* 必须立即采取行动 */</span><span class="cp"></span>
+<span class="cp">#define KERN_CRIT    &quot;&lt;2&gt;&quot;  </span><span class="cm">/* 严重情况 */</span><span class="cp"></span>
+<span class="cp">#define KERN_ERR     &quot;&lt;3&gt;&quot;  </span><span class="cm">/* 错误情况 */</span><span class="cp"></span>
+<span class="cp">#define KERN_WARNING &quot;&lt;4&gt;&quot;  </span><span class="cm">/* 警告情况 */</span><span class="cp"></span>
+<span class="cp">#define KERN_NOTICE  &quot;&lt;5&gt;&quot;  </span><span class="cm">/* 正常但重要的情况 */</span><span class="cp"></span>
+<span class="cp">#define KERN_INFO    &quot;&lt;6&gt;&quot;  </span><span class="cm">/* 信息 */</span><span class="cp"></span>
+<span class="cp">#define KERN_DEBUG   &quot;&lt;7&gt;&quot;  </span><span class="cm">/* 调试级别的消息 */</span><span class="cp"></span>
 </pre></div>
 </div>
-<p>Thus, a warning message in the kernel would be sent with:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">printk</span><span class="p">(</span><span class="n">KERN_WARNING</span> <span class="s">&quot;my_module input string %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buff</span><span class="p">);</span>
+<p>因此，在内核中发送警告消息的方式如下：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">printk</span><span class="p">(</span><span class="n">KERN_WARNING</span> <span class="s">&quot;my_module 的输入字符串 %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buff</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If the logging level is missing from the <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> call, logging is done
-with the default level at the time of the call. One thing to keep in mind is
-that messages sent with <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> are only visible on the console if and
-only if their level exceeds the default level set on the console.</p>
-<p>To reduce the size of lines when using <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code>, it is recommended to
-use the following help functions instead of directly using the <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code>
-call:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">pr_emerg</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_EMERG pr_fmt(fmt), ...); */</span>
-<span class="n">pr_alert</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_ALERT pr_fmt(fmt), ...); */</span>
-<span class="n">pr_crit</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_CRIT pr_fmt(fmt), ...); */</span>
-<span class="n">pr_err</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_ERR pr_fmt(fmt), ...); */</span>
-<span class="n">pr_warn</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_WARNING pr_fmt(fmt), ...); */</span>
-<span class="n">pr_notice</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_NOTICE pr_fmt(fmt), ...); */</span>
-<span class="n">pr_info</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_INFO pr_fmt(fmt), ...); */</span>
-<span class="n">pr_debug</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* similar to printk(KERN_DEBUG pr_fmt(fmt), ...); */</span>
+<p>如果在 <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 调用中缺少日志级别，日志记录将使用调用时的默认级别。注意，只有当消息级别超过控制台上设置的默认级别时，使用 <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 发送的消息才会在控制台上可见。</p>
+<p>为了减小使用 <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 时的行长度，建议使用以下辅助函数（help functions）而不是直接调用 <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> ：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">pr_emerg</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_EMERG pr_fmt(fmt), ...); */</span>
+<span class="n">pr_alert</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_ALERT pr_fmt(fmt), ...); */</span>
+<span class="n">pr_crit</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_CRIT pr_fmt(fmt), ...); */</span>
+<span class="n">pr_err</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_ERR pr_fmt(fmt), ...); */</span>
+<span class="n">pr_warn</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_WARNING pr_fmt(fmt), ...); */</span>
+<span class="n">pr_notice</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_NOTICE pr_fmt(fmt), ...); */</span>
+<span class="n">pr_info</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_INFO pr_fmt(fmt), ...); */</span>
+<span class="n">pr_debug</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span> <span class="cm">/* 类似于 printk(KERN_DEBUG pr_fmt(fmt), ...); */</span>
 </pre></div>
 </div>
-<p>A special case is <code class="xref c c-func docutils literal"><span class="pre">pr_debug()</span></code> that calls the <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> function
-only when the <code class="xref c c-macro docutils literal"><span class="pre">DEBUG</span></code> macro is defined or if dynamic debugging is used.</p>
+<p>一个特殊情况是 <code class="xref c c-func docutils literal"><span class="pre">pr_debug()</span></code>，它只在定义了 <cite>DEBUG</cite> 宏或使用动态调试时才会调用 <cite>printk</cite> 函数。</p>
 </div>
-<div class="section" id="memory-allocation">
-<h3>Memory allocation<a class="headerlink" href="#memory-allocation" title="Permalink to this headline">¶</a></h3>
-<p>In Linux only resident memory can be allocated, using <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> call.
-A typical <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> call is presented below:</p>
+<div class="section" id="section-8">
+<h3>内存分配<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<p>在 Linux 内核中，只能分配驻留内存。要想分配驻留内存，可以使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用。下面是一个典型的 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/slab.h&gt;</span><span class="cp"></span>
 
 <span class="n">string</span> <span class="o">=</span> <span class="n">kmalloc</span> <span class="p">(</span><span class="n">string_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">GFP_KERNEL</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">string</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">//report error: -ENOMEM;</span>
+    <span class="c1">//报告错误：-ENOMEM;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>As you can see, the first parameter indicates the size in bytes of the allocated
-area. The function returns a pointer to a memory area that can be directly used
-in the kernel, or <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code> if memory could not be allocated. The second
-parameter specifies how allocation should be done and the most commonly used
-values for this are:</p>
+<p>如你所见，第一个参数表示分配区域的字节大小。这个函数返回一个指向内核中可直接使用的内存区域的指针，如果无法分配内存，则返回 <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code>。第二个参数指定了如何进行分配，最常用的取值有：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-data docutils literal"><span class="pre">GFP_KERNEL</span></code> - using this value may cause the current process to
-be suspended. Thus, it can not be used in the interrupt context.</li>
-<li><code class="xref c c-data docutils literal"><span class="pre">GFP_ATOMIC</span></code> - using this value it ensures that the
-<code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> function does not suspend the current process. It can be
-used anytime.</li>
+<li><code class="xref c c-data docutils literal"><span class="pre">GFP_KERNEL</span></code> ——使用此值可能导致当前进程被挂起。因此，它不能在中断上下文中使用。</li>
+<li><code class="xref c c-data docutils literal"><span class="pre">GFP_ATOMIC</span></code> ——使用此值确保 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 函数不会挂起当前进程。它可以随时使用。</li>
 </ul>
 </div></blockquote>
-<p>The counterpart to the <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> function is <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>, a function
-that receives as argument an area allocated by <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>. This function
-does not suspend the current process and can therefore be called from any
-context.</p>
+<p>与 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 函数相对应的是 <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>，它接收由 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 分配的区域作为参数。该函数不会挂起当前进程，因此可以从任何上下文中调用。</p>
 </div>
-<div class="section" id="lists">
-<h3>lists<a class="headerlink" href="#lists" title="Permalink to this headline">¶</a></h3>
-<p>Because linked lists are often used, the Linux kernel API provides a unified
-way of defining and using lists. This involves using a
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> element in the structure we want to consider as a
-list node. The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> is defined in
-<code class="file docutils literal"><span class="pre">include/linux/list.h</span></code> along with all the other functions that manipulate
-the lists. The following code shows the definition of
-the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> and the use of an element of this type in another
-well-known structure in the Linux kernel:</p>
+<div class="section" id="section-9">
+<h3>列表<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<p>由于链表经常被使用，Linux 内核 API 提供了一种统一的方式来定义和使用链表。这涉及在我们希望将其视为链表节点的结构中使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 元素。 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 在 <code class="file docutils literal"><span class="pre">include/linux/list.h</span></code> 中定义，同时还定义了所有其他操作链表的函数。以下代码展示了 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 的定义，以及在 Linux 内核中另一个众所周知的结构中使用该类型的元素的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">list_head</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">next</span><span class="p">,</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
 <span class="p">};</span>
@@ -423,28 +313,17 @@ well-known structure in the Linux kernel:</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The usual routines for working with lists are the following:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="xref c c-macro docutils literal"><span class="pre">LIST_HEAD(name)</span></code> is used to declare the sentinel of a list</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">INIT_LIST_HEAD(struct</span> <span class="pre">list_head</span> <span class="pre">*list)()</span></code> is used to initialize the
-sentinel of a list when dynamic allocation is made, by setting the value of
-the <code class="xref c c-data docutils literal"><span class="pre">next</span></code> and <code class="xref c c-data docutils literal"><span class="pre">prev</span></code> to list fields.</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">list_add(struct</span> <span class="pre">list_head</span> <span class="pre">*new,</span> <span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head)()</span></code> adds the
-<code class="xref c c-data docutils literal"><span class="pre">new</span></code> element after the <code class="xref c c-data docutils literal"><span class="pre">head</span></code> element.</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">list_del(struct</span> <span class="pre">list_head</span> <span class="pre">*entry)()</span></code> deletes the item at the
-<code class="xref c c-data docutils literal"><span class="pre">entry</span></code> address of the list it belongs to.</li>
-<li><code class="xref c c-macro docutils literal"><span class="pre">list_entry(ptr,</span> <span class="pre">type,</span> <span class="pre">member)</span></code> returns the structure with the
-type <code class="xref c c-type docutils literal"><span class="pre">type</span></code> that contains the element <code class="xref c c-data docutils literal"><span class="pre">ptr</span></code> from the list,
-having the name <code class="xref c c-member docutils literal"><span class="pre">member</span></code> within the structure.</li>
-<li><code class="xref c c-macro docutils literal"><span class="pre">list_for_each(pos,</span> <span class="pre">head)</span></code> iterates over a list using
-<code class="xref c c-data docutils literal"><span class="pre">pos</span></code> as a cursor.</li>
-<li><code class="xref c c-macro docutils literal"><span class="pre">list_for_each_safe(pos,</span> <span class="pre">n,</span> <span class="pre">head)</span></code> iterates over a list using
-<code class="xref c c-data docutils literal"><span class="pre">pos</span></code> as a cursor and <code class="xref c c-data docutils literal"><span class="pre">n</span></code> as a temporary cursor.
-This macro is used to delete an item from the list.</li>
+<p>操作链表的常用惯例如下：</p>
+<ul class="simple">
+<li><code class="xref c c-macro docutils literal"><span class="pre">LIST_HEAD(name)</span></code> 用于声明链表的标记（sentinel）。</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">INIT_LIST_HEAD(struct</span> <span class="pre">list_head</span> <span class="pre">*list)()</span></code> 用于在进行动态分配时，通过设置链表字段 <code class="xref c c-data docutils literal"><span class="pre">next</span></code> 和 <code class="xref c c-data docutils literal"><span class="pre">prev</span></code>，来初始化链表的标记。</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">list_add(struct</span> <span class="pre">list_head</span> <span class="pre">*new,</span> <span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head)()</span></code> 将 <code class="xref c c-data docutils literal"><span class="pre">new</span></code> 指针所引用的元素添加到 <code class="xref c c-data docutils literal"><span class="pre">head</span></code> 指针所引用的元素之后。</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">list_del(struct</span> <span class="pre">list_head</span> <span class="pre">*entry)()</span></code> 删除属于列表的 <code class="xref c c-data docutils literal"><span class="pre">entry</span></code> 地址处的项目。</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">list_entry(ptr,</span> <span class="pre">type,</span> <span class="pre">member)()</span></code> 返回列表中包含元素 <code class="xref c c-data docutils literal"><span class="pre">ptr</span></code> 的类型为 <code class="xref c c-type docutils literal"><span class="pre">type</span></code> 的结构，该结构中具有名为 <code class="xref c c-member docutils literal"><span class="pre">member</span></code> 的成员。</li>
+<li><code class="xref c c-macro docutils literal"><span class="pre">list_for_each(pos,</span> <span class="pre">head)</span></code> 使用 <code class="xref c c-data docutils literal"><span class="pre">pos</span></code> 作为游标来迭代列表。</li>
+<li><code class="xref c c-macro docutils literal"><span class="pre">list_for_each_safe(pos,</span> <span class="pre">n,</span> <span class="pre">head)</span></code> 使用 <code class="xref c c-data docutils literal"><span class="pre">pos</span></code> 作为游标，<code class="xref c c-data docutils literal"><span class="pre">n</span></code> 作为临时游标来迭代列表。此宏用于从列表中删除项目。</li>
 </ul>
-</div></blockquote>
-<p>The following code shows how to use these routines:</p>
+<p>以下代码展示了如何使用这些惯例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/slab.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/list.h&gt;</span><span class="cp"></span>
 
@@ -498,27 +377,15 @@ This macro is used to delete an item from the list.</li>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The evolution of the list can be seen in the following figure:</p>
+<p>列表的演变可以在下图中看到：</p>
 <a class="reference internal image-reference" href="../_images/list_evolution1.png"><img alt="../_images/list_evolution1.png" src="../_images/list_evolution1.png" style="width: 85%;" /></a>
-<p>You see the stack type behavior introduced by the <code class="xref c c-macro docutils literal"><span class="pre">list_add</span></code> macro,
-and the use of a sentinel.</p>
-<p>From the above example, it can be noticed that the way to define and use a list
-(double-linked) is generic and, at the same time, it does not introduce an
-additional overhead. The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> is used to maintain the
-links between the list elements. It can be noticed that iterating over the list
-is also done with this structure, and that retrieving a list element can be done
-using <code class="xref c c-macro docutils literal"><span class="pre">list_entry</span></code>. This idea of implementing and using a list is not
-new, as it has already been described in The Art of Computer Programming by
-Donald Knuth in the 1980s.</p>
-<p>Several kernel list functions and macro definitions are presented and explained
-in the <code class="file docutils literal"><span class="pre">include/linux/list.h</span></code> header.</p>
+<p>从上面的例子可以看出，通过 <code class="xref c c-macro docutils literal"><span class="pre">list_add</span></code> 宏引入了堆栈类型的行为，并使用了标记。</p>
+<p>通过上述示例可以看出，定义和使用一个（双向）列表的方法是通用的，并且同时不引入额外的开销。<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 用于维护列表元素之间的链接。可以注意到，对列表的迭代也是使用这个结构进行的，使用 <code class="xref c c-macro docutils literal"><span class="pre">list_entry</span></code> 可以获取列表元素。这种实现和使用列表的思想并不新鲜，在 20 世纪 80 年代，Donald Knuth 的《计算机程序设计艺术》中已经有描述。</p>
+<p>在 <code class="file docutils literal"><span class="pre">include/linux/list.h</span></code> 头文件中介绍并且解释了几个内核列表函数和宏定义。</p>
 </div>
-<div class="section" id="spinlock">
-<h3>Spinlock<a class="headerlink" href="#spinlock" title="Permalink to this headline">¶</a></h3>
-<p><code class="xref c c-type docutils literal"><span class="pre">spinlock_t</span></code> (defined in <code class="file docutils literal"><span class="pre">linux/spinlock.h</span></code>) is the basic type
-that implements the spinlock concept in Linux. It describes a spinlock, and the
-operations associated with a spinlock are <code class="xref c c-func docutils literal"><span class="pre">spin_lock_init()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code>. An example of use is given below:</p>
+<div class="section" id="section-10">
+<h3>自旋锁<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<p><code class="xref c c-type docutils literal"><span class="pre">spinlock_t</span></code> （在 <code class="file docutils literal"><span class="pre">linux/spinlock.h</span></code> 中定义）是在 Linux 中实现自旋锁概念的基本类型。它描述了自旋锁，与自旋锁相关的操作有 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_init()</span></code> 、 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 、 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code>。以下是一个使用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/spinlock.h&gt;</span><span class="cp"></span>
 
 <span class="n">DEFINE_SPINLOCK</span><span class="p">(</span><span class="n">lock1</span><span class="p">);</span>
@@ -527,22 +394,15 @@ operations associated with a spinlock are <code class="xref c c-func docutils li
 <span class="n">spin_lock_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock2</span><span class="p">);</span>
 
 <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock1</span><span class="p">);</span>
-<span class="cm">/* critical region */</span>
+<span class="cm">/* 临界区（critical region） */</span>
 <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock1</span><span class="p">);</span>
 
 <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock2</span><span class="p">);</span>
-<span class="cm">/* critical region */</span>
+<span class="cm">/* 临界区 */</span>
 <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock2</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>In Linux, you can use reader-writer spinlocks, useful for readers-writers
-problems.
-These types of locks are identified by <code class="xref c c-type docutils literal"><span class="pre">rwlock_t</span></code>, and the functions
-that can work on a reader-writer spinlock are
-<code class="xref c c-func docutils literal"><span class="pre">rwlock_init()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">read_lock()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">write_lock()</span></code>.
-An example of use:</p>
+<p>在 Linux 中，你可以使用读写自旋锁来解决读者—写者问题。这种类型的锁由 <code class="xref c c-type docutils literal"><span class="pre">rwlock_t</span></code> 标识，并且可以使用以下函数来操作读写自旋锁： <code class="xref c c-func docutils literal"><span class="pre">rwlock_init()</span></code> 、 <code class="xref c c-func docutils literal"><span class="pre">read_lock()</span></code> 以及 <code class="xref c c-func docutils literal"><span class="pre">write_lock()</span></code> 。以下是使用读写自旋锁的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/spinlock.h&gt;</span><span class="cp"></span>
 
 <span class="n">DEFINE_RWLOCK</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span>
@@ -580,34 +440,26 @@ An example of use:</p>
 </div>
 </div>
 <div class="section" id="mutex">
-<h3>mutex<a class="headerlink" href="#mutex" title="Permalink to this headline">¶</a></h3>
-<p>A mutex is a variable of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mutex</span></code> type (defined in
-<code class="file docutils literal"><span class="pre">linux/mutex.h</span></code>).
-Functions and macros for working with mutexes are listed below:</p>
+<h3>互斥锁（Mutex）<a class="headerlink" href="#mutex" title="Permalink to this headline">¶</a></h3>
+<p>互斥锁是一种 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mutex</span></code> 类型的变量（定义在 <code class="file docutils literal"><span class="pre">linux/mutex.h</span></code> 中）。下面列出了用于处理互斥锁的函数和宏：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/mutex.h&gt;</span><span class="cp"></span>
 
-<span class="cm">/* functions for mutex initialization */</span>
+<span class="cm">/* 互斥锁初始化函数 */</span>
 <span class="kt">void</span> <span class="nf">mutex_init</span><span class="p">(</span><span class="k">struct</span> <span class="n">mutex</span> <span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
 <span class="n">DEFINE_MUTEX</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
 
-<span class="cm">/* functions for mutex acquire */</span>
+<span class="cm">/* 互斥锁获取函数 */</span>
 <span class="kt">void</span> <span class="nf">mutex_lock</span><span class="p">(</span><span class="k">struct</span> <span class="n">mutex</span> <span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
 
-<span class="cm">/* functions for mutex release */</span>
+<span class="cm">/* 互斥锁释放函数 */</span>
 <span class="kt">void</span> <span class="nf">mutex_unlock</span><span class="p">(</span><span class="k">struct</span> <span class="n">mutex</span> <span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Operations are similar to classic mutex operations in user-space or spinlock
-operations: the mutex is acquired before entering the critical region and it is
-released after exiting the critical region. Unlike spinlocks, these operations
-can only be used in process context.</p>
+<p>这些操作与在用户空间中进行的经典互斥锁操作或自旋锁操作类似：在进入临界区之前获取互斥锁，在退出临界区之后释放互斥锁。不同于自旋锁，这些操作只能在进程上下文中使用。</p>
 </div>
-<div class="section" id="atomic-variables-1">
-<span id="atomic-variables"></span><h3>Atomic variables<a class="headerlink" href="#atomic-variables-1" title="Permalink to this headline">¶</a></h3>
-<p>Often, you only need to synchronize access to a simple variable, such as a
-counter. For this, an <code class="xref c c-type docutils literal"><span class="pre">atomic_t</span></code> type can be used (defined in
-<code class="file docutils literal"><span class="pre">include/linux/atomic.h</span></code>), that holds an integer value. Below are some
-operations that can be performed on an <code class="xref c c-type docutils literal"><span class="pre">atomic_t</span></code> variable.</p>
+<div class="section" id="section-11">
+<span id="atomic-variables"></span><h3>原子变量<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<p>通常，你只需要对简单的变量（如计数器）进行访问同步。为此，可以使用 <code class="xref c c-type docutils literal"><span class="pre">atomic_t</span></code> 类型（定义在 <code class="file docutils literal"><span class="pre">include/linux/atomic.h</span></code> 中），它保存一个整数值。下面是一些可以对 <code class="xref c c-type docutils literal"><span class="pre">atomic_t</span></code> 变量执行的操作。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/atomic.h&gt;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">atomic_set</span><span class="p">(</span><span class="n">atomic_t</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
@@ -621,62 +473,55 @@ operations that can be performed on an <code class="xref c c-type docutils liter
 <span class="kt">int</span> <span class="nf">atomic_cmpxchg</span><span class="p">(</span><span class="n">atomic_t</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">old</span><span class="p">,</span> <span class="kt">int</span> <span class="n">new</span><span class="p">);</span>
 </pre></div>
 </div>
-<div class="section" id="use-of-atomic-variables">
-<h4>Use of atomic variables<a class="headerlink" href="#use-of-atomic-variables" title="Permalink to this headline">¶</a></h4>
-<p>A common way of using atomic variables is to store the status of an action
-(e.g. a flag). So we can use an atomic variable to mark exclusive actions. For
-example, we consider that an atomic variable can have the LOCKED and UNLOCKED
-values, and if the respective variable equals LOCKED then a specific function
-should return -EBUSY.
-Such an usage is shown schematically in the code below:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define LOCKED       0</span>
-<span class="cp">#define UNLOCKED     1</span>
+<div class="section" id="section-12">
+<h4>原子变量的使用<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h4>
+<p>原子变量的常见使用方式是存储一个操作的状态（例如，一个标志）。因此，我们可以使用原子变量来标记独占操作。例如，我们可以考虑一个原子变量可以具有 LOCKED 和 UNLOCKED 两个值，如果该变量等于 LOCKED，则特定函数应返回 -EBUSY。下面的代码示例展示了这种用法：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define LOCKED 0</span>
+<span class="cp">#define UNLOCKED 1</span>
 
 <span class="k">static</span> <span class="n">atomic_t</span> <span class="n">flag</span><span class="p">;</span>
 
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">my_acquire</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
-     <span class="kt">int</span> <span class="n">initial_flag</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">initial_flag</span><span class="p">;</span>
 
-     <span class="cm">/*</span>
-<span class="cm">      * Check if flag is UNLOCKED; if so, lock it and do it atomically.</span>
-<span class="cm">      *</span>
-<span class="cm">      * This is the atomic equivalent of</span>
-<span class="cm">      *      if (flag == UNLOCKED)</span>
-<span class="cm">      *              flag = LOCKED;</span>
-<span class="cm">      *      else</span>
-<span class="cm">      *              return -EBUSY;</span>
-<span class="cm">      */</span>
-     <span class="n">initial_flag</span> <span class="o">=</span> <span class="n">atomic_cmpxchg</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="n">UNLOCKED</span><span class="p">,</span> <span class="n">LOCKED</span><span class="p">);</span>
-     <span class="k">if</span> <span class="p">(</span><span class="n">initial_flag</span> <span class="o">==</span> <span class="n">LOCKED</span><span class="p">)</span> <span class="p">{</span>
-             <span class="n">printk</span><span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;Already locked.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-             <span class="k">return</span> <span class="o">-</span><span class="n">EBUSY</span><span class="p">;</span>
-     <span class="p">}</span>
+   <span class="cm">/*</span>
+<span class="cm">   * 检查 flag 是否为 UNLOCKED；如果是，则以原子方式将其锁定。</span>
+<span class="cm">   *</span>
+<span class="cm">   * 这个原子操作相当于：</span>
+<span class="cm">   *   if (flag == UNLOCKED)</span>
+<span class="cm">   *       flag = LOCKED;</span>
+<span class="cm">   *   else</span>
+<span class="cm">   *       return -EBUSY;</span>
+<span class="cm">   */</span>
+   <span class="n">initial_flag</span> <span class="o">=</span> <span class="n">atomic_cmpxchg</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="n">UNLOCKED</span><span class="p">,</span> <span class="n">LOCKED</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">initial_flag</span> <span class="o">==</span> <span class="n">LOCKED</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">printk</span><span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;已经被锁定。</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="o">-</span><span class="n">EBUSY</span><span class="p">;</span>
+   <span class="p">}</span>
 
-     <span class="cm">/* Do your thing after getting the lock. */</span>
-     <span class="p">[...]</span>
+   <span class="cm">/* 在获取锁之后进行操作。 */</span>
+   <span class="p">[...]</span>
 <span class="p">}</span>
 
 <span class="k">static</span> <span class="kt">void</span> <span class="nf">my_release</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
-     <span class="cm">/* Release flag; mark it as unlocked. */</span>
-     <span class="n">atomic_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="n">UNLOCKED</span><span class="p">);</span>
+   <span class="cm">/* 释放 flag，将其标记为解锁状态。 */</span>
+   <span class="n">atomic_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="n">UNLOCKED</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="nf">my_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
-     <span class="p">[...]</span>
-     <span class="cm">/* Atomic variable is initially unlocked. */</span>
-     <span class="n">atomic_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="n">UNLOCKED</span><span class="p">);</span>
+   <span class="p">[...]</span>
+   <span class="cm">/* 原子变量最初处于解锁状态。 */</span>
+   <span class="n">atomic_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="n">UNLOCKED</span><span class="p">);</span>
 
-     <span class="p">[...]</span>
+   <span class="p">[...]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The above code is the equivalent of using a trylock (such as
-<code class="xref c c-func docutils literal"><span class="pre">pthread_mutex_trylock()</span></code>).</p>
-<p>We can also use a variable to store the size of a buffer and for atomic
-updates of the respective variable. The code below is such an example:</p>
+<p>以上代码是 trylock（例如 <code class="xref c c-func docutils literal"><span class="pre">pthread_mutex_trylock()</span></code> ）的等效代码。</p>
+<p>我们还可以使用一个变量来存储缓冲区的大小，并进行相应变量的原子更新。下面是示例代码：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">MAX_SIZE</span><span class="p">];</span>
 <span class="k">static</span> <span class="n">atomic_t</span> <span class="n">size</span><span class="p">;</span>
 
@@ -704,7 +549,7 @@ updates of the respective variable. The code below is such an example:</p>
 <span class="kt">void</span> <span class="nf">my_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
      <span class="p">[...]</span>
-     <span class="cm">/* Initialized buffer and size. */</span>
+     <span class="cm">/* 初始化缓冲和大小 */</span>
      <span class="n">atomic_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">size</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
      <span class="n">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span>
 
@@ -714,10 +559,9 @@ updates of the respective variable. The code below is such an example:</p>
 </div>
 </div>
 </div>
-<div class="section" id="atomic-bitwise-operations">
-<h3>Atomic bitwise operations<a class="headerlink" href="#atomic-bitwise-operations" title="Permalink to this headline">¶</a></h3>
-<p>The kernel provides a set of functions (in <code class="file docutils literal"><span class="pre">asm/bitops.h</span></code>) that modify or
-test bits in an atomic way.</p>
+<div class="section" id="section-13">
+<h3>原子位操作<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<p>内核提供了一组函数（在 <code class="file docutils literal"><span class="pre">asm/bitops.h</span></code> 中），可以以原子方式修改或测试位（bit）。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/bitops.h&gt;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">set_bit</span><span class="p">(</span><span class="kt">int</span> <span class="n">nr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">);</span>
@@ -728,13 +572,11 @@ test bits in an atomic way.</p>
 <span class="kt">int</span> <span class="nf">test_and_change_bit</span><span class="p">(</span><span class="kt">int</span> <span class="n">nr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><code class="xref c c-data docutils literal"><span class="pre">Addr</span></code> represents the address of the memory area whose bits are being
-modified or tested and <code class="xref c c-data docutils literal"><span class="pre">nr</span></code> is the bit on which the operation is
-performed.</p>
+<p><code class="xref c c-data docutils literal"><span class="pre">Addr</span></code> 表示要修改或测试位的内存区域的地址，<code class="xref c c-data docutils literal"><span class="pre">nr</span></code> 是要执行操作的位。</p>
 </div>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-14">
+<h2>练习<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>To solve exercises, you need to perform these steps:</p>
@@ -770,7 +612,7 @@ tools/labs $ make boot
 <p>The modules are placed in /home/root/skels/kernel_api/&lt;task_name&gt;.</p>
 <p>Alternatively, we can copy files via <strong class="command">scp</strong>, in order to avoid restarting the VM.
 For additional details about connecting to the VM via the network, please check <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>.</p>
-<p class="last">Review the <a class="reference internal" href="#exercises">Exercises</a> section for more detailed information.</p>
+<p class="last">Review the <a href="#system-message-1"><span class="problematic" id="problematic-1">`Exercises`_</span></a> section for more detailed information.</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -781,9 +623,9 @@ If you want to keep them, run <code class="docutils literal"><span class="pre">g
 To discard the changes, run <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>.</p>
 <p class="last">If you already generated the skeleton before <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> you will need to generate it again.</p>
 </div>
-<div class="section" id="intro">
-<h3>0. Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h3>
-<p>Using <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> find the definitions of the following symbols in the Linux kernel:</p>
+<div class="section" id="section-15">
+<h3>0. 简介<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> 在 Linux 内核中查找以下符号的定义：</p>
 <blockquote>
 <div><ul class="simple">
 <li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code></li>
@@ -796,295 +638,207 @@ To discard the changes, run <code class="docutils literal"><span class="pre">git
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="memory-allocation-in-linux-kernel">
-<h3>1. Memory allocation in Linux kernel<a class="headerlink" href="#memory-allocation-in-linux-kernel" title="Permalink to this headline">¶</a></h3>
-<p>Generate the skeleton for the task named <strong>1-mem</strong> and browse the
-contents of the <code class="file docutils literal"><span class="pre">mem.c</span></code> file.  Observe the use of <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>
-call for memory allocation.</p>
+<div class="section" id="linux">
+<h3>1. Linux 内核中的内存分配<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>生成名为 <strong>1-mem</strong> 的任务骨架，并浏览 <code class="file docutils literal"><span class="pre">mem.c</span></code> 文件的内容。观察使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 函数进行内存分配的情况。</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Compile the source code and load the <code class="file docutils literal"><span class="pre">mem.ko</span></code> module using
-<strong class="command">insmod</strong>.</li>
-<li>View the kernel messages using the <strong class="command">dmesg</strong> command.</li>
-<li>Unload the kernel module using the <strong class="command">rmmod mem</strong> command.</li>
+<li>编译源代码并使用 <strong class="command">insmod</strong> 加载 <code class="file docutils literal"><span class="pre">mem.ko</span></code> 模块。</li>
+<li>使用 <strong class="command">dmesg</strong> 命令查看内核消息。</li>
+<li>使用 <strong class="command">rmmod mem</strong> 命令卸载内核模块。</li>
 </ol>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Review the <a class="reference internal" href="#memory-allocation">Memory Allocation</a> section in the lab.</p>
+<p class="last">请参阅实验中的 <a class="reference internal" href="#section-8">内存分配</a> 部分。</p>
 </div>
 </div>
-<div class="section" id="sleeping-in-atomic-context">
-<h3>2. Sleeping in atomic context<a class="headerlink" href="#sleeping-in-atomic-context" title="Permalink to this headline">¶</a></h3>
-<p>Generate the skeleton for the task named <strong>2-sched-spin</strong> and browse
-the contents of the <code class="file docutils literal"><span class="pre">sched-spin.c</span></code> file.</p>
+<div class="section" id="section-16">
+<h3>2. 在原子上下文中睡眠<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h3>
+<p>生成名为 <strong>2-sched-spin</strong> 的任务骨架，并浏览 <code class="file docutils literal"><span class="pre">sched-spin.c</span></code> 文件的内容。</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Compile the source code and load the module, according the above info:
-(<strong class="command">make build</strong> and <strong class="command">make copy</strong>)</li>
-<li>Notice that it is waiting for 5 seconds until the insertion
-order is complete.</li>
-<li>Unload the kernel module.</li>
-<li>Look for the lines marked with: <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">0</span></code> to create an atomic
-section. Re-compile the source code and reload the module into
-the kernel.</li>
+<li>根据上述信息编译源代码并加载模块（使用命令 <strong class="command">make build</strong> 和 <strong class="command">make copy</strong> ）。</li>
+<li>注意：插入顺序完成之前需要等待 5 秒时间。</li>
+<li>卸载内核模块。</li>
+<li>查找标记为：<code class="docutils literal"><span class="pre">TODO</span> <span class="pre">0</span></code> 的行以创建原子段（atomic section）。重新编译源代码并将模块重新加载到内核。</li>
 </ol>
 </div></blockquote>
-<p>You should now get an error. Look at the stack trace. What is the
-cause of the error?</p>
+<p>现在你应该会遇到一个错误。查看堆栈跟踪。错误的原因是什么？</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">In the error message, follow the line containing the <code class="xref c c-macro docutils literal"><span class="pre">BUG</span></code>
-for a description of the error. You are not allowed to sleep in
-atomic context.  The atomic context is given by a section
-between a lock operation and an unlock on a spinlock.</p>
+<p class="last">在错误消息中，跟踪包含 <code class="xref c c-macro docutils literal"><span class="pre">BUG</span></code> 的行查看对错误的描述。在原子上下文中不允许睡眠。在这里原子上下文是处于自旋锁进行锁定操作和解锁操作之间的部分。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The
-<code class="xref c c-func docutils literal"><span class="pre">schedule_timeout()</span></code> function, corroborated with the
-<code class="xref c c-macro docutils literal"><span class="pre">set_current_state</span></code> macro, forces the current process to wait
-for 5 seconds.</p>
+<p class="last"><code class="xref c c-func docutils literal"><span class="pre">schedule_timeout()</span></code> 函数与 <code class="xref c c-macro docutils literal"><span class="pre">set_current_state</span></code> 宏结合使用，强制当前进程等待了 5 秒钟。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Review the <a class="reference internal" href="#contexts-of-execution">Contexts of execution</a>, <a class="reference internal" href="#locking">Locking</a> and <a class="reference internal" href="#spinlock">Spinlock</a>
-sections.</p>
+<p class="last">请查阅 <a class="reference internal" href="#section-4">执行上下文</a> 、<a class="reference internal" href="#section-5">锁定</a> 和 <a class="reference internal" href="#section-10">自旋锁</a> 部分。</p>
 </div>
 </div>
-<div class="section" id="working-with-kernel-memory">
-<h3>3. Working with kernel memory<a class="headerlink" href="#working-with-kernel-memory" title="Permalink to this headline">¶</a></h3>
-<p>Generate the skeleton for the task named <strong>3-memory</strong> directory and
-browse the contents of the <code class="file docutils literal"><span class="pre">memory.c</span></code> file. Notice the comments
-marked with <code class="docutils literal"><span class="pre">TODO</span></code>. You must allocate 4 structures of type <code class="xref c c-type docutils literal"><span class="pre">struct</span>
-<span class="pre">task_info</span></code> and initialize them (in <code class="xref c c-func docutils literal"><span class="pre">memory_init()</span></code>), then print and
-free them (in <code class="xref c c-func docutils literal"><span class="pre">memory_exit()</span></code>).</p>
+<div class="section" id="section-17">
+<h3>3. 使用内核内存<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<p>为名为 <strong>3-memory</strong> 的任务生成骨架，并浏览 <code class="file docutils literal"><span class="pre">memory.c</span></code> 文件的内容。请注意带有 <code class="docutils literal"><span class="pre">TODO</span></code> 标记的注释。你需要分配 4 个类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code> 的结构体并将其初始化（在 <code class="xref c c-func docutils literal"><span class="pre">memory_init()</span></code> 中），然后打印并释放它们（在 <code class="xref c c-func docutils literal"><span class="pre">memory_exit()</span></code> 中）。</p>
 <blockquote>
 <div><ol class="arabic">
-<li><p class="first">(TODO 1) Allocate memory for <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code> structure and
-initialize its fields:</p>
+<li><p class="first">（TODO 1）为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code> 结构体分配内存并初始化其字段：</p>
 <ul class="simple">
-<li>The <code class="xref c c-member docutils literal"><span class="pre">pid</span></code> field to the PID transmitted as a parameter;</li>
-<li>The <code class="xref c c-member docutils literal"><span class="pre">timestamp</span></code> field to the value of the <code class="xref c c-data docutils literal"><span class="pre">jiffies</span></code>
-variable, which holds the number of ticks that have occurred since the
-system booted.</li>
+<li>将 <code class="xref c c-member docutils literal"><span class="pre">pid</span></code> 字段设置为作为参数传递的 PID 值；</li>
+<li>将 <code class="xref c c-member docutils literal"><span class="pre">timestamp</span></code> 字段设置为 <code class="xref c c-data docutils literal"><span class="pre">jiffies</span></code> 变量的值，该变量存储了自系统启动以来发生的滴答数（tick）。</li>
 </ul>
 </li>
-<li><p class="first">(TODO 2) Allocate <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code> for the current process,
-the parent process, the next process, the next process of the next
-process, with the following information:</p>
+<li><p class="first">（TODO 2）为当前进程、父进程、下一个进程和下一个进程的下一个进程分别分配 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code>，并获取以下信息：</p>
 <ul class="simple">
-<li>PID of the current process, which can be retrieved from
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> structure, returned by <code class="xref c c-macro docutils literal"><span class="pre">current</span></code>
-macro.</li>
+<li>当前进程的 PID，其可以从 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体中检索到，该结构体由 <code class="xref c c-macro docutils literal"><span class="pre">current</span></code> 宏返回。</li>
 </ul>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Search for <code class="xref c c-type docutils literal"><span class="pre">pid</span></code> in <code class="xref c c-type docutils literal"><span class="pre">task_struct</span></code>.</p>
+<p class="last">在 <code class="xref c c-type docutils literal"><span class="pre">task_struct</span></code> 中搜索 <code class="xref c c-type docutils literal"><span class="pre">pid</span></code>。</p>
 </div>
 <ul class="simple">
-<li>PID of the parent process of the current process.</li>
+<li>当前进程的父进程的 PID。</li>
 </ul>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Search for the relevant field from <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>
-structure. Look after &quot;parent&quot;.</p>
+<p class="last">在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体中搜索相关字段。查找“parent”。</p>
 </div>
 <ul class="simple">
-<li>PID of the next process from the list of processes, relative to the
-current process.</li>
+<li>相对于当前进程，进程列表中的下一个进程的 PID。</li>
 </ul>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> macro, which returns a pointer to the next
-process (i.e a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> structure).</p>
+<p class="last">使用 <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> 宏，该宏返回指向下一个进程的指针（即 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体）。</p>
 </div>
 <ul class="simple">
-<li>PID of the next process of the next process, relative to the current
-process.</li>
+<li>相对于当前进程，下一个进程的下一个进程的 PID。</li>
 </ul>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Call the <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> macro 2 times.</p>
+<p class="last">调用 <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> 宏 2 次。</p>
 </div>
 </li>
-<li><p class="first">(TODO 3) Display the four structures.</p>
+<li><p class="first">（TODO 3）显示这四个结构体。</p>
 <ul class="simple">
-<li>Use <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> to display their two fields:</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 显示它们的两个字段：<code class="xref c c-member docutils literal"><span class="pre">pid</span></code> 和 <code class="xref c c-member docutils literal"><span class="pre">timestamp</span></code>。</li>
 </ul>
-<p><code class="xref c c-member docutils literal"><span class="pre">pid</span></code> and <code class="xref c c-member docutils literal"><span class="pre">timestamp</span></code>.</p>
 </li>
-<li><p class="first">(TODO 4) Release the memory occupied by the structures
-(use <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>).</p>
+<li><p class="first">（TODO 4）释放结构体占用的内存（使用 <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>）。</p>
 </li>
 </ol>
 </div></blockquote>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
 <ul class="last simple">
-<li>You can access the current process using <code class="xref c c-macro docutils literal"><span class="pre">current</span></code>
-macro.</li>
-<li>Look for the relevant fields in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>
-structure (<code class="xref c c-member docutils literal"><span class="pre">pid</span></code>, <code class="xref c c-member docutils literal"><span class="pre">parent</span></code>).</li>
-<li>Use the <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> macro. The macro returns the pointer to
-the next process (ie. a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct*</span></code> structure).</li>
+<li>你可以使用 <code class="xref c c-macro docutils literal"><span class="pre">current</span></code> 宏访问当前进程。</li>
+<li>在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体中查找相关字段（<code class="xref c c-member docutils literal"><span class="pre">pid</span></code>、<code class="xref c c-member docutils literal"><span class="pre">parent</span></code>）。</li>
+<li>使用 <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> 宏。该宏返回指向下一个进程的指针（即 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct*</span></code> 结构体）。</li>
 </ul>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> structure contains two fields to
-designate the parent of a task:</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体包含两个字段用于指定任务的父进程：</p>
 <ul class="simple">
-<li><code class="xref c c-member docutils literal"><span class="pre">real_parent</span></code> points to the process that created the
-task or to process with pid 1 (init) if the parent
-completed its execution.</li>
-<li><code class="xref c c-member docutils literal"><span class="pre">parent</span></code> indicates to the current task parent (the
-process that will be reported if the task completes
-execution).</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">real_parent</span></code> 指向创建任务的进程，或者如果父进程已完成执行，则指向具有 pid 1（init）的进程。</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">parent</span></code> 指示当前任务的父进程（如果任务完成执行，则向该进程报告）。</li>
 </ul>
-<p class="last">In general, the values of the two fields are the same, but
-there are situations where they differ, for example when
-using the <code class="xref c c-func docutils literal"><span class="pre">ptrace()</span></code> system call.</p>
+<p class="last">通常情况下，这两个字段的值是相同的，但在某些情况下它们可能不同，例如使用 <code class="xref c c-func docutils literal"><span class="pre">ptrace()</span></code> 系统调用时。</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Review the <a class="reference internal" href="#memory-allocation">Memory allocation</a> section in the lab.</p>
+<p class="last">请查阅实验中的 <a class="reference internal" href="#section-8">内存分配</a> 小节。</p>
 </div>
 </div>
-<div class="section" id="working-with-kernel-lists">
-<h3>4. Working with kernel lists<a class="headerlink" href="#working-with-kernel-lists" title="Permalink to this headline">¶</a></h3>
-<p>Generate the skeleton for the task named <strong>4-list</strong>. Browse the
-contents of the <code class="file docutils literal"><span class="pre">list.c</span></code> file and notice the comments marked with
-<code class="docutils literal"><span class="pre">TODO</span></code>. The current process will add the four structures from the
-previous exercise into a list. The list will be built in the
-<code class="xref c c-func docutils literal"><span class="pre">task_info_add_for_current()</span></code> function which is called when module is
-loaded. The list will be printed and deleted in the <code class="xref c c-func docutils literal"><span class="pre">list_exit()</span></code>
-function and the <code class="xref c c-func docutils literal"><span class="pre">task_info_purge_list()</span></code> function.</p>
+<div class="section" id="section-18">
+<h3>4. 使用内核列表<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h3>
+<p>生成名为 <strong>4-list</strong> 的任务骨架。浏览 <code class="file docutils literal"><span class="pre">list.c</span></code> 文件的内容，并注意标有 <code class="docutils literal"><span class="pre">TODO</span></code> 的注释。当前的进程将在列表中添加前面练习中的四个结构体。列表将在加载模块时在 <code class="xref c c-func docutils literal"><span class="pre">task_info_add_for_current()</span></code> 函数中构建。列表将在 <code class="xref c c-func docutils literal"><span class="pre">list_exit()</span></code> 函数和 <code class="xref c c-func docutils literal"><span class="pre">task_info_purge_list()</span></code> 函数中打印和删除。</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>(TODO 1) Complete the <code class="xref c c-func docutils literal"><span class="pre">task_info_add_to_list()</span></code> function to allocate
-a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code> structure and add it to the list.</li>
-<li>(TODO 2) Complete the <code class="xref c c-func docutils literal"><span class="pre">task_info_purge_list()</span></code> function to delete
-all the elements in the list.</li>
-<li>Compile the kernel module. Load and unload the module by
-following the messages displayed by the kernel.</li>
+<li>(TODO 1) 补全 <code class="xref c c-func docutils literal"><span class="pre">task_info_add_to_list()</span></code> 函数，此函数会分配 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code> 结构体，并将其添加到列表中。</li>
+<li>(TODO 2) 补全 <code class="xref c c-func docutils literal"><span class="pre">task_info_purge_list()</span></code> 函数，此函数会删除列表中的所有元素。</li>
+<li>编译内核模块。按照内核显示的消息加载和卸载模块。</li>
 </ol>
 </div></blockquote>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Review the labs <a class="reference internal" href="#lists">Lists</a> section.  When deleting items from
-the list, you will need to use either the
-<code class="xref c c-macro docutils literal"><span class="pre">list_for_each_safe</span></code> or <code class="xref c c-macro docutils literal"><span class="pre">list_for_each_entry_safe</span></code>
-macros.</p>
+<p class="last">回顾一下实验中的 <a class="reference internal" href="#section-9">列表</a> 部分。在从列表中删除项目时，你需要使用 <code class="xref c c-macro docutils literal"><span class="pre">list_for_each_safe</span></code> 或 <code class="xref c c-macro docutils literal"><span class="pre">list_for_each_entry_safe</span></code> 宏。</p>
 </div>
 </div>
-<div class="section" id="working-with-kernel-lists-for-process-handling">
-<h3>5. Working with kernel lists for process handling<a class="headerlink" href="#working-with-kernel-lists-for-process-handling" title="Permalink to this headline">¶</a></h3>
-<p>Generate the skeleton for the task named <strong>5-list-full</strong>. Browse the
-contents of the <code class="file docutils literal"><span class="pre">list-full.c</span></code> and notice comments marked with
-<code class="docutils literal"><span class="pre">TODO</span></code>. In addition to the <code class="file docutils literal"><span class="pre">4-list</span></code> functionality we add the
-following:</p>
+<div class="section" id="section-19">
+<h3>5. 使用内核列表进行进程处理<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h3>
+<p>生成名为 <strong>5-list-full</strong> 的任务骨架。浏览 <code class="file docutils literal"><span class="pre">list-full.c</span></code> 文件的内容，并注意标有 <code class="docutils literal"><span class="pre">TODO</span></code> 的注释。除了 <code class="file docutils literal"><span class="pre">4-list</span></code> 的功能外，我们还添加了以下内容：</p>
 <blockquote>
 <div><ul>
-<li><p class="first">A <code class="xref c c-member docutils literal"><span class="pre">count</span></code> field showing how many times a process has been &quot;added&quot;
-to the list.</p>
+<li><p class="first">一个 <code class="xref c c-member docutils literal"><span class="pre">count</span></code> 字段，显示一个进程被“添加”到列表中的次数。</p>
 </li>
-<li><p class="first">If a process is &quot;added&quot; several times, no new entry is created in
-the list, but:</p>
+<li><p class="first">如果一个进程被“添加”了多次，则不会在列表中创建新的条目，而是：</p>
 <blockquote>
 <div><ul class="simple">
-<li>Update the <code class="xref c c-member docutils literal"><span class="pre">timestamp</span></code> field.</li>
-<li>Increment <code class="xref c c-member docutils literal"><span class="pre">count</span></code>.</li>
+<li>更新 <code class="xref c c-member docutils literal"><span class="pre">timestamp</span></code> 字段。</li>
+<li>增加 <code class="xref c c-member docutils literal"><span class="pre">count</span></code>。</li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first">To implement the counter facility, add a <code class="xref c c-func docutils literal"><span class="pre">task_info_find_pid()</span></code>
-function that searches for a pid in the existing list.</p>
+<li><p class="first">为了实现计数器功能，请添加一个 <code class="xref c c-func docutils literal"><span class="pre">task_info_find_pid()</span></code> 函数，用于在现有列表中搜索 pid。</p>
 </li>
-<li><p class="first">If found, return the reference to the <code class="xref c c-type docutils literal"><span class="pre">task_info</span></code> struct. If
-not, return <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code>.</p>
+<li><p class="first">如果找到，则返回对 <code class="xref c c-type docutils literal"><span class="pre">task_info</span></code> 结构的引用。如果没有找到，则返回 <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code>。</p>
 </li>
-<li><p class="first">An expiration facility. If a process was added more than 3
-seconds ago and if it does not have a <code class="xref c c-member docutils literal"><span class="pre">count</span></code> greater than 5 then
-it is considered expired and is removed from the list.</p>
+<li><p class="first">过期处理功能。如果一个进程从被添加到现在已超过 3 秒，并且它的 <code class="xref c c-member docutils literal"><span class="pre">count</span></code> 不大于 5，则被视为过期并从列表中删除。</p>
 </li>
-<li><p class="first">The expiration facility is already implemented in the
-<code class="xref c c-func docutils literal"><span class="pre">task_info_remove_expired()</span></code> function.</p>
+<li><p class="first">过期处理功能已经在 <code class="xref c c-func docutils literal"><span class="pre">task_info_remove_expired()</span></code> 函数中实现。</p>
 </li>
 </ul>
 <ol class="arabic">
-<li><p class="first">(TODO 1) Implement the <code class="xref c c-func docutils literal"><span class="pre">task_info_find_pid()</span></code> function.</p>
+<li><p class="first">(TODO 1) 实现 <code class="xref c c-func docutils literal"><span class="pre">task_info_find_pid()</span></code> 函数。</p>
 </li>
-<li><p class="first">(TODO 2) Change a field of an item in the list so it does not
-expire. It must not satisfy a part of the expiration condition
-from <code class="xref c c-func docutils literal"><span class="pre">task_info_remove_expired()</span></code>.</p>
+<li><p class="first">(TODO 2) 更改列表中的一个项目的字段，使其不会过期。它不应满足 <code class="xref c c-func docutils literal"><span class="pre">task_info_remove_expired()</span></code> 中的任何过期条件。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">For <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code>, extract the first element from the list (the one
-referred by <code class="xref c c-member docutils literal"><span class="pre">head.next</span></code>) and set the <code class="xref c c-member docutils literal"><span class="pre">count</span></code>
-field to a large enough value. Use <code class="xref c c-func docutils literal"><span class="pre">atomic_set()</span></code> function.</p>
+<p class="last">要想完成 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code>，可以从列表中提取第一个元素（由 <code class="xref c c-member docutils literal"><span class="pre">head.next</span></code> 引用），并将其 <code class="xref c c-member docutils literal"><span class="pre">count</span></code> 字段设置为足够大的值。使用 <code class="xref c c-func docutils literal"><span class="pre">atomic_set()</span></code> 函数。</p>
 </div>
 </li>
-<li><p class="first">Compile, copy, load and unload the kernel module following the displayed
-messages.
-Kernel module loading will take some time, because <code class="xref c c-func docutils literal"><span class="pre">sleep()</span></code> is
-being called by <code class="xref c c-func docutils literal"><span class="pre">schedule_timeout()</span></code> function.</p>
+<li><p class="first">编译、复制、加载和卸载内核模块，这个过程中请遵从显示的消息来操作。加载内核模块需要一些时间，因为 <code class="xref c c-func docutils literal"><span class="pre">schedule_timeout()</span></code> 函数会调用 <code class="xref c c-func docutils literal"><span class="pre">sleep()</span></code>。</p>
 </li>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="synchronizing-list-work">
-<h3>6. Synchronizing list work<a class="headerlink" href="#synchronizing-list-work" title="Permalink to this headline">¶</a></h3>
-<p>Generate the skeleton for the task named <strong>6-list-sync</strong>.</p>
+<div class="section" id="section-20">
+<h3>6. 同步列表工作<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h3>
+<p>为名为 <strong>6-list-sync</strong> 的任务生成骨架。</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Browse the code and look for <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> string.</li>
-<li>Use a spinlock or a read-write lock to synchronize access to the
-list.</li>
-<li>Compile, load and unload the kernel module.</li>
+<li>浏览代码并查找``TODO 1``字符串。</li>
+<li>使用自旋锁或读写锁来同步对列表的访问。</li>
+<li>编译、加载和卸载内核模块。</li>
 </ol>
 </div></blockquote>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">Always lock data, not code!</p>
+<p class="last">始终锁定数据，而不是代码！</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Read <a class="reference internal" href="#spinlock">Spinlock</a> section of the lab.</p>
+<p class="last">请阅读实验的 <a class="reference internal" href="#section-10">自旋锁</a> 小节。</p>
 </div>
 </div>
-<div class="section" id="test-module-calling-in-our-list-module">
-<h3>7. Test module calling in our list module<a class="headerlink" href="#test-module-calling-in-our-list-module" title="Permalink to this headline">¶</a></h3>
-<p>Generate the skeleton for the task named <strong>7-list-test</strong> and browse
-the contents of the <code class="file docutils literal"><span class="pre">list-test.c</span></code> file. We'll use it as a test
-module. It will call functions exported by the <strong>6-list-sync</strong>
-task. The exported functions are the ones marked with <strong>extern</strong> in
-<code class="file docutils literal"><span class="pre">list-test.c</span></code> file.</p>
-<p>Uncomment the commented code from <code class="file docutils literal"><span class="pre">7-list-test.c</span></code>. Look for <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>.</p>
-<p>To export the above functions from the module located at <code class="file docutils literal"><span class="pre">6-list-sync/</span></code>
-directory, the following steps are required:</p>
+<div class="section" id="section-21">
+<h3>7. 在我们的列表模块中测试模块调用<a class="headerlink" href="#section-21" title="Permalink to this headline">¶</a></h3>
+<p>为名为 <strong>7-list-test</strong> 的任务生成骨架，并浏览 <code class="file docutils literal"><span class="pre">list-test.c</span></code> 文件的内容。我们将使用它作为测试模块。它将调用由 <strong>6-list-sync</strong> 任务导出的函数。在 <code class="file docutils literal"><span class="pre">list-test.c</span></code> 文件中，已经用 <strong>extern</strong> 标记出了导出的函数。</p>
+<p>取消注释 <code class="file docutils literal"><span class="pre">7-list-test.c</span></code> 中的注释代码。查找 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>。</p>
+<p>要从位于 <code class="file docutils literal"><span class="pre">6-list-sync/</span></code> 目录中的模块导出上述函数，需要执行以下步骤：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Functions must not be static.</li>
-<li>Use the <code class="xref c c-macro docutils literal"><span class="pre">EXPORT_SYMBOL</span></code> macro to export the kernel symbols. For
-example: <code class="xref c c-macro docutils literal"><span class="pre">EXPORT_SYMBOL(task_info_remove_expired);</span></code>. The
-macro must be used for each function after the function is defined.
-Browse the code and look for the <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> string in the
-<code class="file docutils literal"><span class="pre">list-sync.c</span></code>.</li>
-<li>Remove from the module from <strong>6-list-sync</strong> the code that avoids the
-expiration of a list item (it is in contradiction to our exercise).</li>
-<li>Compile and load the module from <code class="file docutils literal"><span class="pre">6-list-sync/</span></code>. Once loaded, it
-exposes exported functions and can be used by the test
-module. You can check this by searching for the function names
-in <code class="file docutils literal"><span class="pre">/proc/kallsyms</span></code> before and after loading the module.</li>
-<li>Compile the test module and then load it.</li>
-<li>Use <strong class="command">lsmod</strong> to check that the two modules have been loaded.
-What do you notice?</li>
-<li>Unload the kernel test module.</li>
+<li>函数不能是静态的。</li>
+<li>使用 <code class="xref c c-macro docutils literal"><span class="pre">EXPORT_SYMBOL</span></code> 宏导出内核符号。例如：<code class="xref c c-macro docutils literal"><span class="pre">EXPORT_SYMBOL(task_info_remove_expired);</span></code>。该宏必须在函数定义后使用。浏览代码并查找 <code class="file docutils literal"><span class="pre">list-sync.c</span></code> 中的 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 字符串。</li>
+<li>从 <strong>6-list-sync</strong> 模块中删除避免列表项过期的代码（它与我们的练习相矛盾）。</li>
+<li>编译并加载 <code class="file docutils literal"><span class="pre">6-list-sync/</span></code> 中的模块。一旦加载，它会公开导出的函数，使其可以被测试模块使用。你可以通过分别在加载模块之前和之后在 <code class="file docutils literal"><span class="pre">/proc/kallsyms</span></code> 中搜索函数名称来检查这一点。</li>
+<li>编译测试模块，然后加载它。</li>
+<li>使用 <strong class="command">lsmod</strong> 命令检查这两个模块是否已加载。你注意到了什么？</li>
+<li>卸载内核测试模块。</li>
 </ol>
 </div></blockquote>
-<p>What should be the unload order of the two modules (the module from
-<strong>6-list-sync</strong> and the test module)? What happens if you use another order?</p>
+<p>两个模块（来自 <strong>6-list-sync</strong> 的模块和测试模块）的卸载顺序应该是什么？如果使用其他顺序会发生什么？</p>
 </div>
 </div>
 </div>

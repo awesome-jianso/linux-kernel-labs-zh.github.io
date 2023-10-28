@@ -77,7 +77,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/infrastructure.html">基础设施</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/introduction.html">介绍</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/kernel_modules.html">内核模块</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/kernel_api.html">Kernel API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/kernel_api.html">内核 API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/device_drivers.html">Character device drivers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/interrupts.html">I/O access and Interrupts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/deferred_work.html">Deferred work</a></li>
@@ -514,36 +514,36 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lab2-kernel-api.html">SO2 Lab 02 - Kernel API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#accessing-memory">Accessing memory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#contexts-of-execution">Contexts of execution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#locking">Locking</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#preemptivity">Preemptivity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#linux-kernel-api">Linux Kernel API</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#convention-indicating-errors">Convention indicating errors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#strings-of-characters">Strings of characters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#section-2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#section-3">访问内存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#section-4">执行上下文</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#section-5">锁定</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#preemptivity">可抢占性（preemptivity）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#linux-api">Linux 内核 API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-6">表示错误的约定</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-7">字符串处理</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#printk">printk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#memory-allocation">Memory allocation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#lists">lists</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#spinlock">Spinlock</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#mutex">mutex</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#atomic-variables-1">Atomic variables</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="so2/lab2-kernel-api.html#use-of-atomic-variables">Use of atomic variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-8">内存分配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-9">列表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-10">自旋锁</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#mutex">互斥锁（Mutex）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-11">原子变量</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="so2/lab2-kernel-api.html#section-12">原子变量的使用</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#atomic-bitwise-operations">Atomic bitwise operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-13">原子位操作</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#memory-allocation-in-linux-kernel">1. Memory allocation in Linux kernel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#sleeping-in-atomic-context">2. Sleeping in atomic context</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#working-with-kernel-memory">3. Working with kernel memory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#working-with-kernel-lists">4. Working with kernel lists</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#working-with-kernel-lists-for-process-handling">5. Working with kernel lists for process handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#synchronizing-list-work">6. Synchronizing list work</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#test-module-calling-in-our-list-module">7. Test module calling in our list module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab2-kernel-api.html#section-14">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-15">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#linux">1. Linux 内核中的内存分配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-16">2. 在原子上下文中睡眠</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-17">3. 使用内核内存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-18">4. 使用内核列表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-19">5. 使用内核列表进行进程处理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-20">6. 同步列表工作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab2-kernel-api.html#section-21">7. 在我们的列表模块中测试模块调用</a></li>
 </ul>
 </li>
 </ul>
@@ -1430,37 +1430,37 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/kernel_api.html">Kernel API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#accessing-memory">Accessing memory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#contexts-of-execution">Contexts of execution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#locking">Locking</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#preemptivity">Preemptivity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#linux-kernel-api">Linux Kernel API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#convention-indicating-errors">Convention indicating errors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#strings-of-characters">Strings of characters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/kernel_api.html">内核 API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#section-1">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#section-2">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#section-3">访问内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#section-4">执行上下文</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#section-5">锁定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#preemptivity">可抢占性（preemptivity）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#linux-api">Linux 内核 API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-6">表示错误的约定</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-7">字符串处理</a></li>
 <li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#printk">printk</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#memory-allocation">Memory allocation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#lists">lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#spinlock">Spinlock</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#mutex">mutex</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#atomic-variables-1">Atomic variables</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="labs/kernel_api.html#use-of-atomic-variables">Use of atomic variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-8">内存分配</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-9">列表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-10">自旋锁</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#mutex">互斥锁（Mutex）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-11">原子变量</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="labs/kernel_api.html#section-12">原子变量的使用</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#atomic-bitwise-operations">Atomic bitwise operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-13">原子位操作</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#intro">0. Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#memory-allocation-in-linux-kernel">1. Memory allocation in Linux kernel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#sleeping-in-atomic-context">2. Sleeping in atomic context</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#working-with-kernel-memory">3. Working with kernel memory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#working-with-kernel-lists">4. Working with kernel lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#working-with-kernel-lists-for-process-handling">5. Working with kernel lists for process handling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#synchronizing-list-work">6. Synchronizing list work</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#test-module-calling-in-our-list-module">7. Test module calling in our list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_api.html#section-14">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-15">0. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#linux">1. Linux 内核中的内存分配</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-16">2. 在原子上下文中睡眠</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-17">3. 使用内核内存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-18">4. 使用内核列表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-19">5. 使用内核列表进行进程处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-20">6. 同步列表工作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_api.html#section-21">7. 在我们的列表模块中测试模块调用</a></li>
 </ul>
 </li>
 </ul>
