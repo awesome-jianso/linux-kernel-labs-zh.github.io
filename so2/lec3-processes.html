@@ -455,12 +455,12 @@ static inline struct thread_info *current_thread_info(void)
 <span class="cm">     */</span>
     <span class="n">pushfl</span>
 
-    <span class="cm">/* 切换堆栈 */</span>
-    <span class="n">movl</span>    <span class="o">%</span><span class="n">esp</span><span class="p">,</span> <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">eax</span><span class="p">)</span>
-<span class="hll">    <span class="n">movl</span>    <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">esp</span>
-</span><span class="hll">
-</span><span class="hll">  <span class="cp">#ifdef CONFIG_STACKPROTECTOR</span>
-</span>    <span class="n">movl</span>    <span class="n">TASK_stack_canary</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">ebx</span>
+<span class="hll">    <span class="cm">/* 切换堆栈 */</span>
+</span><span class="hll">    <span class="n">movl</span>    <span class="o">%</span><span class="n">esp</span><span class="p">,</span> <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">eax</span><span class="p">)</span>
+</span><span class="hll">    <span class="n">movl</span>    <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">esp</span>
+</span>
+  <span class="cp">#ifdef CONFIG_STACKPROTECTOR</span>
+    <span class="n">movl</span>    <span class="n">TASK_stack_canary</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">ebx</span>
     <span class="n">movl</span>    <span class="o">%</span><span class="n">ebx</span><span class="p">,</span> <span class="n">PER_CPU_VAR</span><span class="p">(</span><span class="n">stack_canary</span><span class="p">)</span><span class="o">+</span><span class="n">stack_canary_offset</span>
   <span class="cp">#endif</span>
 
@@ -478,8 +478,8 @@ static inline struct thread_info *current_thread_info(void)
     <span class="n">popl</span>    <span class="o">%</span><span class="n">esi</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">edi</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">ebx</span>
-    <span class="n">popl</span>    <span class="o">%</span><span class="n">ebp</span>
-
+<span class="hll">    <span class="n">popl</span>    <span class="o">%</span><span class="n">ebp</span>
+</span>
     <span class="n">jmp</span>     <span class="n">__switch_to</span>
   <span class="n">SYM_CODE_END</span><span class="p">(</span><span class="n">__switch_to_asm</span><span class="p">)</span>
   <span class="p">.</span><span class="n">popsection</span>
