@@ -758,49 +758,43 @@ Filesystem</li>
 <h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p>To solve exercises, you need to perform these steps:</p>
+<p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
-<li>prepare skeletons from templates</li>
-<li>build modules</li>
-<li>copy modules to the VM</li>
-<li>start the VM and test the module in the VM.</li>
+<li>用模板来准备骨架</li>
+<li>构建模块</li>
+<li>将模块复制到虚拟机</li>
+<li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>The current lab name is filesystems. See the exercises for the task name.</p>
-<p>The skeleton code is generated from full source examples located in
-<code class="file docutils literal"><span class="pre">tools/labs/templates</span></code>. To solve the tasks, start by generating
-the skeleton code for a complete lab:</p>
+<p>当前实验名称为 filesystems。请参阅任务名称的练习。</p>
+<p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
 </pre></div>
 </div>
-<p>You can also generate the skeleton for a single task, using</p>
+<p>你还可以使用以下命令为单个任务生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt;/&lt;task name&gt; make skels
 </pre></div>
 </div>
-<p>Once the skeleton drivers are generated, build the source:</p>
+<p>生成骨架驱动程序后，构建源代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make build
 </pre></div>
 </div>
-<p>Then, copy the modules and start the VM:</p>
+<p>然后，复制模块并启动虚拟机：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make copy
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>The modules are placed in /home/root/skels/filesystems/&lt;task_name&gt;.</p>
-<p>Alternatively, we can copy files via <strong class="command">scp</strong>, in order to avoid restarting the VM.
-For additional details about connecting to the VM via the network, please check <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>.</p>
-<p class="last">Review the <a class="reference internal" href="#exercises">Exercises</a> section for more detailed information.</p>
+<p>模块将放置在 /home/root/skels/filesystems/&lt;task_name&gt; 目录中。</p>
+<p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
+<p class="last">请查看 <a class="reference internal" href="#exercises">Exercises</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>Before starting the exercises or generating the skeletons, please run <strong>git pull</strong> inside the Linux repo,
-to make sure you have the latest version of the exercises.</p>
-<p>If you have local changes, the pull command will fail. Check for local changes using <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code>.
-If you want to keep them, run <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code> before <code class="docutils literal"><span class="pre">pull</span></code> and <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code> after.
-To discard the changes, run <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>.</p>
-<p class="last">If you already generated the skeleton before <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> you will need to generate it again.</p>
+<p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
+<p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
+<p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
