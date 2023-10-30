@@ -61,7 +61,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="lectures/intro.html">介绍</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/syscalls.html">系统调用</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/processes.html">Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/processes.html">进程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/interrupts.html">Interrupts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/smp.html">Symmetric Multi-Processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">Address Space</a></li>
@@ -210,40 +210,40 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec3-processes.html">SO2 Lecture 03 - Processes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#lecture-objectives">Lecture objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#processes-and-threads">Processes and threads</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#overview-of-process-resources">Overview of process resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#section-1">课程目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#section-2">进程和线程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-3">进程资源概述</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#struct-task-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#inspecting-task-struct">Inspecting task_struct</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#quiz-inspect-a-task-to-determine-opened-files">Quiz: Inspect a task to determine opened files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#threads">Threads</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#the-clone-system-call">The clone system call</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#namespaces-and-containers">Namespaces and &quot;containers&quot;</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#accessing-the-current-process">Accessing the current process</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#quiz-previous-implementation-for-current-x86">Quiz: previous implementation for current (x86)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#task-struct">检查 task_struct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-4">测验：查看任务以确定打开的文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-5">线程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-6">克隆系统调用</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-7">命名空间和“容器”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-8">访问当前进程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#current-x86">测验：current 宏的先前实现（x86）</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#context-switching">Context switching</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#quiz-context-switch">Quiz: context switch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#section-9">上下文切换</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-10">测验：上下文切换</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#blocking-and-waking-up-tasks">Blocking and waking up tasks</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#task-states">Task states</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#blocking-the-current-thread">Blocking the current thread</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#waking-up-a-task">Waking up a task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#section-11">阻塞和唤醒任务</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-12">任务状态</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-13">阻塞当前线程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-14">唤醒任务</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#preempting-tasks">Preempting tasks</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#non-preemptive-kernel">Non preemptive kernel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#preemptive-kernel">Preemptive kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#section-15">任务抢占</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-16">非抢占式内核</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-17">抢占式内核</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#process-context">Process context</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#kernel-threads">Kernel threads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#section-18">进程上下文</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#section-19">内核线程</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#using-gdb-scripts-for-kernel-inspection">Using gdb scripts for kernel inspection</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#quiz-kernel-gdb-scripts">Quiz: Kernel gdb scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec3-processes.html#gdb">使用 gdb 脚本进行内核检查</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec3-processes.html#gdb-1">测验：内核 gdb 脚本</a></li>
 </ul>
 </li>
 </ul>
@@ -1099,41 +1099,41 @@
 <li class="toctree-l2"><a class="reference internal" href="lectures/syscalls.html#section-5">通过系统调用访问用户空间</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/processes.html">Processes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#lecture-objectives">Lecture objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#processes-and-threads">Processes and threads</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#overview-of-process-resources">Overview of process resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/processes.html">进程</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#section-2">课程目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#section-3">进程和线程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-4">进程资源概述</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#struct-task-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#inspecting-task-struct">Inspecting task_struct</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#quiz-inspect-a-task-to-determine-opened-files">Quiz: Inspect a task to determine opened files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#threads">Threads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#the-clone-system-call">The clone system call</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#namespaces-and-containers">Namespaces and &quot;containers&quot;</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#accessing-the-current-process">Accessing the current process</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#quiz-previous-implementation-for-current-x86">Quiz: previous implementation for current (x86)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#task-struct">检查 task_struct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-5">测验：查看任务以确定打开的文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-6">线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-7">克隆系统调用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-8">命名空间和“容器”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-9">访问当前进程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#current-x86">测验：current 宏的先前实现（x86）</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#context-switching">Context switching</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#quiz-context-switch">Quiz: context switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#section-10">上下文切换</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-11">测验：上下文切换</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#blocking-and-waking-up-tasks">Blocking and waking up tasks</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#task-states">Task states</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#blocking-the-current-thread">Blocking the current thread</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#waking-up-a-task">Waking up a task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#section-12">阻塞和唤醒任务</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-13">任务状态</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-14">阻塞当前线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-15">唤醒任务</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#preempting-tasks">Preempting tasks</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#non-preemptive-kernel">Non preemptive kernel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#preemptive-kernel">Preemptive kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#section-16">任务抢占</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-17">非抢占式内核</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-18">抢占式内核</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#process-context">Process context</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#kernel-threads">Kernel threads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#section-19">进程上下文</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#section-20">内核线程</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#using-gdb-scripts-for-kernel-inspection">Using gdb scripts for kernel inspection</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#quiz-kernel-gdb-scripts">Quiz: Kernel gdb scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/processes.html#gdb">使用 gdb 脚本进行内核检查</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/processes.html#gdb-1">测验：内核 gdb 脚本</a></li>
 </ul>
 </li>
 </ul>

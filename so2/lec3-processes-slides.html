@@ -62,49 +62,48 @@
 
 
 </article>
-<article class="admonition-processes-and-threads slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Processes and threads</h2>
+<h2>进程和线程</h2>
 
 <ul class="simple">
-<li>Process and threads</li>
-<li>Context switching</li>
-<li>Blocking and waking up</li>
-<li>Process context</li>
+<li>进程和线程</li>
+<li>上下文切换</li>
+<li>阻塞和唤醒</li>
+<li>进程上下文</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-what-is-a-process slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>What is a process?</h2>
+<h2>什么是进程？</h2>
 
 <table class="hlist"><tr><td><ul class="simple">
-<li>An address space</li>
-<li>One or more threads</li>
-<li>Opened files</li>
-<li>Sockets</li>
-<li>Semaphores</li>
+<li>地址空间</li>
+<li>一个或多个线程</li>
+<li>打开的文件</li>
+<li>套接字（Socket）</li>
+<li>信号量（semaphore）</li>
 </ul>
 </td><td><ul class="simple">
-<li>Shared memory regions</li>
-<li>Timers</li>
-<li>Signal handlers</li>
-<li>Many other resources and status information</li>
+<li>共享内存区域</li>
+<li>定时器</li>
+<li>信号处理程序</li>
+<li>许多其他资源和状态信息</li>
 </ul>
 </td></tr></table>
-<p>All this information is grouped in the Process Control Group
-(PCB). In Linux this is <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>.</p>
+<p>所有这些信息都被组织在进程控制块（PCB）中。在 Linux 中，PCB 对应的结构体是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>。</p>
 
 
 
 
 </article>
-<article class="admonition-overview-of-process-resources slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Overview of process resources</h2>
+<h2>进程资源概述</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>                +-------------------------------------------------------------------+
                 | dr-x------    2 tavi tavi 0  2021 03 14 12:34 .                   |
@@ -181,42 +180,39 @@ struct task_struct {
 
 
 </article>
-<article class="admonition-quiz-inspect-opened-files slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Quiz: Inspect opened files</h2>
+<h2>测验：查看打开的文件</h2>
 
-<p>Use the debugger to inspect the process named syslogd.</p>
+<p>使用调试器来检查名为 syslogd 的进程。</p>
 <ul class="simple">
-<li>What command should we use to list the opened file descriptors?</li>
-<li>How many file descriptors are opened?</li>
-<li>What command should we use the determine the file name for opened file descriptor 3?</li>
-<li>What is the filename for file descriptor 3?</li>
+<li>我们应该使用什么命令列出已打开的文件描述符？</li>
+<li>有多少个文件描述符已打开？</li>
+<li>我们应该使用什么命令来确定打开文件描述符 3 的文件名？</li>
+<li>文件描述符 3 的文件名是什么？</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-threads slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Threads</h2>
+<h2>线程</h2>
 
 <ul class="simple">
-<li>Each thread has its own stack and together with the register
-values it determines the thread execution state</li>
-<li>A thread runs in the context of a process and all threads in the
-same process share the resources</li>
-<li>The kernel schedules threads not processes and user-level threads
-(e.g. fibers, coroutines, etc.) are not visible at the kernel level</li>
+<li>每个线程都拥有独立的堆栈，这个堆栈与线程的寄存器的值共同决定了线程的运行状态</li>
+<li>线程在进程的上下文中运行，同一进程中的所有线程共享资源</li>
+<li>内核调度的是线程而不是进程，用户级线程（例如纤程（fiber）、协程（coroutine）等）在内核级别不可见</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-classic-implementation-windows slide level-2">
+<article class="admonition-windows slide level-2">
 
-<h2>Classic implementation (Windows)</h2>
+<h2>典型实现方式（Windows）</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-4b5c1874d3924d9716f26d4893a3e4f313bf1c43.png" src="../_images/ditaa-4b5c1874d3924d9716f26d4893a3e4f313bf1c43.png" />
@@ -225,9 +221,9 @@ same process share the resources</li>
 
 
 </article>
-<article class="admonition-linux-implementation slide level-2">
+<article class="admonition-linux slide level-2">
 
-<h2>Linux implementation</h2>
+<h2>Linux 实现</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-fd771038e88b95def30ae9bd4df0b7bd6b7b3503.png" src="../_images/ditaa-fd771038e88b95def30ae9bd4df0b7bd6b7b3503.png" />
@@ -236,72 +232,60 @@ same process share the resources</li>
 
 
 </article>
-<article class="admonition-the-clone-system-call slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>The clone system call</h2>
+<h2>克隆系统调用</h2>
 
 <ul class="simple">
-<li>CLONE_FILES - shares the file descriptor table with the parent</li>
-<li>CLONE_VM - shares the address space with the parent</li>
-<li>CLONE_FS - shares the filesystem information (root directory,
-current directory) with the parent</li>
-<li>CLONE_NEWNS - does not share the mount namespace with the parent</li>
-<li>CLONE_NEWIPC - does not share the IPC namespace (System V IPC
-objects, POSIX message queues) with the parent</li>
-<li>CLONE_NEWNET - does not share the networking namespaces (network
-interfaces, routing table) with the parent</li>
+<li>CLONE_FILES——与父进程共享文件描述符表</li>
+<li>CLONE_VM——与父进程共享地址空间</li>
+<li>CLONE_FS——与父进程共享文件系统信息（根目录，当前目录）</li>
+<li>CLONE_NEWNS——不与父进程共享挂载命名空间（mount namespace）</li>
+<li>CLONE_NEWIPC——不与父进程共享 IPC 命名空间（System V IPC 对象，POSIX 消息队列）</li>
+<li>CLONE_NEWNET——不与父进程共享网络命名空间（网络接口，路由表）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-namespaces-and-containers slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Namespaces and &quot;containers&quot;</h2>
+<h2>命名空间和“容器”</h2>
 
 <ul class="simple">
-<li>Containers = a form of lightweight virtual machines</li>
-<li>Container based technologies: LXC, docker</li>
-<li>Containers are built of top of kernel namespaces</li>
-<li>Kernel namespaces allows isolation of otherwise globally visible
-resources</li>
-<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">nsproxy</span></code> has multiple namespaces each of which
-can be selectively shared between groups of processes</li>
-<li>At boot initial namespaces are created (e.g. <code class="xref c c-data docutils literal"><span class="pre">init_net</span></code>)
-that are by default shared between new processes (e.g. list of
-available network interfaces)</li>
-<li>New namespace can be created a runtime and new processes can
-point to these new namespaces</li>
+<li>容器是轻量级虚拟机的一种形式</li>
+<li>基于容器的技术：LXC、Docker</li>
+<li>容器是建立在内核命名空间之上的</li>
+<li>内核命名空间允许隔离资源，如果不隔离资源的话，这些资源会在全局可见</li>
+<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">nsproxy</span></code> 具有多个命名空间，每个命名空间可以在进程组之间选择性地共享</li>
+<li>在启动时初始命名空间会被创建（例如： c:<code class="xref c c-data docutils literal"><span class="pre">init_net</span></code>）。默认情况下，新进程之间共享这些命名空间（例如：可用网络接口的列表）</li>
+<li>可以在运行时创建新的命名空间，并且新进程可以指向这些新的命名空间</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-accessing-the-current-process slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Accessing the current process</h2>
+<h2>访问当前进程</h2>
 
-<p>Accessing the current process is a frequent operation:</p>
+<p>访问当前进程是一个频繁的操作：</p>
 <ul class="simple">
-<li>opening a file needs access to <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>'s
-file field</li>
-<li>mapping a new file needs access to <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>'s
-mm field</li>
-<li>Over 90% of the system calls needs to access the current process
-structure so it needs to be fast</li>
-<li>The <code class="xref c c-macro docutils literal"><span class="pre">current</span></code> macro is available to access to current
-process's <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code></li>
+<li>打开文件需要访问 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 的 file 字段</li>
+<li>映射新文件需要访问 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 的 mm 字段</li>
+<li>超过 90% 的系统调用需要访问当前进程结构体，因此访问需要很快</li>
+<li><code class="xref c c-macro docutils literal"><span class="pre">current</span></code> 宏可用于访问当前进程的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code></li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-accessing-the-current-process-on-x86 slide level-2">
+<article class="admonition-x86 slide level-2">
 
-<h2>Accessing the current process on x86</h2>
+<h2>在 x86 上访问当前进程</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-019489e686a2f60f1594e37458cfcb10320eae0f.png" src="../_images/ditaa-019489e686a2f60f1594e37458cfcb10320eae0f.png" />
@@ -310,14 +294,14 @@ process's <code class="xref c c-type docutils literal"><span class="pre">struct<
 
 
 </article>
-<article class="admonition-previous-implementation-for-current-x86 slide level-2">
+<article class="admonition-current-x86 slide level-2">
 
-<h2>Previous implementation for current (x86)</h2>
+<h2>current 宏的先前实现（x86）</h2>
 
-<div class="highlight-c"><div class="highlight"><pre><span></span>/* how to get the current stack pointer from C */
+<div class="highlight-c"><div class="highlight"><pre><span></span>/* 如何用 C 语言获取当前堆栈指针 */
 register unsigned long current_stack_pointer asm(&quot;esp&quot;) __attribute_used__;
 
-/* how to get the thread information struct from C */
+/* 如何用 C 语言获取线程信息结构体 */
 static inline struct thread_info *current_thread_info(void)
 {
    return (struct thread_info *)(current_stack_pointer &amp; ~(THREAD_SIZE – 1));
@@ -331,21 +315,20 @@ static inline struct thread_info *current_thread_info(void)
 
 
 </article>
-<article class="admonition-quiz-previous-implementation-for-current-x86 slide level-2">
+<article class="admonition-quiz-current-x86 slide level-2">
 
-<h2>Quiz: previous implementation for current (x86)</h2>
+<h2>Quiz: current 宏的先前实现（x86）</h2>
 
-<p>What is the size of <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">thread_info</span></code>?</p>
-<p>Which of the following are potential valid sizes for
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">thread_info</span></code>: 4095, 4096, 4097?</p>
+<p>结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">thread_info</span></code> 的大小是多少？</p>
+<p>下列哪个是可能的有效大小：4095、4096、4097？</p>
 
 
 
 
 </article>
-<article class="admonition-overview-the-context-switching-processes slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Overview the context switching processes</h2>
+<h2>上下文切换过程概述</h2>
 
 <img alt="../_images/ditaa-f6b228332baf165f498d8a1bb0bc0bdb91ae50c5.png" src="../_images/ditaa-f6b228332baf165f498d8a1bb0bc0bdb91ae50c5.png" />
 
@@ -364,9 +347,8 @@ static inline struct thread_info *current_thread_info(void)
     <span class="n">prepare_task_switch</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">next</span><span class="p">);</span>
 
     <span class="cm">/*</span>
-<span class="cm">     * For paravirt, this is coupled with an exit in switch_to to</span>
-<span class="cm">     * combine the page table reload and the switch backend into</span>
-<span class="cm">     * one hypercall.</span>
+<span class="cm">     * paravirt 中，这与 switch_to 中的 exit 配对，</span>
+<span class="cm">     * 将页表重载和后端切换合并为一个超级调用（hypercall）。</span>
 <span class="cm">     */</span>
     <span class="n">arch_start_context_switch</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>
 
@@ -377,28 +359,25 @@ static inline struct thread_info *current_thread_info(void)
 <span class="cm">     * kernel -&gt;   user   switch + mmdrop() active</span>
 <span class="cm">     *   user -&gt;   user   switch</span>
 <span class="cm">     */</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">)</span> <span class="p">{</span>                                <span class="c1">// to kernel</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">)</span> <span class="p">{</span>                                <span class="c1">// 到内核</span>
         <span class="n">enter_lazy_tlb</span><span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span><span class="p">,</span> <span class="n">next</span><span class="p">);</span>
 
         <span class="n">next</span><span class="o">-&gt;</span><span class="n">active_mm</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">)</span>                           <span class="c1">// from user</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">)</span>                           <span class="c1">// 来自用户</span>
             <span class="n">mmgrab</span><span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span><span class="p">);</span>
         <span class="k">else</span>
             <span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>                                        <span class="c1">// to user</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>                                        <span class="c1">// 到用户</span>
         <span class="n">membarrier_switch_mm</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span><span class="p">,</span> <span class="n">next</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">);</span>
         <span class="cm">/*</span>
-<span class="cm">         * sys_membarrier() requires an smp_mb() between setting</span>
-<span class="cm">         * rq-&gt;curr / membarrier_switch_mm() and returning to userspace.</span>
+<span class="cm">         * sys_membarrier() 在设置 rq-&gt;curr / membarrier_switch_mm() 和返回用户空间之间需要一个 smp_mb()。</span>
 <span class="cm">         *</span>
-<span class="cm">         * The below provides this either through switch_mm(), or in</span>
-<span class="cm">         * case &#39;prev-&gt;active_mm == next-&gt;mm&#39; through</span>
-<span class="cm">         * finish_task_switch()&#39;s mmdrop().</span>
+<span class="cm">         * 下面通过 switch_mm() 或者在 &#39;prev-&gt;active_mm == next-&gt;mm&#39; 的情况下通过 finish_task_switch() 的 mmdrop() 来提供这个功能。</span>
 <span class="cm">         */</span>
         <span class="n">switch_mm_irqs_off</span><span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span><span class="p">,</span> <span class="n">next</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">,</span> <span class="n">next</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">)</span> <span class="p">{</span>                        <span class="c1">// from kernel</span>
-            <span class="cm">/* will mmdrop() in finish_task_switch(). */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">mm</span><span class="p">)</span> <span class="p">{</span>                        <span class="c1">// 来自内核</span>
+            <span class="cm">/* 在 finish_task_switch() 中进行 mmdrop()。 */</span>
             <span class="n">rq</span><span class="o">-&gt;</span><span class="n">prev_mm</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span><span class="p">;</span>
             <span class="n">prev</span><span class="o">-&gt;</span><span class="n">active_mm</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
         <span class="p">}</span>
@@ -408,7 +387,7 @@ static inline struct thread_info *current_thread_info(void)
 
     <span class="n">prepare_lock_switch</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="n">rf</span><span class="p">);</span>
 
-    <span class="cm">/* Here we just switch the register state and the stack. */</span>
+    <span class="cm">/* 在这里我们只切换寄存器状态和堆栈。 */</span>
     <span class="n">switch_to</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="n">prev</span><span class="p">);</span>
     <span class="n">barrier</span><span class="p">();</span>
 
@@ -438,50 +417,45 @@ static inline struct thread_info *current_thread_info(void)
 <span class="p">.</span><span class="n">pushsection</span> <span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="s">&quot;ax&quot;</span>
 <span class="n">SYM_CODE_START</span><span class="p">(</span><span class="n">__switch_to_asm</span><span class="p">)</span>
     <span class="cm">/*</span>
-<span class="cm">     * Save callee-saved registers</span>
-<span class="cm">     * This must match the order in struct inactive_task_frame</span>
+<span class="cm">     * 保存被调用者保存的寄存器</span>
+<span class="cm">     * 其必须与 struct inactive_task_frame 中的顺序匹配</span>
 <span class="cm">     */</span>
     <span class="n">pushl</span>   <span class="o">%</span><span class="n">ebp</span>
     <span class="n">pushl</span>   <span class="o">%</span><span class="n">ebx</span>
     <span class="n">pushl</span>   <span class="o">%</span><span class="n">edi</span>
     <span class="n">pushl</span>   <span class="o">%</span><span class="n">esi</span>
     <span class="cm">/*</span>
-<span class="cm">     * Flags are saved to prevent AC leakage. This could go</span>
-<span class="cm">     * away if objtool would have 32bit support to verify</span>
-<span class="cm">     * the STAC/CLAC correctness.</span>
+<span class="cm">     * 保存标志位以防止 AC 泄漏。如果 objtool 支持 32 位，则可以消除此项需求，以验证 STAC/CLAC 的正确性。</span>
 <span class="cm">     */</span>
     <span class="n">pushfl</span>
 
-<span class="hll">    <span class="cm">/* switch stack */</span>
-</span><span class="hll">    <span class="n">movl</span>    <span class="o">%</span><span class="n">esp</span><span class="p">,</span> <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">eax</span><span class="p">)</span>
-</span><span class="hll">    <span class="n">movl</span>    <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">esp</span>
-</span>
-  <span class="cp">#ifdef CONFIG_STACKPROTECTOR</span>
-    <span class="n">movl</span>    <span class="n">TASK_stack_canary</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">ebx</span>
+    <span class="cm">/* 切换堆栈 */</span>
+    <span class="n">movl</span>    <span class="o">%</span><span class="n">esp</span><span class="p">,</span> <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">eax</span><span class="p">)</span>
+<span class="hll">    <span class="n">movl</span>    <span class="n">TASK_threadsp</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">esp</span>
+</span><span class="hll">
+</span><span class="hll">  <span class="cp">#ifdef CONFIG_STACKPROTECTOR</span>
+</span>    <span class="n">movl</span>    <span class="n">TASK_stack_canary</span><span class="p">(</span><span class="o">%</span><span class="n">edx</span><span class="p">),</span> <span class="o">%</span><span class="n">ebx</span>
     <span class="n">movl</span>    <span class="o">%</span><span class="n">ebx</span><span class="p">,</span> <span class="n">PER_CPU_VAR</span><span class="p">(</span><span class="n">stack_canary</span><span class="p">)</span><span class="o">+</span><span class="n">stack_canary_offset</span>
   <span class="cp">#endif</span>
 
   <span class="cp">#ifdef CONFIG_RETPOLINE</span>
     <span class="cm">/*</span>
-<span class="cm">     * When switching from a shallower to a deeper call stack</span>
-<span class="cm">     * the RSB may either underflow or use entries populated</span>
-<span class="cm">     * with userspace addresses. On CPUs where those concerns</span>
-<span class="cm">     * exist, overwrite the RSB with entries which capture</span>
-<span class="cm">     * speculative execution to prevent attack.</span>
+<span class="cm">     * 当从较浅的调用堆栈切换到较深的堆栈时，RSB 可能会下溢或使用填充有用户空间地址的条目。</span>
+<span class="cm">     * 在存在这些问题的 CPU 上，用捕获推测执行的条目覆盖 RSB，以防止攻击。</span>
 <span class="cm">     */</span>
     <span class="n">FILL_RETURN_BUFFER</span> <span class="o">%</span><span class="n">ebx</span><span class="p">,</span> <span class="n">RSB_CLEAR_LOOPS</span><span class="p">,</span> <span class="n">X86_FEATURE_RSB_CTXSW</span>
     <span class="cp">#endif</span>
 
-    <span class="cm">/* Restore flags or the incoming task to restore AC state. */</span>
+    <span class="cm">/* 恢复任务的标志位以恢复 AC 状态。 */</span>
     <span class="n">popfl</span>
-    <span class="cm">/* restore callee-saved registers */</span>
+    <span class="cm">/* 恢复被调用者保存的寄存器 */</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">esi</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">edi</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">ebx</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">ebp</span>
 
-<span class="hll">    <span class="n">jmp</span>     <span class="n">__switch_to</span>
-</span>  <span class="n">SYM_CODE_END</span><span class="p">(</span><span class="n">__switch_to_asm</span><span class="p">)</span>
+    <span class="n">jmp</span>     <span class="n">__switch_to</span>
+  <span class="n">SYM_CODE_END</span><span class="p">(</span><span class="n">__switch_to_asm</span><span class="p">)</span>
   <span class="p">.</span><span class="n">popsection</span>
 </pre></div>
 </div>
@@ -490,9 +464,9 @@ static inline struct thread_info *current_thread_info(void)
 
 
 </article>
-<article class="admonition-inspecting-task-struct slide level-2">
+<article class="admonition-task-struct slide level-2">
 
-<h2>Inspecting task_struct</h2>
+<h2>检查 task_struct</h2>
 
 <p>&nbsp;</p>
 <asciinema-player src="../_images/context_switch.cast"></asciinema-player>
@@ -500,45 +474,43 @@ static inline struct thread_info *current_thread_info(void)
 
 
 </article>
-<article class="admonition-quiz-context-switch slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Quiz: context switch</h2>
+<h2>测验：上下文切换</h2>
 
-<p>We are executing a context switch. Select all of the statements that are true.</p>
+<p>假设我们正在执行上下文切换，请选择所有正确的陈述。</p>
 <ul class="simple">
-<li>the ESP register is saved in the task structure</li>
-<li>the EIP register is saved in the task structure</li>
-<li>general registers are saved in the task structure</li>
-<li>the ESP register is saved on the stack</li>
-<li>the EIP register is saved on the stack</li>
-<li>general registers are saved on the stack</li>
+<li>ESP 寄存器被保存在 task 结构中</li>
+<li>EIP 寄存器被保存在 task 结构中</li>
+<li>通用寄存器被保存在 task 结构中</li>
+<li>ESP 寄存器被保存在堆栈中</li>
+<li>EIP 寄存器被保存在堆栈中</li>
+<li>通用寄存器被保存在堆栈中</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-task-states slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Task states</h2>
+<h2>任务状态</h2>
 
-<img alt="../_images/ditaa-0b8cde2be9bbd195ac9dcaeac978a8bbe0d3b805.png" src="../_images/ditaa-0b8cde2be9bbd195ac9dcaeac978a8bbe0d3b805.png" />
+<img alt="../_images/ditaa-54b40ea6fbe752f6485ac3d42063a1ec47a2ef69.png" src="../_images/ditaa-54b40ea6fbe752f6485ac3d42063a1ec47a2ef69.png" />
 
 
 
 
 </article>
-<article class="admonition-blocking-the-current-thread slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Blocking the current thread</h2>
+<h2>阻塞当前线程</h2>
 
 <ul class="simple">
-<li>Set the current thread state to TASK_UINTERRUPTIBLE or
-TASK_INTERRUPTIBLE</li>
-<li>Add the task to a waiting queue</li>
-<li>Call the scheduler which will pick up a new task from the READY
-queue</li>
-<li>Do the context switch to the new task</li>
+<li>将当前线程状态设置为 TASK_UINTERRUPTIBLE 或 TASK_INTERRUPTIBLE</li>
+<li>将任务添加到等待队列中</li>
+<li>调用调度程序，从 READY 队列中选择一个新任务</li>
+<li>进行上下文切换到新任务</li>
 </ul>
 
 
@@ -550,16 +522,14 @@ queue</li>
 <h2>wait_event</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm"> * wait_event - sleep until a condition gets true</span>
-<span class="cm"> * @wq_head: the waitqueue to wait on</span>
-<span class="cm"> * @condition: a C expression for the event to wait for</span>
+<span class="cm"> * wait_event——在条件为真之前一直保持睡眠状态</span>
+<span class="cm"> * @wq_head: 等待队列</span>
+<span class="cm"> * @condition: 用于等待的事件的 C 表达式</span>
 <span class="cm"> *</span>
-<span class="cm"> * The process is put to sleep (TASK_UNINTERRUPTIBLE) until the</span>
-<span class="cm"> * @condition evaluates to true. The @condition is checked each time</span>
-<span class="cm"> * the waitqueue @wq_head is woken up.</span>
+<span class="cm"> * 进程会进入睡眠状态（TASK_UNINTERRUPTIBLE），直到 @condition 为真为止。</span>
+<span class="cm"> * 每次唤醒等待队列 @wq_head 时，都会检查 @condition。</span>
 <span class="cm"> *</span>
-<span class="cm"> * wake_up() has to be called after changing any variable that could</span>
-<span class="cm"> * change the result of the wait condition.</span>
+<span class="cm"> * 在更改任何可能改变等待条件结果的变量后，必须调用 wake_up()。</span>
 <span class="cm"> */</span>
 <span class="cp">#define wait_event(wq_head, condition)            \</span>
 <span class="cp">do {                                              \</span>
@@ -574,21 +544,18 @@ queue</li>
 <span class="cp">                        schedule())</span>
 
 <span class="cm">/*</span>
-<span class="cm"> * The below macro ___wait_event() has an explicit shadow of the __ret</span>
-<span class="cm"> * variable when used from the wait_event_*() macros.</span>
+<span class="cm"> * 下面的宏 ___wait_event() 在 wait_event_*() 宏中使用时，有一个显式的 __ret</span>
+<span class="cm"> * 变量的影子。</span>
 <span class="cm"> *</span>
-<span class="cm"> * This is so that both can use the ___wait_cond_timeout() construct</span>
-<span class="cm"> * to wrap the condition.</span>
+<span class="cm"> * 这是为了两者都可以使用 ___wait_cond_timeout() 结构来包装条件。</span>
 <span class="cm"> *</span>
-<span class="cm"> * The type inconsistency of the wait_event_*() __ret variable is also</span>
-<span class="cm"> * on purpose; we use long where we can return timeout values and int</span>
-<span class="cm"> * otherwise.</span>
+<span class="cm"> * wait_event_*() 中 __ret 变量的类型不一致也是有意而为的；我们在可以返回超时值的情况下使用 long，否则使用 int。</span>
 <span class="cm"> */</span>
 <span class="cp">#define ___wait_event(wq_head, condition, state, exclusive, ret, cmd)    \</span>
 <span class="cp">({                                                                       \</span>
 <span class="cp">    __label__ __out;                                                     \</span>
 <span class="cp">    struct wait_queue_entry __wq_entry;                                  \</span>
-<span class="cp">    long __ret = ret;       </span><span class="cm">/* explicit shadow */</span><span class="cp">                        \</span>
+<span class="cp">    long __ret = ret;       </span><span class="cm">/* 显式影子变量 */</span><span class="cp">                        \</span>
 <span class="cp">                                                                         \</span>
 <span class="cp">    init_wait_entry(&amp;__wq_entry, exclusive ? WQ_FLAG_EXCLUSIVE : 0);     \</span>
 <span class="cp">    for (;;) {                                                           \</span>
@@ -623,18 +590,14 @@ queue</li>
 
      <span class="n">spin_lock_irqsave</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
      <span class="k">if</span> <span class="p">(</span><span class="n">signal_pending_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">current</span><span class="p">))</span> <span class="p">{</span>
-         <span class="cm">/*</span>
-<span class="cm">          * Exclusive waiter must not fail if it was selected by wakeup,</span>
-<span class="cm">          * it should &quot;consume&quot; the condition we were waiting for.</span>
-<span class="cm">          *</span>
-<span class="cm">          * The caller will recheck the condition and return success if</span>
-<span class="cm">          * we were already woken up, we can not miss the event because</span>
-<span class="cm">          * wakeup locks/unlocks the same wq_head-&gt;lock.</span>
-<span class="cm">          *</span>
-<span class="cm">          * But we need to ensure that set-condition + wakeup after that</span>
-<span class="cm">          * can&#39;t see us, it should wake up another exclusive waiter if</span>
-<span class="cm">          * we fail.</span>
-<span class="cm">          */</span>
+      <span class="cm">/*</span>
+<span class="cm">      * 如果被唤醒选择的是独占等待者，那么它不能失败，</span>
+<span class="cm">      * 它应该“消耗”我们等待的条件。</span>
+<span class="cm">      *</span>
+<span class="cm">      * 调用者将重新检查条件，并在我们已被唤醒时返回成功，我们不能错过事件，因为唤醒会锁定/解锁相同的 wq_head-&gt;lock。</span>
+<span class="cm">      *</span>
+<span class="cm">      * 但是我们需要确保在设置条件后+之后的唤醒看不到我们，如果我们失败的话，它应该唤醒另一个独占等待者。</span>
+<span class="cm">      */</span>
          <span class="n">list_del_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">);</span>
          <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="n">ERESTARTSYS</span><span class="p">;</span>
      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -661,39 +624,30 @@ queue</li>
      <span class="n">list_add_tail</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">);</span>
  <span class="p">}</span>
 
- <span class="cm">/**</span>
-<span class="cm">  * finish_wait - clean up after waiting in a queue</span>
-<span class="cm">  * @wq_head: waitqueue waited on</span>
-<span class="cm">  * @wq_entry: wait descriptor</span>
-<span class="cm">  *</span>
-<span class="cm">  * Sets current thread back to running state and removes</span>
-<span class="cm">  * the wait descriptor from the given waitqueue if still</span>
-<span class="cm">  * queued.</span>
-<span class="cm">  */</span>
- <span class="kt">void</span> <span class="nf">finish_wait</span><span class="p">(</span><span class="k">struct</span> <span class="n">wait_queue_head</span> <span class="o">*</span><span class="n">wq_head</span><span class="p">,</span> <span class="k">struct</span> <span class="n">wait_queue_entry</span> <span class="o">*</span><span class="n">wq_entry</span><span class="p">)</span>
- <span class="p">{</span>
-     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">flags</span><span class="p">;</span>
+<span class="cm">/**</span>
+<span class="cm">* finish_wait - 在队列中等待后进行清理</span>
+<span class="cm">* @wq_head: 等待的等待队列头</span>
+<span class="cm">* @wq_entry: 等待描述符</span>
+<span class="cm">*</span>
+<span class="cm">* 将当前线程设置回运行状态，并从给定的等待队列中移除等待描述符（如果仍在队列中）。</span>
+<span class="cm">*/</span>
+<span class="kt">void</span> <span class="nf">finish_wait</span><span class="p">(</span><span class="k">struct</span> <span class="n">wait_queue_head</span> <span class="o">*</span><span class="n">wq_head</span><span class="p">,</span> <span class="k">struct</span> <span class="n">wait_queue_entry</span> <span class="o">*</span><span class="n">wq_entry</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">flags</span><span class="p">;</span>
 
-     <span class="n">__set_current_state</span><span class="p">(</span><span class="n">TASK_RUNNING</span><span class="p">);</span>
-     <span class="cm">/*</span>
-<span class="cm">      * We can check for list emptiness outside the lock</span>
-<span class="cm">      * IFF:</span>
-<span class="cm">      *  - we use the &quot;careful&quot; check that verifies both</span>
-<span class="cm">      *    the next and prev pointers, so that there cannot</span>
-<span class="cm">      *    be any half-pending updates in progress on other</span>
-<span class="cm">      *    CPU&#39;s that we haven&#39;t seen yet (and that might</span>
-<span class="cm">      *    still change the stack area.</span>
-<span class="cm">      * and</span>
-<span class="cm">      *  - all other users take the lock (ie we can only</span>
-<span class="cm">      *    have _one_ other CPU that looks at or modifies</span>
-<span class="cm">      *    the list).</span>
-<span class="cm">      */</span>
-     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">list_empty_careful</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">))</span> <span class="p">{</span>
-         <span class="n">spin_lock_irqsave</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
-         <span class="n">list_del_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">);</span>
-         <span class="n">spin_unlock_irqrestore</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
-     <span class="p">}</span>
- <span class="p">}</span>
+   <span class="n">__set_current_state</span><span class="p">(</span><span class="n">TASK_RUNNING</span><span class="p">);</span>
+   <span class="cm">/*</span>
+<span class="cm">   * 我们可以在锁之外检查链表是否为空，前提是：</span>
+<span class="cm">   *  - 我们使用了“careful”检查，验证了 next 和 prev 指针，以确保没有我们还没有看到的其他 CPU 上可能仍在进行的半完成更新（可能仍会更改堆栈区域）。</span>
+<span class="cm">   * 并且</span>
+<span class="cm">   *  - 所有其他用户都会获取锁（也就是说，只有一个其他 CPU 可以查看或修改链表）。</span>
+<span class="cm">   */</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">list_empty_careful</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">spin_lock_irqsave</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+      <span class="n">list_del_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">);</span>
+      <span class="n">spin_unlock_irqrestore</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 
@@ -701,16 +655,15 @@ queue</li>
 
 
 </article>
-<article class="admonition-waking-up-a-task slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Waking up a task</h2>
+<h2>唤醒任务</h2>
 
 <ul class="simple">
-<li>Select a task from the waiting queue</li>
-<li>Set the task state to TASK_READY</li>
-<li>Insert the task into the scheduler's READY queue</li>
-<li>On SMP system this is a complex operation: each processor has its
-own queue, queues need to be balanced, CPUs needs to be signaled</li>
+<li>从等待队列中选择一个任务</li>
+<li>将任务状态设置为 TASK_READY</li>
+<li>将任务插入调度器的 READY 队列中</li>
+<li>在 SMP 系统上，这是一个复杂的操作：每个处理器都有自己的队列，队列需要平衡，需要向 CPU 发送信号</li>
 </ul>
 
 
@@ -724,24 +677,21 @@ own queue, queues need to be balanced, CPUs needs to be signaled</li>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define wake_up(x)                        __wake_up(x, TASK_NORMAL, 1, NULL)</span>
 
 <span class="cm">/**</span>
-<span class="cm"> * __wake_up - wake up threads blocked on a waitqueue.</span>
-<span class="cm"> * @wq_head: the waitqueue</span>
-<span class="cm"> * @mode: which threads</span>
-<span class="cm"> * @nr_exclusive: how many wake-one or wake-many threads to wake up</span>
-<span class="cm"> * @key: is directly passed to the wakeup function</span>
+<span class="cm"> * __wake_up - 唤醒在等待队列上阻塞的线程。</span>
+<span class="cm"> * @wq_head: 等待队列</span>
+<span class="cm"> * @mode: 哪些线程</span>
+<span class="cm"> * @nr_exclusive: 要唤醒的线程数（一次唤醒一个或一次唤醒多个）</span>
+<span class="cm"> * @key: 直接传递给唤醒函数</span>
 <span class="cm"> *</span>
-<span class="cm"> * If this function wakes up a task, it executes a full memory barrier before</span>
-<span class="cm"> * accessing the task state.</span>
+<span class="cm"> * 如果此函数唤醒了一个任务，则在访问任务状态之前执行完全的内存屏障。</span>
 <span class="cm"> */</span>
 <span class="kt">void</span> <span class="nf">__wake_up</span><span class="p">(</span><span class="k">struct</span> <span class="n">wait_queue_head</span> <span class="o">*</span><span class="n">wq_head</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">mode</span><span class="p">,</span>
-               <span class="kt">int</span> <span class="n">nr_exclusive</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">__wake_up_common_lock</span><span class="p">(</span><span class="n">wq_head</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">nr_exclusive</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
+               <span class="kt">int</span> <span class="n">nr_exclusive</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">__wake_up_common_lock</span><span class="p">(</span><span class="n">wq_head</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">nr_exclusive</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="k">static</span> <span class="kt">void</span> <span class="nf">__wake_up_common_lock</span><span class="p">(</span><span class="k">struct</span> <span class="n">wait_queue_head</span> <span class="o">*</span><span class="n">wq_head</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">mode</span><span class="p">,</span>
-                  <span class="kt">int</span> <span class="n">nr_exclusive</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wake_flags</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span>
-<span class="p">{</span>
+                                  <span class="kt">int</span> <span class="n">nr_exclusive</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wake_flags</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span>
   <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">flags</span><span class="p">;</span>
   <span class="n">wait_queue_entry_t</span> <span class="n">bookmark</span><span class="p">;</span>
 
@@ -759,35 +709,30 @@ own queue, queues need to be balanced, CPUs needs to be signaled</li>
 <span class="p">}</span>
 
 <span class="cm">/*</span>
-<span class="cm"> * The core wakeup function. Non-exclusive wakeups (nr_exclusive == 0) just</span>
-<span class="cm"> * wake everything up. If it&#39;s an exclusive wakeup (nr_exclusive == small +ve</span>
-<span class="cm"> * number) then we wake all the non-exclusive tasks and one exclusive task.</span>
+<span class="cm"> * 核心唤醒函数。非独占唤醒（nr_exclusive == 0）会唤醒所有任务。如果是独占唤醒（nr_exclusive == 一个小正数），则唤醒所有非独占任务和一个独占任务。</span>
 <span class="cm"> *</span>
-<span class="cm"> * There are circumstances in which we can try to wake a task which has already</span>
-<span class="cm"> * started to run but is not in state TASK_RUNNING. try_to_wake_up() returns</span>
-<span class="cm"> * zero in this (rare) case, and we handle it by continuing to scan the queue.</span>
+<span class="cm"> * 在某些情况下，我们可能会尝试唤醒已经开始运行但不处于 TASK_RUNNING 状态的任务。在这种（罕见）情况下，try_to_wake_up() 会返回零，我们通过继续扫描队列来处理它。</span>
 <span class="cm"> */</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">__wake_up_common</span><span class="p">(</span><span class="k">struct</span> <span class="n">wait_queue_head</span> <span class="o">*</span><span class="n">wq_head</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">mode</span><span class="p">,</span>
                             <span class="kt">int</span> <span class="n">nr_exclusive</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wake_flags</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span>
-                  <span class="n">wait_queue_entry_t</span> <span class="o">*</span><span class="n">bookmark</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">wait_queue_entry_t</span> <span class="o">*</span><span class="n">curr</span><span class="p">,</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="n">wait_queue_entry_t</span> <span class="o">*</span><span class="n">bookmark</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">wait_queue_entry_t</span> <span class="o">*</span><span class="n">curr</span><span class="p">,</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
-    <span class="n">lockdep_assert_held</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+  <span class="n">lockdep_assert_held</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">bookmark</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">bookmark</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WQ_FLAG_BOOKMARK</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">bookmark</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">bookmark</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">WQ_FLAG_BOOKMARK</span><span class="p">))</span> <span class="p">{</span>
           <span class="n">curr</span> <span class="o">=</span> <span class="n">list_next_entry</span><span class="p">(</span><span class="n">bookmark</span><span class="p">,</span> <span class="n">entry</span><span class="p">);</span>
 
           <span class="n">list_del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bookmark</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">);</span>
           <span class="n">bookmark</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span>
+  <span class="p">}</span> <span class="k">else</span>
           <span class="n">curr</span> <span class="o">=</span> <span class="n">list_first_entry</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">,</span> <span class="n">wait_queue_entry_t</span><span class="p">,</span> <span class="n">entry</span><span class="p">);</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">entry</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">entry</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">)</span>
           <span class="k">return</span> <span class="n">nr_exclusive</span><span class="p">;</span>
 
-    <span class="n">list_for_each_entry_safe_from</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">list_for_each_entry_safe_from</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">next</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span> <span class="p">{</span>
           <span class="kt">unsigned</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">;</span>
           <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
 
@@ -801,74 +746,69 @@ own queue, queues need to be balanced, CPUs needs to be signaled</li>
                   <span class="k">break</span><span class="p">;</span>
 
           <span class="k">if</span> <span class="p">(</span><span class="n">bookmark</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">++</span><span class="n">cnt</span> <span class="o">&gt;</span> <span class="n">WAITQUEUE_WALK_BREAK_CNT</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-                          <span class="p">(</span><span class="o">&amp;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">entry</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">))</span> <span class="p">{</span>
+                  <span class="p">(</span><span class="o">&amp;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">entry</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">wq_head</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">))</span> <span class="p">{</span>
                   <span class="n">bookmark</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">WQ_FLAG_BOOKMARK</span><span class="p">;</span>
                   <span class="n">list_add_tail</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bookmark</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">);</span>
                   <span class="k">break</span><span class="p">;</span>
           <span class="p">}</span>
-    <span class="p">}</span>
+  <span class="p">}</span>
 
-    <span class="k">return</span> <span class="n">nr_exclusive</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">nr_exclusive</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">int</span> <span class="nf">autoremove_wake_function</span><span class="p">(</span><span class="k">struct</span> <span class="n">wait_queue_entry</span> <span class="o">*</span><span class="n">wq_entry</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">mode</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sync</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">default_wake_function</span><span class="p">(</span><span class="n">wq_entry</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">sync</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">autoremove_wake_function</span><span class="p">(</span><span class="k">struct</span> <span class="n">wait_queue_entry</span> <span class="o">*</span><span class="n">wq_entry</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">mode</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sync</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">default_wake_function</span><span class="p">(</span><span class="n">wq_entry</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">sync</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span>
-        <span class="n">list_del_init_careful</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+          <span class="n">list_del_init_careful</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq_entry</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">);</span>
 
-    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">default_wake_function</span><span class="p">(</span><span class="n">wait_queue_entry_t</span> <span class="o">*</span><span class="n">curr</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">mode</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wake_flags</span><span class="p">,</span>
-                    <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">WARN_ON_ONCE</span><span class="p">(</span><span class="n">IS_ENABLED</span><span class="p">(</span><span class="n">CONFIG_SCHED_DEBUG</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">wake_flags</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">WF_SYNC</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">try_to_wake_up</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">private</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">wake_flags</span><span class="p">);</span>
+                          <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">WARN_ON_ONCE</span><span class="p">(</span><span class="n">IS_ENABLED</span><span class="p">(</span><span class="n">CONFIG_SCHED_DEBUG</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">wake_flags</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">WF_SYNC</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">try_to_wake_up</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">private</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">wake_flags</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="cm">/**</span>
-<span class="cm"> * try_to_wake_up - wake up a thread</span>
-<span class="cm"> * @p: the thread to be awakened</span>
-<span class="cm"> * @state: the mask of task states that can be woken</span>
-<span class="cm"> * @wake_flags: wake modifier flags (WF_*)</span>
+<span class="cm"> * try_to_wake_up——唤醒线程</span>
+<span class="cm"> * @p: 要唤醒的线程</span>
+<span class="cm"> * @state: 可以被唤醒的任务状态的掩码</span>
+<span class="cm"> * @wake_flags: 唤醒修改标志 (WF_*)</span>
 <span class="cm"> *</span>
-<span class="cm"> * Conceptually does:</span>
+<span class="cm"> * 概念上执行以下操作：</span>
 <span class="cm"> *</span>
-<span class="cm"> *   If (@state &amp; @p-&gt;state) @p-&gt;state = TASK_RUNNING.</span>
+<span class="cm"> *   如果 (@state &amp; @p-&gt;state)，则 @p-&gt;state = TASK_RUNNING。</span>
 <span class="cm"> *</span>
-<span class="cm"> * If the task was not queued/runnable, also place it back on a runqueue.</span>
+<span class="cm"> * 如果任务没有放进队列/可运行，还将其放回运行队列。</span>
 <span class="cm"> *</span>
-<span class="cm"> * This function is atomic against schedule() which would dequeue the task.</span>
+<span class="cm"> * 此函数对 schedule() 是原子性的，后者会让该任务出列。</span>
 <span class="cm"> *</span>
-<span class="cm"> * It issues a full memory barrier before accessing @p-&gt;state, see the comment</span>
-<span class="cm"> * with set_current_state().</span>
+<span class="cm"> * 在访问 @p-&gt;state 之前，它会触发完整的内存屏障，请参阅 set_current_state() 的注释。</span>
 <span class="cm"> *</span>
-<span class="cm"> * Uses p-&gt;pi_lock to serialize against concurrent wake-ups.</span>
+<span class="cm"> * 使用 p-&gt;pi_lock 来序列化与并发唤醒的操作。</span>
 <span class="cm"> *</span>
-<span class="cm"> * Relies on p-&gt;pi_lock stabilizing:</span>
+<span class="cm"> * 依赖于 p-&gt;pi_lock 来稳定下来：</span>
 <span class="cm"> *  - p-&gt;sched_class</span>
 <span class="cm"> *  - p-&gt;cpus_ptr</span>
 <span class="cm"> *  - p-&gt;sched_task_group</span>
-<span class="cm"> * in order to do migration, see its use of select_task_rq()/set_task_cpu().</span>
+<span class="cm"> * 以便进行迁移，请参阅 select_task_rq()/set_task_cpu() 的使用。</span>
 <span class="cm"> *</span>
-<span class="cm"> * Tries really hard to only take one task_rq(p)-&gt;lock for performance.</span>
-<span class="cm"> * Takes rq-&gt;lock in:</span>
-<span class="cm"> *  - ttwu_runnable()    -- old rq, unavoidable, see comment there;</span>
-<span class="cm"> *  - ttwu_queue()       -- new rq, for enqueue of the task;</span>
-<span class="cm"> *  - psi_ttwu_dequeue() -- much sadness :-( accounting will kill us.</span>
+<span class="cm"> * 尽力只获取一个 task_rq(p)-&gt;lock 以提高性能。</span>
+<span class="cm"> * 在以下情况下获取 rq-&gt;lock：</span>
+<span class="cm"> *  - ttwu_runnable()    -- 旧的 rq，不可避免的，参见该处的注释；</span>
+<span class="cm"> *  - ttwu_queue()       -- 新的 rq，用于任务入队；</span>
+<span class="cm"> *  - psi_ttwu_dequeue() -- 非常遗憾 :-(，计数将会伤害我们。</span>
 <span class="cm"> *</span>
-<span class="cm"> * As a consequence we race really badly with just about everything. See the</span>
-<span class="cm"> * many memory barriers and their comments for details.</span>
+<span class="cm"> * 因此，我们与几乎所有操作都存在竞争。有关详细信息，请参阅许多内存屏障及其注释。</span>
 <span class="cm"> *</span>
-<span class="cm"> * Return: %true if @p-&gt;state changes (an actual wakeup was done),</span>
-<span class="cm"> *           %false otherwise.</span>
+<span class="cm"> * 返回值：如果 @p-&gt;state 改变（实际进行了唤醒），则为 %true，否则为 %false。</span>
 <span class="cm"> */</span>
- <span class="k">static</span> <span class="kt">int</span>
- <span class="nf">try_to_wake_up</span><span class="p">(</span><span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">state</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wake_flags</span><span class="p">)</span>
- <span class="p">{</span>
-     <span class="p">...</span>
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">try_to_wake_up</span><span class="p">(</span><span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">state</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wake_flags</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="p">...</span>
 </pre></div>
 </div>
 
@@ -876,75 +816,63 @@ own queue, queues need to be balanced, CPUs needs to be signaled</li>
 
 
 </article>
-<article class="admonition-non-preemptive-kernel slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Non preemptive kernel</h2>
+<h2>非抢占式内核</h2>
 
 <ul class="simple">
-<li>At every tick the kernel checks to see if the current process has
-its time slice consumed</li>
-<li>If that happens a flag is set in interrupt context</li>
-<li>Before returning to userspace the kernel checks this flag and
-calls <code class="xref c c-func docutils literal"><span class="pre">schedule()</span></code> if needed</li>
-<li>In this case tasks are not preempted while running in kernel mode
-(e.g. system call) so there are no synchronization issues</li>
+<li>每个时钟滴答，内核会检查当前进程是否已经用完了它的时间片</li>
+<li>如果发生这种情况，会在中断上下文中设置一个标志位</li>
+<li>在返回用户空间之前，内核会检查这个标志位，并在需要时调用 <code class="xref c c-func docutils literal"><span class="pre">schedule()</span></code> 函数</li>
+<li>在这种情况下，任务在内核模式下运行（例如系统调用）时不会被抢占，因此不存在同步问题</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-preemptive-kernel slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Preemptive kernel</h2>
+<h2>抢占式内核</h2>
 
 <ul class="simple">
-<li>Tasks can be preempted even when running in kernel mode</li>
-<li>It requires new synchronization primitives to be used in critical
-sections: <code class="xref c c-macro docutils literal"><span class="pre">preempt_disable</span></code> and
-<code class="xref c c-macro docutils literal"><span class="pre">preempt_enable</span></code></li>
-<li>Spinlocks also disable preemption</li>
-<li>When a thread needs to be preempted a flag is set and action is
-taken (e.g. scheduler is called) when preemption is reactivated</li>
+<li>即使在内核模式下运行，任务也可以被抢占</li>
+<li>在临界区中需要使用新的同步原语：<code class="xref c c-macro docutils literal"><span class="pre">preempt_disable</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">preempt_enable</span></code></li>
+<li>自旋锁也会禁用抢占</li>
+<li>当一个线程需要被抢占时，会设置一个标志位，并在重新激活抢占时采取相应措施（例如调用调度器）来选择一个新的任务。</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-process-context slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Process context</h2>
+<h2>进程上下文</h2>
 
-<p>The kernel is executing in process context when it is running a
-system call.</p>
-<p>In process context there is a well defined context and we can
-access the current process data with <code class="xref c c-macro docutils literal"><span class="pre">current</span></code></p>
-<p>In process context we can sleep (wait on a condition).</p>
-<p>In process context we can access the user-space (unless we are
-running in a kernel thread context).</p>
+<p>当内核执行系统调用时，它处于进程上下文中。</p>
+<p>在进程上下文中，存在一个明确定义的上下文，我们可以使用 <code class="xref c c-macro docutils literal"><span class="pre">current</span></code> 来访问当前进程的数据。</p>
+<p>在进程上下文中，我们可以睡眠（等待条件）。</p>
+<p>在进程上下文中，我们可以访问用户空间（除非我们在内核线程上下文中运行）。</p>
 
 
 
 
 </article>
-<article class="admonition-kernel-threads slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Kernel threads</h2>
+<h2>内核线程</h2>
 
-<p>Sometimes the kernel core or device drivers need to perform blocking
-operations and thus they need to run in process context.</p>
-<p>Kernel threads are used exactly for this and are a special class of
-tasks that don't &quot;userspace&quot; resources (e.g. no address space or
-opened files).</p>
+<p>有时候内核核心或设备驱动程序需要执行阻塞操作，因此需要在进程上下文中运行。</p>
+<p>内核线程就是为此而使用的一种特殊类别的任务，它们不使用“用户空间”资源（例如没有地址空间或打开的文件）。</p>
 
 
 
 
 </article>
-<article class="admonition-inspecting-kernel-threads slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Inspecting kernel threads</h2>
+<h2>检查内核线程</h2>
 
 <p>&nbsp;</p>
 <asciinema-player src="../_images/kernel_threads.cast"></asciinema-player>
@@ -952,12 +880,11 @@ opened files).</p>
 
 
 </article>
-<article class="admonition-quiz-kernel-gdb-scripts slide level-2">
+<article class="admonition-gdb slide level-2">
 
-<h2>Quiz: Kernel gdb scripts</h2>
+<h2>测验：内核 gdb 脚本</h2>
 
-<p>What is the following change of the lx-ps script trying to
-accomplish?</p>
+<p>下面对 lx-ps 脚本的修改是为了实现什么目的？</p>
 <div class="highlight-diff"><div class="highlight"><pre><span></span><span class="gh">diff --git a/scripts/gdb/linux/tasks.py b/scripts/gdb/linux/tasks.py</span>
 <span class="gh">index 17ec19e9b5bf..7e43c163832f 100644</span>
 <span class="gd">--- a/scripts/gdb/linux/tasks.py</span>
