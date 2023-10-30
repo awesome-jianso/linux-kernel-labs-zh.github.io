@@ -444,10 +444,10 @@ static inline struct thread_info *current_thread_info(void)
     <span class="n">popl</span>    <span class="o">%</span><span class="n">esi</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">edi</span>
     <span class="n">popl</span>    <span class="o">%</span><span class="n">ebx</span>
-<span class="hll">    <span class="n">popl</span>    <span class="o">%</span><span class="n">ebp</span>
-</span>
-    <span class="n">jmp</span>     <span class="n">__switch_to</span>
-  <span class="n">SYM_CODE_END</span><span class="p">(</span><span class="n">__switch_to_asm</span><span class="p">)</span>
+    <span class="n">popl</span>    <span class="o">%</span><span class="n">ebp</span>
+
+<span class="hll">    <span class="n">jmp</span>     <span class="n">__switch_to</span>
+</span>  <span class="n">SYM_CODE_END</span><span class="p">(</span><span class="n">__switch_to_asm</span><span class="p">)</span>
   <span class="p">.</span><span class="n">popsection</span>
 </pre></div>
 </div>
