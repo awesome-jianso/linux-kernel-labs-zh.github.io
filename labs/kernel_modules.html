@@ -809,7 +809,7 @@ tools/labs $ make boot
 </div>
 <p>模块将放置在 /home/root/skels/kernel_modules/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-4"><span class="problematic" id="problematic-4">`Exercises`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-9">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -919,7 +919,7 @@ $ make copy
 <p>编译相应的模块并将其加载到内核中。识别 oops 出现的内存地址。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">阅读实验中的 <a href="#system-message-5"><span class="problematic" id="problematic-5">`调试`_</span></a> 部分。要识别地址，请遵循 oops 消息并提取指令指针 (<code class="docutils literal"><span class="pre">EIP</span></code>) 寄存器的值。</p>
+<p class="last">阅读实验中的 <a href="#system-message-4"><span class="problematic" id="problematic-4">`调试`_</span></a> 部分。要识别地址，请遵循 oops 消息并提取指令指针 (<code class="docutils literal"><span class="pre">EIP</span></code>) 寄存器的值。</p>
 </div>
 <p>确定是哪条指令触发了 oops。</p>
 <div class="admonition hint">
@@ -1021,7 +1021,7 @@ $ make copy
 <p>请指定两种过滤方式。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">阅读 <a href="#system-message-6"><span class="problematic" id="problematic-6">`Dynamic debugging`_</span></a> 部分并查看 <strong class="command">dyndbg</strong> 的选项（例如 <strong class="command">line</strong> 、<strong class="command">format</strong>）。</p>
+<p class="last">阅读 <a href="#system-message-5"><span class="problematic" id="problematic-5">`Dynamic debugging`_</span></a> 部分并查看 <strong class="command">dyndbg</strong> 的选项（例如 <strong class="command">line</strong> 、<strong class="command">format</strong>）。</p>
 </div>
 <p>执行过滤操作并检查 <code class="file docutils literal"><span class="pre">dynamic_debug/control</span></code> 文件。发生了什么变化？如何知道哪些调用被激活了？</p>
 <div class="admonition hint">
@@ -1034,7 +1034,7 @@ $ make copy
 <p>正如你注意到的那样，只有在插入模块后才能激活/过滤 <code class="xref c c-func docutils literal"><span class="pre">pr_debug()</span></code> 调用。在某些情况下，查看模块初始化期间的消息可能会很有帮助。可以通过使用一个名为 <strong class="command">dyndbg</strong> 的默认（伪）参数作为初始化模块的参数来实现。使用此参数，你可以添加/删除 <strong class="command">dyndbg</strong> 标志。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">阅读 <a href="#system-message-7"><span class="problematic" id="problematic-7">`Dynamic debugging`_</span></a> 部分的最后一部分，查看可用的标志（例如： <strong class="command">+/- p</strong>）。</p>
+<p class="last">阅读 <a href="#system-message-6"><span class="problematic" id="problematic-6">`Dynamic debugging`_</span></a> 部分的最后一部分，查看可用的标志（例如： <strong class="command">+/- p</strong>）。</p>
 </div>
 <p>阅读 <a class="reference external" href="https://01.org/linuxgraphics/gfx-docs/drm/admin-guide/dynamic-debug-howto.html#debug-messages-at-module-initialization-time">模块初始化时的调试消息部分</a> ，并插入模块以便在初始化期间显示 <code class="xref c c-func docutils literal"><span class="pre">my_debug_func`（即</span> <span class="pre">:c:func:`dyndbg_init()</span></code>）中的消息。</p>
 <div class="admonition warning">
