@@ -701,3 +701,31 @@ Linux 曾经支持嵌套中断，但由于解决堆栈溢出问题的方案变�
     * 最低优先级的内核线程
     * 在达到一定瓶颈后运行软中断
     * 努力使响应时间尽量短，避免进程饥饿
+
+Linux 系统限制软中断的使用，其仅由少数具有低延迟要求和高频率的子系统使用：
+
+.. slide:: 软中断的类型
+   :inline-contents: True
+   :level: 2
+
+   .. code-block:: c
+
+      /* 请尽量避免分配新的软中断（softirqs），除非你确实需要非常高频率的线程作业调度。
+         对于几乎所有的需求，任务（tasklets）其实已经足够了。例如，所有串行设备的底半部（BHs）等都应该转换为任务（tasklets），而不是软中断。
+      */
+
+      enum
+      {
+         HI_SOFTIRQ=0,
+         TIMER_SOFTIRQ,
+         NET_TX_SOFTIRQ,
+         NET_RX_SOFTIRQ,
+         BLOCK_SOFTIRQ,
+         IRQ_POLL_SOFTIRQ,
+         TASKLET_SOFTIRQ,
+         SCHED_SOFTIRQ,
+         HRTIMER_SOFTIRQ,
+         RCU_SOFTIRQ,    /* 最好将 RCU 设为最后一个软中断 */
+
+         NR_SOFTIRQS
+      };

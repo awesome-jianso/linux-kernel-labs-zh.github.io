@@ -516,7 +516,29 @@ monitor info registers
 </div></blockquote>
 <p>由于软中断可以重新调度自身并且其他中断可能会导致对它们重新调度，如果不进行检查，它们可能会导致（临时的）进程饥饿。目前，Linux 内核不允许运行超过 <code class="xref c c-macro docutils literal"><span class="pre">MAX_SOFTIRQ_TIME</span></code> 数量的软中断，也不允许连续重新调度超过 <code class="xref c c-macro docutils literal"><span class="pre">MAX_SOFTIRQ_RESTART</span></code> 次。</p>
 <p>一旦达到这些瓶颈，一个特殊的内核线程，<strong>ksoftirqd</strong> 会被唤醒，并且所有其他待处理的软中断将在该内核线程的上下文中运行。</p>
-<span class="admonition-ksoftirqd"></span></div>
+<span class="admonition-ksoftirqd"></span><p>Linux 系统限制软中断的使用，其仅由少数具有低延迟要求和高频率的子系统使用：</p>
+<div class="admonition- highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 请尽量避免分配新的软中断（softirqs），除非你确实需要非常高频率的线程作业调度。</span>
+<span class="cm">   对于几乎所有的需求，任务（tasklets）其实已经足够了。例如，所有串行设备的底半部（BHs）等都应该转换为任务（tasklets），而不是软中断。</span>
+<span class="cm">*/</span>
+
+<span class="k">enum</span>
+<span class="p">{</span>
+   <span class="n">HI_SOFTIRQ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+   <span class="n">TIMER_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">NET_TX_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">NET_RX_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">BLOCK_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">IRQ_POLL_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">TASKLET_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">SCHED_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">HRTIMER_SOFTIRQ</span><span class="p">,</span>
+   <span class="n">RCU_SOFTIRQ</span><span class="p">,</span>    <span class="cm">/* 最好将 RCU 设为最后一个软中断 */</span>
+
+   <span class="n">NR_SOFTIRQS</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
