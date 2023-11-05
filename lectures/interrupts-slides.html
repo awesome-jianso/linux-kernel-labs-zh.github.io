@@ -52,6 +52,206 @@
 
 
   
+<article class="admonition- slide level-2">
+
+<h2>中断</h2>
+
+<ul class="simple">
+<li>中断和异常（x86）</li>
+<li>中断和异常（Linux）</li>
+<li>可延迟的工作</li>
+<li>定时器</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>中断</h2>
+
+<ul class="simple">
+<li><strong>同步中断</strong>，由执行指令触发</li>
+<li><strong>异步中断</strong>，由外部事件触发</li>
+<li><strong>可屏蔽（maskable）中断</strong><ul>
+<li>可以被忽略</li>
+<li>通过 INT 引脚（pin）发出信号</li>
+</ul>
+</li>
+<li><strong>非可屏蔽中断</strong><ul>
+<li>无法被忽略</li>
+<li>通过 NMI 引脚发出信号</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>异常</h2>
+
+<ul class="simple">
+<li>处理器检测到的异常<ul>
+<li><strong>故障（falut）</strong></li>
+<li><strong>陷阱（trap）</strong></li>
+<li><strong>中止（abort）</strong></li>
+</ul>
+</li>
+<li>程序编程<ul>
+<li><strong>int n</strong></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>测验：中断术语</h2>
+
+<p>对于左侧的每个术语，请从右侧选择最能描述它们的术语。</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li>看门狗</li>
+<li>需求分页</li>
+<li>零除错误</li>
+<li>定时器</li>
+<li>系统调用</li>
+<li>断点</li>
+</ul>
+</td><td><ul class="simple">
+<li>异常</li>
+<li>中断</li>
+<li>可屏蔽</li>
+<li>不可屏蔽</li>
+<li>陷阱</li>
+<li>故障</li>
+</ul>
+</td></tr></table>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>可编程中断控制器</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-7463743488288f459aff2069728984374b5bba76.png" src="../_images/ditaa-7463743488288f459aff2069728984374b5bba76.png" />
+
+
+
+
+</article>
+<article class="admonition-smp slide level-2">
+
+<h2>在 SMP 系统中的中断控制器</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-9d23d02ebdff6eeb6bec8044480f055de9852ecc.png" src="../_images/ditaa-9d23d02ebdff6eeb6bec8044480f055de9852ecc.png" />
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>启用/禁用中断</h2>
+
+<ul class="simple">
+<li>在设备级别<ul>
+<li>通过编程设备控制寄存器</li>
+</ul>
+</li>
+<li>在 PIC（可编程中断控制器）级别<ul>
+<li>可以通过编程 PIC，来禁用给定的 IRQ（中断请求）线路</li>
+</ul>
+</li>
+<li>在 CPU 级别；例如，在 x86 架构上可以使用以下指令：</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>cli（清除中断标志）</li>
+<li>sti（设置中断标志）</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>中断优先级</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-8b00a68b494f72d54b5fad38c88f7265aadaaa0e.png" src="../_images/ditaa-8b00a68b494f72d54b5fad38c88f7265aadaaa0e.png" />
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>测验：硬件概念</h2>
+
+<p>下列哪些陈述是正确的？</p>
+<ul class="simple">
+<li>当前中断完成前，CPU 可以开始处理新的中断</li>
+<li>可以在设备级别上禁用中断</li>
+<li>低优先级中断不能抢占高优先级中断的处理程序</li>
+<li>可以在中断控制器级别上禁用中断</li>
+<li>在 SMP 系统中，相同的中断可以路由到不同的 CPU</li>
+<li>可以在 CPU 级别上禁用中断</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>中断描述符表</h2>
+
+<ul class="simple">
+<li>当触发给定向量时，CPU 将中断描述符表用作跳转表</li>
+<li>它是由 256 个 8 字节条目组成的数组</li>
+<li>可以位于物理内存中的任何位置</li>
+<li>处理器通过 IDTR 来定位 IDT</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition-linux-irq slide level-2">
+
+<h2>Linux IRQ 向量布局</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-5b3c93f6e612d0cc0e4d4837d92a443627405262.png" src="../_images/ditaa-5b3c93f6e612d0cc0e4d4837d92a443627405262.png" />
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>中断描述符表条目（门）</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-eff5e0e3b58ce239d5310b22b89c0927be5853bd.png" src="../_images/ditaa-eff5e0e3b58ce239d5310b22b89c0927be5853bd.png" />
+
+
+
+
+</article>
 
 </section>
 
