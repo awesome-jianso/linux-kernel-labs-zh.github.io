@@ -93,6 +93,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#section-17">中断上下文</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-18">可延迟操作</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#soft-irq">软中断（Soft IRQ）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-19">网络包泛洪示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tasklet">任务（tasklet）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-20">工作队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-21">定时器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-22">可延迟操作摘要</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-1">测验：Linux 中断处理</a></li>
 </ul>
 </li>
 </ul>
@@ -504,6 +510,79 @@ monitor info registers
 <span class="p">};</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="section-19">
+<h3>网络包泛洪示例<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h3>
+<p>下面的屏幕录像将展示我们向系统发送大量数据包时会发生什么。由于数据包处理的一部分发生在软中断中，CPU 预计会花费大部分时间运行软中断，但其中大部分应该是在 <cite>ksoftirqd</cite> 线程的上下文中进行的。</p>
+<p class="admonition-">&nbsp;</p>
+<asciinema-player src="../_images/ksoftirqd-packet-flood.cast"></asciinema-player></div>
+<div class="section" id="tasklet">
+<h3>任务（tasklet）<a class="headerlink" href="#tasklet" title="Permalink to this headline">¶</a></h3>
+<p class="admonition-">任务是在中断上下文中运行的一种动态类型（不限于固定数量）的延迟工作。</p>
+<p>任务的 API：</p>
+<ul class="simple">
+<li>初始化：<code class="xref c c-func docutils literal"><span class="pre">tasklet_init()</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">tasklet_schedule()</span></code></li>
+<li>屏蔽：<code class="xref c c-func docutils literal"><span class="pre">tasklet_disable()</span></code> 、<code class="xref c c-func docutils literal"><span class="pre">tasklet_enable()</span></code></li>
+</ul>
+<p>任务是基于两个专用软中断实现的：<code class="xref c c-macro docutils literal"><span class="pre">TASKLET_SOFITIRQ</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">HI_SOFTIRQ</span></code>。</p>
+<p>任务也是串行化的，即同一个任务只能在一个处理器上执行。</p>
+</div>
+<div class="section" id="section-20">
+<h3>工作队列<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h3>
+<p class="admonition-">工作队列是一种在进程上下文中运行的延迟工作。</p>
+<p>它们是在内核线程的基础上实现的。</p>
+<p>工作队列 API:</p>
+<blockquote>
+<div><ul class="simple">
+<li>初始化：<code class="xref c c-macro docutils literal"><span class="pre">INIT_WORK</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">schedule_work()</span></code></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="section-21">
+<h3>定时器<a class="headerlink" href="#section-21" title="Permalink to this headline">¶</a></h3>
+<p class="admonition-">定时器是建立在:c:macro:<a href="#system-message-3"><span class="problematic" id="problematic-3">`</span></a>TIMER_SOFTIRQ`之上的。</p>
+<p>定时器 API:</p>
+<blockquote>
+<div><ul class="simple">
+<li>初始化：<code class="xref c c-func docutils literal"><span class="pre">setup_timer()</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">mod_timer()</span></code></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="section-22">
+<h3>可延迟操作摘要<a class="headerlink" href="#section-22" title="Permalink to this headline">¶</a></h3>
+<p>以下是总结了 Linux 可延迟操作的速查表：</p>
+<blockquote class="admonition-">
+<div><ul class="simple">
+<li>软中断（softIRQ）<ul>
+<li>在中断上下文中运行</li>
+<li>静态分配</li>
+<li>同一个处理程序可以在多个核心上并行运行</li>
+</ul>
+</li>
+<li>任务（tasklet）<ul>
+<li>在中断上下文中运行</li>
+<li>可以动态分配</li>
+<li>同一个处理程序运行是串行化的</li>
+</ul>
+</li>
+<li>工作队列（workqueues）<ul>
+<li>在进程上下文中运行</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="linux-1">
+<h3>测验：Linux 中断处理<a class="headerlink" href="#linux-1" title="Permalink to this headline">¶</a></h3>
+<p class="admonition-linux">以下哪个中断处理阶段在 CPU 级别上禁用了中断？</p>
+<ul class="simple">
+<li>临界（Critical）</li>
+<li>立即（Immediate）</li>
+<li>延迟（Deferred）</li>
+</ul>
 </div>
 </div>
 </div>

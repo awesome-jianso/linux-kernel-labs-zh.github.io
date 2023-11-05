@@ -460,6 +460,113 @@ monitor info registers
 
 
 </article>
+<article class="admonition- slide level-2">
+
+<h2>网络包泛洪示例</h2>
+
+<p>&nbsp;</p>
+<asciinema-player src="../_images/ksoftirqd-packet-flood.cast"></asciinema-player>
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>任务</h2>
+
+<p>任务是在中断上下文中运行的一种动态类型（不限于固定数量）的延迟工作。</p>
+<p>任务的 API：</p>
+<ul class="simple">
+<li>初始化：<code class="xref c c-func docutils literal"><span class="pre">tasklet_init()</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">tasklet_schedule()</span></code></li>
+<li>屏蔽：<code class="xref c c-func docutils literal"><span class="pre">tasklet_disable()</span></code> 、<code class="xref c c-func docutils literal"><span class="pre">tasklet_enable()</span></code></li>
+</ul>
+<p>任务是基于两个专用软中断实现的：<code class="xref c c-macro docutils literal"><span class="pre">TASKLET_SOFITIRQ</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">HI_SOFTIRQ</span></code>。</p>
+<p>任务也是串行化的，即同一个任务只能在一个处理器上执行。</p>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>工作队列</h2>
+
+<p>工作队列是一种在进程上下文中运行的延迟工作。</p>
+<p>它们是在内核线程的基础上实现的。</p>
+<p>工作队列 API:</p>
+<blockquote>
+<div><ul class="simple">
+<li>初始化：<code class="xref c c-macro docutils literal"><span class="pre">INIT_WORK</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">schedule_work()</span></code></li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>定时器</h2>
+
+<p>定时器是建立在:c:macro:<a href="#system-message-3"><span class="problematic" id="problematic-3">`</span></a>TIMER_SOFTIRQ`之上的。</p>
+<p>定时器 API:</p>
+<blockquote>
+<div><ul class="simple">
+<li>初始化：<code class="xref c c-func docutils literal"><span class="pre">setup_timer()</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">mod_timer()</span></code></li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>可延迟操作摘要</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li>软中断（softIRQ）<ul>
+<li>在中断上下文中运行</li>
+<li>静态分配</li>
+<li>同一个处理程序可以在多个核心上并行运行</li>
+</ul>
+</li>
+<li>任务（tasklet）<ul>
+<li>在中断上下文中运行</li>
+<li>可以动态分配</li>
+<li>同一个处理程序运行是串行化的</li>
+</ul>
+</li>
+<li>工作队列（workqueues）<ul>
+<li>在进程上下文中运行</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition-linux slide level-2">
+
+<h2>测验：Linux 中断处理</h2>
+
+<p>以下哪个中断处理阶段在 CPU 级别上禁用了中断？</p>
+<ul class="simple">
+<li>临界（Critical）</li>
+<li>立即（Immediate）</li>
+<li>延迟（Deferred）</li>
+</ul>
+
+
+
+
+</article>
 
 </section>
 
