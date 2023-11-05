@@ -321,6 +321,115 @@ monitor info registers
 
 
 </article>
+<article class="admonition-linux slide level-2">
+
+<h2>Linux 中的中断处理</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-da31e3d17a4d55e5c3dbc0bd5903306418a896ca.png" src="../_images/ditaa-da31e3d17a4d55e5c3dbc0bd5903306418a896ca.png" />
+
+
+
+
+</article>
+<article class="admonition-linux-irq slide level-2">
+
+<h2>Linux 中的 IRQ 和异常嵌套</h2>
+
+<ul class="simple">
+<li>异常（如页错误、系统调用）不能抢占中断；如果发生这种情况，则被视为漏洞（bug）</li>
+<li>中断可以抢占异常</li>
+<li>中断不能抢占另一个中断（以前是可能的）</li>
+</ul>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>中断/异常嵌套</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-2e49ca6ac606dab4b2b53231cfbe85ff06312d36.png" src="../_images/ditaa-2e49ca6ac606dab4b2b53231cfbe85ff06312d36.png" />
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>中断上下文</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li>它是作为 IRQ 的结果而运行的（不是异常）</li>
+<li>没有明确定义的进程上下文与之关联</li>
+<li>不允许触发上下文切换（不能睡眠、调度或访问用户内存）</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>可延迟操作</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li>在稍后的时间调度回调函数</li>
+<li>中断上下文可延迟操作</li>
+<li>进程上下文可延迟操作</li>
+<li>用于初始化、调度和屏蔽的 API</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>软中断</h2>
+
+<p>软中断的 API 包括：</p>
+<blockquote>
+<div><ul class="simple">
+<li>初始化：<code class="xref c c-func docutils literal"><span class="pre">open_softirq()</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">raise_softirq()</span></code></li>
+<li>屏蔽：<code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> 、<code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code></li>
+</ul>
+</div></blockquote>
+<p>一旦被激活，回调函数 <code class="xref c c-func docutils literal"><span class="pre">do_softirq()</span></code> 会在以下情况下运行：</p>
+<blockquote>
+<div><ul class="simple">
+<li>在中断处理程序完成之后，或者</li>
+<li>从内核线程 <strong>ksoftirqd</strong> 中运行</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
+<article class="admonition-ksoftirqd slide level-2">
+
+<h2>ksoftirqd</h2>
+
+<blockquote>
+<div><ul class="simple">
+<li>最低优先级的内核线程</li>
+<li>在达到一定瓶颈后运行软中断</li>
+<li>努力使响应时间尽量短，避免进程饥饿</li>
+</ul>
+</div></blockquote>
+
+
+
+
+</article>
 
 </section>
 

@@ -85,6 +85,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#x86-2">测验：x86 中断处理</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux 中的中断处理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-15">嵌套中断和异常</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-16">中断上下文</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-17">可延迟操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#soft-irq">软中断（Soft IRQ）</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="lec5-smp.html">SO2 Lecture 05 - Symmetric Multi-Processing</a></li>
@@ -443,6 +450,73 @@ monitor info registers
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="linux">
+<h2>Linux 中的中断处理<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<p>在 Linux 中，中断处理分为三个阶段：关键阶段、立即阶段和延迟阶段。</p>
+<p>在第一阶段，内核将运行通用中断处理程序，确定中断号、处理该特定中断的中断处理程序以及中断控制器。此时还会执行任何时间紧迫的关键操作（例如，在中断控制器级别上确认中断）。在该阶段，本地处理器中断被禁用，并在下一个阶段继续禁用。</p>
+<p>在第二阶段，将执行与该中断相关联的所有设备驱动程序处理程序。在该阶段结束时，将调用中断控制器的“中断结束”方法，以允许中断控制器重新断开此中断。此时，对本地处理器中断的禁用将解除。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">一个中断可能与多个设备相关联，在这种情况下，该中断被称为共享中断。通常，在使用共享中断时，由设备驱动程序负责确定中断是否针对其设备。</p>
+</div>
+<p>在中断处理的最后阶段，将运行中断上下文可延迟操作。我们有时也将其称为中断的“下半部分”（上半部分是在禁用中断的情况下运行的中断处理部分）。此时，可以进行本地处理器上的中断。</p>
+<p class="admonition-linux">&nbsp;</p>
+<img alt="../_images/ditaa-da31e3d17a4d55e5c3dbc0bd5903306418a896ca.png" src="../_images/ditaa-da31e3d17a4d55e5c3dbc0bd5903306418a896ca.png" />
+<div class="section" id="section-15">
+<h3>嵌套中断和异常<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<p>Linux 曾经支持嵌套中断，但由于解决堆栈溢出问题的方案变得越来越复杂（例如，允许一级嵌套、允许多级嵌套，级数由内核堆栈深度决定等），这一功能在一段时间前被取消了。</p>
+<p>然而，在异常和中断之间仍然可以实现嵌套，但规则相当严格：</p>
+<ul class="admonition-linux-irq simple">
+<li>异常（如页错误、系统调用）不能抢占中断；如果发生这种情况，则被视为漏洞（bug）</li>
+<li>中断可以抢占异常</li>
+<li>中断不能抢占另一个中断（以前是可能的）</li>
+</ul>
+<p>以下图表展示了嵌套的可能情景：</p>
+<p class="admonition-">&nbsp;</p>
+<img alt="../_images/ditaa-2e49ca6ac606dab4b2b53231cfbe85ff06312d36.png" src="../_images/ditaa-2e49ca6ac606dab4b2b53231cfbe85ff06312d36.png" />
+</div>
+<div class="section" id="section-16">
+<h3>中断上下文<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h3>
+<p>处理中断时（从 CPU 跳转到中断处理程序一直到中断处理程序返回（例如发出 IRET 指令）），这段时间内代码运行在“中断上下文”中。</p>
+<p>中断上下文中运行的代码具有以下特点：</p>
+<blockquote class="admonition-">
+<div><ul class="simple">
+<li>它是作为 IRQ 的结果而运行的（不是异常）</li>
+<li>没有明确定义的进程上下文与之关联</li>
+<li>不允许触发上下文切换（不能睡眠、调度或访问用户内存）</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="section-17">
+<h3>可延迟操作<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<p>可延迟操作用于稍后运行回调函数。如果从中断处理程序中调度可延迟操作，相关的回调函数将在中断处理程序完成后运行。</p>
+<p>可延迟操作分为两大类：在中断上下文中运行的操作和在进程上下文中运行的操作。</p>
+<p>之所以设计中断上下文可延迟操作，其目的是避免在中断处理程序函数中执行过多的工作。长时间禁用中断可能会产生不良影响，例如增加延迟或由于未及时处理其他中断而导致系统性能下降（例如因为 CPU 未及时从网络接口出列数据包而导致网络数据包丢失，因为网络卡缓冲区已满）。</p>
+<p>可延迟操作具有以下 API：<a href="#system-message-1"><span class="problematic" id="problematic-1">**</span></a>初始化**实例、<a href="#system-message-2"><span class="problematic" id="problematic-2">**</span></a>激活**或**调度**操作以及**屏蔽/禁用**和**取消屏蔽/启用**回调函数的执行。后者用于回调函数和其他上下文之间的同步目的。</p>
+<p>通常，设备驱动程序将在设备实例初始化期间初始化可延迟操作结构，并将从中断处理程序中激活/调度可延迟操作。</p>
+<span class="admonition-"></span></div>
+<div class="section" id="soft-irq">
+<h3>软中断（Soft IRQ）<a class="headerlink" href="#soft-irq" title="Permalink to this headline">¶</a></h3>
+<p>软中断是一种在中断上下文中实现延迟处理中断处理程序工作的低级机制。</p>
+<p class="admonition-">软中断的 API 包括：</p>
+<blockquote>
+<div><ul class="simple">
+<li>初始化：<code class="xref c c-func docutils literal"><span class="pre">open_softirq()</span></code></li>
+<li>激活：<code class="xref c c-func docutils literal"><span class="pre">raise_softirq()</span></code></li>
+<li>屏蔽：<code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> 、<code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code></li>
+</ul>
+</div></blockquote>
+<p>一旦被激活，回调函数 <code class="xref c c-func docutils literal"><span class="pre">do_softirq()</span></code> 会在以下情况下运行：</p>
+<blockquote>
+<div><ul class="simple">
+<li>在中断处理程序完成之后，或者</li>
+<li>从内核线程 <strong>ksoftirqd</strong> 中运行</li>
+</ul>
+</div></blockquote>
+<p>由于软中断可以重新调度自身并且其他中断可能会导致对它们重新调度，如果不进行检查，它们可能会导致（临时的）进程饥饿。目前，Linux 内核不允许运行超过 <code class="xref c c-macro docutils literal"><span class="pre">MAX_SOFTIRQ_TIME</span></code> 数量的软中断，也不允许连续重新调度超过 <code class="xref c c-macro docutils literal"><span class="pre">MAX_SOFTIRQ_RESTART</span></code> 次。</p>
+<p>一旦达到这些瓶颈，一个特殊的内核线程，<strong>ksoftirqd</strong> 会被唤醒，并且所有其他待处理的软中断将在该内核线程的上下文中运行。</p>
+<span class="admonition-ksoftirqd"></span></div>
 </div>
 </div>
 
