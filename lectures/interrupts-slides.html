@@ -252,6 +252,65 @@
 
 
 </article>
+<article class="admonition- slide level-2">
+
+<h2>中断处理程序地址</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-b2023fce22479e20bbe08fd76eed87e9a0527688.png" src="../_images/ditaa-b2023fce22479e20bbe08fd76eed87e9a0527688.png" />
+
+
+
+
+</article>
+<article class="admonition- slide level-2">
+
+<h2>中断处理程序的栈</h2>
+
+<p>&nbsp;</p>
+<img alt="../_images/ditaa-85b69602726fa6143fc3ba0ffdb492454864aacf.png" src="../_images/ditaa-85b69602726fa6143fc3ba0ffdb492454864aacf.png" />
+
+
+
+
+</article>
+<article class="admonition-x86 slide level-2">
+
+<h2>检查 x86 中断处理过程</h2>
+
+<p>&nbsp;</p>
+<asciinema-player src="../_images/intr_x86.cast"></asciinema-player>
+
+
+
+</article>
+<article class="admonition-x86 slide level-2">
+
+<h2>测验：x86 中断处理</h2>
+
+<p>下面的 gdb 命令用于确定基于 int80 的系统调用异常的处理程序。请正确顺序以下命令以及命令的输出。</p>
+<div class="highlight-gdb"><div class="highlight"><pre><span></span>(void *) 0xc15de780 &lt;entry_SYSENTER_32&gt;
+
+set $idtr_addr=($idtr_entry&gt;&gt;48&lt;&lt;16)|($idtr_entry&amp;0xffff)
+
+print (void*)$idtr_addr
+
+set $idtr = 0xff800000
+
+(void *) 0xc15de874 &lt;entry_INT80_32&gt;
+
+set $idtr = 0xff801000
+
+set $idtr_entry = *(uint64_t*)($idtr + 8 * 128)
+
+monitor info registers
+</pre></div>
+</div>
+
+
+
+
+</article>
 
 </section>
 

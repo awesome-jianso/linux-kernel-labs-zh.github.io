@@ -77,6 +77,12 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#x86">x86 架构上的中断处理</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#section-10">中断描述符表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-11">中断处理程序地址</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-12">中断处理程序的栈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">处理中断请求</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-14">从中断处理程序返回</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#x86-1">检查 x86 中断处理过程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#x86-2">测验：x86 中断处理</a></li>
 </ul>
 </li>
 </ul>
@@ -358,6 +364,84 @@
 </div></blockquote>
 <p class="admonition-">&nbsp;</p>
 <img alt="../_images/ditaa-eff5e0e3b58ce239d5310b22b89c0927be5853bd.png" src="../_images/ditaa-eff5e0e3b58ce239d5310b22b89c0927be5853bd.png" />
+</div>
+<div class="section" id="section-11">
+<h3>中断处理程序地址<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<p>要找到中断处理程序的地址，我们首先需要确定中断处理程序所在代码段的起始地址。我们可以通过使用段选择符来索引 GDT/LDT，以找到对应的段描述符。段描述符会提供存储在“base”字段中的起始地址。现在，结合基地址和偏移量，我们就可以定位到中断处理程序的起始位置。</p>
+<p class="admonition-">&nbsp;</p>
+<img alt="../_images/ditaa-b2023fce22479e20bbe08fd76eed87e9a0527688.png" src="../_images/ditaa-b2023fce22479e20bbe08fd76eed87e9a0527688.png" />
+</div>
+<div class="section" id="section-12">
+<h3>中断处理程序的栈<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<p>与控制转移到普通函数类似，控制转移到中断或异常处理程序也使用栈来存储返回到被中断代码所需的信息。</p>
+<p>如下图所示，中断在保存被中断指令的地址之前，会将 EFLAGS 寄存器压入栈中。某些类型的异常还会在栈上压入产生错误的代码，以帮助调试异常。</p>
+<p class="admonition-">&nbsp;</p>
+<img alt="../_images/ditaa-85b69602726fa6143fc3ba0ffdb492454864aacf.png" src="../_images/ditaa-85b69602726fa6143fc3ba0ffdb492454864aacf.png" />
+</div>
+<div class="section" id="section-13">
+<h3>处理中断请求<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<p>在生成中断请求后，处理器会运行一系列事件，最终执行内核中断处理程序：</p>
+<p>处理中断请求的步骤如下：</p>
+<blockquote>
+<div><ul>
+<li><p class="first">CPU 检查当前特权级别</p>
+</li>
+<li><p class="first">如果需要更改特权级别</p>
+<blockquote>
+<div><ul class="simple">
+<li>使用与新特权级别相关联的堆栈</li>
+<li>在新堆栈上保存旧堆栈信息</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">在堆栈上保存 EFLAGS，CS，EIP</p>
+</li>
+<li><p class="first">在发生程序中止时，在堆栈上保存错误代码</p>
+</li>
+<li><p class="first">执行内核中断处理程序</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="section-14">
+<h3>从中断处理程序返回<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<p>大多数体系架构都提供了特殊的指令，用来在执行中断处理程序后清理堆栈并恢复被中断程序执行。在 x86 架构中，使用 IRET 指令从中断处理程序返回。IRET 类似于 RET 指令，但 IRET 会将 ESP 增加额外的四个字节（因为堆栈上有标志位），并将保存的标志位移动到 EFLAGS 寄存器。</p>
+<p>在中断处理程序执行后恢复执行的过程如下（x86 架构）：</p>
+<blockquote>
+<div><ul class="simple">
+<li>弹出错误代码（如果发生中止）</li>
+<li>调用 IRET 指令<ul>
+<li>从堆栈弹出值并恢复以下寄存器的值：CS，EIP，EFLAGS</li>
+<li>如果特权级别发生了更改，则返回到旧堆栈和旧特权级别</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="x86-1">
+<h3>检查 x86 中断处理过程<a class="headerlink" href="#x86-1" title="Permalink to this headline">¶</a></h3>
+<p class="admonition-x86">&nbsp;</p>
+<asciinema-player src="../_images/intr_x86.cast"></asciinema-player></div>
+<div class="section" id="x86-2">
+<h3>测验：x86 中断处理<a class="headerlink" href="#x86-2" title="Permalink to this headline">¶</a></h3>
+<p class="admonition-x86">下面的 gdb 命令用于确定基于 int80 的系统调用异常的处理程序。请正确顺序以下命令以及命令的输出。</p>
+<div class="highlight-gdb"><div class="highlight"><pre><span></span>(void *) 0xc15de780 &lt;entry_SYSENTER_32&gt;
+
+set $idtr_addr=($idtr_entry&gt;&gt;48&lt;&lt;16)|($idtr_entry&amp;0xffff)
+
+print (void*)$idtr_addr
+
+set $idtr = 0xff800000
+
+(void *) 0xc15de874 &lt;entry_INT80_32&gt;
+
+set $idtr = 0xff801000
+
+set $idtr_entry = *(uint64_t*)($idtr + 8 * 128)
+
+monitor info registers
+</pre></div>
+</div>
 </div>
 </div>
 </div>
