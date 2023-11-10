@@ -72,36 +72,36 @@
 <li class="toctree-l2"><a class="reference internal" href="lab1-intro.html">SO2 Lab 01 - Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab2-kernel-api.html">SO2 Lab 02 - Kernel API</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lab 03 - Character device drivers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#laboratory-objectives">Laboratory objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#majors-and-minors">Majors and minors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#data-structures-for-a-character-device">Data structures for a character device</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">主设备号和次设备号</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">字符设备的数据结构</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#struct-file-operations"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#inode-and-file-structures"><code class="docutils literal"><span class="pre">inode</span></code> and <code class="docutils literal"><span class="pre">file</span></code> structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inode-file"><code class="docutils literal"><span class="pre">inode</span></code> 和 <code class="docutils literal"><span class="pre">file</span></code> 结构</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#implementation-of-operations">Implementation of operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#registration-and-unregistration-of-character-devices">Registration and unregistration of character devices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#access-to-the-address-space-of-the-process">Access to the address space of the process</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#open-and-release">Open and release</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#read-and-write">Read and write</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">实现操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">字符设备的注册和注销</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-7">访问进程地址空间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-8">打开和释放</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-9">读取和写入</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ioctl-1">ioctl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#waiting-queues">Waiting queues</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#register-unregister">1. Register/unregister</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#register-an-already-registered-major">2. Register an already registered major</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#open-and-close">3. Open and close</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#access-restriction">4. Access restriction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#read-operation">5. Read operation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#write-operation">6. Write operation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ioctl-operation">7. ioctl operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-10">等待队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-11">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-12">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">1. 注册/注销</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-14">2. 注册一个已注册的主设备号</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-15">3. 打开和关闭</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-16">4. 访问限制</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-17">5. 读操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-18">6. 写操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ioctl-2">7. ioctl 操作</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#extra-exercises">Extra Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#ioctl-with-messaging">Ioctl with messaging</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ioctl-with-waiting-queues">Ioctl with waiting queues</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#o-nonblock-implementation">O_NONBLOCK implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-19">额外练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ioctl-3">带消息的 ioctl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ioctl-4">使用等待队列的 ioctl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#o-nonblock">O_NONBLOCK 实现</a></li>
 </ul>
 </li>
 </ul>
@@ -146,7 +146,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../labs/introduction.html">介绍</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/kernel_modules.html">内核模块</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/kernel_api.html">内核 API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../labs/device_drivers.html">Character device drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../labs/device_drivers.html">字符设备驱动程序</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/interrupts.html">I/O access and Interrupts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/deferred_work.html">Deferred work</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/block_device_drivers.html">Block Device Drivers</a></li>
@@ -192,57 +192,25 @@
              
   <div class="section" id="so2-lab-03-character-device-drivers">
 <h1>SO2 Lab 03 - Character device drivers<a class="headerlink" href="#so2-lab-03-character-device-drivers" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="laboratory-objectives">
-<h2>Laboratory objectives<a class="headerlink" href="#laboratory-objectives" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-1">
+<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>understand the concepts behind character device driver</li>
-<li>understand the various operations that can be performed on character devices</li>
-<li>working with waiting queues</li>
+<li>理解字符设备驱动程序背后的概念</li>
+<li>理解可以在字符设备上执行的各种操作</li>
+<li>使用等待队列进行工作</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>In UNIX, hardware devices are accessed by the user through special device
-files. These files are grouped into the /dev directory, and system calls
-<code class="docutils literal"><span class="pre">open</span></code>, <code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code>, <code class="docutils literal"><span class="pre">close</span></code>, <code class="docutils literal"><span class="pre">lseek</span></code>, <code class="docutils literal"><span class="pre">mmap</span></code> etc. are
-redirected by the operating system to the device driver associated with the
-physical device. The device driver is a kernel component (usually a module)
-that interacts with a hardware device.</p>
-<p>In the UNIX world there are two categories of device files and thus
-device drivers: character and block. This division is done by the speed,
-volume and way of organizing the data to be transferred from the device to the
-system and vice versa. In the first category, there are slow devices, which
-manage a small amount of data, and access to data does not require frequent
-seek queries. Examples are devices such as keyboard, mouse, serial ports,
-sound card, joystick. In general, operations with these devices (read, write)
-are performed sequentially byte by byte. The second category includes devices
-where data volume is large, data is organized on blocks, and search is common.
-Examples of devices that fall into this category are hard drives, cdroms, ram
-disks, magnetic tape drives. For these devices, reading and writing is done at
-the data block level.</p>
-<p>For the two types of device drivers, the Linux kernel offers different APIs.
-If for character devices system calls go directly to device drivers, in case of
-block devices, the drivers do not work directly with system calls. In
-the case of block devices, communication between the user-space and the block
-device driver is mediated by the file management subsystem and the block device
-subsystem. The role of these subsystems is to prepare the device driver's
-necessary resources (buffers), to keep the recently read data in the cache
-buffer, and to order the read and write operations for performance reasons.</p>
+<div class="section" id="section-2">
+<h2>概述<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<p>在 UNIX 系统中，用户通过特殊的设备文件访问硬件设备。这些文件被组织在 /dev 目录下，并且操作系统会将对这些文件的系统调用（如 <code class="docutils literal"><span class="pre">open</span></code>、 <code class="docutils literal"><span class="pre">read</span></code>、  <code class="docutils literal"><span class="pre">write</span></code>、 <code class="docutils literal"><span class="pre">close</span></code>、 <code class="docutils literal"><span class="pre">lseek</span></code>、 <code class="docutils literal"><span class="pre">mmap</span></code> 等），重定向到与物理设备关联的设备驱动程序。设备驱动程序是与硬件设备交互的内核组件（通常是一个模块）。</p>
+<p>在 UNIX 世界中，设备文件和设备驱动程序分为两个类别：字符设备和块设备。这种划分是根据数据传输的速度、容量和数据组织方式进行的。第一类是一些速度较慢的设备，它们仅处理少量数据，并且对数据的访问不需要频繁的搜索查询，例如键盘、鼠标、串口、声卡、游戏手柄等设备。通常情况下，对这些设备（读取、写入）的操作是按字节顺序逐个执行的。第二类包括数据量大、数据以块为单位组织且搜索频繁的设备。这一类别的设备包括硬盘、光驱、RAM 磁盘以及磁带驱动器等。这些设备的读取和写入是以数据块为单位进行的。</p>
+<p>对于这两种类型的设备驱动程序，Linux 内核提供了不同的 API。如果是字符设备，系统调用直接传递给设备驱动程序；而如果是块设备，驱动程序不能直接与系统调用交互。用户空间和块设备驱动程序之间的通信是通过文件管理子系统和块设备子系统进行的。这些子系统的作用是准备设备驱动程序所需的资源（缓冲区），将最近读取的数据保存在缓存缓冲区中，并为了提升性能而对读取和写入操作进行排序。</p>
 </div>
-<div class="section" id="majors-and-minors">
-<h2>Majors and minors<a class="headerlink" href="#majors-and-minors" title="Permalink to this headline">¶</a></h2>
-<p>In UNIX, the devices traditionally had a unique, fixed identifier associated
-with them. This tradition is preserved in Linux, although identifiers can be
-dynamically allocated (for compatibility reasons, most drivers still use static
-identifiers). The identifier consists of two parts: major and minor. The first
-part identifies the device type (IDE disk, SCSI disk, serial port, etc.)
-and the second one identifies the device (first disk, second serial port,
-etc.). Most times, the major identifies the driver, while the minor identifies
-each physical device served by the driver. In general, a driver will have a
-major associate and will be responsible for all minors associated with that
-major.</p>
+<div class="section" id="section-3">
+<h2>主设备号和次设备号<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>在 UNIX 中，设备通常有一个唯一的、固定的标识符与之关联。这种传统在 Linux 中得以保留，尽管标识符可以动态分配（出于兼容性的原因，大多数驱动程序仍然使用静态标识符）。这个标识符由两部分组成：主设备号（major）和次设备号（minor）。第一部分用于标识设备类型（如 IDE 硬盘、SCSI 硬盘、串口等），而第二部分用于标识设备本身（如第一个硬盘、第二个串口等）。大多数情况下，主设备号用于标识驱动程序，而次设备号用于标识驱动程序所服务的某个物理设备。通常情况下，一个驱动程序会有一个关联的主设备号，并负责处理与该主设备号关联的所有次设备号。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ ls -la /dev/hda? /dev/ttyS?
 brw-rw----  <span class="m">1</span> root disk    <span class="m">3</span>,  <span class="m">1</span> <span class="m">2004</span>-09-18 <span class="m">14</span>:51 /dev/hda1
 brw-rw----  <span class="m">1</span> root disk    <span class="m">3</span>,  <span class="m">2</span> <span class="m">2004</span>-09-18 <span class="m">14</span>:51 /dev/hda2
@@ -250,43 +218,24 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <span class="m">65</span> <span class="m">2004</span>-09-18 <span class="m">14</span>:52 /dev/ttyS1
 </pre></div>
 </div>
-<p>As can be seen from the example above, device-type information can be found
-using the ls command. The special character files are identified by the <code class="docutils literal"><span class="pre">c</span></code>
-character in the first column of the command output, and the block type by the
-character <code class="docutils literal"><span class="pre">b</span></code>. In columns <code class="docutils literal"><span class="pre">5</span></code> and <code class="docutils literal"><span class="pre">6</span></code> of the result  you can see the
-major, respectively the minor for each device.</p>
-<p>Certain major identifiers are statically assigned to devices (in the
-<code class="docutils literal"><span class="pre">Documentation/admin-guide/devices.txt</span></code> file from the kernel sources). When choosing the
-identifier for a new device, you can use two methods: static (choose a number
-that does not seem to be used already) or dynamically. In /proc/devices are the
-loaded devices, along with the major identifier.</p>
-<p>To create a device type file, use the <code class="docutils literal"><span class="pre">mknod</span></code> command; the command receives the
-type (<code class="docutils literal"><span class="pre">block</span></code> or <code class="docutils literal"><span class="pre">character</span></code>), <code class="docutils literal"><span class="pre">major</span></code> and <code class="docutils literal"><span class="pre">minor</span></code> of the device
-(<code class="docutils literal"><span class="pre">mknod</span> <span class="pre">name</span> <span class="pre">type</span> <span class="pre">major</span> <span class="pre">minor</span></code>). Thus, if you want to create a character device
-named <code class="docutils literal"><span class="pre">mycdev</span></code> with the major <code class="docutils literal"><span class="pre">42</span></code> and minor <code class="docutils literal"><span class="pre">0</span></code>, use the command:</p>
+<p>如上例所示，可以使用 ls 命令找到设备类型信息。特殊字符文件在命令输出的第一列中通过字符 <code class="docutils literal"><span class="pre">c</span></code> 进行标识，块类型则通过字符 <code class="docutils literal"><span class="pre">b</span></code> 进行标识。在结果的第 <code class="docutils literal"><span class="pre">5</span></code> 和第 <code class="docutils literal"><span class="pre">6</span></code> 列中，可以看到每个设备的主设备号和次设备号。</p>
+<p>某些主设备号是静态分配给设备的（可以在内核源代码的 <code class="docutils literal"><span class="pre">Documentation/admin-guide/devices.txt</span></code> 文件中查看）。选择新设备的标识符时，你可以使用两种方法：静态方法（选择一个尚未被使用的数字）或动态方法。/proc/devices 目录中列出了已加载的设备，以及其主设备号。</p>
+<p>要创建设备类型文件，请使用 <code class="docutils literal"><span class="pre">mknod</span></code> 命令；该命令的参数为设备的类型 (<code class="docutils literal"><span class="pre">block</span></code> 或 <code class="docutils literal"><span class="pre">character</span></code>)、主设备号和次设备号 (<code class="docutils literal"><span class="pre">mknod</span> <span class="pre">name</span> <span class="pre">type</span> <span class="pre">major</span> <span class="pre">minor</span></code>)。因此，要想创建一个名为 <code class="docutils literal"><span class="pre">mycdev</span></code>、主设备号为 <code class="docutils literal"><span class="pre">42</span></code>、次设备号为 <code class="docutils literal"><span class="pre">0</span></code> 的字符设备，可以使用以下命令：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># mknod /dev/mycdev c 42 0</span>
 </pre></div>
 </div>
-<p>To create the block device with the name <code class="docutils literal"><span class="pre">mybdev</span></code> with the major 240 and minor 0
-the command will be:</p>
+<p>要创建名为 <code class="docutils literal"><span class="pre">mybdev</span></code>、主设备号为 <code class="docutils literal"><span class="pre">240</span></code> 并且次设备号为 <code class="docutils literal"><span class="pre">0</span></code> 的块设备，请使用如下命令：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># mknod /dev/mybdev b 240 0</span>
 </pre></div>
 </div>
-<p>Next, we'll refer to character devices as drivers.</p>
+<p>接下来，我们会把字符设备称为驱动程序。</p>
 </div>
-<div class="section" id="data-structures-for-a-character-device">
-<h2>Data structures for a character device<a class="headerlink" href="#data-structures-for-a-character-device" title="Permalink to this headline">¶</a></h2>
-<p>In the kernel, a character-type device is represented by
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">cdev</span></code>, a structure used to register it in the
-system. Most driver operations use three important structures:
-<code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> and <code class="docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>.</p>
+<div class="section" id="section-4">
+<h2>字符设备的数据结构<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<p>在内核中，字符设备由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">cdev</span></code> 结构表示，该结构用于在系统中注册字符设备。大多数驱动程序操作都用到了三个重要的结构: <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code>、 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 和 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>。</p>
 <div class="section" id="struct-file-operations">
 <h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code><a class="headerlink" href="#struct-file-operations" title="Permalink to this headline">¶</a></h3>
-<p>As mentioned above, the character device drivers receive unaltered system calls
-made by users over device-type files. Consequently, implementation of a character
-device driver means implementing the system calls specific to files: <code class="docutils literal"><span class="pre">open</span></code>,
-<code class="docutils literal"><span class="pre">close</span></code>, <code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code>, <code class="docutils literal"><span class="pre">lseek</span></code>, <code class="docutils literal"><span class="pre">mmap</span></code>, etc. These operations are
-described in the fields of the <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> structure:</p>
+<p>如上所述，字符设备驱动程序接收用户对设备类型文件的原始系统调用。因此，要想实现字符设备驱动程序，我们就需要实现特定于文件的系统调用，例如 <code class="docutils literal"><span class="pre">open</span></code>、 <code class="docutils literal"><span class="pre">close</span></code>、 <code class="docutils literal"><span class="pre">read</span></code>、 <code class="docutils literal"><span class="pre">write</span></code>、 <code class="docutils literal"><span class="pre">lseek</span></code> 以及 <code class="docutils literal"><span class="pre">mmap</span></code> 等。这些操作在 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构的字段中描述：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
 
 <span class="k">struct</span> <span class="n">file_operations</span> <span class="p">{</span>
@@ -303,81 +252,49 @@ described in the fields of the <code class="docutils literal"><span class="pre">
     <span class="p">[...]</span>
 </pre></div>
 </div>
-<p>It can be noticed that the signature of the function differs from the system
-call that the user uses. The operating system sits between the user and
-the device driver to simplify implementation in the device driver.</p>
-<p><code class="docutils literal"><span class="pre">open</span></code> does not receive the parameter path or the various parameters that control
-the file opening mode. Similarly, <code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code>, <code class="docutils literal"><span class="pre">release</span></code>, <code class="docutils literal"><span class="pre">ioctl</span></code>, <code class="docutils literal"><span class="pre">lseek</span></code>
-do not receive as a parameter a file descriptor. Instead, these routines receive as
-parameters two structures: <code class="docutils literal"><span class="pre">file</span></code> and <code class="docutils literal"><span class="pre">inode</span></code>. Both structures represent a file,
-but from different perspectives.</p>
+<p>可以看出，函数的签名与用户使用的系统调用不同。操作系统位于用户和设备驱动程序之间，其简化了设备驱动程序的实现。</p>
+<p><code class="docutils literal"><span class="pre">open</span></code> 函数不接收参数路径或控制文件打开模式的各种参数。同样， <code class="docutils literal"><span class="pre">read</span></code>、 <code class="docutils literal"><span class="pre">write</span></code>、 <code class="docutils literal"><span class="pre">release</span></code>、 <code class="docutils literal"><span class="pre">ioctl</span></code>、 <code class="docutils literal"><span class="pre">lseek</span></code> 的参数也不包括文件描述符。相反，这些例程接收两个结构作为参数： <code class="docutils literal"><span class="pre">file</span></code> 和 <code class="docutils literal"><span class="pre">inode</span></code>。这两个结构都从不同的角度表示文件。</p>
 <dl class="docutils">
-<dt>Most parameters for the presented operations have a direct meaning:</dt>
+<dt>所提供操作的大多数参数具有直接的含义：</dt>
 <dd><ul class="first last simple">
-<li><code class="docutils literal"><span class="pre">file</span></code> and <code class="docutils literal"><span class="pre">inode</span></code> identifies the device type file;</li>
-<li><code class="docutils literal"><span class="pre">size</span></code> is the number of bytes to be read or written;</li>
-<li><code class="docutils literal"><span class="pre">offset</span></code> is the displacement to be read or written (to be updated
-accordingly);</li>
-<li><code class="docutils literal"><span class="pre">user_buffer</span></code> user buffer from which it reads / writes;</li>
-<li><code class="docutils literal"><span class="pre">whence</span></code> is the way to seek (the position where the search operation starts);</li>
-<li><code class="docutils literal"><span class="pre">cmd</span></code> and <code class="docutils literal"><span class="pre">arg</span></code> are the parameters sent by the users to the ioctl call (IO
-control).</li>
+<li><code class="docutils literal"><span class="pre">file</span></code> 和 <code class="docutils literal"><span class="pre">inode</span></code> 标识设备类型文件；</li>
+<li><code class="docutils literal"><span class="pre">size</span></code> 是要读取或写入的字节数；</li>
+<li><code class="docutils literal"><span class="pre">offset</span></code> 是要读取或写入的位移（将相应地更新）；</li>
+<li><code class="docutils literal"><span class="pre">user_buffer</span></code> 是要读取/写入的用户缓冲区；</li>
+<li><code class="docutils literal"><span class="pre">whence</span></code> 是寻找的方式（搜索操作开始的位置）；</li>
+<li><code class="docutils literal"><span class="pre">cmd</span></code> 和 <code class="docutils literal"><span class="pre">arg</span></code> 是由用户发送到 ioctl（IO 控制）调用的参数。</li>
 </ul>
 </dd>
 </dl>
 </div>
-<div class="section" id="inode-and-file-structures">
-<h3><code class="docutils literal"><span class="pre">inode</span></code> and <code class="docutils literal"><span class="pre">file</span></code> structures<a class="headerlink" href="#inode-and-file-structures" title="Permalink to this headline">¶</a></h3>
-<p>An <code class="docutils literal"><span class="pre">inode</span></code> represents a file from the point of view of the file system. Attributes
-of an inode are the size, rights, times associated with the file. An inode uniquely
-identifies a file in a file system.</p>
-<p>The <code class="docutils literal"><span class="pre">file</span></code> structure is still a file, but closer to the user's point of view.
-From the attributes of the file structure we list: the inode, the file name,
-the file opening attributes, the file position. All open files at a given time
-have associated a <code class="docutils literal"><span class="pre">file</span></code> structure.</p>
-<p>To understand the differences between inode and file, we will use an analogy
-from object-oriented programming: if we consider a class inode, then the files
-are objects, that is, instances of the inode class. Inode represents the static
-image of the file (the inode has no state), while the file represents the
-dynamic image of the file (the file has state).</p>
-<p>Returning to device drivers, the two entities have almost always standard ways
-of using: the inode is used to determine the major and minor of the device on
-which the operation is performed, and the file is used to determine the flags
-with which the file was opened, but also to save and access (later) private
-data.</p>
-<p>The file structure contains, among many fields:</p>
+<div class="section" id="inode-file">
+<h3><code class="docutils literal"><span class="pre">inode</span></code> 和 <code class="docutils literal"><span class="pre">file</span></code> 结构<a class="headerlink" href="#inode-file" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">inode</span></code> 代表文件系统视角中的文件。inode 的属性包括文件大小、权限和相关时间。单个 inode 在文件系统中唯一标识一个文件。</p>
+<p><code class="docutils literal"><span class="pre">file</span></code> 结构仍然代表单个文件，但更接近用户的视角。file 结构的属性中，有 inode、文件名、文件打开属性和文件位置等。在给定时间内，所有打开的文件都有一个关联的 <code class="docutils literal"><span class="pre">file</span></code> 结构。</p>
+<p>为了更好的理解 inode 和 file 之间的区别，我们可以使用面向对象编程的类比：如果我们将 inode 视为一个类，那么文件就是对象，即 inode 类的实例。inode 表示文件的静态映像（inode 没有状态），而 file 表示文件的动态映像（file 具有状态）。</p>
+<p>回到设备驱动程序，这两个实体几乎总是有标准的使用方式：inode 用于确定操作执行的设备的主设备号和次设备号，而 file 用于确定文件的打开标志，还可以保存和（稍后）访问私有数据。</p>
+<p>file 结构包含许多字段，其中包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">f_mode</span></code>, which specifies read (<code class="docutils literal"><span class="pre">FMODE_READ</span></code>) or write
-(<code class="docutils literal"><span class="pre">FMODE_WRITE</span></code>);</li>
-<li><code class="docutils literal"><span class="pre">f_flags</span></code>, which specifies the file opening flags (<code class="docutils literal"><span class="pre">O_RDONLY</span></code>,
-<code class="docutils literal"><span class="pre">O_NONBLOCK</span></code>, <code class="docutils literal"><span class="pre">O_SYNC</span></code>, <code class="docutils literal"><span class="pre">O_APPEND</span></code>, <code class="docutils literal"><span class="pre">O_TRUNC</span></code>, etc.);</li>
-<li><code class="docutils literal"><span class="pre">f_op</span></code>, which specifies the operations associated with the file (pointer to
-the <code class="docutils literal"><span class="pre">file_operations</span></code> structure );</li>
-<li><code class="docutils literal"><span class="pre">private_data</span></code>, a pointer that can be used by the programmer to store
-device-specific data; The pointer will be initialized to a memory location
-assigned by the programmer.</li>
-<li><code class="docutils literal"><span class="pre">f_pos</span></code>, the offset within the file</li>
+<li><code class="docutils literal"><span class="pre">f_mode</span></code>，指定是读取 (<code class="docutils literal"><span class="pre">FMODE_READ</span></code>) 还是写入 (<code class="docutils literal"><span class="pre">FMODE_WRITE</span></code>)；</li>
+<li><code class="docutils literal"><span class="pre">f_flags</span></code>，指定文件的打开标志 (<code class="docutils literal"><span class="pre">O_RDONLY</span></code>、 <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code>、 <code class="docutils literal"><span class="pre">O_SYNC</span></code>、 <code class="docutils literal"><span class="pre">O_APPEND</span></code>、 <code class="docutils literal"><span class="pre">O_TRUNC</span></code> 等)；</li>
+<li><code class="docutils literal"><span class="pre">f_op</span></code>，指定与文件关联的操作（指向 <code class="docutils literal"><span class="pre">file_operations</span></code> 结构的指针）；</li>
+<li><code class="docutils literal"><span class="pre">private_data</span></code>，一个指针，程序员可以用来存储特定于设备的数据；该指针将被初始化到程序员分配的内存位置。</li>
+<li><code class="docutils literal"><span class="pre">f_pos</span></code>，文件内的偏移量。</li>
 </ul>
 </div></blockquote>
-<p>The inode structure contains, among much information, an <code class="docutils literal"><span class="pre">i_cdev</span></code>
-field, which is a pointer to the structure that defines the character
-device (when the inode corresponds to a character device).</p>
+<p>inode 结构包含许多信息，其中包括一个 <code class="docutils literal"><span class="pre">i_cdev</span></code> 字段，它是一个指向定义字符设备的结构的指针（如果 inode 对应于字符设备）。</p>
 </div>
 </div>
-<div class="section" id="implementation-of-operations">
-<h2>Implementation of operations<a class="headerlink" href="#implementation-of-operations" title="Permalink to this headline">¶</a></h2>
-<p>To implement a device driver, it is recommended that you create a structure
-that contains information about the device, information used in the module. In
-the case of a driver for a character device, the structure will contain a cdev
-structure field to refer to the device. The following example uses the struct
-my_device_data:</p>
+<div class="section" id="section-5">
+<h2>实现操作<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<p>为了实现设备驱动程序，建议创建一个包含有关设备信息和模块使用的信息的结构体。如果是字符设备驱动程序，则结构体将包含一个指向设备的 cdev 结构体字段。下面的示例使用了名为 my_device_data 的结构体：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/cdev.h&gt;</span><span class="cp"></span>
 
 <span class="k">struct</span> <span class="n">my_device_data</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">cdev</span> <span class="n">cdev</span><span class="p">;</span>
-    <span class="cm">/* my data starts here */</span>
+    <span class="cm">/* 数据从这里开始 */</span>
     <span class="c1">//...</span>
 <span class="p">};</span>
 
@@ -401,48 +318,33 @@ my_device_data:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>A structure like <code class="docutils literal"><span class="pre">my_device_data</span></code> will contain the data associated with a device.
-The <code class="docutils literal"><span class="pre">cdev</span></code> field (<code class="docutils literal"><span class="pre">cdev</span></code> type) is a character-type device and is used to record it
-in the system and identify the device. The pointer to the <code class="docutils literal"><span class="pre">cdev</span></code> member can be
-found using the <code class="docutils literal"><span class="pre">i_cdev</span></code> field of the <code class="docutils literal"><span class="pre">inode</span></code> structure (using the <code class="docutils literal"><span class="pre">container_of</span></code>
-macro). In the private_data field of the file structure, information can be
-stored at open which is then available in the <code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code>, <code class="docutils literal"><span class="pre">release</span></code>, etc.
-routines.</p>
+<p>名为 <code class="docutils literal"><span class="pre">my_device_data</span></code> 的结构包含与设备相关的数据。<code class="docutils literal"><span class="pre">cdev</span></code> 字段 (<code class="docutils literal"><span class="pre">cdev</span></code> 类型)对应字符设备，用于在系统中记录和识别设备。可以使用 <code class="docutils literal"><span class="pre">inode</span></code> 结构的 <code class="docutils literal"><span class="pre">i_cdev</span></code> 字段（使用 <code class="docutils literal"><span class="pre">container_of</span></code> 宏）找到指向 <code class="docutils literal"><span class="pre">cdev</span></code> 的指针。可以在打开文件时，在 file 结构的 <code class="docutils literal"><span class="pre">private_data</span></code> 字段中存储可用于 <code class="docutils literal"><span class="pre">read</span></code>、 <code class="docutils literal"><span class="pre">write</span></code>、 <code class="docutils literal"><span class="pre">release</span></code> 等函数的信息。</p>
 </div>
-<div class="section" id="registration-and-unregistration-of-character-devices">
-<h2>Registration and unregistration of character devices<a class="headerlink" href="#registration-and-unregistration-of-character-devices" title="Permalink to this headline">¶</a></h2>
-<p>The registration/unregistration of a device is made by specifying the major and
-minor. The <code class="docutils literal"><span class="pre">dev_t</span></code> type is used to keep the identifiers of a device (both major
-and minor) and can be obtained using the <code class="docutils literal"><span class="pre">MKDEV</span></code> macro.</p>
-<p>For the static assignment and unallocation of device identifiers, the
-<code class="docutils literal"><span class="pre">register_chrdev_region</span></code> and <code class="docutils literal"><span class="pre">unregister_chrdev_region</span></code> functions are used:</p>
+<div class="section" id="section-6">
+<h2>字符设备的注册和注销<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<p>要想注册和注销设备，你需要指定主设备号和次设备号。<code class="docutils literal"><span class="pre">dev_t</span></code> 类型用于保存设备的标识符（包括主设备号和次设备号），其可以通过使用 <cite>MKDEV</cite> 宏来获取。</p>
+<p>要想完成设备标识符的静态分配和释放，可以使用 <code class="docutils literal"><span class="pre">register_chrdev_region</span></code> 和 <code class="docutils literal"><span class="pre">unregister_chrdev_region</span></code> 函数：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">register_chrdev_region</span><span class="p">(</span><span class="kt">dev_t</span> <span class="n">first</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
 <span class="kt">void</span> <span class="nf">unregister_chrdev_region</span><span class="p">(</span><span class="kt">dev_t</span> <span class="n">first</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>It is recommended that device identifiers be dynamically assigned to the
-<code class="docutils literal"><span class="pre">alloc_chrdev_region</span></code> function.</p>
-<p>Below sequence reserves <code class="docutils literal"><span class="pre">my_minor_count</span></code> devices, starting with <code class="docutils literal"><span class="pre">my_major</span></code>
-major and <code class="docutils literal"><span class="pre">my_first_minor</span></code> minor (if the max value for minor is exceeded,
-move to the next major):</p>
+<p>建议将设备标识符动态分配给 <code class="docutils literal"><span class="pre">alloc_chrdev_region</span></code> 函数。</p>
+<p>以下程序准备了 <code class="docutils literal"><span class="pre">my_minor_count</span></code> 个设备，从 <code class="docutils literal"><span class="pre">my_major</span></code> 主设备号和 <code class="docutils literal"><span class="pre">my_first_minor</span></code> 次设备号开始（如果次设备号的最大值溢出了，就会切换到下一个主设备号）：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
 <span class="p">...</span>
 
 <span class="n">err</span> <span class="o">=</span> <span class="n">register_chrdev_region</span><span class="p">(</span><span class="n">MKDEV</span><span class="p">(</span><span class="n">my_major</span><span class="p">,</span> <span class="n">my_first_minor</span><span class="p">),</span> <span class="n">my_minor_count</span><span class="p">,</span>
                              <span class="s">&quot;my_device_driver&quot;</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="cm">/* report error */</span>
+    <span class="cm">/* 报告错误 */</span>
     <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="p">...</span>
 </pre></div>
 </div>
-<p>After assigning the identifiers, the character device will have to be
-initialized (<code class="docutils literal"><span class="pre">cdev_init</span></code>) and the kernel will have to be notified(<code class="docutils literal"><span class="pre">cdev_add</span></code>). The
-<code class="docutils literal"><span class="pre">cdev_add</span></code> function must be called only after the device is ready to receive
-calls. Removing a device is done using the <code class="docutils literal"><span class="pre">cdev_del</span></code> function.</p>
+<p>在分配标识符之后，字符设备需要进行初始化（使用 <code class="docutils literal"><span class="pre">cdev_init</span></code> 函数），并通知内核（使用 <code class="docutils literal"><span class="pre">cdev_add</span></code> 函数）。只有在设备准备好接收调用时才能调用 <code class="docutils literal"><span class="pre">cdev_add</span></code> 函数。使用 <code class="docutils literal"><span class="pre">cdev_del</span></code> 函数可以移除设备。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/cdev.h&gt;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">cdev_init</span><span class="p">(</span><span class="k">struct</span> <span class="n">cdev</span> <span class="o">*</span><span class="n">cdev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file_operations</span> <span class="o">*</span><span class="n">fops</span><span class="p">);</span>
@@ -450,7 +352,7 @@ calls. Removing a device is done using the <code class="docutils literal"><span 
 <span class="kt">void</span> <span class="nf">cdev_del</span><span class="p">(</span><span class="k">struct</span> <span class="n">cdev</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The following sequence registers and initializes MY_MAX_MINORS devices:</p>
+<p>以下程序注册并初始化 MY_MAX_MINORS 个设备：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/cdev.h&gt;</span><span class="cp"></span>
 
@@ -459,7 +361,7 @@ calls. Removing a device is done using the <code class="docutils literal"><span 
 
 <span class="k">struct</span> <span class="n">my_device_data</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">cdev</span> <span class="n">cdev</span><span class="p">;</span>
-    <span class="cm">/* my data starts here */</span>
+    <span class="cm">/* 数据从这里开始 */</span>
     <span class="c1">//...</span>
 <span class="p">};</span>
 
@@ -481,12 +383,12 @@ calls. Removing a device is done using the <code class="docutils literal"><span 
     <span class="n">err</span> <span class="o">=</span> <span class="n">register_chrdev_region</span><span class="p">(</span><span class="n">MKDEV</span><span class="p">(</span><span class="n">MY_MAJOR</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">MY_MAX_MINORS</span><span class="p">,</span>
                                  <span class="s">&quot;my_device_driver&quot;</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="cm">/* report error */</span>
+        <span class="cm">/* 报告错误 */</span>
         <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">MY_MAX_MINORS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="cm">/* initialize devs[i] fields */</span>
+        <span class="cm">/* 初始化 devs[i] 字段 */</span>
         <span class="n">cdev_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">devs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cdev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_fops</span><span class="p">);</span>
         <span class="n">cdev_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">devs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cdev</span><span class="p">,</span> <span class="n">MKDEV</span><span class="p">(</span><span class="n">MY_MAJOR</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
@@ -495,13 +397,13 @@ calls. Removing a device is done using the <code class="docutils literal"><span 
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>While the following sequence deletes and unregisters them:</p>
+<p>以下代码删除并注销它们：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cleanup_module</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 
     <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">MY_MAX_MINORS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="cm">/* release devs[i] fields */</span>
+        <span class="cm">/* 释放 devs[i] 字段 */</span>
         <span class="n">cdev_del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">devs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cdev</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="n">unregister_chrdev_region</span><span class="p">(</span><span class="n">MKDEV</span><span class="p">(</span><span class="n">MY_MAJOR</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">MY_MAX_MINORS</span><span class="p">);</span>
@@ -510,25 +412,12 @@ calls. Removing a device is done using the <code class="docutils literal"><span 
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Initialization of the struct my_fops used the initialization
-of members by name, defined in C99 standard (see designated
-initializers and the file_operations structure). Structure
-members who do not explicitly appear in this initialization
-will be set to the default value for their type. For
-example, after the initialization above, <code class="docutils literal"><span class="pre">my_fops.mmap</span></code> will
-be NULL.</p>
+<p class="last"><code class="docutils literal"><span class="pre">my_fops</span></code> 结构的初始化使用了 C99 标准中的按名称初始化成员的方法（参见指定初始化器和 file_operations 结构）。未在此初始化中显式出现的结构成员将被设置为其类型的默认值。例如，在上述初始化之后，<code class="docutils literal"><span class="pre">my_fops.mmap</span></code> 将为 NULL。</p>
 </div>
 </div>
-<div class="section" id="access-to-the-address-space-of-the-process">
-<span id="access-to-process-address-space"></span><h2>Access to the address space of the process<a class="headerlink" href="#access-to-the-address-space-of-the-process" title="Permalink to this headline">¶</a></h2>
-<p>A driver for a device is the interface between an application and hardware. As
-a result, we often have to access user-space data. Accessing it can not be done
-directly (by dereferencing a user-space pointer). Direct access of a
-user-space pointer can lead to incorrect behavior (depending on architecture, a
-user-space pointer may not be valid or mapped to kernel-space), a kernel oops
-(the user-mode pointer can refer to a non-resident memory area) or security
-issues. Proper access to user-space data is done by calling the macros /
-functions below:</p>
+<div class="section" id="section-7">
+<span id="access-to-process-address-space"></span><h2>访问进程地址空间<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<p>设备的驱动程序是应用程序与硬件之间的接口。因此，我们经常需要访问用户空间数据。直接访问用户空间数据是不可行的（通过解引用用户空间指针）。直接访问用户空间指针可能导致不正确的行为（根据体系结构，用户空间指针可能无效或映射到内核空间）、内核 oops（用户态指针可能引用非驻留内存区域）或安全问题。请通过调用下面的宏/函数来正确访问用户空间数据：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/uaccess.h&gt;</span><span class="cp"></span>
 
 <span class="n">put_user</span><span class="p">(</span><span class="n">type</span> <span class="n">val</span><span class="p">,</span> <span class="n">type</span> <span class="o">*</span><span class="n">address</span><span class="p">);</span>
@@ -537,123 +426,90 @@ functions below:</p>
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">copy_from_user</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">to</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="n">__user</span> <span class="o">*</span><span class="n">from</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">n</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>All macros / functions return 0 in case of success and another value in case of
-error and have the following roles:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">put_user</span></code> store the value <code class="docutils literal"><span class="pre">val</span></code> to user-space address <code class="docutils literal"><span class="pre">address</span></code>;
-Type can be one on 8, 16, 32, 64 bit (the maximum supported type depends on the
-hardware platform);</li>
-<li><code class="docutils literal"><span class="pre">get_user</span></code> analogue to the previous function, only that val will be set to a
-value identical to the value at the user-space address given by address;</li>
-<li><code class="docutils literal"><span class="pre">copy_to_user</span></code> copies <code class="docutils literal"><span class="pre">n</span></code> bytes from the kernel-space, from the address
-referenced by <code class="docutils literal"><span class="pre">from</span></code> in user-space to the address referenced by <code class="docutils literal"><span class="pre">to</span></code>;</li>
-<li><code class="docutils literal"><span class="pre">copy_from_user</span></code> copies <code class="docutils literal"><span class="pre">n</span></code> bytes from user-space from the address
-referenced by <code class="docutils literal"><span class="pre">from</span></code> in kernel-space to the address referenced by <code class="docutils literal"><span class="pre">to</span></code>.</li>
+<p>这些宏/函数成功后返回 0，错误时返回其他值，并具有以下作用：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">put_user</span></code> 将值 <code class="docutils literal"><span class="pre">val</span></code> 存储到用户空间地址 <code class="docutils literal"><span class="pre">address</span></code>；类型可以是 8 位、16 位、32 位，也可以是 64 位（最大的支持类型取决于硬件平台）；</li>
+<li><code class="docutils literal"><span class="pre">get_user</span></code> 类似于前一个函数，只是将值设置为与用户空间地址 <code class="docutils literal"><span class="pre">address</span></code> 处的值相同的值；</li>
+<li><code class="docutils literal"><span class="pre">copy_to_user</span></code> 从 <code class="docutils literal"><span class="pre">from</span></code> 引用的内核空间地址开始复制 <code class="docutils literal"><span class="pre">n</span></code> 字节到由 <code class="docutils literal"><span class="pre">to</span></code> 引用的用户空间地址；</li>
+<li><code class="docutils literal"><span class="pre">copy_from_user</span></code> 从 <code class="docutils literal"><span class="pre">from</span></code> 引用的用户空间地址开始复制 <code class="docutils literal"><span class="pre">n</span></code> 字节到由 <code class="docutils literal"><span class="pre">to</span></code> 引用的内核空间地址；</li>
 </ul>
-</div></blockquote>
-<p>A common section of code that works with these functions is:</p>
+<p>以下是这些函数的常用代码示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/uaccess.h&gt;</span><span class="cp"></span>
 
 <span class="cm">/*</span>
-<span class="cm"> * Copy at most size bytes to user space.</span>
-<span class="cm"> * Return &#39;&#39;0&#39;&#39; on success and some other value on error.</span>
-<span class="cm"> */</span>
+<span class="cm">* 将最多 size 字节复制到用户空间。</span>
+<span class="cm">* 成功则返回 0，错误则返回其他值。</span>
+<span class="cm">*/</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">copy_to_user</span><span class="p">(</span><span class="n">user_buffer</span><span class="p">,</span> <span class="n">kernel_buffer</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
-    <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
+   <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
 <span class="k">else</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="open-and-release">
-<h2>Open and release<a class="headerlink" href="#open-and-release" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal"><span class="pre">open</span></code> function performs the initialization of a device. In most cases,
-these operations refer to initializing the device and filling in specific data
-(if it is the first open call). The release function is about releasing
-device-specific resources: unlocking specific data and closing the device if
-the last call is close.</p>
-<p>In most cases, the open function will have the following structure:</p>
+<div class="section" id="section-8">
+<h2>打开和释放<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">open</span></code> 函数执行设备的初始化。在大多数情况下，这些操作涉及初始化设备并填充特定数据（如果是第一次打开调用）。<a href="#system-message-1"><span class="problematic" id="problematic-1">*</span></a>释放函数*用于释放设备特定资源：在调用全部完成后，解除对特定数据的锁定并关闭设备。</p>
+<p>在大多数情况下，<a href="#system-message-2"><span class="problematic" id="problematic-2">*</span></a>打开函数*的结构如下所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_open</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">my_device_data</span> <span class="o">*</span><span class="n">my_data</span> <span class="o">=</span>
              <span class="n">container_of</span><span class="p">(</span><span class="n">inode</span><span class="o">-&gt;</span><span class="n">i_cdev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">my_device_data</span><span class="p">,</span> <span class="n">cdev</span><span class="p">);</span>
 
-    <span class="cm">/* validate access to device */</span>
+    <span class="cm">/* 验证设备访问权限 */</span>
     <span class="n">file</span><span class="o">-&gt;</span><span class="n">private_data</span> <span class="o">=</span> <span class="n">my_data</span><span class="p">;</span>
 
-    <span class="cm">/* initialize device */</span>
+    <span class="cm">/* 初始化设备 */</span>
     <span class="p">...</span>
 
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>A problem that occurs when implementing the <code class="docutils literal"><span class="pre">open</span></code> function is access control.
-Sometimes a device needs to be opened once at a time; More specifically, do not
-allow the second open before the release. To implement this restriction, you
-choose a way to handle an open call for an already open device: it can return
-an error (<code class="docutils literal"><span class="pre">-EBUSY</span></code>), block open calls until a release operation, or shut down
-the device before do the open.</p>
-<p>At the user-space call of the open and close functions on the device, call
-my_open and my_release in the driver. An example of a user-space call:</p>
+<p>实施 <code class="docutils literal"><span class="pre">open</span></code> 函数时会遇到访问控制的问题。有时候一个设备在同一时刻需要只打开一次；更具体地说，不允许在释放之前进行第二次打开。为了实现这种限制，你可以选择一种处理已经打开的设备的打开调用的方法：它可以返回一个错误 (<code class="docutils literal"><span class="pre">-EBUSY</span></code>)，阻塞打开调用直到进行释放操作，或者在执行打开操作之前关闭设备。</p>
+<p>在用户空间对设备调用打开和关闭函数时，会调用驱动程序中的 my_open 和 my_release 函数。以下是一个用户空间调用的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/my_device&quot;</span><span class="p">,</span> <span class="n">O_RDONLY</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="cm">/* handle error */</span>
+    <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 
-<span class="cm">/* do work */</span>
+<span class="cm">/* 执行工作 */</span>
 <span class="c1">//..</span>
 
 <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="read-and-write">
-<h2>Read and write<a class="headerlink" href="#read-and-write" title="Permalink to this headline">¶</a></h2>
-<p>The read and write operations are reaching the device driver as a
-result of an user-space program calling the read or write system calls:</p>
+<div class="section" id="section-9">
+<h2>读取和写入<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<p>用户空间程序调用读取或写入系统调用，会导致设备驱动程序的读和写操作。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="cm">/* handle error */</span>
+    <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="cm">/* handle error */</span>
+    <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">write</span></code> functions transfer data between the device and the
-user-space: the read function reads the data from the device and transfers it
-to the user-space, while writing reads the user-space data and writes it to the
-device. The buffer received as a parameter is a user-space pointer, which is
-why it is necessary to use the <code class="docutils literal"><span class="pre">copy_to_user</span></code> or <code class="docutils literal"><span class="pre">copy_from_user</span></code> functions.</p>
-<p>The value returned by read or write can be:</p>
+<p><code class="docutils literal"><span class="pre">read</span></code> 和 <code class="docutils literal"><span class="pre">write</span></code> 函数会在设备和用户空间之间传输数据：read 函数从设备读取数据并将其传输到用户空间，而 write 函数则读取用户空间的数据并将其写入设备。参数 buffer（缓冲区）是一个用户空间指针，这就是为什么需要使用 <code class="docutils literal"><span class="pre">copy_to_user</span></code> 或 <code class="docutils literal"><span class="pre">copy_from_user</span></code> 函数。</p>
+<p>read 或 write 返回的值可以是：</p>
 <blockquote>
 <div><ul class="simple">
-<li>the number of bytes transferred; if the returned value is less than the size
-parameter (the number of bytes requested), then it means that a partial
-transfer was made. Most of the time, the user-space app calls the system call
-(read or write) function until the required data number is transferred.</li>
-<li>0 to mark the end of the file in the case of read ; if write returns the
-value 0 then it means that no byte has been written and that no error has
-occurred; In this case, the user-space application retries the write call.</li>
-<li>a negative value indicating an error code.</li>
+<li>传输的字节数；如果返回的值小于参数 size（请求的字节数），则表示只传输了部分数据。大多数情况下，用户空间应用程序会持续调用系统调用（read 或 write）函数，直到所需的数据量全部传输完成为止。</li>
+<li>如果是 read，返回值为 0 表示文件读到底了；如果 write 返回值为 0，则表示没有写入任何字节且没有发生错误；在这种情况下，用户空间应用程序会重新尝试写入调用。</li>
+<li>负值表示程序错误。</li>
 </ul>
 </div></blockquote>
-<p>To perform a data transfer consisting of several partial transfers, the
-following operations should be performed:</p>
+<p>要执行由多次部分传输组成的数据传输，应执行以下操作：</p>
 <blockquote>
 <div><ul class="simple">
-<li>transfer the maximum number of possible bytes between the buffer received
-as a parameter and the device (writing to the device/reading from the device
-will be done from the offset received as a parameter);</li>
-<li>update the offset received as a parameter to the position from which the
-next read / write data will begin;</li>
-<li>return the number of bytes transferred.</li>
+<li>在作为参数接收的缓冲区和设备之间传输尽可能多的字节（从作为参数接收的偏移量开始进行设备写入/读取）；</li>
+<li>更新作为参数接收的偏移量，以表示下一次读取/写入数据的位置；</li>
+<li>返回传输的字节数。</li>
 </ul>
 </div></blockquote>
-<p>The sequence below shows an example for the read function that takes
-into account the internal buffer size, user buffer size and the offset:</p>
+<p>下面的示例展示了考虑了内部缓冲区大小、用户缓冲区大小和偏移量的 read 函数的程序：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">user_buffer</span><span class="p">,</span>
                    <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">offset</span><span class="p">)</span>
 <span class="p">{</span>
@@ -663,7 +519,7 @@ into account the internal buffer size, user buffer size and the offset:</p>
     <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 
-    <span class="cm">/* read data from my_data-&gt;buffer to user buffer */</span>
+    <span class="cm">/* 从 my_data-&gt;buffer 读取数据到用户缓冲区 */</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">copy_to_user</span><span class="p">(</span><span class="n">user_buffer</span><span class="p">,</span> <span class="n">my_data</span><span class="o">-&gt;</span><span class="n">buffer</span> <span class="o">+</span> <span class="o">*</span><span class="n">offset</span><span class="p">,</span> <span class="n">len</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
 
@@ -672,22 +528,15 @@ into account the internal buffer size, user buffer size and the offset:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The images below illustrate the read operation and how data is
-transferred between the user-space and the driver:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li>when the driver has enough data available (starting with the OFFSET
-position) to accurately transfer the required size (SIZE) to the user.</li>
-<li>when a smaller amount is transferred than required.</li>
+<p>下面的图片展示了读操作以及数据如何在用户空间和驱动程序之间传输：</p>
+<ol class="arabic simple">
+<li>驱动程序有足够的可用数据（从偏移位置开始），以准确地传输所需大小（SIZE）给用户。</li>
+<li>传输的数量比所需的少。</li>
 </ol>
-</div></blockquote>
 <a class="reference internal image-reference" href="../_images/read1.png"><img alt="../_images/read1.png" src="../_images/read1.png" style="width: 49%;" /></a>
 <a class="reference internal image-reference" href="../_images/read21.png"><img alt="../_images/read21.png" src="../_images/read21.png" style="width: 49%;" /></a>
-<p>We can look at the read operation implemented by the driver as a response to a
-user-space read request. In this case, the driver is responsible for advancing
-the offset according to how much it reads and returning the read size (which
-may be less than what is required).</p>
-<p>The structure of the write function is similar:</p>
+<p>我们可以将驱动程序实现的读操作视为对用户空间读取请求的响应。在这种情况下，驱动程序负责根据其读取的量推进偏移，并返回读取的大小（可能小于所需大小）。</p>
+<p>写函数的结构类似：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">user_buffer</span><span class="p">,</span>
                     <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span> <span class="n">offset</span><span class="p">)</span>
 <span class="p">{</span>
@@ -697,7 +546,7 @@ may be less than what is required).</p>
     <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 
-    <span class="cm">/* read data from user buffer to my_data-&gt;buffer */</span>
+    <span class="cm">/* 将数据从用户缓冲区读到 my_data-&gt;buffer */</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">copy_from_user</span><span class="p">(</span><span class="n">my_data</span><span class="o">-&gt;</span><span class="n">buffer</span> <span class="o">+</span> <span class="o">*</span><span class="n">offset</span><span class="p">,</span> <span class="n">user_buffer</span><span class="p">,</span> <span class="n">len</span><span class="p">))</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
 
@@ -706,41 +555,27 @@ may be less than what is required).</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The write operation will respond to a write request from user-space. In
-this case, depending on the maximum driver capacity (MAXSIZ), it can
-write more or less than the required size.</p>
+<p>写操作将响应来自用户空间的写请求。在这种情况下，根据驱动程序的最大容量（MAXSIZ），它可以写入比所需大小更多或更少的数据。</p>
 <a class="reference internal image-reference" href="../_images/write1.png"><img alt="../_images/write1.png" src="../_images/write1.png" style="width: 49%;" /></a>
 <a class="reference internal image-reference" href="../_images/write21.png"><img alt="../_images/write21.png" src="../_images/write21.png" style="width: 49%;" /></a>
 </div>
 <div class="section" id="ioctl-1">
 <span id="ioctl"></span><h2>ioctl<a class="headerlink" href="#ioctl-1" title="Permalink to this headline">¶</a></h2>
-<p>In addition to read and write operations, a driver needs the ability to perform
-certain physical device control tasks. These operations are accomplished by
-implementing a <code class="docutils literal"><span class="pre">ioctl</span></code> function. Initially, the ioctl system call used Big Kernel
-Lock. That's why the call was gradually replaced with its unlocked version
-called <code class="docutils literal"><span class="pre">unlocked_ioctl</span></code>. You can read more on LWN:
-<a class="reference external" href="http://lwn.net/Articles/119652/">http://lwn.net/Articles/119652/</a></p>
+<p>除了读和写操作之外，驱动程序需要能够执行某些物理设备控制任务。这些操作通过实现一个名为 <code class="docutils literal"><span class="pre">ioctl</span></code> 的函数来完成。最初，ioctl 系统调用使用了 Big Kernel Lock。因此，其无锁版本 <code class="docutils literal"><span class="pre">unlocked_ioctl</span></code> 逐渐替代了该调用。你可以在 LWN 上阅读更多信息：<a class="reference external" href="http://lwn.net/Articles/119652/">http://lwn.net/Articles/119652/</a></p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">long</span> <span class="nf">my_ioctl</span> <span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">arg</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">cmd</span></code> is the command sent from user-space. If a value is being sent from the
-user-space call, it can be accessed directly. If a buffer is fetched, the arg
-value will be a pointer to it, and must be accessed through the <code class="docutils literal"><span class="pre">copy_to_user</span></code>
-or <code class="docutils literal"><span class="pre">copy_from_user</span></code>.</p>
-<p>Before implementing the <code class="docutils literal"><span class="pre">ioctl</span></code> function, the numbers corresponding to the
-commands must be chosen. One method is to choose consecutive numbers starting
-at 0, but it is recommended to use <code class="docutils literal"><span class="pre">_IOC(dir,</span> <span class="pre">type,</span> <span class="pre">nr,</span> <span class="pre">size)</span></code> macro definition
-to generate ioctl codes. The macro definition parameters are as follows:</p>
+<p><code class="docutils literal"><span class="pre">cmd</span></code> 是从用户空间发送的命令。如果用户空间调用发送了一个值，可以通过 <code class="docutils literal"><span class="pre">cmd</span></code> 直接访问它。如果获取了一个缓冲区，那么 arg 的值将是指向它的指针，并且必须通过 <code class="docutils literal"><span class="pre">copy_to_user</span></code> 或 <code class="docutils literal"><span class="pre">copy_from_user</span></code> 进行访问。</p>
+<p>在实现 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数之前，必须选择与命令对应的数字。一种方法是从 0 开始选择连续的数字，但我们建议使用 <code class="docutils literal"><span class="pre">_IOC(dir,</span> <span class="pre">type,</span> <span class="pre">nr,</span> <span class="pre">size)</span></code> 宏定义来生成 ioctl 代码。宏定义的参数如下：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">dir</span></code> represents the data transfer (<code class="docutils literal"><span class="pre">_IOC_NONE</span></code> , <code class="docutils literal"><span class="pre">_IOC_READ</span></code>,
-<code class="docutils literal"><span class="pre">_IOC_WRITE</span></code>).</li>
-<li><code class="docutils literal"><span class="pre">type</span></code> represents the magic number (<code class="docutils literal"><span class="pre">Documentation/ioctl/ioctl-number.txt</span></code>);</li>
-<li><code class="docutils literal"><span class="pre">nr</span></code> is the ioctl code for the device;</li>
-<li><code class="docutils literal"><span class="pre">size</span></code> is the size of the transferred data.</li>
+<li><code class="docutils literal"><span class="pre">dir</span></code> 表示数据传输 (<code class="docutils literal"><span class="pre">_IOC_NONE</span></code> , <code class="docutils literal"><span class="pre">_IOC_READ</span></code> , <code class="docutils literal"><span class="pre">_IOC_WRITE</span></code>)。</li>
+<li><code class="docutils literal"><span class="pre">type</span></code> 表示魔数 (<code class="docutils literal"><span class="pre">Documentation/ioctl/ioctl-number.txt</span></code>)；</li>
+<li><code class="docutils literal"><span class="pre">nr</span></code> 是设备的 ioctl 代码；</li>
+<li><code class="docutils literal"><span class="pre">size</span></code> 是传输数据的大小。</li>
 </ul>
 </div></blockquote>
-<p>The following example shows an implementation for a <code class="docutils literal"><span class="pre">ioctl</span></code> function:</p>
+<p>下面的示例展示了 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数的实现：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/ioctl.h&gt;</span><span class="cp"></span>
 
 <span class="cp">#define MY_IOCTL_IN _IOC(_IOC_WRITE, &#39;k&#39;, 1, sizeof(my_ioctl_data))</span>
@@ -757,7 +592,7 @@ to generate ioctl codes. The macro definition parameters are as follows:</p>
                            <span class="k">sizeof</span><span class="p">(</span><span class="n">my_ioctl_data</span><span class="p">))</span> <span class="p">)</span>
             <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
 
-        <span class="cm">/* process data and execute command */</span>
+        <span class="cm">/* 处理数据以及执行命令 */</span>
 
         <span class="k">break</span><span class="p">;</span>
     <span class="k">default</span><span class="o">:</span>
@@ -768,24 +603,17 @@ to generate ioctl codes. The macro definition parameters are as follows:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>At the user-space call for the ioctl function, the my_ioctl function of the
-driver will be called. An example of such a user-space call:</p>
+<p>用户空间调用 ioctl 函数时，将调用驱动程序的 my_ioctl 函数。以下是用户空间调用的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">MY_IOCTL_IN</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="cm">/* handle error */</span>
+    <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="waiting-queues">
-<h2>Waiting queues<a class="headerlink" href="#waiting-queues" title="Permalink to this headline">¶</a></h2>
-<p>It is often necessary for a thread to wait for an operation to finish,
-but it is desirable that this wait is not busy-waiting. Using waiting
-queues we can block a thread until an event occurs. When the condition
-is satisfied, elsewhere in the kernel, in another process, in an
-interrupt or deferrable work, we will wake up the process.</p>
-<p>A waiting queue is a list of processes that are waiting for a specific
-event. A queue is defined with the <code class="docutils literal"><span class="pre">wait_queue_head_t</span></code> type and can
-be used by the functions/macros:</p>
+<div class="section" id="section-10">
+<h2>等待队列<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h2>
+<p>许多情况下，线程需要等待某个操作完成。但最好避免忙等待。通过使用等待队列，我们可以阻塞一个线程，直到发生某个事件再激活这个线程。当条件满足时（可能是内核中的其他地方、另一个进程、中断或可延迟工作）我们会唤醒该进程。</p>
+<p>等待队列是一个等待特定事件的进程列表。队列使用 <code class="docutils literal"><span class="pre">wait_queue_head_t</span></code> 类型定义，并可通过以下函数/宏使用：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/wait.h&gt;</span><span class="cp"></span>
 
 <span class="n">DECLARE_WAIT_QUEUE_HEAD</span><span class="p">(</span><span class="n">wq_name</span><span class="p">);</span>
@@ -805,27 +633,17 @@ be used by the functions/macros:</p>
 <span class="kt">void</span> <span class="nf">wake_up_interruptible</span><span class="p">(</span><span class="n">wait_queue_head_t</span> <span class="o">*</span><span class="n">q</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The roles of the macros / functions above are:</p>
+<p>上述宏/函数的作用如下：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">init_waitqueue_head()</span></code> initializes the queue; to initialize the
-queue at compile time, you can use the <code class="xref c c-macro docutils literal"><span class="pre">DECLARE_WAIT_QUEUE_HEAD</span></code> macro;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">wait_event()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">wait_event_interruptible()</span></code> adds the current thread to the
-queue while the condition is false, sets it to TASK_UNINTERRUPTIBLE or
-TASK_INTERRUPTIBLE and calls the scheduler to schedule a new thread; Waiting
-will be interrupted when another thread will call the wake_up function;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">wait_event_timeout()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">wait_event_interruptible_timeout()</span></code> have the same
-effect as the above functions, only waiting can be interrupted at the end of
-the timeout received as a parameter;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">wake_up()</span></code> puts all threads off from state TASK_INTERRUPTIBLE and
-TASK_UNINTERRUPTIBLE in TASK_RUNNING status; Remove these threads from the
-queue;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">wake_up_interruptible()</span></code> same action, but only threads with TASK_INTERRUPTIBLE
-status are woken up.</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">init_waitqueue_head()</span></code> 初始化等待队列；如果是要在编译期间初始化队列，可以使用 <code class="xref c c-macro docutils literal"><span class="pre">DECLARE_WAIT_QUEUE_HEAD</span></code> 宏；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">wait_event()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">wait_event_interruptible()</span></code> 在条件为假时将当前线程加入队列，将其设置为 TASK_UNINTERRUPTIBLE 或 TASK_INTERRUPTIBLE，并调用调度程序以安排新线程；当另一个线程调用 wake_up 函数时，等待将被中断；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">wait_event_timeout()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">wait_event_interruptible_timeout()</span></code> 具有与上述函数相同的效果，只是等待也可以在参数 timeout（超时）结束时被中断；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">wake_up()</span></code> 将所有处于 TASK_INTERRUPTIBLE 和 TASK_UNINTERRUPTIBLE 状态的线程切换到 TASK_RUNNING 状态；从队列中移除这些线程；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">wake_up_interruptible()</span></code> 执行相同的操作，但只唤醒处于 TASK_INTERRUPTIBLE 状态的线程。</li>
 </ul>
 </div></blockquote>
-<p>A simple example is that of a thread waiting to change the value of a flag. The
-initializations are done by the sequence:</p>
+<p>举个简单的示例，线程等待某个标志位的值的改变。以下代码实现初始化：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/sched.h&gt;</span><span class="cp"></span>
 
 <span class="n">wait_queue_head_t</span> <span class="n">wq</span><span class="p">;</span>
@@ -834,18 +652,18 @@ initializations are done by the sequence:</p>
 <span class="n">init_waitqueue_head</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wq</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>A thread will wait for the flag to be changed to a value other than zero:</p>
+<p>某个线程等待标志的值变为非零：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">wait_event_interruptible</span><span class="p">(</span><span class="n">wq</span><span class="p">,</span> <span class="n">flag</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>While another thread will change the flag value and wake up the waiting threads:</p>
+<p>而另一个线程将改变标志（flag）的值并唤醒等待中的线程：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span>
 <span class="n">wake_up_interruptible</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">wq</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-11">
+<h2>练习<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -857,7 +675,7 @@ initializations are done by the sequence:</p>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 device_drivers。请参阅任务名称的练习。</p>
+<p>当前实验名称为 设备驱动。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -876,9 +694,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/device_drivers/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/设备驱动/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-11">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -886,10 +704,9 @@ tools/labs $ make boot
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
-<div class="section" id="intro">
-<h3>0. Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h3>
-<p>Using <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> find the definitions
-of the following symbols in the Linux kernel:</p>
+<div class="section" id="section-12">
+<h3>0. 简介<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> 查找 Linux 内核中以下符号的定义：</p>
 <blockquote>
 <div><ul class="simple">
 <li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code></li>
@@ -899,47 +716,42 @@ of the following symbols in the Linux kernel:</p>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="register-unregister">
-<h3>1. Register/unregister<a class="headerlink" href="#register-unregister" title="Permalink to this headline">¶</a></h3>
-<p>The driver will control a single device with the <code class="docutils literal"><span class="pre">MY_MAJOR</span></code> major and
-<code class="docutils literal"><span class="pre">MY_MINOR</span></code> minor (the macros defined in the kernel/so2_cdev.c file).</p>
+<div class="section" id="section-13">
+<h3>1. 注册/注销<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<p>驱动程序控制一个具有 <code class="docutils literal"><span class="pre">MY_MAJOR</span></code> 主设备号和 <code class="docutils literal"><span class="pre">MY_MINOR</span></code> 次设备号的设备（这些宏定义在 kernel/so2_cdev.c 文件中）。</p>
 <blockquote>
 <div><ol class="arabic">
-<li><p class="first">Create <strong>/dev/so2_cdev</strong> character device node using <strong>mknod</strong>.</p>
+<li><p class="first">使用 <strong>mknod</strong> 创建 <strong>/dev/so2_cdev</strong> 字符设备节点。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Read <a class="reference internal" href="#majors-and-minors">Majors and minors</a> section in the lab.</p>
+<p class="last">阅读实验中的 <a class="reference internal" href="#section-3">主设备号和次设备号</a> 部分。</p>
 </div>
 </li>
-<li><p class="first">Implement the registration and deregistration of the device with the name
-<code class="docutils literal"><span class="pre">so2_cdev</span></code>, respectively in the init and exit module functions. Implement <strong>TODO 1</strong>.</p>
+<li><p class="first">在 init 和 exit 模块函数中实现设备的注册和注销，设备名称应为 <code class="docutils literal"><span class="pre">so2_cdev</span></code>。实现 <strong>TODO 1</strong>。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Read the section <a class="reference internal" href="#registration-and-unregistration-of-character-devices">Registration and unregistration of character devices</a></p>
+<p class="last">阅读 <a class="reference internal" href="#section-6">字符设备的注册和注销</a> 部分。</p>
 </div>
 </li>
-<li><p class="first">Display, using <code class="docutils literal"><span class="pre">pr_info</span></code>, a message after the registration and unregistration
-operations to confirm that they were successful. Then load the module into the kernel:</p>
+<li><p class="first">通过 <code class="docutils literal"><span class="pre">pr_info</span></code> 函数使得在注册和注销操作后显示一条消息，以确认它们是否成功。然后将模块加载到内核中：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ insmod so2_cdev.ko
 </pre></div>
 </div>
-<p>And see character devices in <code class="docutils literal"><span class="pre">/proc/devices</span></code>:</p>
+<p>并查看 <code class="docutils literal"><span class="pre">/proc/devices</span></code> 中的字符设备：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ cat /proc/devices <span class="p">|</span> less
 </pre></div>
 </div>
-<p>Identify the device type registered with major 42 . Note that <code class="docutils literal"><span class="pre">/proc/devices</span></code>
-contains only the device types (major) but not the actual devices (i.e. minors).</p>
+<p>确定使用主设备号 42 注册的设备类型。请注意，<code class="docutils literal"><span class="pre">/proc/devices</span></code> 仅包含设备类型（主设备号），而不包含实际设备（即次设备号）。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Entries in /dev are not created by loading the module. These can be created
-in two ways:</p>
+<p>/dev 中的条目不会通过加载模块来创建。可以通过两种方式创建：</p>
 <ul class="last simple">
-<li>manually, using the <code class="docutils literal"><span class="pre">mknod</span></code> command as we did above.</li>
-<li>automatically using udev daemon</li>
+<li>手动使用 <code class="docutils literal"><span class="pre">mknod</span></code> 命令，就像我们上面所做的那样。</li>
+<li>使用 udev 守护进程自动创建</li>
 </ul>
 </div>
 </li>
-<li><p class="first">Unload the kernel module</p>
+<li><p class="first">卸载内核模块</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>rmmod so2_cdev
 </pre></div>
 </div>
@@ -947,56 +759,45 @@ in two ways:</p>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="register-an-already-registered-major">
-<h3>2. Register an already registered major<a class="headerlink" href="#register-an-already-registered-major" title="Permalink to this headline">¶</a></h3>
-<p>Modify <strong>MY_MAJOR</strong> so that it points to an already used major number.</p>
+<div class="section" id="section-14">
+<h3>2. 注册一个已注册的主设备号<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<p>修改 <strong>MY_MAJOR</strong>，使其指向已经使用的主设备号。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">See <code class="docutils literal"><span class="pre">/proc/devices</span></code> to get an already assigned major.</p>
+<p class="last">查看 <code class="docutils literal"><span class="pre">/proc/devices</span></code> 来获取一个已分配的主设备号。</p>
 </div>
-<p>See <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9/source/include/uapi/asm-generic/errno-base.h">errno-base.h</a>
-and figure out what does the error code mean.
-Return to the initial configuration of the module.</p>
+<p>参考 <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9/source/include/uapi/asm-generic/errno-base.h">errno-base.h</a> 并找出错误码的含义。恢复模块的初始配置。</p>
 </div>
-<div class="section" id="open-and-close">
-<h3>3. Open and close<a class="headerlink" href="#open-and-close" title="Permalink to this headline">¶</a></h3>
-<p>Run <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> to read data from our char device.
-Reading does not work because the driver does not have the open function implemented.
-Follow comments marked with TODO 2 and implement them.</p>
+<div class="section" id="section-15">
+<h3>3. 打开和关闭<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<p>运行 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> ，从我们的字符设备中读取数据。由于驱动程序没有实现打开函数，因此读取操作无法正常工作。按照标记为 TODO 2 的注释进行操作并实现以下内容。</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Initialize your device<ul>
-<li>add a cdev struct field to <code class="docutils literal"><span class="pre">so2_device_data</span></code> structure.</li>
-<li>Read the section <a class="reference internal" href="#registration-and-unregistration-of-character-devices">Registration and unregistration of character devices</a> in the lab.</li>
+<li>初始化设备<ul>
+<li>在 <code class="docutils literal"><span class="pre">so2_device_data</span></code> 结构体中添加一个 cdev 字段。</li>
+<li>阅读实验中的 <a class="reference internal" href="#section-6">字符设备的注册和注销</a> 部分。</li>
 </ul>
 </li>
-<li>Implement the open and release functions in the driver.</li>
-<li>Display a message in the open and release functions.</li>
-<li>Read again <code class="docutils literal"><span class="pre">/dev/so2_cdev</span></code> file. Follow the messages displayed by the kernel.
-We still get an error because <code class="docutils literal"><span class="pre">read</span></code> function is not yet implemented.</li>
+<li>在驱动程序中实现打开和释放函数。</li>
+<li>在打开和释放函数中显示一条消息。</li>
+<li>再次读取 <code class="docutils literal"><span class="pre">/dev/so2_cdev</span></code> 文件。按照内核显示的消息进行操作。由于尚未实现 <code class="docutils literal"><span class="pre">read</span></code> 函数，因此仍会出现错误。</li>
 </ol>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The prototype of a device driver's operations is in the <code class="docutils literal"><span class="pre">file_operations</span></code>
-structure. Read <a class="reference internal" href="#open-and-release">Open and release</a> section.</p>
+<p class="last">设备驱动程序操作的原型在 <code class="docutils literal"><span class="pre">file_operations</span></code> 结构体中。请阅读 <a class="reference internal" href="#section-8">打开和释放</a> 部分。</p>
 </div>
 </div>
-<div class="section" id="access-restriction">
-<h3>4. Access restriction<a class="headerlink" href="#access-restriction" title="Permalink to this headline">¶</a></h3>
-<p>Restrict access to the device with atomic variables, so that a single process
-can open the device at a time. The rest will receive the &quot;device busy&quot; error
-(<code class="docutils literal"><span class="pre">-EBUSY</span></code>). Restricting access will be done in the open function displayed by
-the driver. Follow comments marked with <strong>TODO 3</strong> and implement them.</p>
+<div class="section" id="section-16">
+<h3>4. 访问限制<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h3>
+<p>使用原子变量限制设备访问，以便一次只能有一个进程打开该设备。其他进程将收到“设备忙”错误 (<code class="docutils literal"><span class="pre">-EBUSY</span></code>)。限制访问将在驱动程序中的打开函数中完成。按照标记为 <strong>TODO 3</strong> 的注释进行操作并实现以下内容。</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Add an <code class="docutils literal"><span class="pre">atomic_t</span></code> variable to the device structure.</li>
-<li>Initialize the variable at module initialization.</li>
-<li>Use the variable in the open function to restrict access to the device. We
-recommend using <code class="xref c c-func docutils literal"><span class="pre">atomic_cmpxchg()</span></code>.</li>
-<li>Reset the variable in the release function to retrieve access to the device.</li>
-<li>To test your deployment, you'll need to simulate a long-term use of your
-device. To simulate a sleep, call the scheduler at the end of the device opening:</li>
+<li>在设备结构体中添加 <code class="docutils literal"><span class="pre">atomic_t</span></code> 变量。</li>
+<li>在模块初始化时对该变量进行初始化。</li>
+<li>在打开函数中使用该变量限制对设备的访问。我们建议使用 <code class="xref c c-func docutils literal"><span class="pre">atomic_cmpxchg()</span></code>。</li>
+<li>在释放函数中重置该变量以恢复对设备的访问权限。</li>
+<li>要测试你的部署，你需要模拟对设备的长期使用。要模拟休眠，请在设备打开操作的末尾调用调度器：</li>
 </ol>
 </div></blockquote>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>set_current_state<span class="o">(</span>TASK_INTERRUPTIBLE<span class="o">)</span><span class="p">;</span>
@@ -1005,189 +806,117 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The advantage of the atomic_cmpxchg function is that it can check the
-old value of the variable and set it up to a new value, all in one
-atomic operation. Read more details about <a class="reference external" href="https://www.khronos.org/registry/OpenCL/sdk/1.1/docs/man/xhtml/atomic_cmpxchg.html">atomic_cmpxchg</a>
-An example of use is <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9/source/lib/dump_stack.c#L24">here</a>.</p>
+<p class="last">atomic_cmpxchg 函数的优点在于它可以在一个原子操作中检查变量的旧值并将其设置为新值。详细了解 <a class="reference external" href="https://www.khronos.org/registry/OpenCL/sdk/1.1/docs/man/xhtml/atomic_cmpxchg.html">atomic_cmpxchg</a>。这里有一个使用示例 <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9/source/lib/dump_stack.c#L24">http://elixir.free-electrons.com/linux/v4.9/source/lib/dump_stack.c#L24</a> 。</p>
 </div>
 </div>
-<div class="section" id="read-operation">
-<h3>5. Read operation<a class="headerlink" href="#read-operation" title="Permalink to this headline">¶</a></h3>
-<p>Implement the read function in the driver. Follow comments marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">4</span></code> and implement them.</p>
+<div class="section" id="section-17">
+<h3>5. 读操作<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<p>在驱动程序中实现读取函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">4</span></code> 的注释并实现以下步骤：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Keep a buffer in <code class="docutils literal"><span class="pre">so2_device_data</span></code> structure initialized with the value of <code class="docutils literal"><span class="pre">MESSAGE</span></code> macro.
-Initializing this buffer will be done in module <code class="docutils literal"><span class="pre">init</span></code> function.</li>
-<li>At a read call, copy the contents of the kernel space buffer into the user
-space buffer.<ul>
-<li>Use the <code class="xref c c-func docutils literal"><span class="pre">copy_to_user()</span></code> function to copy information from kernel space to
-user space.</li>
-<li>Ignore the size and offset parameters at this time. You can assume that
-the buffer in user space is large enough. You do not need to check the
-validity of the size argument of the read function.</li>
-<li>The value returned by the read call is the number of bytes transmitted
-from the kernel space buffer to the user space buffer.</li>
+<li>在 <code class="docutils literal"><span class="pre">so2_device_data</span></code> 结构中保持一个缓冲区，并用 <code class="docutils literal"><span class="pre">MESSAGE</span></code> 宏的值进行初始化。缓冲区的初始化在模块的 <code class="docutils literal"><span class="pre">init</span></code> 函数中完成。</li>
+<li>在读取调用时，将内核空间缓冲区的内容复制到用户空间缓冲区。<ul>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">copy_to_user()</span></code> 函数将信息从内核空间复制到用户空间。</li>
+<li>暂时忽略大小和偏移参数。可以假设用户空间的缓冲区足够大，不需要检查读取函数的大小参数的有效性。</li>
+<li>读取调用返回的值是从内核空间缓冲区传输到用户空间缓冲区的字节数。</li>
 </ul>
 </li>
-<li>After implementation, test using <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code>.</li>
+<li>实现完成后，使用 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> 进行测试。</li>
 </ol>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The command <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> does not end (use Ctrl+C).
-Read the <a class="reference internal" href="#read-and-write">read and write</a> sections and <a class="reference internal" href="#access-to-the-address-space-of-the-process">Access to the address space of the process</a>
-If you want to display the offset value use a construction of the form:
-<code class="docutils literal"><span class="pre">pr_info(&quot;Offset:</span> <span class="pre">%lld</span> <span class="pre">\n&quot;,</span> <span class="pre">*offset)</span></code>; The data type loff_t (used by offset ) is a typedef for long long int.</p>
+<p class="last">命令 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> 不会结束（使用Ctrl+C）。请阅读 <a href="#system-message-3"><span class="problematic" id="problematic-3">`读和写`_</span></a> 和 <a href="#system-message-4"><span class="problematic" id="problematic-4">`访问进程的地址空间`_</span></a> 部分。如果要显示偏移值，请使用以下形式的构造: <code class="docutils literal"><span class="pre">pr_info(&quot;Offset:</span> <span class="pre">%lld</span> <span class="pre">\n&quot;,</span> <span class="pre">*offset)</span></code>；偏移值的数据类型 <code class="docutils literal"><span class="pre">loff_t</span></code> 是 <code class="docutils literal"><span class="pre">long</span> <span class="pre">long</span> <span class="pre">int</span></code> 的 typedef。</p>
 </div>
-<p>The <code class="docutils literal"><span class="pre">cat</span></code> command reads to the end of the file, and the end of the file is
-signaled by returning the value 0 in the read. Thus, for a correct implementation,
-you will need to update and use the offset received as a parameter in the read
-function and return the value 0 when the user has reached the end of the buffer.</p>
-<p>Modify the driver so that the <code class="docutils literal"><span class="pre">cat</span></code> commands ends:</p>
+<p><code class="docutils literal"><span class="pre">cat</span></code> 命令一直读取到文件的末尾，文件通过读取返回值为 0 来表示读到末尾了。因此，为了正确实现，你需要更新并使用读函数中接收的偏移参数，并在用户达到缓冲区末尾时返回 0。</p>
+<p>修改驱动程序以使 <code class="docutils literal"><span class="pre">cat</span></code> 命令结束：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Use the size parameter.</li>
-<li>For every read, update the offset parameter accordingly.</li>
-<li>Ensure that the read function returns the number of bytes that were copied
-into the user buffer.</li>
+<li>使用大小参数。</li>
+<li>对于每次读取，相应地更新偏移参数。</li>
+<li>确保读取函数返回已复制到用户缓冲区的字节数。</li>
 </ol>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By dereferencing the offset parameter it is possible to read and move the current
-position in the file. Its value needs to be updated every time a read is done
-successfully.</p>
+<p class="last">通过解引用偏移参数，可以读取并移动在文件中的当前位置。每次成功进行读取后都需要更新其值。</p>
 </div>
 </div>
-<div class="section" id="write-operation">
-<h3>6. Write operation<a class="headerlink" href="#write-operation" title="Permalink to this headline">¶</a></h3>
-<p>Add the ability to write a message into kernel buffer to replace the predefined message. Implement
-the write function in the driver. Follow comments marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code></p>
-<p>Ignore the offset parameter at this time. You can assume that the driver buffer is
-large enough. You do not need to check the validity of the write function size
-argument.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>The prototype of a device driver's operations is in the file_operations
-structure.
-Test using commands:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;arpeggio&quot;</span>&gt; /dev/so2_cdev
-cat /dev/so2_cdev
-</pre></div>
+<div class="section" id="section-18">
+<h3>6. 写操作<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h3>
+<p>添加将消息写入内核缓冲区以替换预定义消息的功能。在驱动程序中实现写函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的注释进行操作。</p>
+<p>此时忽略偏移参数。你可以假设驱动程序缓冲区足够大。你无需检查写函数大小参数的有效性。</p>
 </div>
-<p class="last">Read the <a class="reference internal" href="#read-and-write">read and write</a> sections and <a class="reference internal" href="#access-to-the-address-space-of-the-process">Access to the address space of the process</a></p>
-</div>
-</div>
-<div class="section" id="ioctl-operation">
-<h3>7. ioctl operation<a class="headerlink" href="#ioctl-operation" title="Permalink to this headline">¶</a></h3>
-<p>For this exercise, we want to add the ioctl <code class="docutils literal"><span class="pre">MY_IOCTL_PRINT</span></code> to display the
-message from the <code class="docutils literal"><span class="pre">IOCTL_MESSAGE</span></code> macro in the driver.
-Follow the comments marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">6</span></code></p>
-<p>For this:</p>
+<div class="section" id="ioctl-2">
+<h3>7. ioctl 操作<a class="headerlink" href="#ioctl-2" title="Permalink to this headline">¶</a></h3>
+<p>对于这个练习，我们希望在驱动程序中添加 ioctl <code class="docutils literal"><span class="pre">MY_IOCTL_PRINT</span></code> 来显示来自宏 <code class="docutils literal"><span class="pre">IOCTL_MESSAGE</span></code> 的消息。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">6</span></code> 的注释进行操作。</p>
+<p>为此：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Implement the ioctl function in the driver.</li>
-<li>We need to use <code class="docutils literal"><span class="pre">user/so2_cdev_test.c</span></code> to call the
-ioctl function with the appropriate parameters.</li>
-<li>To test, we will use an user-space program (<code class="docutils literal"><span class="pre">user/so2_cdev_test.c</span></code>)
-which will call the <code class="docutils literal"><span class="pre">ioctl</span></code> function with the required arguments.</li>
+<li>在驱动程序中实现 ioctl 函数。</li>
+<li>我们需要使用 <code class="docutils literal"><span class="pre">user/so2_cdev_test.c</span></code> 调用 ioctl 函数，并传递适当的参数。</li>
+<li>为了进行测试，我们将使用一个用户空间程序 (<code class="docutils literal"><span class="pre">user/so2_cdev_test.c</span></code>) 来调用具有所需参数的 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数。</li>
 </ol>
 </div></blockquote>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>The macro <code class="docutils literal"><span class="pre">MY_IOCTL_PRINT</span></code> is defined in the file <code class="docutils literal"><span class="pre">include/so2_cdev.h</span></code>,
-which is shared between the kernel module and the user-space program.</p>
-<p class="last">Read the <a class="reference internal" href="#ioctl">ioctl</a> section in the lab.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>The user-space code is compiled automatically at <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> and
-copied at <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code>.</p>
-<p class="last">Because we need to compile the program for qemu machine which is 32 bit,
-if your host is 64 bit then you need to install <code class="docutils literal"><span class="pre">gcc-multilib</span></code> package.</p>
 </div>
 </div>
-</div>
-<div class="section" id="extra-exercises">
-<h2>Extra Exercises<a class="headerlink" href="#extra-exercises" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="ioctl-with-messaging">
-<h3>Ioctl with messaging<a class="headerlink" href="#ioctl-with-messaging" title="Permalink to this headline">¶</a></h3>
-<p>Add two ioctl operations to modify the message associated with the
-driver. Use fixed-length buffer ( BUFFER_SIZE ).</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li>Add the <code class="docutils literal"><span class="pre">ioctl</span></code> function from the driver the following operations:<ul>
-<li><code class="docutils literal"><span class="pre">MY_IOCTL_SET_BUFFER</span></code> for writing a message to the device;</li>
-<li><code class="docutils literal"><span class="pre">MY_IOCTL_GET_BUFFER</span></code> to read a message from your device.</li>
+<div class="section" id="section-19">
+<h2>额外练习<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ioctl-3">
+<h3>带消息的 ioctl<a class="headerlink" href="#ioctl-3" title="Permalink to this headline">¶</a></h3>
+<p>为驱动程序添加两个 ioctl 操作，用于修改与驱动程序关联的消息。应使用固定长度的缓冲区（BUFFER_SIZE）。</p>
+<ol class="arabic simple">
+<li>在驱动程序的 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数中添加以下操作：<ul>
+<li><code class="docutils literal"><span class="pre">MY_IOCTL_SET_BUFFER</span></code>：用于向设备写入消息；</li>
+<li><code class="docutils literal"><span class="pre">MY_IOCTL_GET_BUFFER</span></code>：用于从设备读取消息。</li>
 </ul>
 </li>
-<li>For testing, pass the required command line arguments to the
-user-space program.</li>
+<li>为进行测试，将所需的命令行参数传递给用户空间程序。</li>
 </ol>
-</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Read the <a class="reference internal" href="#ioctl">ioctl</a> and <a class="reference internal" href="#access-to-the-address-space-of-the-process">Access to the address space of the process</a>
-sections of the lab.</p>
+<p class="last">阅读实验中的 <a class="reference internal" href="#ioctl">ioctl</a> 和 <a class="reference internal" href="#section-7">访问进程地址空间</a> 部分。</p>
 </div>
 </div>
-<div class="section" id="ioctl-with-waiting-queues">
-<h3>Ioctl with waiting queues<a class="headerlink" href="#ioctl-with-waiting-queues" title="Permalink to this headline">¶</a></h3>
-<p>Add two ioctl operations to the device driver for queuing.</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li>Add the <code class="docutils literal"><span class="pre">ioctl</span></code> function from the driver the following operations:<ul>
-<li><code class="docutils literal"><span class="pre">MY_IOCTL_DOWN</span></code> to add the process to a queue;</li>
-<li><code class="docutils literal"><span class="pre">MY_IOCTL_UP</span></code> to remove the process from a queue.</li>
+<div class="section" id="ioctl-4">
+<h3>使用等待队列的 ioctl<a class="headerlink" href="#ioctl-4" title="Permalink to this headline">¶</a></h3>
+<p>为设备驱动程序添加两个 <code class="docutils literal"><span class="pre">ioctl</span></code> 操作，用于队列处理。</p>
+<ol class="arabic simple">
+<li>在驱动程序的 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数中添加以下操作：<ul>
+<li><code class="docutils literal"><span class="pre">MY_IOCTL_DOWN</span></code>：将进程添加到队列中；</li>
+<li><code class="docutils literal"><span class="pre">MY_IOCTL_UP</span></code>：将进程从队列中移除。</li>
 </ul>
 </li>
-<li>Fill the device structure with a <code class="docutils literal"><span class="pre">wait_queue_head_t</span></code> field and a flag.</li>
-<li>Do not forget to initialize the wait queue and flag.</li>
-<li>Remove exclusive access condition from previous exercise</li>
-<li>For testing, pass the required command line arguments to the
-user-space program.</li>
+<li>在设备结构中填充 <code class="docutils literal"><span class="pre">wait_queue_head_t</span></code> 字段和一个标志。</li>
+<li>不要忘记初始化等待队列和标志。</li>
+<li>从前一个练习中移除独占访问条件。</li>
+<li>为进行测试，将所需的命令行参数传递给用户空间程序。</li>
 </ol>
-</div></blockquote>
-<p>When the process is added to the queue, it will remain blocked in execution; To
-run the queue command open a new console in the virtual machine with Alt+F2 ;
-You can return to the previous console with Alt+F1. If you're connected via
-SSH to the virtual machine, open a new console.</p>
+<p>当进程被添加到队列中时，它将保持阻塞状态；要运行队列命令，请使用 Alt+F2 打开虚拟机中的新控制台；可以使用 Alt+F1 返回到上一个控制台。如果是通过 SSH 连接到虚拟机的，请打开新的控制台。</p>
+</div>
+<div class="section" id="o-nonblock">
+<h3>O_NONBLOCK 实现<a class="headerlink" href="#o-nonblock" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Read the <a class="reference internal" href="#ioctl">ioctl</a> and <a class="reference internal" href="#waiting-queues">Waiting queues</a> sections in the lab.</p>
-</div>
-</div>
-<div class="section" id="o-nonblock-implementation">
-<h3>O_NONBLOCK implementation<a class="headerlink" href="#o-nonblock-implementation" title="Permalink to this headline">¶</a></h3>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>If a file is open with the <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code> flag, then its
-operations will be non-blocking.</p>
-<p>In case data is not available when performing a read, the following
-happens:</p>
+<p>如果文件使用 <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code> 标志打开，则其操作将是非阻塞的。</p>
+<p>如果在执行读取操作时数据不可用，则会发生以下情况：</p>
 <blockquote class="last">
 <div><ul class="simple">
-<li>if the file has been open with <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code>, the read call
-will return <code class="docutils literal"><span class="pre">-EWOULDBLOCK</span></code>.</li>
-<li>otherwise, the current task (process) will be placed in a waiting
-queue and will be unblocked as soon as data becomes available
-(in our case, at write).</li>
+<li>如果文件是使用 <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code> 打开的，读取调用将返回 <code class="docutils literal"><span class="pre">-EWOULDBLOCK</span></code>。</li>
+<li>否则，当前任务（进程）将被放入等待队列，并在数据可用时解除阻塞（在我们的情况下，在写入时）。</li>
 </ul>
 </div></blockquote>
 </div>
 <ul class="simple">
-<li>To allow unblocking the read operation, remove the exclusive access
-condition from previous exercises.</li>
-<li>You can use the queue defined for the previous exercise.</li>
-<li>You can ignore the file offset.</li>
-<li>Modify the initial size of data to <code class="docutils literal"><span class="pre">0</span></code>, to allow testing.</li>
-<li>For testing, pass the required command line arguments to the
-user-space program.<ul>
-<li>when using the <code class="docutils literal"><span class="pre">n</span></code> option, the test program will change the open flags
-to <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code> and then perform a <code class="docutils literal"><span class="pre">read</span></code>.</li>
+<li>为允许非阻塞的读取操作，从前面的练习中移除独占访问条件。</li>
+<li>可以使用前一个练习中定义的队列。</li>
+<li>可以忽略文件偏移量。</li>
+<li>将数据的初始大小修改为 <code class="docutils literal"><span class="pre">0</span></code>，以便进行测试。</li>
+<li>为进行测试，将所需的命令行参数传递给用户空间程序。<ul>
+<li>当使用 <code class="docutils literal"><span class="pre">n</span></code> 选项时，测试程序会将打开标志更改为 <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code>，然后执行 <code class="docutils literal"><span class="pre">read</span></code> 操作。</li>
 </ul>
 </li>
-<li>What are the flags used to open the file when running <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_dev</span></code>?</li>
+<li>运行 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_dev</span></code> 命令时，打开文件过程中使用了哪些标志？</li>
 </ul>
 </div>
 </div>
