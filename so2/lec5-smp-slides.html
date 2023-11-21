@@ -62,50 +62,47 @@
 
 
 </article>
-<article class="admonition-symmetric-multi-processing slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Symmetric Multi-Processing</h2>
+<h2>对称多处理</h2>
 
 <ul class="simple">
-<li>Kernel Concurrency</li>
-<li>Atomic operations</li>
-<li>Spin locks</li>
-<li>Cache thrashing</li>
-<li>Optimized spin locks</li>
-<li>Process and Interrupt Context Synchronization</li>
-<li>Mutexes</li>
-<li>Per CPU data</li>
-<li>Memory Ordering and Barriers</li>
-<li>Read-Copy Update</li>
+<li>内核并发</li>
+<li>原子操作</li>
+<li>自旋锁</li>
+<li>缓存抖动</li>
+<li>优化自旋锁</li>
+<li>进程和中断上下文同步</li>
+<li>互斥锁</li>
+<li>每个 CPU 的数据</li>
+<li>内存排序和屏障</li>
+<li>读-拷贝 更新（RCU）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-race-conditions slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Race conditions</h2>
+<h2>竟态条件</h2>
 
 <ul class="simple">
-<li>there are at least two execution contexts that run in &quot;parallel&quot;:<ul>
-<li>truly run in parallel (e.g. two system calls running on
-different processors)</li>
-<li>one of the contexts can arbitrary preempt the other (e.g. an
-interrupt preempts a system call)</li>
+<li>至少有两个执行上下文同时运行：<ul>
+<li>真正并行运行（例如，在不同处理器上运行的两个系统调用）</li>
+<li>其中一个上下文可以任意抢占另一个上下文（例如，中断抢占了系统调用）</li>
 </ul>
 </li>
-<li>the execution contexts perform read-write accesses to shared
-memory</li>
+<li>执行上下文对共享内存进行读写访问</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-race-condition-resource-counter-release slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Race condition: resource counter release</h2>
+<h2>竟态条件：资源计数器释放</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">release_resource</span><span class="p">()</span>
 <span class="p">{</span>
@@ -121,9 +118,9 @@ memory</li>
 
 
 </article>
-<article class="admonition-race-condition-scenario slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Race condition scenario</h2>
+<h2>竟态条件场景</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-35f7597b35b83bb0025ac2a5f158c9eae23050c8.png" src="../_images/ditaa-35f7597b35b83bb0025ac2a5f158c9eae23050c8.png" />
@@ -132,58 +129,47 @@ memory</li>
 
 
 </article>
-<article class="admonition-avoiding-race-conditions slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Avoiding race conditions</h2>
+<h2>避免竟态条件</h2>
 
 <ul class="simple">
-<li>make the critical section <strong>atomic</strong> (e.g. use atomic
-instructions)</li>
-<li><strong>disable preemption</strong> during the critical section (e.g. disable
-interrupts, bottom-half handlers, or thread preemption)</li>
-<li><strong>serialize the access</strong> to the critical section (e.g. use spin
-locks or mutexes to allow only one context or thread in the
-critical section)</li>
+<li>使临界区 <a href="#system-message-1"><span class="problematic" id="problematic-1">**</span></a>原子化**（例如使用原子指令）</li>
+<li>在临界区期间 <a href="#system-message-2"><span class="problematic" id="problematic-2">**</span></a>禁用抢占**（例如禁用中断、后半部分处理程序或线程抢占）</li>
+<li><a href="#system-message-3"><span class="problematic" id="problematic-3">**</span></a>序列化访问**临界区（例如使用自旋锁或互斥锁，同一时间只允许有一个上下文或线程进入临界区）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-linux-kernel-concurrency-sources slide level-2">
+<article class="admonition-linux slide level-2">
 
-<h2>Linux kernel concurrency sources</h2>
+<h2>Linux 内核并发源</h2>
 
 <ul class="simple">
-<li><strong>single core systems</strong>, <strong>non-preemptive kernel</strong>: the current
-process can be preempted by interrupts</li>
-<li><strong>single core systems</strong>, <strong>preemptive kernel</strong>: above + the
-current process can be preempted by other processes</li>
-<li><strong>multi-core systems</strong>: above + the current process can run
-in parallel with another process or with an interrupt running on
-another processor</li>
+<li><strong>单核系统</strong>, <strong>非抢占内核</strong>：当前进程可以被中断抢占</li>
+<li><strong>单核系统</strong>, <strong>抢占内核</strong>：上述情况 + 当前进程可以被其他进程抢占</li>
+<li><strong>多核系统</strong>：上述情况 + 当前进程可以与在另一个处理器上运行的另一个进程或中断并行运行</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-atomic-operations slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Atomic operations</h2>
+<h2>原子操作</h2>
 
 <ul class="simple">
-<li>integer based:<ul>
-<li>simple: <code class="xref c c-func docutils literal"><span class="pre">atomic_inc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">atomic_dec()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">atomic_add()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">atomic_sub()</span></code></li>
-<li>conditional: <code class="xref c c-func docutils literal"><span class="pre">atomic_dec_and_test()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">atomic_sub_and_test()</span></code></li>
+<li>基于整数：<ul>
+<li>简单操作：:c:func:<a href="#system-message-4"><span class="problematic" id="problematic-4">`</span></a>atomic_inc`（原子递增）, :c:func:<a href="#system-message-5"><span class="problematic" id="problematic-5">`</span></a>atomic_dec`（原子递减）, :c:func:<a href="#system-message-6"><span class="problematic" id="problematic-6">`</span></a>atomic_add`（原子加法）, :c:func:<a href="#system-message-7"><span class="problematic" id="problematic-7">`</span></a>atomic_sub`（原子减法）</li>
+<li>条件操作：:c:func:<a href="#system-message-8"><span class="problematic" id="problematic-8">`</span></a>atomic_dec_and_test`（原子递减并测试）, :c:func:<a href="#system-message-9"><span class="problematic" id="problematic-9">`</span></a>atomic_sub_and_test`（原子减法并测试）</li>
 </ul>
 </li>
-<li>bit based:<ul>
-<li>simple: <code class="xref c c-func docutils literal"><span class="pre">test_bit()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">set_bit()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">change_bit()</span></code></li>
-<li>conditional: <code class="xref c c-func docutils literal"><span class="pre">test_and_set_bit()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">test_and_clear_bit()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">test_and_change_bit()</span></code></li>
+<li>基于位操作：<ul>
+<li>简单操作：:c:func:<a href="#system-message-10"><span class="problematic" id="problematic-10">`</span></a>test_bit`（测试位）, :c:func:<a href="#system-message-11"><span class="problematic" id="problematic-11">`</span></a>set_bit`（设置位）, :c:func:<a href="#system-message-12"><span class="problematic" id="problematic-12">`</span></a>change_bit`（修改位）</li>
+<li>条件操作：:c:func:<a href="#system-message-13"><span class="problematic" id="problematic-13">`</span></a>test_and_set_bit`（测试并设置位）, :c:func:<a href="#system-message-14"><span class="problematic" id="problematic-14">`</span></a>test_and_clear_bit`（测试并清除位）, :c:func:<a href="#system-message-15"><span class="problematic" id="problematic-15">`</span></a>test_and_change_bit`（测试并修改位）</li>
 </ul>
 </li>
 </ul>
@@ -192,9 +178,9 @@ another processor</li>
 
 
 </article>
-<article class="admonition-using-c-func-atomic-dec-and-test-to-implement-resource-counter-release slide level-2">
+<article class="admonition-c-func-atomic-dec-and-test slide level-2">
 
-<h2>Using <code class="xref c c-func docutils literal"><span class="pre">atomic_dec_and_test()</span></code> to implement resource counter release</h2>
+<h2>使用 <code class="xref c c-func docutils literal"><span class="pre">atomic_dec_and_test()</span></code> 来实现资源计数器的释放</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">release_resource</span><span class="p">()</span>
 <span class="p">{</span>
@@ -208,9 +194,9 @@ another processor</li>
 
 
 </article>
-<article class="admonition-atomic-operations-may-not-be-atomic-on-smp-systems slide level-2">
+<article class="admonition-smp slide level-2">
 
-<h2>Atomic operations may not be atomic on SMP systems</h2>
+<h2>在 SMP 系统上原子操作可能不再是原子的</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-ddd14be50300088958e86912bc5f396797634a3a.png" src="../_images/ditaa-ddd14be50300088958e86912bc5f396797634a3a.png" />
@@ -219,9 +205,9 @@ another processor</li>
 
 
 </article>
-<article class="admonition-fixing-atomic-operations-for-smp-systems-x86 slide level-2">
+<article class="admonition-smp-x86 slide level-2">
 
-<h2>Fixing atomic operations for SMP systems (x86)</h2>
+<h2>修复 SMP 系统上的原子操作（x86）</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-c11fccb956cdf115910f9f72e1dc14cd7ed549ff.png" src="../_images/ditaa-c11fccb956cdf115910f9f72e1dc14cd7ed549ff.png" />
@@ -230,9 +216,9 @@ another processor</li>
 
 
 </article>
-<article class="admonition-synchronization-with-interrupts-x86 slide level-2">
+<article class="admonition-x86 slide level-2">
 
-<h2>Synchronization with interrupts (x86)</h2>
+<h2>与中断同步（x86）</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span> <span class="cp">#define local_irq_disable() \</span>
 <span class="cp">     asm volatile („cli” : : : „memory”)</span>
@@ -256,22 +242,22 @@ another processor</li>
 
 
 </article>
-<article class="admonition-spin-lock-implementation-example-x86 slide level-2">
+<article class="admonition-x86 slide level-2">
 
-<h2>Spin Lock Implementation Example (x86)</h2>
+<h2>自旋锁实现示例（x86）</h2>
 
-<div class="highlight-asm"><div class="highlight"><pre><span></span>spin_lock:
-    lock bts [my_lock], 0
-    jc spin_lock
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  spin_lock:
+      lock bts [my_lock], 0
+      jc spin_lock
 
-/* critical section */
+  /* 临界区 */
 
-spin_unlock:
-    mov [my_lock], 0
+  spin_unlock:
+      mov [my_lock], 0
+
+**bts dts, src**——位测试并设置；它将来自 dts 内存地址的第 src 位复制到进位标志位（carry flag），然后将其设置为 1：
 </pre></div>
 </div>
-<p><strong>bts dts, src</strong> - bit test and set; it copies the src bit from the dts
-memory address to the carry flag and then sets it:</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">CF</span> <span class="o">&lt;-</span> <span class="n">dts</span><span class="p">[</span><span class="n">src</span><span class="p">]</span>
 <span class="n">dts</span><span class="p">[</span><span class="n">src</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="mi">1</span>
 </pre></div>
@@ -281,38 +267,33 @@ memory address to the carry flag and then sets it:</p>
 
 
 </article>
-<article class="admonition-lock-contention slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Lock Contention</h2>
+<h2>锁争用</h2>
 
 <ul class="simple">
-<li>There is lock contention when at least one core spins trying to
-enter the critical section lock</li>
-<li>Lock contention grows with the critical section size, time spent
-in the critical section and the number of cores in the system</li>
+<li>当至少有一个核心在自旋尝试进入临界区时，就会发生锁争用</li>
+<li>锁争用随着临界区大小、在临界区中花费的时间以及系统中处理器核心数量的增加而增加</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-cache-thrashing slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Cache Thrashing</h2>
+<h2>高速缓存抖动</h2>
 
-<p>Cache thrashing occurs when multiple cores are trying to read and
-write to the same memory resulting in excessive cache misses.</p>
-<p>Since spin locks continuously access memory during lock contention,
-cache thrashing is a common occurrence due to the way cache
-coherency is implemented.</p>
+<p>当多个处理器核心试图读写同一内存时，会发生高速缓存抖动，导致过多的高速缓存未命中。</p>
+<p>由于自旋锁在锁争用期间不断访问内存，高速缓存抖动很常见，这是由高速缓存一致性的实现方式造成的。</p>
 
 
 
 
 </article>
-<article class="admonition-synchronized-caches-and-memory slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Synchronized caches and memory</h2>
+<h2>同步的缓存和内存</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-4d63c157487ff8291f2a6e93fe680ec38c1a3212.png" src="../_images/ditaa-4d63c157487ff8291f2a6e93fe680ec38c1a3212.png" />
@@ -321,9 +302,9 @@ coherency is implemented.</p>
 
 
 </article>
-<article class="admonition-unsynchronized-caches-and-memory slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Unsynchronized caches and memory</h2>
+<h2>缺乏同步的缓存和内存</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-7ee0f9bb5f5af586e043afd47cfbad0adcc34888.png" src="../_images/ditaa-7ee0f9bb5f5af586e043afd47cfbad0adcc34888.png" />
@@ -332,38 +313,32 @@ coherency is implemented.</p>
 
 
 </article>
-<article class="admonition-cache-coherency-protocols slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Cache Coherency Protocols</h2>
+<h2>缓存一致性协议</h2>
 
 <ul class="simple">
-<li>Bus snooping (sniffing) based: memory bus transactions are
-monitored by caches and they take actions to preserve
-coherency</li>
-<li>Directory based: there is a separate entity (directory) that
-maintains the state of caches; caches interact with directory
-to preserve coherency</li>
+<li>总线嗅探（Bus snooping）：缓存监视内存总线事务，并采取行动以保持一致性。</li>
+<li>目录（Directory）协议：有一个单独的实体（目录）来维护缓存的状态；缓存与目录交互以保持一致性。</li>
 </ul>
-<p>Bus snooping is simpler but it performs poorly when the number of
-cores goes beyond 32-64.</p>
-<p>Directory based cache coherence protocols scale much better (up
-to thousands of cores) and are usually used in NUMA systems.</p>
+<p>缓存嗅探协议较为简单，但当核心数超过 32-64 时性能表现较差。</p>
+<p>目录协议的缓存一致性协议能够更好地扩展（可达数千个核心），非一致性存储访问（NUMA）系统中通常使用的就是目录协议。</p>
 
 
 
 
 </article>
-<article class="admonition-mesi-cache-coherence-protocol slide level-2">
+<article class="admonition-mesi slide level-2">
 
-<h2>MESI Cache Coherence Protocol</h2>
+<h2>MESI 缓存一致性协议</h2>
 
 <ul class="simple">
-<li>Caching policy: write back</li>
-<li>Cache line states<ul>
-<li>Modified: owned by a single core and dirty</li>
-<li>Exclusive: owned by a single core and clean</li>
-<li>Shared: shared between multiple cores and clean</li>
-<li>Invalid : the line is not cached</li>
+<li>缓存策略：写回（write back）</li>
+<li>缓存行状态<ul>
+<li>已修改：由单个核心拥有且为脏数据</li>
+<li>独占：由单个核心拥有且为干净数据</li>
+<li>共享：由多个核心共享且为干净数据</li>
+<li>已失效：该行未被缓存</li>
 </ul>
 </li>
 </ul>
@@ -372,28 +347,24 @@ to thousands of cores) and are usually used in NUMA systems.</p>
 
 
 </article>
-<article class="admonition-mesi-state-transitions slide level-2">
+<article class="admonition-mesi slide level-2">
 
-<h2>MESI State Transitions</h2>
+<h2>MESI 状态转换</h2>
 
 <ul class="simple">
-<li>Invalid -&gt; Exclusive: read request, all other cores have the line
-in Invalid; line loaded from memory</li>
-<li>Invalid -&gt; Shared: read request, at least one core has the line
-in Shared or Exclusive; line loaded from sibling cache</li>
-<li>Invalid/Shared/Exclusive -&gt; Modified: write request; <strong>all
-other</strong> cores <strong>invalidate</strong> the line</li>
-<li>Modified -&gt; Invalid: write request from other core; line is
-flushed to memory</li>
+<li>已失效 -&gt; 独占：读取请求，所有其他核心中的该行处于已失效状态；从内存加载该行</li>
+<li>已失效 -&gt; 共享 ：读取请求，至少一个核心中的该行处于共享或独占状态；从兄弟缓存加载该行</li>
+<li>已失效/共享/独占 -&gt; 已修改：写入请求; <strong>所有其他</strong> 核心 <strong>将自身的该行状态设为已失效</strong></li>
+<li>已修改 -&gt; 已失效 ：来自其他核心的写入请求；将该行刷新到内存</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-cache-thrashing-due-to-spin-lock-contention slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Cache thrashing due to spin lock contention</h2>
+<h2>自旋锁争用导致的缓存抖动</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-b26d802c286bda6c559b4dcfa8a7fb27f840463e.png" src="../_images/ditaa-b26d802c286bda6c559b4dcfa8a7fb27f840463e.png" />
@@ -402,9 +373,9 @@ flushed to memory</li>
 
 
 </article>
-<article class="admonition-optimized-spin-lock-keacquirespinlock slide level-2">
+<article class="admonition-keacquirespinlock slide level-2">
 
-<h2>Optimized spin lock (KeAcquireSpinLock)</h2>
+<h2>优化的自旋锁（KeAcquireSpinLock）</h2>
 
 <p>&nbsp;</p>
 <div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nl">spin_lock:</span>
@@ -416,19 +387,17 @@ flushed to memory</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li>we first test the lock read only, using a non atomic
-instructions, to avoid writes and thus invalidate operations
-while we spin</li>
-<li>only when the lock <em>might</em> be free, we try to acquire it</li>
+<li>我们首先只测试（读）锁，并且使用非原子指令来操作，以避免写入进而导致在自旋时产生失效操作</li>
+<li>仅当锁 <em>可能</em> 是空闲的时候，我们才尝试获取它</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-queued-spin-locks slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Queued Spin Locks</h2>
+<h2>自旋锁队列</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-58545831034f050660727be99cede213bc4a53c7.png" src="../_images/ditaa-58545831034f050660727be99cede213bc4a53c7.png" />
@@ -437,76 +406,62 @@ while we spin</li>
 
 
 </article>
-<article class="admonition-process-and-interrupt-handler-synchronization-deadlock slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Process and Interrupt Handler Synchronization Deadlock</h2>
+<h2>进程和中断处理程序同步死锁</h2>
 
 <ul class="simple">
-<li>In the process context we take the spin lock</li>
-<li>An interrupt occurs and it is scheduled on the same CPU core</li>
-<li>The interrupt handler runs and tries to take the spin lock</li>
-<li>The current CPU will deadlock</li>
+<li>在进程上下文中，我们获取自旋锁</li>
+<li>发生中断，并在同一 CPU 核心上调度</li>
+<li>中断处理程序运行并尝试获取自旋锁</li>
+<li>当前 CPU 将发生死锁</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-interrupt-synchronization-for-smp slide level-2">
+<article class="admonition-smp slide level-2">
 
-<h2>Interrupt Synchronization for SMP</h2>
+<h2>用于 SMP 的中断同步</h2>
 
 <ul class="simple">
-<li>In process context: disable interrupts and acquire a spin lock;
-this will protect both against interrupt or other CPU cores race
-conditions (<code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">spin_lock_restore()</span></code> combine the two operations)</li>
-<li>In interrupt context: take a spin lock; this will will protect
-against race conditions with other interrupt handlers or process
-context running on different processors</li>
+<li>在进程上下文中：禁用中断并获取自旋锁；这将保护免受中断或其他 CPU 核心竟态条件的影响（<code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_restore()</span></code> 结合了这两个操作）</li>
+<li>在中断上下文中：获取自旋锁；这将保护免受运行在不同处理器上的其他中断处理程序或进程上下文的竟态条件的影响</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-bottom-half-synchronization-for-smp slide level-2">
+<article class="admonition-smp slide level-2">
 
-<h2>Bottom-Half Synchronization for SMP</h2>
+<h2>SMP 的软中断同步</h2>
 
 <ul class="simple">
-<li>In process context use <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh()</span></code> (which combines
-<code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code>) and
-<code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh()</span></code> (which combines <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code>)</li>
-<li>In bottom half context use: <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> (or <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqrestore()</span></code> if sharing data with interrupt
-handlers)</li>
+<li>在进程上下文中使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh`（将</span> <span class="pre">:c:func:`local_bh_disable()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 结合起来）和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh`（将</span> <span class="pre">:c:func:`spin_unlock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> 结合起来）</li>
+<li>在软中断上下文中使用：<code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock`（如果与中断处理程序共享数据，则使用</span> <span class="pre">:c:func:`spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqrestore()</span></code> ）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-preemption slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Preemption</h2>
+<h2>抢占</h2>
 
 <p>&nbsp;</p>
-<p>Preemption is configurable: when active it provides better latency
-and response time, while when deactivated it provides better
-throughput.</p>
-<p>Preemption is disabled by spin locks and mutexes but it can be
-manually disabled as well (by core kernel code).</p>
+<p>抢占是可配置的：如果激活，它提供更低的延迟和响应时间，而如果停用，它提供更好的吞吐量。</p>
+<p>抢占被自旋锁和互斥锁禁用，但也可以手动禁用（通过核心内核代码）。</p>
 
 
 
 
 </article>
-<article class="admonition-preemption-and-bottom-half-masking slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Preemption and Bottom-Half Masking</h2>
+<h2>抢占和软中断屏蔽</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define PREEMPT_BITS      8</span>
 <span class="cp">#define SOFTIRQ_BITS      8</span>
@@ -534,25 +489,23 @@ manually disabled as well (by core kernel code).</p>
 
 
 </article>
-<article class="admonition-mutexes slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Mutexes</h2>
+<h2>互斥锁</h2>
 
 <ul class="simple">
-<li>They don't &quot;waste&quot; CPU cycles; system throughput is better than
-spin locks if context switch overhead is lower than medium
-spinning time</li>
-<li>They can't be used in interrupt context</li>
-<li>They have a higher latency than spin locks</li>
+<li>如果上下文切换开销低于自旋时间平均值，则系统吞吐量比自旋锁好，因为它们不会&quot;浪费&quot; CPU 周期</li>
+<li>不能在中断上下文中使用</li>
+<li>比起自旋锁具有更高的延迟</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-c-func-mutex-lock-fast-path slide level-2">
+<article class="admonition-c-func-mutex-lock slide level-2">
 
-<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_lock()</span></code> fast path</h2>
+<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_lock()</span></code> 捷径</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">__sched</span> <span class="nf">mutex_lock</span><span class="p">(</span><span class="k">struct</span> <span class="n">mutex</span> <span class="o">*</span><span class="n">lock</span><span class="p">)</span>
 <span class="p">{</span>
@@ -578,14 +531,14 @@ spinning time</li>
 
 
 </article>
-<article class="admonition-c-func-mutex-lock-slow-path slide level-2">
+<article class="admonition-c-func-mutex-lock slide level-2">
 
-<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_lock()</span></code> slow path</h2>
+<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_lock()</span></code> 慢路径</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="p">...</span>
   <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="o">-&gt;</span><span class="n">wait_lock</span><span class="p">);</span>
 <span class="p">...</span>
-  <span class="cm">/* add waiting tasks to the end of the waitqueue (FIFO): */</span>
+  <span class="cm">/* 添加等待的任务到等待队列尾部 (FIFO): */</span>
   <span class="n">list_add_tail</span><span class="p">(</span><span class="o">&amp;</span><span class="n">waiter</span><span class="p">.</span><span class="n">list</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="o">-&gt;</span><span class="n">wait_list</span><span class="p">);</span>
 <span class="p">...</span>
   <span class="n">waiter</span><span class="p">.</span><span class="n">task</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span>
@@ -612,9 +565,9 @@ spinning time</li>
 
 
 </article>
-<article class="admonition-c-func-mutex-unlock-fast-path slide level-2">
+<article class="admonition-c-func-mutex-unlock slide level-2">
 
-<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_unlock()</span></code> fast path</h2>
+<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_unlock()</span></code> 快速路径</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">__sched</span> <span class="nf">mutex_unlock</span><span class="p">(</span><span class="k">struct</span> <span class="n">mutex</span> <span class="o">*</span><span class="n">lock</span><span class="p">)</span>
 <span class="p">{</span>
@@ -646,14 +599,14 @@ spinning time</li>
 
 
 </article>
-<article class="admonition-c-func-mutex-unlock-slow-path slide level-2">
+<article class="admonition-c-func-mutex-unlock slide level-2">
 
-<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_unlock()</span></code> slow path</h2>
+<h2><code class="xref c c-func docutils literal"><span class="pre">mutex_unlock()</span></code> 慢速路径</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="p">...</span>
 <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="o">-&gt;</span><span class="n">wait_lock</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">list_empty</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="o">-&gt;</span><span class="n">wait_list</span><span class="p">))</span> <span class="p">{</span>
-  <span class="cm">/* get the first entry from the wait-list: */</span>
+  <span class="cm">/* 获得等待队列的第一个条目 */</span>
   <span class="k">struct</span> <span class="n">mutex_waiter</span> <span class="o">*</span><span class="n">waiter</span><span class="p">;</span>
   <span class="n">waiter</span> <span class="o">=</span> <span class="n">list_first_entry</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="o">-&gt;</span><span class="n">wait_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">mutex_waiter</span><span class="p">,</span>
                             <span class="n">list</span><span class="p">);</span>
@@ -671,24 +624,23 @@ spinning time</li>
 
 
 </article>
-<article class="admonition-per-cpu-data slide level-2">
+<article class="admonition-cpu slide level-2">
 
-<h2>Per CPU data</h2>
+<h2>每个 CPU 独占的数据</h2>
 
 <ul class="simple">
-<li>No need to synchronize to access the data</li>
-<li>No contention, no performance impact</li>
-<li>Well suited for distributed processing where aggregation is only
-seldom necessary (e.g. statistics counters)</li>
+<li>无需同步即可访问数据</li>
+<li>没有争用，没有性能影响</li>
+<li>非常适合分布式处理，其中只偶尔需要聚合（例如统计计数器）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-out-of-order-compiler-generated-code slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Out of Order Compiler Generated Code</h2>
+<h2>乱序编译器生成的代码</h2>
 
 <table border="1" class="docutils">
 <colgroup>
@@ -719,59 +671,50 @@ seldom necessary (e.g. statistics counters)</li>
 
 
 </article>
-<article class="admonition-barriers slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Barriers</h2>
+<h2>屏障</h2>
 
 <ul class="simple">
-<li>A read barrier (<code class="xref c c-func docutils literal"><span class="pre">rmb()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">smp_rmb()</span></code>) is used to
-make sure that no read operation crosses the barrier; that is,
-all read operation before the barrier are complete before
-executing the first instruction after the barrier</li>
-<li>A write barrier (<code class="xref c c-func docutils literal"><span class="pre">wmb()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">smp_wmb()</span></code>) is used to
-make sure that no write operation crosses the barrier</li>
-<li>A simple barrier (<code class="xref c c-func docutils literal"><span class="pre">mb()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">smp_mb()</span></code>) is used
-to make sure that no write or read operation crosses the barrier</li>
+<li>读屏障 (<code class="xref c c-func docutils literal"><span class="pre">rmb()</span></code>，<code class="xref c c-func docutils literal"><span class="pre">smp_rmb()</span></code>) 用于确保没有读操作越过屏障；也就是说，在执行屏障之后的第一条指令之前，所有的读操作都已经完成</li>
+<li>写屏障 (<code class="xref c c-func docutils literal"><span class="pre">wmb()</span></code>，<code class="xref c c-func docutils literal"><span class="pre">smp_wmb()</span></code>) 用于确保没有写操作越过屏障</li>
+<li>简单屏障（<code class="xref c c-func docutils literal"><span class="pre">mb()</span></code>，<code class="xref c c-func docutils literal"><span class="pre">smp_mb()</span></code>）用于确保没有读操作或写操作越过屏障</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-read-copy-update-rcu slide level-2">
+<article class="admonition-rcu slide level-2">
 
-<h2>Read Copy Update (RCU)</h2>
+<h2>读-复制-更新（RCU）</h2>
 
 <ul class="simple">
-<li><strong>Read-only</strong> lock-less access at the same time with write access</li>
-<li>Write accesses still requires locks in order to avoid races
-between writers</li>
-<li>Requires unidirectional traversal by readers</li>
+<li><strong>只读</strong>：同时进行无锁访问和写访问</li>
+<li>写访问仍然需要锁，以避免写者之间的竞争</li>
+<li>需要读者进行单向遍历</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-removal-and-reclamation slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Removal and Reclamation</h2>
+<h2>移除和回收</h2>
 
 <ul class="simple">
-<li><strong>Removal</strong>: removes references to elements. Some old readers may
-still see the old reference so we can't free the element.</li>
-<li><strong>Elimination</strong>: free the element. This action is postponed until
-all existing readers finish traversal (quiescent cycle). New
-readers won't affect the quiescent cycle.</li>
+<li><strong>移除</strong>：删除对元素的引用。一些旧的读者仍然可以看到旧的引用，因此我们不能释放该元素。</li>
+<li><strong>消除</strong>：释放元素。此操作被推迟直到所有现有的读者完成遍历（静默周期）。新的读者不会影响静默周期。</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-rcu-list-delete slide level-2">
+<article class="admonition-rcu slide level-2">
 
-<h2>RCU List Delete</h2>
+<h2>RCU 列表删除</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-5193a924360bebc83d2f81188cd0b0093ec01e6a.png" src="../_images/ditaa-5193a924360bebc83d2f81188cd0b0093ec01e6a.png" />
@@ -780,26 +723,26 @@ readers won't affect the quiescent cycle.</li>
 
 
 </article>
-<article class="admonition-rcu-list-apis-cheat-sheet slide level-2">
+<article class="admonition-rcu-api slide level-2">
 
-<h2>RCU list APIs cheat sheet</h2>
+<h2>列表 RCU API 速查表</h2>
 
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* list traversal */</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 列表遍历 */</span>
 <span class="n">rcu_read_lock</span><span class="p">();</span>
 <span class="n">list_for_each_entry_rcu</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>
-  <span class="cm">/* no sleeping, blocking calls or context switch allowed */</span>
+  <span class="cm">/* 不允许休眠、阻塞调用或上下文切换 */</span>
 <span class="p">}</span>
 <span class="n">rcu_read_unlock</span><span class="p">();</span>
 
 
-<span class="cm">/* list element delete  */</span>
+<span class="cm">/* 列表元素删除  */</span>
 <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
 <span class="n">list_del_rcu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">);</span>
 <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
 <span class="n">synchronize_rcu</span><span class="p">();</span>
 <span class="n">kfree</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
 
-<span class="cm">/* list element add  */</span>
+<span class="cm">/* 列表元素添加  */</span>
 <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
 <span class="n">list_add_rcu</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">);</span>
 <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
