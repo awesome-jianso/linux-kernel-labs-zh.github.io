@@ -759,105 +759,49 @@ root@qemux86:~#
 <p>扫描码被转换为与键匹配的键码（keycode）。按下的扫描码和释放的扫描码具有相同的键码。对于上面显示的键，我们有以下表格：</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="100%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>键</td>
+<td>按下的扫描码</td>
+<td>释放的扫描码</td>
+<td>键码</td>
+</tr>
+<tr class="row-even"><td>回车</td>
+<td>0x1c</td>
+<td>0x9c</td>
+<td>0x1c（28）</td>
+</tr>
+<tr class="row-odd"><td>a</td>
+<td>0x1e</td>
+<td>0x9e</td>
+<td>0x1e（30）</td>
+</tr>
+<tr class="row-even"><td>b</td>
+<td>0x30</td>
+<td>0xb0</td>
+<td>0x30（48）</td>
+</tr>
+<tr class="row-odd"><td>c</td>
+<td>0x2e</td>
+<td>0xae</td>
+<td>0x2e（46）</td>
+</tr>
+<tr class="row-even"><td>Shift</td>
+<td>0x2a</td>
+<td>0xaa</td>
+<td>0x2a（42）</td>
+</tr>
+<tr class="row-odd"><td>Ctrl</td>
+<td>0x1d</td>
+<td>0x9d</td>
+<td>0x1d（29）</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li><p class="first">按下的扫描码</p>
-</li>
-<li><p class="first">释放的扫描码</p>
-</li>
-<li><p class="first">键码</p>
-<blockquote>
-<div><ul class="simple">
-<li><ul class="first">
-<li>回车</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">0x1c</p>
-</li>
-<li><p class="first">0x9c</p>
-</li>
-<li><p class="first">0x1c（28）</p>
-<blockquote>
-<div><ul class="simple">
-<li><ul class="first">
-<li>a</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">0x1e</p>
-</li>
-<li><p class="first">0x9e</p>
-</li>
-<li><p class="first">0x1e（30）</p>
-<blockquote>
-<div><ul class="simple">
-<li><ul class="first">
-<li>b</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">0x30</p>
-</li>
-<li><p class="first">0xb0</p>
-</li>
-<li><p class="first">0x30（48）</p>
-<blockquote>
-<div><ul class="simple">
-<li><ul class="first">
-<li>c</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">0x2e</p>
-</li>
-<li><p class="first">0xae</p>
-</li>
-<li><p class="first">0x2e（46）</p>
-<blockquote>
-<div><ul class="simple">
-<li><ul class="first">
-<li>Shift</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">0x2a</p>
-</li>
-<li><p class="first">0xaa</p>
-</li>
-<li><p class="first">0x2a（42）</p>
-<blockquote>
-<div><ul class="simple">
-<li><ul class="first">
-<li>Ctrl</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">0x1d</p>
-</li>
-<li><p class="first">0x9d</p>
-</li>
-<li><p class="first">0x1d（29）</p>
-</li>
-</ul>
 <p>按键按下/释放操作在 is_key_press() 函数中执行，获取扫描码的 ASCII 字符在 get_ascii() 函数中进行。</p>
 </li>
 </ul>
