@@ -79,7 +79,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/kernel_modules.html">内核模块</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/kernel_api.html">内核 API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/device_drivers.html">字符设备驱动程序</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/interrupts.html">I/O access and Interrupts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/interrupts.html">I/O 访问和中断</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/deferred_work.html">Deferred work</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/block_device_drivers.html">Block Device Drivers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part1.html">File system drivers (Part 1)</a></li>
@@ -585,44 +585,44 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lab4-interrupts.html">SO2 Lab 04 - I/O access and Interrupts</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#background-information">Background information</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#accessing-the-hardware">Accessing the hardware</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#request-access-to-i-o-ports">Request access to I/O ports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#accessing-i-o-ports">Accessing I/O ports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#accessing-i-o-ports-from-userspace">5. Accessing I/O ports from userspace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#section-2">背景信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#section-3">访问硬件</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#i-o">请求访问 I/O 端口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#i-o-1">访问 I/O 端口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#i-o-2">5. 从用户空间访问 I/O 端口</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#interrupt-handling">Interrupt handling</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#requesting-an-interrupt">Requesting an interrupt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#implementing-an-interrupt-handler">Implementing an interrupt handler</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#locking">Locking</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#interrupt-statistics">Interrupt statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#section-4">中断处理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-5">请求中断</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-6">中断处理程序的实现</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-7">锁定</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-8">中断统计</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#further-reading">Further reading</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#serial-port">Serial Port</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#parallel-port">Parallel port</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#keyboard-controller">Keyboard controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#linux-device-drivers">Linux device drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#section-9">进一步阅读</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-10">串口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-11">并行端口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-12">键盘控制器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#linux">Linux设备驱动程序</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#keyboard-driver">Keyboard driver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#request-the-i-o-ports">1. Request the I/O ports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#interrupt-handling-routine">2. Interrupt handling routine</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#store-ascii-keys-to-buffer">3. Store ASCII keys to buffer</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="so2/lab4-interrupts.html#reading-the-data-register">Reading the data register</a></li>
-<li class="toctree-l5"><a class="reference internal" href="so2/lab4-interrupts.html#interpreting-the-scancode">Interpreting the scancode</a></li>
-<li class="toctree-l5"><a class="reference internal" href="so2/lab4-interrupts.html#store-characters-to-the-buffer">Store characters to the buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#section-13">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-14">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-15">键盘驱动程序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#i-o-3">1. 请求 I/O 端口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-16">2. 中断处理例程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#ascii">3. 将 ASCII 键存储到缓冲区</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="so2/lab4-interrupts.html#section-17">读取数据寄存器</a></li>
+<li class="toctree-l5"><a class="reference internal" href="so2/lab4-interrupts.html#section-18">解释扫描码</a></li>
+<li class="toctree-l5"><a class="reference internal" href="so2/lab4-interrupts.html#section-19">将字符存储到缓冲区</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#reading-the-buffer">4. Reading the buffer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#reset-the-buffer">5. Reset the buffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-20">4. 读取缓冲区</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#section-21">5. 重置缓冲区</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#extra-exercises">Extra Exercises</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab4-interrupts.html#section-22">额外练习</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab4-interrupts.html#kfifo">1. kfifo</a></li>
 </ul>
 </li>
@@ -1501,45 +1501,45 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/interrupts.html">I/O access and Interrupts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#background-information">Background information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#accessing-the-hardware">Accessing the hardware</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#request-access-to-i-o-ports">Request access to I/O ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#accessing-i-o-ports">Accessing I/O ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#accessing-i-o-ports-from-userspace">5. Accessing I/O ports from userspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/interrupts.html">I/O 访问和中断</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#section-1">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#section-2">背景信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#section-3">访问硬件</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#i-o-1">请求访问 I/O 端口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#i-o-2">访问 I/O 端口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#i-o-3">5. 从用户空间访问 I/O 端口</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#interrupt-handling">Interrupt handling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#requesting-an-interrupt">Requesting an interrupt</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#implementing-an-interrupt-handler">Implementing an interrupt handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#locking">Locking</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#interrupt-statistics">Interrupt statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#section-4">中断处理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-5">请求中断</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-6">中断处理程序的实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-7">锁定</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-8">中断统计</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#further-reading">Further reading</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#serial-port">Serial Port</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#parallel-port">Parallel port</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#keyboard-controller">Keyboard controller</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#linux-device-drivers">Linux device drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#section-9">进一步阅读</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-10">串口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-11">并行端口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-12">键盘控制器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#linux">Linux设备驱动程序</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#intro">0. Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#keyboard-driver">Keyboard driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#request-the-i-o-ports">1. Request the I/O ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#interrupt-handling-routine">2. Interrupt handling routine</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#store-ascii-keys-to-buffer">3. Store ASCII keys to buffer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="labs/interrupts.html#reading-the-data-register">Reading the data register</a></li>
-<li class="toctree-l4"><a class="reference internal" href="labs/interrupts.html#interpreting-the-scancode">Interpreting the scancode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="labs/interrupts.html#store-characters-to-the-buffer">Store characters to the buffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#section-13">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-14">0. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-15">键盘驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#i-o-4">1. 请求 I/O 端口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-16">2. 中断处理例程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#ascii">3. 将 ASCII 键存储到缓冲区</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="labs/interrupts.html#section-17">读取数据寄存器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="labs/interrupts.html#section-18">解释扫描码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="labs/interrupts.html#section-19">将字符存储到缓冲区</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#reading-the-buffer">4. Reading the buffer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#reset-the-buffer">5. Reset the buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-20">4. 读取缓冲区</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#section-21">5. 重置缓冲区</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#extra-exercises">Extra Exercises</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/interrupts.html#section-22">额外练习</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="labs/interrupts.html#kfifo">1. kfifo</a></li>
 </ul>
 </li>
