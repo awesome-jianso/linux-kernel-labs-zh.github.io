@@ -64,7 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lectures/processes.html">进程</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/interrupts.html">中断</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/smp.html">对称多处理</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">Address Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">地址空间</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">Memory Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">Filesystem Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">Debugging</a></li>
@@ -306,25 +306,25 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec6-address-space.html">SO2 Lecture 06 - Address Space</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec6-address-space.html#lecture-objectives">Lecture objectives:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec6-address-space.html#section-1">课程目标：</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lec6-address-space.html#x86-mmu">x86 MMU</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#selectors">Selectors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#segment-descriptor">Segment descriptor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#segmentation-in-linux">Segmentation in Linux</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#inspecting-selectors-and-segments">Inspecting selectors and segments</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#x86-paging">x86 Paging</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#page-tables">Page tables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#linux-paging">Linux paging</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#translation-look-aside-buffer">Translation Look-aside Buffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-2">选择器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-3">段描述符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#linux">Linux 中的分段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-4">检查选择器和段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#x86">x86 分页</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-5">页表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#linux-1">Linux 分页</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#tlb">转译后备缓冲区（TLB）</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec6-address-space.html#linux-address-space">Linux address space</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#address-space-options-for-32bit-systems">Address space options for 32bit systems</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#linear-mappings">Linear mappings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#highmem">Highmem</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#fixed-mapped-linear-addresses">Fixed-mapped linear addresses</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#temporary-mappings">Temporary mappings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#permanent-mappings">Permanent mappings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec6-address-space.html#linux-2">Linux 地址空间</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-6">32 位系统的地址空间选项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-7">线性映射</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-8">高内存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-9">固定映射的线性地址</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-10">临时映射</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec6-address-space.html#section-11">永久映射</a></li>
 </ul>
 </li>
 </ul>
@@ -1195,26 +1195,26 @@
 <li class="toctree-l2"><a class="reference internal" href="lectures/smp.html#read-copy-update-rcu">读-复制-更新（Read Copy Update，RCU）</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">Address Space</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lectures/address-space.html#lecture-objectives">Lecture objectives:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">地址空间</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/address-space.html#section-2">课程目标：</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/address-space.html#x86-mmu">x86 MMU</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#selectors">Selectors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#segment-descriptor">Segment descriptor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#segmentation-in-linux">Segmentation in Linux</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#inspecting-selectors-and-segments">Inspecting selectors and segments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#x86-paging">x86 Paging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#page-tables">Page tables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#linux-paging">Linux paging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#translation-look-aside-buffer">Translation Look-aside Buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-3">选择器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-4">段描述符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#linux">Linux 中的分段</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-5">检查选择器和段</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#x86">x86 分页</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-6">页表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#linux-1">Linux 分页</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#tlb">转译后备缓冲区（TLB）</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/address-space.html#linux-address-space">Linux address space</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#address-space-options-for-32bit-systems">Address space options for 32bit systems</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#linear-mappings">Linear mappings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#highmem">Highmem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#fixed-mapped-linear-addresses">Fixed-mapped linear addresses</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#temporary-mappings">Temporary mappings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#permanent-mappings">Permanent mappings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/address-space.html#linux-2">Linux 地址空间</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-7">32 位系统的地址空间选项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-8">线性映射</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-9">高内存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-10">固定映射的线性地址</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-11">临时映射</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/address-space.html#section-12">永久映射</a></li>
 </ul>
 </li>
 </ul>
