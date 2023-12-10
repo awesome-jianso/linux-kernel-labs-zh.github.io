@@ -80,7 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/kernel_api.html">内核 API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/device_drivers.html">字符设备驱动程序</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/interrupts.html">I/O 访问和中断</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/deferred_work.html">Deferred work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/deferred_work.html">延迟工作</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/block_device_drivers.html">Block Device Drivers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part1.html">File system drivers (Part 1)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part2.html">File system drivers (Part 2)</a></li>
@@ -629,26 +629,26 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lab5-deferred-work.html">SO2 Lab 05 - Deferred work</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#background-information">Background information</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#softirqs">Softirqs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#tasklets">Tasklets</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#timers">Timers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#locking">Locking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#section-2">背景信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#softirqs">软中断（Softirqs）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#tasklet">tasklet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#timer">定时器（Timer）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#locking">锁定（Locking）</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#workqueues">Workqueues</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#kernel-threads">Kernel threads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#further-reading">Further reading</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#timer">1.Timer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#periodic-timer">2. Periodic timer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#timer-control-using-ioctl">3. Timer control using ioctl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#blocking-operations">4. Blocking operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#workqueues-1">5. Workqueues</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#kernel-thread">6. Kernel thread</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#buffer-shared-between-timer-and-process">7. Buffer shared between timer and process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#section-3">工作队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#section-4">内核线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#section-5">进一步阅读</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab5-deferred-work.html#section-6">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#section-7">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#section-8">1. 定时器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#section-9">2. 周期性定时器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#ioctl">3. 使用 ioctl 控制定时器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#section-10">4. 阻塞操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#section-11">5. 工作队列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#section-12">6. 内核线程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab5-deferred-work.html#section-13">7. 定时器和进程之间共享的缓冲区</a></li>
 </ul>
 </li>
 </ul>
@@ -1545,27 +1545,27 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/deferred_work.html">Deferred work</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#background-information">Background information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#softirqs">Softirqs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#tasklets">Tasklets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#timers">Timers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#locking">Locking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/deferred_work.html">延迟工作</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#section-2">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#section-3">背景信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#softirqs">软中断（Softirqs）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#tasklet">tasklet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#timer">定时器（Timer）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#locking">锁定（Locking）</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#workqueues">Workqueues</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#kernel-threads">Kernel threads</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#further-reading">Further reading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#intro">0. Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#timer">1.Timer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#periodic-timer">2. Periodic timer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#timer-control-using-ioctl">3. Timer control using ioctl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#blocking-operations">4. Blocking operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#workqueues-1">5. Workqueues</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#kernel-thread">6. Kernel thread</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#buffer-shared-between-timer-and-process">7. Buffer shared between timer and process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#section-4">工作队列</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#section-5">内核线程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#section-6">进一步阅读</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/deferred_work.html#section-7">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#section-8">0. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#section-9">1. 定时器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#section-10">2. 周期性定时器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#ioctl">3. 使用 ioctl 控制定时器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#section-11">4. 阻塞操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#section-12">5. 工作队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#section-13">6. 内核线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/deferred_work.html#section-14">7. 定时器和进程之间共享的缓冲区</a></li>
 </ul>
 </li>
 </ul>

@@ -74,26 +74,26 @@
 <li class="toctree-l2"><a class="reference internal" href="lab3-device-drivers.html">SO2 Lab 03 - Character device drivers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab4-interrupts.html">SO2 Lab 04 - I/O access and Interrupts</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lab 05 - Deferred work</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#background-information">Background information</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#softirqs">Softirqs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tasklets">Tasklets</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#timers">Timers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#locking">Locking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">背景信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#softirqs">软中断（Softirqs）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tasklet">tasklet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timer">定时器（Timer）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#locking">锁定（Locking）</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#workqueues">Workqueues</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#kernel-threads">Kernel threads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#further-reading">Further reading</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#timer">1.Timer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#periodic-timer">2. Periodic timer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#timer-control-using-ioctl">3. Timer control using ioctl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#blocking-operations">4. Blocking operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#workqueues-1">5. Workqueues</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#kernel-thread">6. Kernel thread</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#buffer-shared-between-timer-and-process">7. Buffer shared between timer and process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">工作队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">内核线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">进一步阅读</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">1. 定时器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">2. 周期性定时器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ioctl">3. 使用 ioctl 控制定时器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-10">4. 阻塞操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-11">5. 工作队列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-12">6. 内核线程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">7. 定时器和进程之间共享的缓冲区</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +138,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../labs/kernel_api.html">内核 API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/device_drivers.html">字符设备驱动程序</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/interrupts.html">I/O 访问和中断</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../labs/deferred_work.html">Deferred work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../labs/deferred_work.html">延迟工作</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/block_device_drivers.html">Block Device Drivers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/filesystems_part1.html">File system drivers (Part 1)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/filesystems_part2.html">File system drivers (Part 2)</a></li>
@@ -183,78 +183,41 @@
              
   <div class="section" id="so2-lab-05-deferred-work">
 <h1>SO2 Lab 05 - Deferred work<a class="headerlink" href="#so2-lab-05-deferred-work" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="lab-objectives">
-<h2>Lab objectives<a class="headerlink" href="#lab-objectives" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-1">
+<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Understanding deferred work (i.e. code scheduled to be executed at a
-later time)</li>
-<li>Implementation of common tasks that uses deferred work</li>
-<li>Understanding the peculiarities of synchronization for deferred work</li>
+<li>理解延迟工作（即在稍后时间执行的代码）</li>
+<li>实现使用延迟工作的常见任务</li>
+<li>理解延迟工作的同步特性</li>
 </ul>
-<p>Keywords: softirq, tasklet, struct tasklet_struct, bottom-half
-handlers, jiffies, HZ, timer, struct timer_list, spin_lock_bh,
-spin_unlock_bh, workqueue, struct work_struct, kernel thread, events/x</p>
+<p>关键词：softirq、tasklet、struct tasklet_struct、下半部处理程序、jiffies、HZ、timer、struct timer_list、spin_lock_bh、spin_unlock_bh、workqueue、struct work_struct、内核线程、events/x</p>
 </div>
-<div class="section" id="background-information">
-<h2>Background information<a class="headerlink" href="#background-information" title="Permalink to this headline">¶</a></h2>
-<p>Deferred work is a class of kernel facilities that allows one to
-schedule code to be executed at a later timer. This scheduled code can
-run either in the process context or in interruption context depending
-on the type of deferred work. Deferred work is used to complement the
-interrupt handler functionality since interrupts have important
-requirements and limitations:</p>
+<div class="section" id="section-2">
+<h2>背景信息<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<p>延迟工作是一类内核功能，允许我们安排代码在稍后的时间执行。这些安排的代码可以在进程上下文或中断上下文中运行，具体取决于延迟工作的类型。延迟工作用于补充中断处理程序的功能，因为中断具有重要的要求和限制：</p>
 <ul class="simple">
-<li>The execution time of the interrupt handler must be as small as
-possible</li>
-<li>In interrupt context we can not use blocking calls</li>
+<li>中断处理程序的执行时间必须尽可能短</li>
+<li>在中断上下文中，我们不能使用阻塞调用</li>
 </ul>
-<p>Using deferred work we can perform the minimum required work in the
-interrupt handler and schedule an asynchronous action from the
-interrupt handler to run at a later time and execute the rest of the
-operations.</p>
-<p>Deferred work that runs in interrupt context is also known as
-bottom-half, since its purpose is to execute the rest of the actions
-from an interrupt handler (top-half).</p>
-<p>Timers are another type of deferred work that are used to schedule the
-execution of future actions after a certain amount of time has passed.</p>
-<p>Kernel threads are not themselves deferred work, but can be used to
-complement the deferred work mechanisms. In general, kernel threads
-are used as &quot;workers&quot; to process events whose execution contains
-blocking calls.</p>
-<p>There are three typical operations that are used with all types of
-deferred work:</p>
+<p>使用延迟工作，我们可以在中断处理程序中执行最小所需的工作，并安排一个异步操作在稍后的时间运行，以执行其余的操作。</p>
+<p>在中断上下文中运行的延迟工作也称为下半部（bottom-half），因为其目的是执行中断处理程序（top-half）之外所剩余的操作。</p>
+<p>定时器（timer）是另一种类型的延迟工作，用于调度在经过一定时间后未来操作的执行。</p>
+<p>内核线程本身并不是延迟工作，但可以用来补充延迟工作机制。通常，内核线程用作处理包含阻塞调用的事件的“工作线程（workers）”。</p>
+<p>所有类型的延迟工作都使用三种典型的操作：</p>
 <ol class="arabic simple">
-<li><strong>Initialization</strong>. Each type is described by a structure whose
-fields will have to be initialized. The handler to be scheduled is
-also set at this time.</li>
-<li><strong>Scheduling</strong>. Schedules the execution of the handler as soon as
-possible (or after expiry of a timeout).</li>
-<li><strong>Masking</strong> or <strong>Canceling</strong>. Disables the execution of the
-handler. This action can be either synchronous (which guarantees
-that the handler will not run after the completion of canceling) or
-asynchronous.</li>
+<li><strong>初始化</strong>。每种类型都由一个结构描述，其字段需要进行初始化。在此时还设置要调度的处理程序。</li>
+<li><strong>调度</strong>。尽快安排处理程序的执行（或在超时后）。</li>
+<li><strong>屏蔽</strong> 或 <strong>取消</strong>。禁用处理程序的执行。此操作可以是同步的（可保证在取消完成后不再运行处理程序）或异步的。</li>
 </ol>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">When doing deferred work cleanup, like freeing the
-structures associated with the deferred work or
-removing the module and thus the handler code from the
-kernel, always use the synchronous type of canceling
-the deferred work.</p>
+<p class="last">在进行延迟工作的清理工作（例如释放与延迟工作相关的结构或从内核中删除模块及其处理程序代码），始终使用同步类型的延迟工作取消。</p>
 </div>
-<p>The main types of deferred work are kernel threads and softirqs. Work
-queues are implemented on top of kernel threads and tasklets and
-timers on top of softirqs. Bottom-half handlers were the first
-implementation of deferred work in Linux, but in the meantime it was
-replaced by softirqs. That is why some functions presented
-contain <em>bh</em> in their name.</p>
+<p>主要的延迟工作类型包括内核线程和软中断（softirq）。工作队列是在内核线程之上实现的，而 tasklet 和定时器是在软中断之上实现的。下半部（bottom-half）处理程序是 Linux 中最早的延迟工作实现，但后来被软中断所取代。这就是某些函数名称中含有 <em>bh</em> 的原因（译注：bh 即 bottom-half 的首字母缩写）。</p>
 </div>
 <div class="section" id="softirqs">
-<h2>Softirqs<a class="headerlink" href="#softirqs" title="Permalink to this headline">¶</a></h2>
-<p>softirqs can not be used by device drivers, they are reserved for
-various kernel subsystems. Because of this there is a fixed number of
-softirqs defined at compile time. For the current kernel version we
-have the following types defined:</p>
+<h2>软中断（Softirqs）<a class="headerlink" href="#softirqs" title="Permalink to this headline">¶</a></h2>
+<p>设备驱动程序不能使用软中断，软中断专门为各种内核子系统保留。因此，在编译时定义的软中断的数量是固定的。针对当前内核版本，定义了以下类型：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="p">{</span>
     <span class="n">HI_SOFTIRQ</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">TIMER_SOFTIRQ</span><span class="p">,</span>
@@ -270,54 +233,35 @@ have the following types defined:</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Each type has a specific purpose:</p>
+<p>每种类型都有特定的用途：</p>
 <ul class="simple">
-<li><em>HI_SOFTIRQ</em> and <em>TASKLET_SOFTIRQ</em> - running tasklets</li>
-<li><em>TIMER_SOFTIRQ</em> - running timers</li>
-<li><em>NET_TX_SOFIRQ</em> and <em>NET_RX_SOFTIRQ</em> - used by the networking subsystem</li>
-<li><em>BLOCK_SOFTIRQ</em> - used by the IO subsystem</li>
-<li><em>BLOCK_IOPOLL_SOFTIRQ</em> - used by the IO subsystem to increase performance when the iopoll handler is invoked;</li>
-<li><em>SCHED_SOFTIRQ</em> - load balancing</li>
-<li><em>HRTIMER_SOFTIRQ</em> - implementation of high precision timers</li>
-<li><em>RCU_SOFTIRQ</em> - implementation of RCU type mechanisms <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a></li>
+<li><em>HI_SOFTIRQ</em> 和 <em>TASKLET_SOFTIRQ</em> ——运行任务（tasklet）</li>
+<li><em>TIMER_SOFTIRQ</em> ——运行定时器</li>
+<li><em>NET_TX_SOFTIRQ</em> 和 <em>NET_RX_SOFTIRQ</em> ——由网络子系统使用</li>
+<li><em>BLOCK_SOFTIRQ</em> ——由 IO 子系统使用</li>
+<li><em>BLOCK_IOPOLL_SOFTIRQ</em> ——当调用 iopoll 处理程序时，由 IO 子系统使用以提高性能</li>
+<li><em>SCHED_SOFTIRQ</em> ——负载均衡</li>
+<li><em>HRTIMER_SOFTIRQ</em> ——高精度定时器的实现</li>
+<li><em>RCU_SOFTIRQ</em> ——RCU 类型机制的实现 <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a></li>
 </ul>
 <table class="docutils footnote" frame="void" id="footnote-1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>RCU is a mechanism by which destructive operations
-(e.g. deleting an element from a chained list) are done in two
-steps: (1) removing references to deleted data and (2) freeing
-the memory of the element. The second setup is done only after
-we are sure nobody uses the element anymore. The advantage of
-this mechanism is that reading the data can be done without
-synchronization. For more information see
-Documentation/RCU/rcu.txt.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>RCU 是一种机制，用于按照两个步骤执行破坏性操作（例如从链表中删除元素）：（1）移除对已删除数据的引用（2）释放元素的内存。只有在确保没有人再使用该元素后，才执行第二个步骤。此机制的优点是可以无需同步地读取数据。有关更多信息，请参阅 Documentation/RCU/rcu.txt。</td></tr>
 </tbody>
 </table>
-<p>The highest priority is the <em>HI_SOFTIRQ</em> type softirqs, followed in
-order by the other softirqs defined. <em>RCU_SOFTIRQ</em> has the lowest
-priority.</p>
-<p>Softirqs are running in interrupt context which means that they can
-not call blocking functions. If the sofitrq handler requires calls to
-such functions, work queues can be scheduled to execute these blocking
-calls.</p>
-<div class="section" id="tasklets">
-<h3>Tasklets<a class="headerlink" href="#tasklets" title="Permalink to this headline">¶</a></h3>
-<p>A tasklet is a special form of deferred work that runs in interrupt
-context, just like softirqs. The main difference between sofirqs and tasklets
-is that tasklets can be allocated dynamically and thus they can be used
-by device drivers. A tasklet is represented by <code class="xref c c-type docutils literal"><span class="pre">struct</span>
-<span class="pre">tasklet</span></code> and as many other kernel structures it needs to be
-initialized before being used. A pre-initialized tasklet can be defined
-as following:</p>
+<p><em>HI_SOFTIRQ</em> 类型的软中断优先级最高，其次是其他定义的软中断。<em>RCU_SOFTIRQ</em> 具有最低优先级。</p>
+<p>软中断在中断上下文中运行，这意味着它们不能调用阻塞函数。如果软中断处理程序需要调用此类函数，可以调度工作队列来执行这些阻塞调用。</p>
+<div class="section" id="tasklet">
+<h3>tasklet<a class="headerlink" href="#tasklet" title="Permalink to this headline">¶</a></h3>
+<p>与软中断类似，任务（tasklet）是一种在中断上下文中运行的延迟工作。任务（tasklet）与软中断之间的主要区别在于，任务（tasklet）可以动态分配，并且因此可以被设备驱动程序使用。任务（tasklet）由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">tasklet</span></code> 表示，与许多其他内核结构一样，需要在使用之前进行初始化。预初始化的任务（tasklet）可以以如下方式定义：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">handler</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">data</span><span class="p">);</span>
 
 <span class="n">DECLARE_TASKLET</span><span class="p">(</span><span class="n">tasklet</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
 <span class="n">DECLARE_TASKLET_DISABLED</span><span class="p">(</span><span class="n">tasklet</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If we want to initialize the tasklet manually we can use the following
-approach:</p>
+<p>如果我们想手动初始化任务（tasklet），可以使用以下方法：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">handler</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">data</span><span class="p">);</span>
 
 <span class="k">struct</span> <span class="n">tasklet_struct</span> <span class="n">tasklet</span><span class="p">;</span>
@@ -325,65 +269,45 @@ approach:</p>
 <span class="n">tasklet_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tasklet</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The <em>data</em> parameter will be sent to the handler when it is executed.</p>
-<p>Programming tasklets for running is called scheduling. Tasklets are
-running from softirqs. Tasklets scheduling is done with:</p>
+<p>当执行任务（tasklet）时，<em>data</em> 参数将发送给处理程序。</p>
+<p>可以使用调度操作来安排任务（tasklet）的运行。任务（tasklet）是在软中断的基础上执行的。可以使用以下函数进行任务（tasklet）的调度：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">tasklet_schedule</span><span class="p">(</span><span class="k">struct</span> <span class="n">tasklet_struct</span> <span class="o">*</span><span class="n">tasklet</span><span class="p">);</span>
 
 <span class="kt">void</span> <span class="nf">tasklet_hi_schedule</span><span class="p">(</span><span class="k">struct</span> <span class="n">tasklet_struct</span> <span class="o">*</span><span class="n">tasklet</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>When using <em>tasklet_schedule</em>, a <em>TASKLET_SOFTIRQ</em> softirq is
-scheduled and all tasklets scheduled are run. For
-<em>tasklet_hi_schedule</em>, a <em>HI_SOFTIRQ</em> softirq is scheduled.</p>
-<p>If a tasklet was scheduled multiple times and it did not run between
-schedules, it will run once.  Once the tasklet has run, it can be
-re-scheduled, and will run again at a later timer. Tasklets can be
-re-scheduled from their handlers.</p>
-<p>Tasklets can be masked and the following functions can be used:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">tasklet_enable</span><span class="p">(</span><span class="k">struct</span> <span class="n">tasklet_struct</span> <span class="o">*</span> <span class="n">tasklet</span><span class="p">);</span>
-<span class="kt">void</span> <span class="nf">tasklet_disable</span><span class="p">(</span><span class="k">struct</span> <span class="n">tasklet_struct</span> <span class="o">*</span> <span class="n">tasklet</span><span class="p">);</span>
+<p>使用 <em>tasklet_schedule</em> 函数，将调度一个 <em>TASKLET_SOFTIRQ</em> 软中断，并运行所有调度的任务（tasklet）。对于 <em>tasklet_hi_schedule</em> 函数，将调度一个 <em>HI_SOFTIRQ</em> 软中断。</p>
+<p>如果一个任务（tasklet）被多次调度，并且在多个调度之间这个任务（tasklet）没有运行，它将只运行一次。任务（tasklet）运行后，可以重新调度它，以便在稍后的时间再次运行。任务（tasklet）可以被其处理程序重新安排。</p>
+<p>任务（tasklet）可以被屏蔽，可以使用以下函数：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">tasklet_enable</span><span class="p">(</span><span class="k">struct</span> <span class="n">tasklet_struct</span> <span class="o">*</span><span class="n">tasklet</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">tasklet_disable</span><span class="p">(</span><span class="k">struct</span> <span class="n">tasklet_struct</span> <span class="o">*</span><span class="n">tasklet</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Remember that since tasklets are running from softirqs, blocking calls
-can not be used in the handler function.</p>
+<p>请记住，由于任务（tasklet）是在软中断的基础上执行的，因此不能在处理程序函数中使用阻塞调用。</p>
 </div>
-<div class="section" id="timers">
-<h3>Timers<a class="headerlink" href="#timers" title="Permalink to this headline">¶</a></h3>
-<p>A particular type of deferred work, very often used, are timers. They
-are defined by <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">timer_list</span></code>. They run in interrupt
-context and are implemented on top of softirqs.</p>
-<p>To be used, a timer must first be initialized by calling <code class="xref c c-func docutils literal"><span class="pre">timer_setup()</span></code>:</p>
+<div class="section" id="timer">
+<h3>定时器（Timer）<a class="headerlink" href="#timer" title="Permalink to this headline">¶</a></h3>
+<p>定时器是一种特殊类型的延迟工作。它们由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">timer_list</span></code> 定义，并在中断上下文中运行，是基于软中断实现的。</p>
+<p>要使用定时器，首先必须调用 <code class="xref c c-func docutils literal"><span class="pre">timer_setup()</span></code> 函数进行初始化：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/sched.h&gt;</span><span class="cp"></span>
 
-<span class="kt">void</span> <span class="nf">timer_setup</span><span class="p">(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span> <span class="n">timer</span><span class="p">,</span>
-                 <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">function</span><span class="p">)(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span><span class="p">),</span>
-                 <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">timer_setup</span><span class="p">(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span><span class="n">timer</span><span class="p">,</span>
+       <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">function</span><span class="p">)(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span><span class="p">),</span>
+       <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The above function initializes the internal fields of the structure
-and associates <em>function</em> as the timer handler. Since timers are planned
-over softirqs, blocking calls can not be used in the code associated
-with the treatment function.</p>
-<p>Scheduling a timer is done with <code class="xref c c-func docutils literal"><span class="pre">mod_timer()</span></code>:</p>
+<p>上述函数初始化了结构体的内部字段，并将 <em>function</em> 关联为定时器处理程序。由于定时器是通过软中断计划的，因此在与处理函数相关的代码中不能使用阻塞调用。</p>
+<p>使用 <code class="xref c c-func docutils literal"><span class="pre">mod_timer()</span></code> 函数进行定时器的调度：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">mod_timer</span><span class="p">(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span><span class="n">timer</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">expires</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Where <em>expires</em> is the time (in the future) to run the handler
-function. The function can be used to schedule or reschedule a timer.</p>
-<p>The time unit is <em>jiffie</em>. The absolute value of a jiffie
-is dependent on the platform and it can be found using the
-<code class="xref c c-type docutils literal"><span class="pre">HZ</span></code> macro that defines the number of jiffies for 1 second. To
-convert between jiffies (<em>jiffies_value</em>) and seconds (<em>seconds_value</em>),
-the following formulas are used:</p>
+<p>其中 <em>expires</em> 是要运行处理函数的时间（未来的时间）。该函数可用于调度或重新调度定时器。</p>
+<p>时间单位为 <em>jiffie</em>。一 jiffie 的绝对值取决于平台，并且可以使用 <code class="xref c c-type docutils literal"><span class="pre">HZ</span></code> 宏找到，该宏定义了 1 秒内的 jiffies 数。要在 jiffies (<em>jiffies_value</em>) 和秒 (<em>seconds_value</em>) 之间进行转换，使用以下公式：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">jiffies_value</span> <span class="o">=</span> <span class="n">seconds_value</span> <span class="o">*</span> <span class="n">HZ</span> <span class="p">;</span>
 <span class="n">seconds_value</span> <span class="o">=</span> <span class="n">jiffies_value</span> <span class="o">/</span> <span class="n">HZ</span> <span class="p">;</span>
 </pre></div>
 </div>
-<p>The kernel maintains a counter that contains the number of jiffies
-since the last boot, which can be accessed via the <code class="xref c c-macro docutils literal"><span class="pre">jiffies</span></code>
-global variable or macro. We can use it to calculate a time in the
-future for timers:</p>
+<p>内核维护一个计数器，其中包含自上次引导（boot）以来的 jiffies 数，可以通过全局变量或宏 <code class="xref c c-macro docutils literal"><span class="pre">jiffies</span></code> 访问。我们可以使用它来为定时器计算未来的时间：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/jiffies.h&gt;</span><span class="cp"></span>
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">current_jiffies</span><span class="p">,</span> <span class="n">next_jiffies</span><span class="p">;</span>
@@ -393,101 +317,67 @@ future for timers:</p>
 <span class="n">next_jiffies</span> <span class="o">=</span> <span class="n">jiffies</span> <span class="o">+</span> <span class="n">seconds</span> <span class="o">*</span> <span class="n">HZ</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>To stop a timer, use <code class="xref c c-func docutils literal"><span class="pre">del_timer()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">del_timer_sync()</span></code>:</p>
+<p>要停止定时器，请使用 <code class="xref c c-func docutils literal"><span class="pre">del_timer()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">del_timer_sync()</span></code> 函数：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">del_timer</span><span class="p">(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span><span class="n">timer</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">del_timer_sync</span><span class="p">(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span><span class="n">timer</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>These functions can be called for both a scheduled timer and an
-unplanned timer. <code class="xref c c-func docutils literal"><span class="pre">del_timer_sync()</span></code> is used to eliminate the
-races that can occur on multiprocessor systems, since at the end of
-the call it is guaranteed that the timer processing function does not
-run on any processor.</p>
-<p>A frequent mistake in using timers is that we forget to turn off
-timers. For example, before removing a module, we must stop the timers
-because if a timer expires after the module is removed, the handler
-function will no longer be loaded into the kernel and a kernel oops
-will be generated.</p>
-<p>The usual sequence used to initialize and schedule a one-second
-timeout is:</p>
+<p>这些函数可以用于已调度的定时器和未计划的定时器。<code class="xref c c-func docutils literal"><span class="pre">del_timer_sync()</span></code> 用于消除在多处理器系统上可能出现的竞态条件，因为在调用结束时，可以保证定时器处理函数不会在任何处理器上运行。</p>
+<p>在使用定时器时，常见的错误是忘记关闭定时器。例如，在移除模块之前，我们必须停止定时器，因为如果定时器在模块被移除后过期，处理函数将不再加载到内核中，从而导致内核出错。</p>
+<p>通常用于初始化和调度一秒钟超时的代码是：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/sched.h&gt;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">timer_function</span><span class="p">(</span><span class="k">struct</span> <span class="n">timer_list</span> <span class="o">*</span><span class="p">);</span>
 
-<span class="k">struct</span> <span class="n">timer_list</span> <span class="n">timer</span> <span class="p">;</span>
+<span class="k">struct</span> <span class="n">timer_list</span> <span class="n">timer</span><span class="p">;</span>
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">seconds</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 
 <span class="n">timer_setup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer</span><span class="p">,</span> <span class="n">timer_function</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 <span class="n">mod_timer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer</span><span class="p">,</span> <span class="n">jiffies</span> <span class="o">+</span> <span class="n">seconds</span> <span class="o">*</span> <span class="n">HZ</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>And to stop it:</p>
+<p>停止定时器的方法如下：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">del_timer_sync</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="locking">
-<h3>Locking<a class="headerlink" href="#locking" title="Permalink to this headline">¶</a></h3>
-<p>For synchronization between code running in process context (A) and
-code running in softirq context (B) we need to use special locking
-primitives. We must use spinlock operations augmented with
-deactivation of bottom-half handlers on the current processor in (A),
-and in (B) only basic spinlock operations. Using spinlocks makes sure
-that we don't have races between multiple CPUs while deactivating the
-softirqs makes sure that we don't deadlock in the softirq is scheduled
-on the same CPU where we already acquired a spinlock.</p>
-<p>We can use the <code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> to disable and enable softirqs handlers (and
-since they run on top of softirqs also timers and tasklets):</p>
+<h3>锁定（Locking）<a class="headerlink" href="#locking" title="Permalink to this headline">¶</a></h3>
+<p>为了在运行在进程上下文（A）的代码和运行在软中断上下文（B）的代码之间进行同步，我们需要使用特殊的锁原语。我们必须在（A）中使用自旋锁操作，并禁用底半部处理程序，在（B）中只使用基本的自旋锁操作。使用自旋锁可以确保在禁用软中断后，多个 CPU 之间不会发生竞争，而禁用软中断可以确保在已经获取自旋锁的 CPU 上调度软中断时不会发生死锁。</p>
+<p>我们可以使用 <code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> 来禁用和启用软中断处理程序（并且由于定时器和任务（tasklet）在软中断之上运行，还包括它们）：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">local_bh_disable</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 <span class="kt">void</span> <span class="nf">local_bh_enable</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Nested calls are allowed, the actual reactivation of the softirqs is
-done only when all local_bh_disable() calls have been complemented by
-local_bh_enable() calls:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* We assume that softirqs are enabled */</span>
-<span class="n">local_bh_disable</span><span class="p">();</span>  <span class="cm">/* Softirqs are now disabled */</span>
-<span class="n">local_bh_disable</span><span class="p">();</span>  <span class="cm">/* Softirqs remain disabled */</span>
+<p>允许嵌套调用，当所有的 local_bh_disable() 调用都有相应的 local_bh_enable() 调用时，才会实际重新启用软中断：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 假设软中断已启用 */</span>
+<span class="n">local_bh_disable</span><span class="p">();</span>  <span class="cm">/* 现在禁用了软中断 */</span>
+<span class="n">local_bh_disable</span><span class="p">();</span>  <span class="cm">/* 软中断仍处于禁用状态 */</span>
 
-<span class="n">local_bh_enable</span><span class="p">();</span>  <span class="cm">/* Softirqs remain disabled */</span>
-<span class="n">local_bh_enable</span><span class="p">();</span>  <span class="cm">/* Softirqs are now enabled */</span>
+<span class="n">local_bh_enable</span><span class="p">();</span>  <span class="cm">/* 软中断仍处于禁用状态 */</span>
+<span class="n">local_bh_enable</span><span class="p">();</span>  <span class="cm">/* 现在启用了软中断 */</span>
 </pre></div>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">These above calls will disable the softirqs only on the
-local processor and they are usually not safe to use, they must be
-complemented with spinlocks.</p>
+<p class="last">上述调用只会在本地处理器上禁用软中断，通常不安全，必须与自旋锁配合使用。</p>
 </div>
-<p>Most of the time device drivers will use special versions of spinlocks
-calls for synchronization like <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh()</span></code>:</p>
+<p>大多数情况下，设备驱动程序将使用用于同步的特殊版本的自旋锁调用，如 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">spin_lock_bh</span><span class="p">(</span><span class="n">spinlock_t</span> <span class="o">*</span><span class="n">lock</span><span class="p">);</span>
 <span class="kt">void</span> <span class="nf">spin_unlock_bh</span><span class="p">(</span><span class="n">spinlock_t</span> <span class="o">*</span><span class="n">lock</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="workqueues">
-<h2>Workqueues<a class="headerlink" href="#workqueues" title="Permalink to this headline">¶</a></h2>
-<p>Workqueues are used to schedule actions to run in process context. The
-base unit with which they work is called work. There are two types of
-work:</p>
+<div class="section" id="section-3">
+<h2>工作队列<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>工作队列（workqueue）用于在进程上下文中调度要执行的操作。它们所处理的基本单元称为工作项（work）。有两种类型的工作项：</p>
 <ul class="simple">
-<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code> - it schedules a task to run at
-a later time</li>
-<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">delayed_work</span></code> - it schedules a task to run after at
-least a given time interval</li>
+<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code> ——它安排一个任务在稍后的时间运行</li>
+<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">delayed_work</span></code> ——它安排一个任务在至少给定的时间间隔之后运行</li>
 </ul>
-<p>A delayed work uses a timer to run after the specified time
-interval. The calls with this type of work are similar to those for
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code>, but has <strong>_delayed</strong> in the functions
-names.</p>
-<p>Before using them a work item must be initialized. There are two types
-of macros that can be used, one that declares and initializes the work
-item at the same time and one that only initializes the work item (and
-the declaration must be done separately):</p>
+<p>延迟工作项使用定时器在指定的时间间隔后运行。这种类型的工作项的调用方式与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code> 类似，但在函数名称中有 <strong>_delayed</strong>。</p>
+<p>在使用工作项之前，必须对其进行初始化。有两种可以使用的宏类型，一种在同时声明和初始化工作项，另一种仅初始化工作项（声明必须单独进行）：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/workqueue.h&gt;</span><span class="cp"></span>
 
 <span class="n">DECLARE_WORK</span><span class="p">(</span><span class="n">name</span> <span class="p">,</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">function</span><span class="p">)(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="p">));</span>
@@ -497,10 +387,8 @@ the declaration must be done separately):</p>
 <span class="n">INIT_DELAYED_WORK</span><span class="p">(</span><span class="k">struct</span> <span class="n">delayed_work</span> <span class="o">*</span><span class="n">work</span><span class="p">,</span> <span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">function</span><span class="p">)(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="p">));</span>
 </pre></div>
 </div>
-<p><code class="xref c c-func docutils literal"><span class="pre">DECLARE_WORK()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">DECLARE_DELAYED_WORK()</span></code> declare and
-initialize a work item, and <code class="xref c c-func docutils literal"><span class="pre">INIT_WORK()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">INIT_DELAYED_WORK()</span></code> initialize an already declared work item.</p>
-<p>The following sequence declares and initiates a work item:</p>
+<p><code class="xref c c-func docutils literal"><span class="pre">DECLARE_WORK()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">DECLARE_DELAYED_WORK()</span></code> 声明并初始化工作项，而 <code class="xref c c-func docutils literal"><span class="pre">INIT_WORK()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">INIT_DELAYED_WORK()</span></code> 则初始化已经声明的工作项。</p>
+<p>以下代码声明并初始化工作项：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/workqueue.h&gt;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">my_work_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
@@ -508,7 +396,7 @@ initialize a work item, and <code class="xref c c-func docutils literal"><span c
 <span class="n">DECLARE_WORK</span><span class="p">(</span><span class="n">my_work</span><span class="p">,</span> <span class="n">my_work_handler</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Or, if we want to initialize the work item separately:</p>
+<p>或者，如果我们想要单独初始化工作项：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">my_work_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span> <span class="n">work</span><span class="p">);</span>
 
 <span class="k">struct</span> <span class="n">work_struct</span> <span class="n">my_work</span><span class="p">;</span>
@@ -516,48 +404,34 @@ initialize a work item, and <code class="xref c c-func docutils literal"><span c
 <span class="n">INIT_WORK</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_work</span><span class="p">,</span> <span class="n">my_work_handler</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Once declared and initialized, we can schedule the task using
-<code class="xref c c-func docutils literal"><span class="pre">schedule_work()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">schedule_delayed_work()</span></code>:</p>
+<p>一旦声明并初始化完成，我们就可以使用 <code class="xref c c-func docutils literal"><span class="pre">schedule_work()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">schedule_delayed_work()</span></code> 来安排任务：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">schedule_work</span><span class="p">(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
 
 <span class="n">schedule_delayed_work</span><span class="p">(</span><span class="k">struct</span> <span class="n">delayed_work</span> <span class="o">*</span><span class="n">work</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">delay</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><code class="xref c c-func docutils literal"><span class="pre">schedule_delayed_work()</span></code> can be used to plan a work item for
-execution with a given delay. The delay time unit is jiffies.</p>
-<p>Work items can not be masked but they can be canceled by calling
-<code class="xref c c-func docutils literal"><span class="pre">cancel_delayed_work_sync()</span></code> or <code class="xref c c-func docutils literal"><span class="pre">cancel_work_sync()</span></code>:</p>
+<p><code class="xref c c-func docutils literal"><span class="pre">schedule_delayed_work()</span></code> 可以用于计划在给定延迟后执行工作项。延迟时间的单位是 jiffies。</p>
+<p>工作项无法被屏蔽，但可以通过调用 <code class="xref c c-func docutils literal"><span class="pre">cancel_delayed_work_sync()</span></code> 或 <code class="xref c c-func docutils literal"><span class="pre">cancel_work_sync()</span></code> 来取消它们：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">cancel_work_sync</span><span class="p">(</span><span class="k">struct</span> <span class="n">delayed_work</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">cancel_delayed_work_sync</span><span class="p">(</span><span class="k">struct</span> <span class="n">delayed_work</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The call only stops the subsequent execution of the work item. If the
-work item is already running at the time of the call, it will continue
-to run. In any case, when these calls return, it is guaranteed that
-the task will no longer run.</p>
+<p>这些调用只会停止工作项的后续执行。如果在调用时工作项已经在运行，它将继续运行。无论如何，当这些调用返回时，可以确保该任务不再运行。</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">While there are versions of these functions that are
-not synchronous (.e.g. <code class="xref c c-func docutils literal"><span class="pre">cancel_work()</span></code>) do not
-use them when you are performing cleanup work otherwise
-race condition could occur.</p>
+<p class="last">尽管这些函数也有非同步版本（例如 <code class="xref c c-func docutils literal"><span class="pre">cancel_work()</span></code>），但在执行清理工作时不要使用它们，否则可能会出现竞态条件。</p>
 </div>
-<p>We can wait for a workqueue to complete running all of its work items by calling <code class="xref c c-func docutils literal"><span class="pre">flush_scheduled_work()</span></code>:</p>
+<p>我们可以通过调用 <code class="xref c c-func docutils literal"><span class="pre">flush_scheduled_work()</span></code> 来等待工作队列完成所有工作项的运行：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">flush_scheduled_work</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>This function is blocking and, therefore, can not be used in interrupt
-context. The function will wait for all work items to be completed.
-For delayed work items, <code class="xref c c-type docutils literal"><span class="pre">cancel_delayed_work</span></code> must be called
-before <code class="xref c c-func docutils literal"><span class="pre">flush_scheduled_work()</span></code>.</p>
-<p>Finally, the following functions can be used to schedule work items on
-a particular processor (<code class="xref c c-func docutils literal"><span class="pre">schedule_delayed_work_on()</span></code>), or on all
-processors (<code class="xref c c-func docutils literal"><span class="pre">schedule_on_each_cpu()</span></code>):</p>
+<p>此函数是阻塞的，因此不能在中断上下文中使用。该函数将等待所有工作项完成。对于延迟工作项，在调用 <code class="xref c c-func docutils literal"><span class="pre">flush_scheduled_work()</span></code> 之前必须调用 <code class="xref c c-type docutils literal"><span class="pre">cancel_delayed_work</span></code>。</p>
+<p>最后，以下函数可用于在特定处理器上调度工作项 (<code class="xref c c-func docutils literal"><span class="pre">schedule_delayed_work_on()</span></code>)，或在所有处理器上调度工作项 (<code class="xref c c-func docutils literal"><span class="pre">schedule_on_each_cpu()</span></code>)：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">schedule_delayed_work_on</span><span class="p">(</span><span class="kt">int</span> <span class="n">cpu</span><span class="p">,</span> <span class="k">struct</span> <span class="n">delayed_work</span> <span class="o">*</span><span class="n">work</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">delay</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">schedule_on_each_cpu</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="n">function</span><span class="p">)(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="p">));</span>
 </pre></div>
 </div>
-<p>A usual sequence to initialize and schedule a work item is the following:</p>
+<p>初始化和调度工作项的常用代码如下：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">my_work_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
 
 <span class="k">struct</span> <span class="n">work_struct</span> <span class="n">my_work</span><span class="p">;</span>
@@ -567,13 +441,11 @@ processors (<code class="xref c c-func docutils literal"><span class="pre">sched
 <span class="n">schedule_work</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_work</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>And for waiting for termination of a work item:</p>
+<p>等待工作项终止的方法如下：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">flush_scheduled_work</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>As you can see, the <em>my_work_handler</em> function receives the task as
-the parameter. To be able to access the module's private data, you can
-use <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>:</p>
+<p>正如你所见，<em>my_work_handler</em> 函数接收任务项作为参数。为了能够访问模块的私有数据，可以使用 <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">my_device_data</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">work_struct</span> <span class="n">my_work</span><span class="p">;</span>
     <span class="c1">// ...</span>
@@ -588,60 +460,46 @@ use <code class="xref c c-func docutils literal"><span class="pre">container_of(
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Scheduling work items with the functions above will run the handler in
-the context of a kernel thread called <em>events/x</em>, where x is the
-processor number. The kernel will initialize a kernel thread (or a
-pool of workers) for each processor present in the system:</p>
+<p>使用上述函数调度工作项将在内核线程的上下文中运行处理程序，该线程称为 <em>events/x</em>，其中 x 是处理器编号。内核将为系统中每个处理器初始化一个内核线程（或工作池）：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>$ ps -e
 PID TTY TIME CMD
 <span class="m">1</span>?  <span class="m">00</span>:00:00 init
 <span class="m">2</span> ?  <span class="m">00</span>:00:00 ksoftirqd / <span class="m">0</span>
-<span class="m">3</span> ?  <span class="m">00</span>:00:00 events / <span class="m">0</span> &lt;--- kernel thread that runs work items
+<span class="m">3</span> ?  <span class="m">00</span>:00:00 events / <span class="m">0</span> &lt;--- 运行工作项的内核线程
 <span class="m">4</span> ?  <span class="m">00</span>:00:00 khelper
 <span class="m">5</span> ?  <span class="m">00</span>:00:00 kthread
 <span class="m">7</span>?  <span class="m">00</span>:00:00 kblockd / <span class="m">0</span>
 <span class="m">8</span>?  <span class="m">00</span>:00:00 kacpid
 </pre></div>
 </div>
-<p>The above functions use a predefined workqueue (called events), and
-they run in the context of the <em>events/x</em> thread, as noted
-above. Although this is sufficient in most cases, it is a shared
-resource and large delays in work items handlers can cause delays for
-other queue users. For this reason there are functions for creating
-additional queues.</p>
-<p>A workqueue is represented by <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">workqueue_struct</span></code>. A new
-workqueue can be created with these functions:</p>
+<p>上述函数使用预定义的工作队列（称为 events），它们在 <em>events/x</em> 线程的上下文中运行，如上所述。尽管在大多数情况下这已经足够，但它是一个共享资源，在工作项处理程序中出现较长的延迟可能会导致其他队列使用者的延迟。因此，有一些函数用于创建额外的队列。</p>
+<p>工作队列由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">workqueue_struct</span></code> 表示。可以使用以下函数创建一个新的工作队列：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span><span class="nf">create_workqueue</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
 <span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span><span class="nf">create_singlethread_workqueue</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><code class="xref c c-func docutils literal"><span class="pre">create_workqueue()</span></code> uses one thread for each processor in the
-system, and <code class="xref c c-func docutils literal"><span class="pre">create_singlethread_workqueue()</span></code> uses a single
-thread.</p>
-<p>To add a task in the new queue, use <code class="xref c c-func docutils literal"><span class="pre">queue_work()</span></code> or
-<code class="xref c c-func docutils literal"><span class="pre">queue_delayed_work()</span></code>:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">queue_work</span><span class="p">(</span><span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span> <span class="n">queue</span><span class="p">,</span> <span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
+<p><code class="xref c c-func docutils literal"><span class="pre">create_workqueue()</span></code> 为系统中的每个处理器使用一个线程，而 <code class="xref c c-func docutils literal"><span class="pre">create_singlethread_workqueue()</span></code> 则使用单个线程。</p>
+<p>要将任务添加到新队列中，请使用 <code class="xref c c-func docutils literal"><span class="pre">queue_work()</span></code> 或 <code class="xref c c-func docutils literal"><span class="pre">queue_delayed_work()</span></code>：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">queue_work</span><span class="p">(</span><span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span><span class="n">queue</span><span class="p">,</span> <span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
 
 <span class="kt">int</span> <span class="nf">queue_delayed_work</span><span class="p">(</span><span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span><span class="n">queue</span><span class="p">,</span>
-                       <span class="k">struct</span> <span class="n">delayed_work</span> <span class="o">*</span> <span class="n">work</span> <span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">delay</span><span class="p">);</span>
+                       <span class="k">struct</span> <span class="n">delayed_work</span> <span class="o">*</span><span class="n">work</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">delay</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><code class="xref c c-func docutils literal"><span class="pre">queue_delayed_work()</span></code> can be used to plan a work for execution
-with a given delay. The time unit for the delay is jiffies.</p>
-<p>To wait for all work items to finish call <code class="xref c c-func docutils literal"><span class="pre">flush_workqueue()</span></code>:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">flush_workqueue</span><span class="p">(</span><span class="k">struct</span> <span class="n">worksqueue_struct</span> <span class="o">*</span> <span class="n">queue</span><span class="p">);</span>
+<p><code class="xref c c-func docutils literal"><span class="pre">queue_delayed_work()</span></code> 可以用于计划延迟执行的工作项。延迟的时间单位是 jiffies。</p>
+<p>要等待所有工作项完成，请调用 <code class="xref c c-func docutils literal"><span class="pre">flush_workqueue()</span></code>：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">flush_workqueue</span><span class="p">(</span><span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span><span class="n">queue</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>And to destroy the workqueue call <code class="xref c c-func docutils literal"><span class="pre">destroy_workqueue()</span></code></p>
+<p>要销毁工作队列，请调用 <code class="xref c c-func docutils literal"><span class="pre">destroy_workqueue()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">destroy_workqueue</span><span class="p">(</span><span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span><span class="n">queue</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The next sequence declares and initializes an additional workqueue,
-declares and initializes a work item and adds it to the queue:</p>
+<p>下面的示例代码声明并初始化一个额外的工作队列，声明并初始化一个工作项，并将其添加到队列中：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">my_work_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">work_struct</span> <span class="o">*</span><span class="n">work</span><span class="p">);</span>
 
 <span class="k">struct</span> <span class="n">work_struct</span> <span class="n">my_work</span><span class="p">;</span>
-<span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span> <span class="n">my_workqueue</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">workqueue_struct</span> <span class="o">*</span><span class="n">my_workqueue</span><span class="p">;</span>
 
 <span class="n">my_workqueue</span> <span class="o">=</span> <span class="n">create_singlethread_workqueue</span><span class="p">(</span><span class="s">&quot;my_workqueue&quot;</span><span class="p">);</span>
 <span class="n">INIT_WORK</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_work</span><span class="p">,</span> <span class="n">my_work_handler</span><span class="p">);</span>
@@ -649,93 +507,70 @@ declares and initializes a work item and adds it to the queue:</p>
 <span class="n">queue_work</span><span class="p">(</span><span class="n">my_workqueue</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_work</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>And the next code sample shows how to remove the workqueue:</p>
+<p>下面的代码示例显示了如何移除工作队列：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">flush_workqueue</span><span class="p">(</span><span class="n">my_workqueue</span><span class="p">);</span>
 <span class="n">destroy_workqueue</span><span class="p">(</span><span class="n">my_workqueue</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The work items planned with these functions will run in the context of
-a new kernel thread called <em>my_workqueue</em>, the name passed to
-<code class="xref c c-func docutils literal"><span class="pre">create_singlethread_workqueue()</span></code>.</p>
+<p>使用这些函数计划的工作项将在一个名为 <em>my_workqueue</em> 的新内核线程的上下文中运行，该名称是传递给 <code class="xref c c-func docutils literal"><span class="pre">create_singlethread_workqueue()</span></code> 函数的参数。</p>
 </div>
-<div class="section" id="kernel-threads">
-<h2>Kernel threads<a class="headerlink" href="#kernel-threads" title="Permalink to this headline">¶</a></h2>
-<p>Kernel threads have emerged from the need to run kernel code in
-process context. Kernel threads are the basis of the workqueue
-mechanism. Essentially, a kernel thread is a thread that only runs in
-kernel mode and has no user address space or other user attributes.</p>
-<p>To create a kernel thread, use <code class="xref c c-func docutils literal"><span class="pre">kthread_create()</span></code>:</p>
+<div class="section" id="section-4">
+<h2>内核线程<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<p>内核线程之所以出现，是为了在进程上下文中运行内核代码。内核线程是工作队列机制的基础。实质上，内核线程是一种只在内核态下运行，并且没有用户地址空间或其他用户属性的线程。</p>
+<p>要创建内核线程，请使用函数 <code class="xref c c-func docutils literal"><span class="pre">kthread_create()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/kthread.h&gt;</span><span class="cp"></span>
 
 <span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="nf">kthread_create</span><span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">threadfn</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">),</span>
-                                      <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">namefmt</span><span class="p">[],</span> <span class="p">...);</span>
+             <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">namefmt</span><span class="p">[],</span> <span class="p">...);</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><em>threadfn</em> is a function that will be run by the kernel thread</li>
-<li><em>data</em> is a parameter to be sent to the function</li>
-<li><em>namefmt</em> represents the kernel thread name, as it is displayed in
-ps/top ; Can contain sequences %d , %s etc. Which will be replaced
-according to the standard printf syntax.</li>
+<li><em>threadfn</em> 是将由内核线程运行的函数</li>
+<li><em>data</em> 是要传递给函数的参数</li>
+<li><em>namefmt</em> 表示内核线程的名称，如在 ps/top 中显示的那样；可以包含 %d、%s 等序列，它们将根据标准 printf 语法进行替换。</li>
 </ul>
-<p>For example, the following call:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">kthread_create</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="s">&quot;%skthread%d&quot;</span><span class="p">,</span> <span class="s">&quot;my&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<p>例如，以下调用：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">kthread_create</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="s">&quot;%skthread%d&quot;</span><span class="p">,</span> <span class="s">&quot;my&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Will create a kernel thread with the name mykthread0.</p>
-<p>The kernel thread created with this function will be stopped (in the
-<em>TASK_INTERRUPTIBLE</em> state). To start the kernel thread, call the
-<code class="xref c c-func docutils literal"><span class="pre">wake_up_process()</span></code>:</p>
+<p>将创建一个名为 mykthread0 的内核线程。</p>
+<p>使用此函数创建的内核线程将被停止（处于 <em>TASK_INTERRUPTIBLE</em> 状态）。要启动内核线程，请调用 <code class="xref c c-func docutils literal"><span class="pre">wake_up_process()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/sched.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">wake_up_process</span><span class="p">(</span><span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">p</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Alternatively, you can use <code class="xref c c-func docutils literal"><span class="pre">kthread_run()</span></code> to create and run a
-kernel thread:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span> <span class="nf">kthread_run</span><span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">threadfn</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-                                 <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">namefmt</span><span class="p">[],</span> <span class="p">...);</span>
+<p>或者，你可以使用 <code class="xref c c-func docutils literal"><span class="pre">kthread_run()</span></code> 来创建并运行内核线程：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="nf">kthread_run</span><span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">threadfn</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">),</span>
+             <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">namefmt</span><span class="p">[],</span> <span class="p">...);</span>
 </pre></div>
 </div>
-<p>Even if the programming restrictions for the function running within
-the kernel thread are more relaxed and scheduling is closer to
-scheduling in userspace, there are, however, some limitations to be
-taken into account. We will list below the actions that can or can not
-be made from a kernel thread:</p>
+<p>尽管在内核线程中运行的函数的编程限制更宽松，并且调度更接近用户空间的调度，但仍然有一些限制需要考虑。下面列出可以或不能从内核线程中执行的操作：</p>
 <ul class="simple">
-<li>can't access the user address space (even with copy_from_user,
-copy_to_user) because a kernel thread does not have a user address
-space</li>
-<li>can't implement busy wait code that runs for a long time; if the
-kernel is compiled without the preemptive option, that code will run
-without being preempted by other kernel threads or user processes
-thus hogging the system</li>
-<li>can call blocking operations</li>
-<li>can use spinlocks, but if the hold time of the lock is significant,
-it is recommended to use mutexes</li>
+<li>不能访问用户地址空间（即使使用 copy_from_user、copy_to_user），因为内核线程没有用户地址空间</li>
+<li>不能实现长时间运行的忙等待代码；如果内核没有启用抢占选项，那么该代码将在不会被其他内核线程或用户进程抢占的情况下运行，从而占用系统资源</li>
+<li>可以调用阻塞操作</li>
+<li>可以使用自旋锁，但如果锁的保持时间很长，建议使用互斥锁（mutex）</li>
 </ul>
-<p>The termination of a kernel thread is done voluntarily, within the
-function running in the kernel thread, by calling <code class="xref c c-func docutils literal"><span class="pre">do_exit()</span></code>:</p>
+<p>内核线程的终止是在内核线程中运行的函数自愿进行的，通过调用 <code class="xref c c-func docutils literal"><span class="pre">do_exit()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">fastcall</span> <span class="n">NORET_TYPE</span> <span class="kt">void</span> <span class="nf">do_exit</span><span class="p">(</span><span class="kt">long</span> <span class="n">code</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Most of the implementations of kernel threads handlers use the same
-model and it is recommended to start using the same model to avoid
-common mistakes:</p>
+<p>大多数内核线程处理程序的实现都使用相同的模型，建议开始使用相同的模型以避免常见错误：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/kthread.h&gt;</span><span class="cp"></span>
 
 <span class="n">DECLARE_WAIT_QUEUE_HEAD</span><span class="p">(</span><span class="n">wq</span><span class="p">);</span>
 
-<span class="c1">// list events to be processed by kernel thread</span>
+<span class="c1">// 列出内核线程要处理的事件</span>
 <span class="k">struct</span> <span class="n">list_head</span> <span class="n">events_list</span><span class="p">;</span>
 <span class="k">struct</span> <span class="n">spin_lock</span> <span class="n">events_lock</span><span class="p">;</span>
 
 
-<span class="c1">// structure describing the event to be processed</span>
+<span class="c1">// 描述要处理的事件的结构体</span>
 <span class="k">struct</span> <span class="n">event</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">list_head</span> <span class="n">lh</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">stop</span><span class="p">;</span>
-    <span class="c1">//...</span>
+    <span class="c1">// ...</span>
 <span class="p">};</span>
 
 <span class="k">struct</span> <span class="n">event</span><span class="o">*</span> <span class="nf">get_next_event</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
@@ -748,7 +583,7 @@ common mistakes:</p>
         <span class="n">list_del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">e</span><span class="o">-&gt;</span><span class="n">lh</span><span class="p">);</span>
     <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">events_lock</span><span class="p">);</span>
 
-    <span class="k">return</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">e</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">my_thread_f</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
@@ -756,9 +591,9 @@ common mistakes:</p>
     <span class="k">struct</span> <span class="n">event</span> <span class="o">*</span><span class="n">e</span><span class="p">;</span>
 
     <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">wait_event</span><span class="p">(</span><span class="n">wq</span><span class="p">,</span> <span class="p">(</span><span class="n">e</span> <span class="o">=</span> <span class="n">get_next_event</span><span class="p">));</span>
+        <span class="n">wait_event</span><span class="p">(</span><span class="n">wq</span><span class="p">,</span> <span class="p">(</span><span class="n">e</span> <span class="o">=</span> <span class="n">get_next_event</span><span class="p">()));</span>
 
-        <span class="cm">/* Event processing */</span>
+        <span class="cm">/* 处理事件 */</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="o">-&gt;</span><span class="n">stop</span><span class="p">)</span>
             <span class="k">break</span><span class="p">;</span>
@@ -767,12 +602,11 @@ common mistakes:</p>
     <span class="n">do_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="cm">/* start and start kthread */</span>
+<span class="cm">/* 启动并运行内核线程 */</span>
 <span class="n">kthread_run</span><span class="p">(</span><span class="n">my_thread_f</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="s">&quot;%skthread%d&quot;</span><span class="p">,</span> <span class="s">&quot;my&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>With the template above, the kernel thread requests can be issued
-with:</p>
+<p>使用上述模板，可以使用以下代码触发内核线程请求：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">send_event</span><span class="p">(</span><span class="k">struct</span> <span class="n">event</span> <span class="o">*</span><span class="n">ev</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">events_lock</span><span class="p">);</span>
@@ -783,19 +617,19 @@ with:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="further-reading">
-<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-5">
+<h2>进一步阅读<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch07.pdf">Linux Device Drivers, 3rd ed., Ch. 7: Time, Delays, and Deferred Work</a></li>
-<li><a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x1211.html">Scheduling Tasks</a></li>
-<li><a class="reference external" href="http://lwn.net/Articles/23634/">Driver porting: the workqueue interface</a></li>
-<li><a class="reference external" href="http://lwn.net/Articles/211279/">Workqueues get a rework</a></li>
-<li><a class="reference external" href="http://lwn.net/Articles/65178/">Kernel threads made easy</a></li>
-<li><a class="reference external" href="http://www.kernel.org/pub/linux/kernel/people/rusty/kernel-locking/index.html">Unreliable Guide to Locking</a></li>
+<li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch07.pdf">Linux 设备驱动程序（第 3 版），第 7 章：时间、延迟和延迟工作</a></li>
+<li><a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x1211.html">调度任务</a></li>
+<li><a class="reference external" href="http://lwn.net/Articles/23634/">驱动程序移植：工作队列接口</a></li>
+<li><a class="reference external" href="http://lwn.net/Articles/211279/">工作队列重新工作</a></li>
+<li><a class="reference external" href="http://lwn.net/Articles/65178/">简化内核线程</a></li>
+<li><a class="reference external" href="http://www.kernel.org/pub/linux/kernel/people/rusty/kernel-locking/index.html">不可靠的锁指南</a></li>
 </ul>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-6">
+<h2>练习<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -807,7 +641,7 @@ with:</p>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 deferred_work。请参阅任务名称的练习。</p>
+<p>当前实验名称为 延迟工作。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -826,9 +660,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/deferred_work/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/延迟工作/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-6">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -836,232 +670,152 @@ tools/labs $ make boot
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
-<div class="section" id="intro">
-<h3>0. Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h3>
-<p>Using <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a>, find the definitions of the following symbols:</p>
+<div class="section" id="section-7">
+<h3>0. 简介<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a>，找到以下符号的定义：</p>
 <ul class="simple">
 <li><code class="xref c c-macro docutils literal"><span class="pre">jiffies</span></code></li>
 <li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">timer_list</span></code></li>
 <li><code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh</span> <span class="pre">function()</span></code></li>
 </ul>
 </div>
-<div class="section" id="timer">
-<h3>1.Timer<a class="headerlink" href="#timer" title="Permalink to this headline">¶</a></h3>
-<p>We're looking at creating a simple kernel module that displays a
-message at <em>TIMER_TIMEOUT</em> seconds after the module's kernel load.</p>
-<p>Generate the skeleton for the task named <strong>1-2-timer</strong> and follow the
-sections marked with <strong>TODO 1</strong> to complete the task.</p>
+<div class="section" id="section-8">
+<h3>1. 定时器<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<p>我们将创建一个简单的内核模块，在模块的内核加载后的第 <em>TIMER_TIMEOUT</em> 秒显示一条消息。</p>
+<p>生成名为 <strong>1-2-timer</strong> 的任务骨架，并按照标有 <strong>TODO 1</strong> 的部分来完成任务。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>Use <cite>pr_info(...)</cite>. Messages will be displayed on the
-console and can also be viewed using dmesg. When scheduling
-the timer we need to use the absolute time of the system (in
-the future) in number of ticks. The current time of the
-system in the number of ticks is given by <code class="xref c c-type docutils literal"><span class="pre">jiffies</span></code>.
-Thus, the absolute time we need to pass to the timer is
-<code class="docutils literal"><span class="pre">jiffies</span> <span class="pre">+</span> <span class="pre">TIMER_TIMEOUT</span> <span class="pre">*</span> <span class="pre">HZ</span></code>.</p>
-<p class="last">For more information review the <a class="reference internal" href="#timers">Timers</a> section.</p>
+<p class="last">使用 <cite>pr_info(...)</cite>。消息将显示在控制台上，并且还可以使用 dmesg 查看。在调度定时器时，我们需要使用系统的（未来）绝对时间并且以滴答数表示。系统的当前时间（以滴答数表示）由 <code class="xref c c-type docutils literal"><span class="pre">jiffies</span></code> 给出。因此，我们需要将 <code class="docutils literal"><span class="pre">jiffies</span> <span class="pre">+</span> <span class="pre">TIMER_TIMEOUT</span> <span class="pre">*</span> <span class="pre">HZ</span></code> 作为绝对时间传递给定时器。</p>
 </div>
+<p>有关更多信息，请查阅 <a class="reference internal" href="#timer">定时器（Timer）</a> 部分。</p>
 </div>
-<div class="section" id="periodic-timer">
-<h3>2. Periodic timer<a class="headerlink" href="#periodic-timer" title="Permalink to this headline">¶</a></h3>
-<p>Modify the previous module to display the message in once every
-TIMER_TIMEOUT seconds. Follow the section marked with <strong>TODO 2</strong> in the
-skeleton.</p>
+<div class="section" id="section-9">
+<h3>2. 周期性定时器<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<p>修改前面的模块，使消息每隔 TIMER_TIMEOUT 秒显示一次。按照骨架中标有 <strong>TODO 2</strong> 的部分进行修改。</p>
 </div>
-<div class="section" id="timer-control-using-ioctl">
-<h3>3. Timer control using ioctl<a class="headerlink" href="#timer-control-using-ioctl" title="Permalink to this headline">¶</a></h3>
-<p>We plan to display information about the current process after N
-seconds of receiving a ioctl call from user space. N is transmitted as
-ioctl parameter.</p>
-<p>Generate the skeleton for the task named <strong>3-4-5-deferred</strong> and
-follow the sections marked with <strong>TODO 1</strong> in the skeleton driver.</p>
-<p>You will need to implement the following ioctl operations.</p>
+<div class="section" id="ioctl">
+<h3>3. 使用 ioctl 控制定时器<a class="headerlink" href="#ioctl" title="Permalink to this headline">¶</a></h3>
+<p>我们计划在从用户空间接收到 ioctl 调用后的第 N 秒显示有关当前进程的信息。N 作为 ioctl 参数传递。</p>
+<p>生成名为 <strong>3-4-5-deferred</strong> 的任务骨架，并按照骨架中标有 <strong>TODO 1</strong> 的部分进行修改。</p>
+<p>你需要实现以下 ioctl 操作。</p>
 <ul class="simple">
-<li>MY_IOCTL_TIMER_SET to schedule a timer to run after a number of
-seconds which is received as an argument to ioctl. The timer does
-not run periodically.
-* This command receives directly a value, not a pointer.</li>
-<li>MY_IOCTL_TIMER_CANCEL to deactivate the timer.</li>
+<li>MY_IOCTL_TIMER_SET：安排定时器在接收到的秒数之后运行，该秒数作为 ioctl 的参数。该定时器并不周期运行。
+* 此命令直接接收一个值，而不是指针。</li>
+<li>MY_IOCTL_TIMER_CANCEL：停用定时器。</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Review <a class="reference internal" href="lab3-device-drivers.html#ioctl"><span class="std std-ref">ioctl</span></a> for a way to access the ioctl argument.</p>
+<p class="last">请查阅 <a class="reference internal" href="lab3-device-drivers.html#ioctl"><span class="std std-ref">ioctl</span></a> 了解如何访问 ioctl 参数。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Review the <a class="reference internal" href="#timers">Timers</a> section for information on enabling /
-disabling a timer.  In the timer handler, display the current
-process identifier (PID) and the process executable image name.</p>
+<p class="last">请查阅 <a class="reference internal" href="#timer">定时器（Timer）</a> 部分，了解如何启用/禁用定时器。在定时器处理程序中，显示当前进程标识符（PID）和进程执行镜像名称。</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">You can find the current process identifier using the <em>pid</em>
-and <em>comm</em> fields of the current process. For details,
-review <span class="xref std std-ref">proc-info</span>.</p>
+<p class="last">你可以使用当前进程的 <em>pid</em> 和 <em>comm</em> 字段来查找当前进程标识符。有关详细信息，请查阅 <span class="xref std std-ref">proc-info</span>。</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">To use the device driver from userspace you must create the
-device character file <em>/dev/deferred</em> using the mknod
-utility. Alternatively, you can run the
-<em>3-4-5-deferred/kernel/makenode</em> script that performs this
-operation.</p>
+<p class="last">要从用户空间使用设备驱动程序，你必须使用 mknod 程序创建设备字符文件 <em>/dev/deferred</em>。或者，你可以运行 <em>3-4-5-deferred/kernel/makenode</em> 脚本来执行此操作。</p>
 </div>
-<p>Enable and disable the timer by calling user-space ioctl
-operations. Use the <em>3-4-5-deferred/user/test</em> program to test
-planning and canceling of the timer. The program receives the ioctl
-type operation and its parameters (if any) on the command line.</p>
+<p>通过调用用户空间的 ioctl 操作来启用和禁用定时器。使用 <em>3-4-5-deferred/user/test</em> 程序来测试定时器的计划和取消。该程序在命令行上接收 ioctl 类型操作及其参数（如果有）。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>Run the test executable without arguments to observe the
-command line options it accepts.</p>
-<p>To enable the timer after 3 seconds use:</p>
+<p>运行测试可执行文件时不带参数，以观察它接受的命令行选项。</p>
+<p>要在 3 秒后启用定时器，请使用：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="p">.</span><span class="o">/</span><span class="n">test</span> <span class="n">s</span> <span class="mi">3</span>
 </pre></div>
 </div>
-<p>To disable the timer use:</p>
+<p>要停用定时器，请使用：</p>
 <div class="last highlight-c"><div class="highlight"><pre><span></span><span class="p">.</span><span class="o">/</span><span class="n">test</span> <span class="n">c</span>
 </pre></div>
 </div>
 </div>
-<p>Note that every time the current process the timer runs from is
-<em>swapper/0</em> with PID 0. This process is the idle process. It is
-running when there is nothing else to run on. Because the virtual
-machine is very light and does not do much it is natural to see this
-process most of the time.</p>
+<p>注意，定时器运行所基于的当前进程每次都是 PID 为 0 的 <em>swapper/0</em>。这个进程是空闲进程，当没有其他任务可运行时，它会一直运行。由于虚拟机非常轻量级且没有太多操作，大部分时间都会看到这个进程。</p>
 </div>
-<div class="section" id="blocking-operations">
-<h3>4. Blocking operations<a class="headerlink" href="#blocking-operations" title="Permalink to this headline">¶</a></h3>
-<p>Next we want to see what happens when we perform blocking operations
-in a timer routine. For this we try to call in the timer-handling
-routines a function called alloc_io() that simulates a blocking
-operation.</p>
-<p>Modify the module so that when you receive <em>MY_IOCTL_TIMER_ALLOC</em>
-command the timer handler will call <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>. Follow the
-sections marked with <strong>TODO 2</strong> in the skeleton.</p>
-<p>Use the same timer. To differentiate functionality in the timer
-handler, use a flag in the device structure. Use the
-<em>TIMER_TYPE_ALLOC</em> and <em>TIMER_TYPE_SET</em> macros defined in the code
-skeleton. For initialization, use TIMER_TYPE_NONE.</p>
-<p>Run the test program to verify the functionality of task 3. Run the
-test program again to call <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>.</p>
+<div class="section" id="section-10">
+<h3>4. 阻塞操作<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<p>接下来，我们将尝试在定时器例程中执行阻塞操作，以查看会发生什么情况。为此，我们尝试在定时器处理例程中调用一个名为 alloc_io() 的模拟阻塞操作的函数。</p>
+<p>修改模块，使得当接收到 <em>MY_IOCTL_TIMER_ALLOC</em> 命令时，定时器处理程序将调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。按照骨架中标有 <strong>TODO 2</strong> 的部分进行修改。</p>
+<p>使用相同的定时器。为了区分定时器处理程序中的功能，可以在设备结构中使用一个标志。使用代码骨架中定义的 <em>TIMER_TYPE_ALLOC</em> 和 <em>TIMER_TYPE_SET</em> 宏。对于初始化，请使用 TIMER_TYPE_NONE。</p>
+<p>运行测试程序以验证任务 3 的功能。再次运行测试程序以调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The driver causes an error because a blocking function is
-called in the atomic context (the timer handler runs
-interrupt context).</p>
+<p class="last">该驱动程序会导致错误，因为在原子上下文（定时器处理程序运行在中断上下文中）中调用了阻塞函数。</p>
 </div>
 </div>
-<div class="section" id="workqueues-1">
-<h3>5. Workqueues<a class="headerlink" href="#workqueues-1" title="Permalink to this headline">¶</a></h3>
-<p>We will modify the module to prevent the error observed in the
-previous task.</p>
-<p>To do so, lets call <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code> using workqueues. Schedule a
-work item from the timer handler In the work handler (running in
-process context) call the <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>. Follow the sections
-marked with <strong>TODO 3</strong> in the skeleton and review the <a class="reference internal" href="#workqueues">Workqueues</a>
-section if needed.</p>
+<div class="section" id="section-11">
+<h3>5. 工作队列<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<p>我们将修改模块，以解决上一个任务中观察到的错误。</p>
+<p>为此，让我们使用工作队列调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。从定时器处理程序中安排一个工作项。在工作项处理程序中（在进程上下文中运行），调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。按照骨架中标有 <strong>TODO 3</strong> 的部分进行修改，并在需要时查阅 <a class="reference internal" href="#section-3">工作队列</a> 部分。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Add a new field with the type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code>
-in your device structure. Initialize this field. Schedule
-the work from the timer handler using <code class="xref c c-func docutils literal"><span class="pre">schedule_work()</span></code>.
-Schedule the timer handler aften N seconds from the ioctl.</p>
+<p class="last">在设备结构中添加一个类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code> 的新字段。初始化此字段。使用 <code class="xref c c-func docutils literal"><span class="pre">schedule_work()</span></code> 从定时器处理程序中调度工作项。从 ioctl 后的 N 秒开始调度定时器处理程序。</p>
 </div>
 </div>
-<div class="section" id="kernel-thread">
-<h3>6. Kernel thread<a class="headerlink" href="#kernel-thread" title="Permalink to this headline">¶</a></h3>
-<p>Implement a simple module that creates a kernel thread that shows the
-current process identifier.</p>
-<p>Generate the skeleton for the task named <strong>6-kthread</strong> and follow the
-TODOs from the skeleton.</p>
+<div class="section" id="section-12">
+<h3>6. 内核线程<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<p>实现一个简单的模块，创建一个显示当前进程标识符的内核线程。</p>
+<p>生成名为 <strong>6-kthread</strong> 的任务骨架，并按照骨架中标有 <strong>TODO</strong> 的部分进行修改。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>There are two options for creating and running a thread:</p>
+<p>创建和运行线程有两种选择：</p>
 <ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">kthread_run()</span></code> to create and run the thread</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">kthread_create()</span></code> to create a suspended thread and
-then start it running with <code class="xref c c-func docutils literal"><span class="pre">wake_up_process()</span></code>.</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">kthread_run()</span></code> 创建并运行线程</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">kthread_create()</span></code> 创建一个挂起的线程，然后使用 <code class="xref c c-func docutils literal"><span class="pre">wake_up_process()</span></code> 启动它。</li>
 </ul>
-<p class="last">Review the <a class="reference internal" href="#kernel-threads">Kernel Threads</a> section if needed.</p>
+<p class="last">如果需要，请查阅 <a class="reference internal" href="#section-4">内核线程</a> 部分。</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p>Synchronize the thread termination with module unloading:</p>
+<p>将线程终止与模块卸载进行同步：</p>
 <ul class="last simple">
-<li>The thread should finish when the module is unloaded</li>
-<li>Wait for the kernel thread to exit before continuing
-with unloading</li>
+<li>线程应在模块卸载时结束</li>
+<li>在卸载之前，请等待内核线程退出</li>
 </ul>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>For synchronization use two wait queues and two flags.</p>
-<p>Review <span class="xref std std-ref">waiting-queues</span> on how to use waiting queue.</p>
-<p class="last">Use atomic variables for flags. Review <a class="reference internal" href="lab2-kernel-api.html#atomic-variables"><span class="std std-ref">原子变量</span></a>.</p>
+<p>为了同步，使用两个等待队列和两个标志。</p>
+<p>请查阅 <span class="xref std std-ref">waiting-queues</span> 了解如何使用等待队列。</p>
+<p class="last">使用原子变量作为标志。请查阅 <a class="reference internal" href="lab2-kernel-api.html#atomic-variables"><span class="std std-ref">原子变量</span></a>。</p>
 </div>
 </div>
-<div class="section" id="buffer-shared-between-timer-and-process">
-<h3>7. Buffer shared between timer and process<a class="headerlink" href="#buffer-shared-between-timer-and-process" title="Permalink to this headline">¶</a></h3>
-<p>The purpose of this task is to exercise the synchronization between a
-deferrable action (a timer) and process context. Set up a periodic
-timer that monitors a list of processes. If one of the processes
-terminate a message is printed. Processes can be dynamically added to
-the list. Use the <em>3-4-5-deferred/kernel/</em> skeleton as a base and
-follow the <strong>TODO 4</strong> markings to complete the task.</p>
-<p>When the <em>MY_IOCTL_TIMER_MON</em> command is received check that the given
-process exists and if so add to the monitored list of
-processes and then arm the timer after setting its type.</p>
+<div class="section" id="section-13">
+<h3>7. 定时器和进程之间共享的缓冲区<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<p>该任务的目的是在延迟操作（定时器）和进程上下文之间进行同步。设置一个周期性定时器，监视进程列表。如果其中一个进程终止，将打印一条消息。可以动态添加进程到列表中。请使用 <em>3-4-5-deferred/kernel/</em> 骨架作为基础，并按照标有 <strong>TODO 4</strong> 的部分完成任务。</p>
+<p>当接收到 <em>MY_IOCTL_TIMER_MON</em> 命令时，检查给定的进程是否存在，如果存在，则将其添加到监视的进程列表中，并在设置了类型后启用定时器。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">get_proc()</span></code> which checks the pid, finds the
-associated <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> and allocates a
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mon_proc</span></code> item you can add to your
-list. Note that the function also increases the reference
-counter of the task, so that its memory won't be free when
-the task terminates.</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">get_proc()</span></code> 检查 pid，找到关联的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>，并分配一个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mon_proc</span></code> 项目，可以将其添加到列表中。请注意，该函数还会增加任务的引用计数，以便在任务终止时不会释放其内存。</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">Use a spinlock to protect the access to the list. Note
-that since we share data with the timer handler we need
-to disable bottom-half handlers in addition to taking
-the lock. Review the <a class="reference internal" href="#locking">Locking</a> section.</p>
+<p class="last">使用自旋锁保护对列表的访问。请注意，由于我们与定时器处理程序共享数据，因此除了获取锁之外，还需要禁用底半部处理程序。请查阅 <a href="#system-message-1"><span class="problematic" id="problematic-1">`锁定`_</span></a> 部分。</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Collect the information every second from a timer. Use the
-existing timer and add new behaviour for it via the
-TIMER_TYPE_ACCT. To set the flag, use the <em>t</em> argument of
-the test program.</p>
+<p class="last">每秒钟从定时器中收集信息。使用现有的定时器，并通过 TIMER_TYPE_ACCT 添加新的行为。要设置标志，请使用测试程序的 <em>t</em> 参数。</p>
 </div>
-<p>In the timer handler iterate over the list of monitored processes and
-check if they have terminated. If so, print the process name and pid
-then remove the process from the list, decrement the task usage
-counter so that it's memory can be free and finally free the
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mon_proc</span></code> structure.</p>
+<p>在定时器处理程序中，遍历监视的进程列表，并检查它们是否已终止。如果是，则打印进程名称和 PID，然后从列表中删除该进程，递减任务使用计数器，以便可以释放其内存，最后释放 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mon_proc</span></code> 结构。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use the <em>state</em> field of <code class="xref c c-func docutils literal"><span class="pre">struct</span> <span class="pre">task_struct()</span></code>. A
-task has terminated if its state is <em>TASK_DEAD</em>.</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">struct</span> <span class="pre">task_struct()</span></code> 的 <em>state</em> 字段。如果任务的状态为 <em>TASK_DEAD</em>，则表示任务已终止。</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">put_task_struct()</span></code> to decrement the task usage
-counter.</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">put_task_struct()</span></code> 递减任务使用计数器。</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">Make sure you protect the list access with a
-spinlock. The simple variant will suffice.</p>
+<p class="last">确保使用自旋锁保护列表访问。简单的变体就足够了。</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">Make sure to use the safe iteration over the list since
-we may need to remove an item from the list.</p>
+<p class="last">确保使用安全迭代器遍历列表，因为我们可能需要从列表中删除项目。</p>
 </div>
-<p>Rearm the timer after checking the list.</p>
+<p>在检查完列表后，重新启用定时器。</p>
 </div>
 </div>
 </div>
