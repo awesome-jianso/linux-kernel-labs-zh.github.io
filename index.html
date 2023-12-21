@@ -81,7 +81,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/device_drivers.html">字符设备驱动程序</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/interrupts.html">I/O 访问和中断</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/deferred_work.html">延迟工作</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/block_device_drivers.html">Block Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/block_device_drivers.html">块设备驱动程序</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part1.html">File system drivers (Part 1)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part2.html">File system drivers (Part 2)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/networking.html">Networking</a></li>
@@ -674,44 +674,44 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lab7-block-device-drivers.html">SO2 Lab 07 - Block Device Drivers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#register-a-block-i-o-device">Register a block I/O device</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#register-a-disk">Register a disk</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-gendisk-structure"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-block-device-operations-structure"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#request-queues-multi-queue-block-layer">Request Queues - Multi-Queue Block Layer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#software-staging-queues">Software staging queues</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#hardware-dispatch-queues">Hardware dispatch queues</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#tag-sets">Tag sets</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#create-and-delete-a-request-queue">Create and delete a request queue</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#useful-functions-for-processing-request-queues">Useful functions for processing request queues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#i-o">注册块 I/O 设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-3">注册磁盘</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-gendisk"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-block-device-operations"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> 结构体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-4">请求队列——多队列块层</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-5">软件分段队列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-6">硬件调度队列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-7">标签集</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-8">创建和删除请求队列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-9">用于处理请求队列的有用函数</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#requests-for-block-devices">Requests for block devices</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#create-a-request">Create a request</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#process-a-request">Process a request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-10">块设备的请求</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-11">创建请求</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-12">处理请求</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-structure"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#create-a-struct-bio-structure">Create a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#submit-a-struct-bio-structure">Submit a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#wait-for-the-completion-of-a-struct-bio-structure">Wait for the completion of a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#initialize-a-struct-bio-structure">Initialize a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#how-to-use-the-content-of-a-struct-bio-structure">How to use the content of a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#free-a-struct-bio-structure">Free a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#set-up-a-request-queue-at-struct-bio-level">Set up a request queue at <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-1">创建 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-2">提交 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-3">等待 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的完成</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-4">初始化 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-5">如何使用 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的内容</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-6">释放 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-7">在 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别设置请求队列</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#further-reading">Further reading</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#block-device">1. Block device</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#disk-registration">2. Disk registration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#ram-disk">3. RAM disk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#read-data-from-the-disk">4. Read data from the disk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#write-data-to-the-disk">5. Write data to the disk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#processing-requests-from-the-request-queue-at-struct-bio-level">6. Processing requests from the request queue at <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-13">进一步阅读</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-14">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-15">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-16">1. 块设备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-17">2. 磁盘注册</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#ram">3. RAM 磁盘</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-18">4. 从磁盘读取数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#section-19">5. 将数据写入磁盘</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab7-block-device-drivers.html#struct-bio-8">6. 在 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别处理请求队列中的请求</a></li>
 </ul>
 </li>
 </ul>
@@ -1570,45 +1570,45 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/block_device_drivers.html">Block Device Drivers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#register-a-block-i-o-device">Register a block I/O device</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#register-a-disk">Register a disk</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#struct-gendisk-structure"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#struct-block-device-operations-structure"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#request-queues-multi-queue-block-layer">Request Queues - Multi-Queue Block Layer</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#software-staging-queues">Software staging queues</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#hardware-dispatch-queues">Hardware dispatch queues</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#tag-sets">Tag sets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#create-and-delete-a-request-queue">Create and delete a request queue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#useful-functions-for-processing-request-queues">Useful functions for processing request queues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/block_device_drivers.html">块设备驱动程序</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#section-2">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#section-3">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#i-o">注册块 I/O 设备</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#section-4">注册磁盘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#struct-gendisk"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构体</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#struct-block-device-operations"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> 结构体</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#section-5">请求队列——多队列块层</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-6">软件分段队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-7">硬件调度队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-8">标签集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-9">创建和删除请求队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-10">用于处理请求队列的有用函数</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#requests-for-block-devices">Requests for block devices</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#create-a-request">Create a request</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#process-a-request">Process a request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#section-11">块设备的请求</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-12">创建请求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-13">处理请求</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-structure"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#create-a-struct-bio-structure">Create a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#submit-a-struct-bio-structure">Submit a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#wait-for-the-completion-of-a-struct-bio-structure">Wait for the completion of a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#initialize-a-struct-bio-structure">Initialize a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#how-to-use-the-content-of-a-struct-bio-structure">How to use the content of a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#free-a-struct-bio-structure">Free a <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#set-up-a-request-queue-at-struct-bio-level">Set up a request queue at <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-1">创建 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-2">提交 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-3">等待 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的完成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-4">初始化 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-5">如何使用 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的内容</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-6">释放 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-7">在 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别设置请求队列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#further-reading">Further reading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#intro">0. Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#block-device">1. Block device</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#disk-registration">2. Disk registration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#ram-disk">3. RAM disk</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#read-data-from-the-disk">4. Read data from the disk</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#write-data-to-the-disk">5. Write data to the disk</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#processing-requests-from-the-request-queue-at-struct-bio-level">6. Processing requests from the request queue at <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#section-14">进一步阅读</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/block_device_drivers.html#section-15">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-16">0. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-17">1. 块设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-18">2. 磁盘注册</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#ram">3. RAM 磁盘</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-19">4. 从磁盘读取数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#section-20">5. 将数据写入磁盘</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/block_device_drivers.html#struct-bio-8">6. 在 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别处理请求队列中的请求</a></li>
 </ul>
 </li>
 </ul>
