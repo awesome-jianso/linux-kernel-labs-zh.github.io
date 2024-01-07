@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>File system drivers (Part 1) &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>文件系统驱动程序（第一部分） &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -83,52 +83,51 @@
 <li class="toctree-l1"><a class="reference internal" href="interrupts.html">I/O 访问和中断</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deferred_work.html">延迟工作</a></li>
 <li class="toctree-l1"><a class="reference internal" href="block_device_drivers.html">块设备驱动程序</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">File system drivers (Part 1)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#virtual-filesystem-vfs">Virtual Filesystem (VFS)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-general-file-system-model">The general file system model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#superblock">superblock</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#localization">Localization:</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">文件系统驱动程序（第一部分）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#section-2">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vfs">虚拟文件系统（VFS）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-3">常见的文件系统模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">超级块</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-5">本地化：</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#inode">inode</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#localization-1">Localization:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-6">本地化：</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#file">file</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#localization-2">Localization:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">本地化：</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dentry">dentry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-8">目录项</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#register-and-unregister-filesystems">Register and unregister filesystems</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#functions-mount-kill-sb">Functions mount, kill_sb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-9">注册和注销文件系统</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mount-kill-sb">mount 和 kill_sb 函数</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#superblock-in-vfs">Superblock in VFS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#the-struct-super-block-structure">The <code class="docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#superblock-operations">Superblock operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vfs-1">VFS 中的超级块</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-10">超级块操作</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#the-fill-super-function">The <code class="docutils literal"><span class="pre">fill_super()</span></code> function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#buffer-cache">Buffer cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#functions-and-useful-macros">Functions and useful macros</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#further-reading">Further reading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fill-super"><code class="docutils literal"><span class="pre">fill_super()</span></code> 函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-11">缓冲区缓存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-12">函数和有用的宏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-13">进一步阅读</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-14">练习</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#myfs">myfs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#register-and-unregister-the-myfs-file-system">1. Register and unregister the myfs file system</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#completing-myfs-superblock">2. Completing myfs superblock</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#initialize-myfs-root-inode">3. Initialize myfs root inode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#test-myfs-mount-and-unmount">4. Test myfs mount and unmount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#myfs-1">1. 注册和注销 myfs 文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#myfs-2">2. 完成 myfs 的超级块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#myfs-3">3. 初始化 myfs 根索引节点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#myfs-4">4. 测试 myfs 的挂载和卸载</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#minfs">minfs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#registering-and-unregistering-the-minfs-file-system">1. Registering and unregistering the minfs file system</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#completing-minfs-superblock">2. Completing minfs superblock</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-and-destroying-minfs-inodes">3. Creating and destroying minfs inodes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#initialize-minfs-root-inode">4. Initialize minfs root inode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#testing-of-minfs-mount-and-unmount">5. Testing of minfs mount and unmount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#minfs-1">1. 注册和注销 minfs 文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#minfs-2">2. 完善 minfs 超级块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#minfs-3">3. 创建和销毁 minfs 索引节点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#minfs-4">4. 初始化 minfs 根索引节点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#minfs-5">5. minfs 挂载和卸载的测试</a></li>
 </ul>
 </li>
 </ul>
@@ -164,7 +163,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">File system drivers (Part 1)</li>
+      <li class="breadcrumb-item active">文件系统驱动程序（第一部分）</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/labs/filesystems_part1.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -174,91 +173,79 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="file-system-drivers-part-1">
-<h1>File system drivers (Part 1)<a class="headerlink" href="#file-system-drivers-part-1" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="lab-objectives">
-<h2>Lab objectives<a class="headerlink" href="#lab-objectives" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="section-1">
+<h1>文件系统驱动程序（第一部分）<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-2">
+<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>acquiring knowledge about the Virtual Filesystem (VFS) in Linux and understanding concepts regarding 'inode', 'dentry', 'file', superblock and data block.</li>
-<li>understanding the process of mounting a file system inside VFS.</li>
-<li>knowledge regarding various file system types and understanding differences between file systems with physical support (on disk) and the ones without physical support.</li>
+<li>了解 Linux 中虚拟文件系统（VFS）的知识，理解有关“inode”、“dentry”、“文件”、“超级块”和数据块的概念。</li>
+<li>理解在 VFS 内挂载文件系统的过程。</li>
+<li>了解各种文件系统类型，并理解具有物理支持（在磁盘上）和没有物理支持的文件系统之间的区别。</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="virtual-filesystem-vfs">
-<h2>Virtual Filesystem (VFS)<a class="headerlink" href="#virtual-filesystem-vfs" title="Permalink to this headline">¶</a></h2>
-<p>The Virtual Filesystem (also known as VFS) is a component of the kernel that handles all system calls related to files and file systems.
-VFS is a generic interface between the user and a particular file system.
-This abstraction simplifies the implementation of file systems and provides an easier integration of multiple file systems. This way, the implementation of a file system is accomplished by using the API provided by the VFS, and the generic hardware and I/O subsystem communication parts are handled by VFS.</p>
-<p>From a functional point of view, file systems can be grouped into:</p>
+<div class="section" id="vfs">
+<h2>虚拟文件系统（VFS）<a class="headerlink" href="#vfs" title="Permalink to this headline">¶</a></h2>
+<p>虚拟文件系统（也称为 VFS）是内核的组件，处理所有与文件和文件系统相关的系统调用。VFS 是用户与特定文件系统之间的通用接口。这种抽象简化了文件系统的实现，并使得多个文件系统更容易集成。这样，通过使用 VFS 提供的 API 来实现文件系统，通用硬件以及 I/O 子系统的通信部分由 VFS 处理。</p>
+<p>从功能的角度来看，文件系统可以分为以下几类：</p>
 <blockquote>
 <div><ul class="simple">
-<li>disk file systems (ext3, ext4, xfs, fat, ntfs, etc.)</li>
-<li>network file systems (nfs, smbfs/cifs, ncp, etc.)</li>
-<li>virtual filesystems (procfs, sysfs, sockfs, pipefs, etc.)</li>
+<li>磁盘文件系统（ext3、ext4、xfs、fat 以及 ntfs 等）</li>
+<li>网络文件系统（nfs、smbfs/cifs、ncp 等）</li>
+<li>虚拟文件系统（procfs、sysfs、sockfs、pipefs 等）</li>
 </ul>
 </div></blockquote>
-<p>A Linux kernel instance will use VFS for the hierarchy (a tree) of directories and files.
-A new file system will be added as a VFS subtree using the mount operation.
-A file system is usually mounted from the environment for which it was built (from a block type device, from network, etc.).
-In particular, however, the VFS can use a normal file as a virtual block device, so it is possible to mount disk file systems over normal files. This way, stacks of file systems can be created.</p>
-<p>The basic idea of VFS is to provide a single file model that can represent files from any file system.
-The file system driver is responsible for bringing to the common denominator.
-This way the kernel can create a single directory structure that contains the entire system.
-There will be a file system that will be the root, the rest being mounted in its various directories.</p>
+<p>Linux 内核实例使用 VFS 来处理目录和文件的层次结构（一棵树）。通过挂载操作，新的文件系统将被添加为 VFS 子树。文件系统通常是从其所对应的环境中挂载的（从块类型设备、网络等）。然而，VFS 可以将普通文件作为虚拟块设备使用，因此可以将普通文件挂载为磁盘文件系统。这样，可以创建文件系统的堆叠。</p>
+<p>VFS 的基本思想是提供可以表示任何文件系统文件的单一文件模型。文件系统驱动程序需要遵守公共的基准。这样，内核可以创建包含整个系统的单一目录结构。其中一个文件系统将作为根文件系统，其他文件系统将挂载在其各个目录下。</p>
 </div>
-<div class="section" id="the-general-file-system-model">
-<h2>The general file system model<a class="headerlink" href="#the-general-file-system-model" title="Permalink to this headline">¶</a></h2>
-<p>The general file system model, to which any implemented file system needs to be reduced, consists of several well-defined entities: <code class="xref c c-type docutils literal"><span class="pre">superblock</span></code>, <code class="xref c c-type docutils literal"><span class="pre">inode</span></code>, <code class="xref c c-type docutils literal"><span class="pre">file</span></code>, and <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code>.
-These entities are file system metadata (they contain information about data or other metadata).</p>
-<p>Model entities interact using some VFS or kernel subsystems: dentry cache, inode cache, buffer cache.
-Each entity is treated as an object: it has a associated data structure and a pointer to a table of methods. The induction of particular behavior for each component is done by replacing the associated methods.</p>
-<div class="section" id="superblock">
-<h3>superblock<a class="headerlink" href="#superblock" title="Permalink to this headline">¶</a></h3>
-<p>The superblock stores the information needed for a mounted file system:</p>
+<div class="section" id="section-3">
+<h2>常见的文件系统模型<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>常见的文件系统模型（任何实现的文件系统都需要符合该模型）包括几种明确定义的实体: <code class="xref c c-type docutils literal"><span class="pre">superblock</span></code>, <code class="xref c c-type docutils literal"><span class="pre">inode</span></code>, <code class="xref c c-type docutils literal"><span class="pre">file</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code>。这些实体是文件系统的元数据（包含有关数据或其他元数据的信息）。</p>
+<p>模型实体间通过某些 VFS 子系统或内核子系统进行交互：dentry cache（目录项缓存）、inode cache（索引节点缓存）和 buffer cache（缓冲区缓存）。每个实体都被视为对象：它具有关联的数据结构和指向方法表的指针。通过替换关联的方法来为每个组件引入特定的行为。</p>
+<div class="section" id="section-4">
+<h3>超级块<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<p>超级块存储了挂载文件系统所需的信息：</p>
 <blockquote>
 <div><ul class="simple">
-<li>inode and blocks locations</li>
-<li>file system block size</li>
-<li>maximum filename length</li>
-<li>maximum file size</li>
-<li>the location of the root inode</li>
+<li>inode 和块的位置</li>
+<li>文件系统块大小</li>
+<li>最大文件名长度</li>
+<li>最大文件大小</li>
+<li>根 inode 的位置</li>
 </ul>
 </div></blockquote>
-<div class="section" id="localization">
-<h4>Localization:<a class="headerlink" href="#localization" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="section-5">
+<h4>本地化：<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h4>
 <blockquote>
 <div><ul class="simple">
-<li>In the case of disk file systems, the superblock has a correspondent in the first block of the disk. (Filesystem Control Block).</li>
-<li>In VFS, all superblocks of filesystems are retained in a list of structures of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> and the methods in structures of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code>.</li>
+<li>对于磁盘文件系统，超级块在磁盘的第一个块中有对应项（文件系统控制块）。</li>
+<li>在 VFS 中，所有文件系统的超级块都保留在类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 的结构列表中，方法则保留在类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 的结构中。</li>
 </ul>
 </div></blockquote>
 </div>
 </div>
 <div class="section" id="inode">
 <h3>inode<a class="headerlink" href="#inode" title="Permalink to this headline">¶</a></h3>
-<p>The inode (index node) keeps information about a file in the general sense (abstraction): regular file, directory, special file (pipe, fifo), block device, character device, link, or anything that can be abstracted as a file.</p>
-<p>An inode stores information like:</p>
+<p>inode（索引节点）保存了有关文件的信息。注意这里的文件指的是泛指意义上的文件，常规文件、目录、特殊文件（管道、fifo）、块设备、字符设备、链接或可以抽象为文件的任何内容都包括在内。</p>
+<p>inode 存储了以下信息：</p>
 <blockquote>
 <div><ul class="simple">
-<li>file type;</li>
-<li>file size;</li>
-<li>access rights;</li>
-<li>access or modify time;</li>
-<li>location of data on the disk (pointers to disk blocks containing data).</li>
+<li>文件类型；</li>
+<li>文件大小；</li>
+<li>访问权限；</li>
+<li>访问或修改时间；</li>
+<li>数据在磁盘上的位置（指向包含数据的磁盘块的指针）。</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Usually, the inode does not contain the file name. The name is stored by the <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code> entity. This way, an inode can have multiple names (hardlinks).</p>
+<p class="last">通常，inode 不包含文件名。文件名由 <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code> 实体存储。这样，一个 inode 可以有多个名称（硬链接）。</p>
 </div>
-<div class="section" id="localization-1">
-<h4>Localization:<a class="headerlink" href="#localization-1" title="Permalink to this headline">¶</a></h4>
-<p>Like the superblock, the <code class="xref c c-type docutils literal"><span class="pre">inode</span></code> has a disk correspondent.
-The inodes on disk are generally grouped into a specialized area (inode area) separated from the data blocks area; In some file systems, the equivalents of the inodes are spread in the file system structure (FAT);
-As a VFS entity, an inode is represented by the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> and by the operations with it defined in the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code>.</p>
-<p>Each inode is generally identified by a number. On Linux, the <code class="docutils literal"><span class="pre">-i</span></code> argument of the <code class="docutils literal"><span class="pre">ls</span></code> command shows the inode number associated with each file:</p>
+<div class="section" id="section-6">
+<h4>本地化：<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h4>
+<p>与 superblock 类似，<code class="xref c c-type docutils literal"><span class="pre">inode</span></code> 也有磁盘对应项。磁盘上的 inodes 通常分组存储在一个专用区域（inode 区域）中，与数据块区域分开；在某些文件系统中，与 inodes 等效的内容分散在文件系统结构中（FAT）；作为 VFS 实体，inode 由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构表示，并由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> 结构定义与之相关的操作。</p>
+<p>通常，每个 inode 都通过编号进行标识。在 Linux 上, <code class="docutils literal"><span class="pre">ls</span></code> 命令的 <code class="docutils literal"><span class="pre">-i</span></code> 实参显示与每个文件关联的 inode 编号：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">razvan@valhalla:~/school/so2/wiki$</span> ls -i
 <span class="go">1277956 lab10.wiki  1277962 lab9.wikibak  1277964 replace_lxr.sh</span>
 <span class="go">1277954 lab9.wiki   1277958 link.txt      1277955 homework.wiki</span>
@@ -268,63 +255,61 @@ As a VFS entity, an inode is represented by the structure <code class="xref c c-
 </div>
 <div class="section" id="file">
 <h3>file<a class="headerlink" href="#file" title="Permalink to this headline">¶</a></h3>
-<p>File is the component of the file system model that is closest to the user.
-The structure exists only as a VFS entity in memory and has no physical correspondent on disk.</p>
-<p>While the inode abstracts a file on the disk, the file structure abstracts an open file.
-From the point of view of the process, the file entity abstracts the file. From the point of view of the file system implementation, however, the inode is the entity that abstracts the file.</p>
-<p>The file structure maintains information such as:</p>
+<p>file 是文件系统模型中距离用户最近的组件。该结构体仅作为 VFS（虚拟文件系统）在内存中的实体存在，没有在磁盘上的物理对应物。</p>
+<p>inode 抽象了磁盘上的文件，而 file 结构抽象了打开的文件。从进程的角度来看，file 实体抽象了文件。然而，从文件系统实现的角度来看，inode 才是抽象文件的那个实体。</p>
+<p>file 结构维护了以下信息：</p>
 <blockquote>
 <div><ul class="simple">
-<li>file cursor position;</li>
-<li>file opening rights;</li>
-<li>pointer to the associated inode (eventually its index).</li>
+<li>文件游标位置；</li>
+<li>文件打开权限；</li>
+<li>指向关联 inode 的指针（最终是 inode 的索引）。</li>
 </ul>
 </div></blockquote>
-<div class="section" id="localization-2">
-<h4>Localization:<a class="headerlink" href="#localization-2" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="section-7">
+<h4>本地化：<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h4>
 <blockquote>
 <div><ul class="simple">
-<li>The structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> is the associated VFS entity, and the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> represents the operations associated with it.</li>
-</ul>
-</div></blockquote>
-</div>
-</div>
-<div class="section" id="dentry">
-<h3>dentry<a class="headerlink" href="#dentry" title="Permalink to this headline">¶</a></h3>
-<p>The dentry (directory entry) associates an inode with a file name.</p>
-<p>Generally, a dentry structure contains two fields:</p>
-<blockquote>
-<div><ul class="simple">
-<li>an integer that identifies the inode;</li>
-<li>a string representing its name.</li>
-</ul>
-</div></blockquote>
-<p>The dentry is a specific part of a path that can be a directory or a file. For example, for the path <code class="docutils literal"><span class="pre">/bin/vi</span></code>, dentry objects will be created for <code class="docutils literal"><span class="pre">/</span></code>, <code class="docutils literal"><span class="pre">bin</span></code>, and <code class="docutils literal"><span class="pre">vi</span></code> (a total of 3 dentry objects).</p>
-<blockquote>
-<div><ul class="simple">
-<li>the dentry has a correspondent on the disk, but the correspondence is not direct because each file system keeps the dentries in a specific way</li>
-<li>in VFS, the dentry entity is represented by the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> and the operations with it are defined in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry_operations</span></code> structure.</li>
+<li>与之关联的 VFS 实体是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 结构，与之相关的操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构表示。</li>
 </ul>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="register-and-unregister-filesystems">
-<span id="registerunregistersection"></span><h2>Register and unregister filesystems<a class="headerlink" href="#register-and-unregister-filesystems" title="Permalink to this headline">¶</a></h2>
-<p>In the current version, the Linux kernel supports about 50 file systems, including:</p>
+<div class="section" id="section-8">
+<h3>目录项<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<p>目录项（dentry）将 inode 与文件名关联起来。</p>
+<p>通常，dentry 结构包含两个字段：</p>
 <blockquote>
 <div><ul class="simple">
-<li>ext2/ ext4</li>
+<li>用于标识 inode 的整数；</li>
+<li>表示文件名的字符串。</li>
+</ul>
+</div></blockquote>
+<p>dentry 是目录或文件路径的特定部分。例如，对于路径 <code class="docutils literal"><span class="pre">/bin/vi</span></code>，将为 <code class="docutils literal"><span class="pre">/</span></code>, <code class="docutils literal"><span class="pre">bin</span></code> 和 <code class="docutils literal"><span class="pre">vi</span></code> 创建 dentry 对象（总共 3 个 dentry 对象）。</p>
+<blockquote>
+<div><ul class="simple">
+<li>dentry 在磁盘上有对应物，但对应关系不是直接的，因为每个文件系统都以特定方式维护 dentry。</li>
+<li>在 VFS 中，dentry 实体由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> 结构表示，与之相关的操作在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry_operations</span></code> 结构中定义。</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="section-9">
+<h2>注册和注销文件系统<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<p>在当前版本中，Linux 内核支持约 50 种文件系统，包括：</p>
+<blockquote>
+<div><ul class="simple">
+<li>ext2/ext4</li>
 <li>reiserfs</li>
 <li>xfs</li>
 <li>fat</li>
 <li>ntfs</li>
 <li>iso9660</li>
-<li>udf for CDs and DVDs</li>
+<li>用于 CD 和 DVD 的 udf</li>
 <li>hpfs</li>
 </ul>
 </div></blockquote>
-<p>On a single system, however, it is unlikely that there will be more than 5-6 file systems. For this reason, file systems (or, more correctly, file system types) are implemented as modules and can be loaded or unloaded at any time.</p>
-<p>In order to be able to dynamically load / unload a file system module, a file system registration / deregistration API is required. The structure describing a particular file system is <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code>:</p>
+<p>然而，在单个系统上，不太可能有超过 5-6 个文件系统。因此，文件系统（更准确地说，文件系统类型）被实现为模块，并可以随时加载或卸载。</p>
+<p>为了能够动态加载/卸载文件系统模块，文件系统注册/注销 API 是不可或缺的。描述特定文件系统的结构是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code>：</p>
 <blockquote>
 <div><blockquote>
 <div><div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
@@ -336,7 +321,7 @@ From the point of view of the process, the file entity abstracts the file. From 
                                    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
          <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">kill_sb</span><span class="p">)</span> <span class="p">(</span><span class="k">struct</span> <span class="n">super_block</span> <span class="o">*</span><span class="p">);</span>
          <span class="k">struct</span> <span class="n">module</span> <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
-         <span class="k">struct</span> <span class="n">file_system_type</span> <span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+         <span class="k">struct</span> <span class="n">file_system_type</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
          <span class="k">struct</span> <span class="n">hlist_head</span> <span class="n">fs_supers</span><span class="p">;</span>
          <span class="k">struct</span> <span class="n">lock_class_key</span> <span class="n">s_lock_key</span><span class="p">;</span>
          <span class="k">struct</span> <span class="n">lock_class_key</span> <span class="n">s_umount_key</span><span class="p">;</span>
@@ -346,23 +331,23 @@ From the point of view of the process, the file entity abstracts the file. From 
 </div>
 </div></blockquote>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">name</span></code> is a string representing the name that will identify a file system (the argument passed to <code class="docutils literal"><span class="pre">mount</span> <span class="pre">-t</span></code>).</li>
-<li><code class="docutils literal"><span class="pre">owner</span></code> is <code class="docutils literal"><span class="pre">THIS_MODULE</span></code> for file systems implemented in modules, and <code class="docutils literal"><span class="pre">NULL</span></code> if they are written directly into the kernel.</li>
-<li>The <code class="docutils literal"><span class="pre">mount</span></code> function reads the superblock from the disk in memory when loading the file system. The function is unique to each file system.</li>
-<li>The <code class="docutils literal"><span class="pre">kill_sb</span></code> function releases the super-block from memory.</li>
-<li><code class="docutils literal"><span class="pre">fs_flags</span></code> specifies the flags with which the file system must be mounted. An example of such flag is <code class="docutils literal"><span class="pre">FS_REQUIRES_DEV</span></code> that specifies to VFS that the file system needs a disk (it is not a virtual file system).</li>
-<li><code class="docutils literal"><span class="pre">fs_supers</span></code> is a list containing all the superblocks associated with this file system. Since the same file system can be mounted multiple times, there will be a separate superblock for each mount.</li>
+<li><code class="docutils literal"><span class="pre">name</span></code> 是表示文件系统名称的字符串（传递给 <code class="docutils literal"><span class="pre">mount</span> <span class="pre">-t</span></code> 的参数）。</li>
+<li><code class="docutils literal"><span class="pre">owner</span></code> 对于以模块形式实现的文件系统来说是 <code class="docutils literal"><span class="pre">THIS_MODULE</span></code>，如果直接编写在内核中，则 <code class="docutils literal"><span class="pre">owner</span></code> 为 <code class="docutils literal"><span class="pre">NULL</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">mount</span></code> 函数在加载文件系统时从磁盘中读取超级块到内存中。每种文件系统的函数都是独一无二的。</li>
+<li><code class="docutils literal"><span class="pre">kill_sb</span></code> 函数释放内存中的超级块。</li>
+<li><code class="docutils literal"><span class="pre">fs_flags</span></code> 指定文件系统必须以哪些标志挂载。例如, <code class="docutils literal"><span class="pre">FS_REQUIRES_DEV</span></code> 是一个标志，指定 VFS 文件系统需要一个磁盘（而不是虚拟文件系统）。</li>
+<li><code class="docutils literal"><span class="pre">fs_supers</span></code> 是一个列表，包含与该文件系统关联的所有超级块。由于同一文件系统可能会被多次挂载，因此每个挂载点都会有一个单独的超级块。</li>
 </ul>
 </div></blockquote>
-<p>The <em>registration of a file system</em> into the kernel is generally performed in the module initialization function. For registration, the programmer will have to</p>
+<p>通常，在模块初始化函数中，将 <em>文件系统注册</em> 到内核。要进行注册，程序员需要：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>initialize a structure of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> with the name, the flags, the function that implements the superblock reading operation and the reference to the structure that identifies the current module</li>
-<li>call the <code class="xref c c-func docutils literal"><span class="pre">register_filesystem()</span></code> function.</li>
+<li>使用名称、标志、实现超级块读取操作的函数以及对标识当前模块的结构的引用来初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> 类型的结构体。</li>
+<li>调用 <code class="xref c c-func docutils literal"><span class="pre">register_filesystem()</span></code> 函数。</li>
 </ol>
 </div></blockquote>
-<p>When unloading the module, you must unregister the file system by calling the <code class="xref c c-func docutils literal"><span class="pre">unregister_filesystem()</span></code> function.</p>
-<p>An example of registering a virtual file system is found in the code for <code class="docutils literal"><span class="pre">ramfs</span></code>:</p>
+<p>在卸载模块时，必须调用 <code class="xref c c-func docutils literal"><span class="pre">unregister_filesystem()</span></code> 函数来注销文件系统。</p>
+<p>在 <code class="docutils literal"><span class="pre">ramfs</span></code> 的代码中可以找到注册虚拟文件系统的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">file_system_type</span> <span class="n">ramfs_fs_type</span> <span class="o">=</span> <span class="p">{</span>
         <span class="p">.</span><span class="n">name</span>           <span class="o">=</span> <span class="s">&quot;ramfs&quot;</span><span class="p">,</span>
         <span class="p">.</span><span class="n">mount</span>          <span class="o">=</span> <span class="n">ramfs_mount</span><span class="p">,</span>
@@ -378,27 +363,27 @@ From the point of view of the process, the file entity abstracts the file. From 
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="functions-mount-kill-sb">
-<span id="functionsmountkillsbsection"></span><h3>Functions mount, kill_sb<a class="headerlink" href="#functions-mount-kill-sb" title="Permalink to this headline">¶</a></h3>
-<p>When mounting  the file system, the kernel calls the mount function defined within the structure <code class="xref c c-type docutils literal"><span class="pre">file_system_type</span></code>. The function makes a set of initializations and returns a dentry (the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code>) that represents the mount point directory. Usually <code class="xref c c-func docutils literal"><span class="pre">mount()</span></code> is a simple function that calls one of the functions:</p>
+<div class="section" id="mount-kill-sb">
+<span id="functionsmountkillsbsection"></span><h3>mount 和 kill_sb 函数<a class="headerlink" href="#mount-kill-sb" title="Permalink to this headline">¶</a></h3>
+<p>在挂载文件系统时，内核调用了在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> 结构中定义的 mount 函数。该函数进行一系列的初始化操作，并返回表示挂载点目录的 dentry（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> 结构）。通常，<code class="xref c c-func docutils literal"><span class="pre">mount()</span></code> 是一个简单的函数，该函数调用以下函数之一：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">mount_bdev()</span></code>, which mounts a file system stored on a block device</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">mount_single()</span></code>, which mounts a file system that shares an instance between all mount operations</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">mount_nodev()</span></code>, which mounts a file system that is not on a physical device</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">mount_pseudo()</span></code>, a helper function for pseudo-file systems (<code class="docutils literal"><span class="pre">sockfs</span></code>, <code class="docutils literal"><span class="pre">pipefs</span></code>, generally file systems that can not be mounted)</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">mount_bdev()</span></code>：挂载存储在块设备上的文件系统</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">mount_single()</span></code>：挂载在所有挂载操作之间共享实例的文件系统</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">mount_nodev()</span></code>：挂载不在物理设备上的文件系统</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">mount_pseudo()</span></code>：用于伪文件系统的辅助函数（如 <code class="docutils literal"><span class="pre">sockfs</span></code>, <code class="docutils literal"><span class="pre">pipefs</span></code> 等无法被挂载的文件系统）</li>
 </ul>
 </div></blockquote>
-<p>These functions get as parameter a pointer to a function <code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> that will be called after the superblock initialization to finish its initialization by the driver. An example of such a function can be found in the <code class="docutils literal"><span class="pre">fill_super</span></code> section.</p>
-<p>When unmounting the file system, the kernel calls <code class="xref c c-func docutils literal"><span class="pre">kill_sb()</span></code>, which performs cleanup operations and invokes one of the functions:</p>
+<p>这些函数的其中一个参数是指向 <code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> 函数的指针，该函数在超级块初始化之后被调用，以借助驱动程序完成超级块的初始化。在 <code class="docutils literal"><span class="pre">fill_super</span></code> 部分可以找到此类函数的示例。</p>
+<p>在卸载文件系统时，内核调用 <code class="xref c c-func docutils literal"><span class="pre">kill_sb()</span></code> 函数，执行清理操作，并调用以下函数之一：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">kill_block_super()</span></code>, which unmounts a file system on a block device</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">kill_anon_super()</span></code>, which unmounts a virtual file system (information is generated when requested)</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">kill_litter_super()</span></code>, which unmounts a file system that is not on a physical device (the information is kept in memory)</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">kill_block_super()</span></code>：卸载块设备上的文件系统</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">kill_anon_super()</span></code>：卸载虚拟文件系统（当请求时生成信息）</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">kill_litter_super()</span></code>：卸载不在物理设备上的文件系统（信息保存在内存中）。</li>
 </ul>
 </div></blockquote>
-<p>An example for a file system without disk support is the <code class="xref c c-func docutils literal"><span class="pre">ramfs_mount()</span></code> function in the <code class="docutils literal"><span class="pre">ramfs</span></code> file system:</p>
+<p>关于没有磁盘支持的文件系统，一个示例是 <code class="docutils literal"><span class="pre">ramfs</span></code> 文件系统的 <code class="xref c c-func docutils literal"><span class="pre">ramfs_mount()</span></code> 函数：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="nf">ramfs_mount</span><span class="p">(</span><span class="k">struct</span> <span class="n">file_system_type</span> <span class="o">*</span><span class="n">fs_type</span><span class="p">,</span>
         <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">dev_name</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
@@ -406,7 +391,7 @@ From the point of view of the process, the file entity abstracts the file. From 
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>An example for a file system from disk is the <code class="xref c c-func docutils literal"><span class="pre">minix_mount()</span></code> function in the <code class="docutils literal"><span class="pre">minix</span></code> file system:</p>
+<p>关于来自磁盘的文件系统，一个示例是 <code class="docutils literal"><span class="pre">minix</span></code> 文件系统的 <code class="xref c c-func docutils literal"><span class="pre">minix_mount()</span></code> 函数：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="nf">minix_mount</span><span class="p">(</span><span class="k">struct</span> <span class="n">file_system_type</span> <span class="o">*</span><span class="n">fs_type</span><span class="p">,</span>
         <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">dev_name</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
@@ -416,52 +401,46 @@ From the point of view of the process, the file entity abstracts the file. From 
 </div>
 </div>
 </div>
-<div class="section" id="superblock-in-vfs">
-<h2>Superblock in VFS<a class="headerlink" href="#superblock-in-vfs" title="Permalink to this headline">¶</a></h2>
-<p>The superblock exists both as a physical entity (entity on disk) and as a VFS entity (within the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> structure).
-The superblock contains only metainformation and is used to write and read metadata from the disk (inodes, directory entries).
-A superblock (and implicitly the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> structure) will contain information about the block device used, the list of inodes, a pointer to the inode of the file system root directory, and a pointer to the superblock operations.</p>
-<div class="section" id="the-struct-super-block-structure">
-<h3>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> structure<a class="headerlink" href="#the-struct-super-block-structure" title="Permalink to this headline">¶</a></h3>
-<p>Part of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> structure definition is presented below:</p>
+<div class="section" id="vfs-1">
+<h2>VFS 中的超级块<a class="headerlink" href="#vfs-1" title="Permalink to this headline">¶</a></h2>
+<p>超级块既作为物理实体（磁盘上的实体）存在，也作为 VFS 实体（在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构中）存在。超级块仅包含元信息，并用于从磁盘中读取和写入元数据（如 inode、目录项）。超级块（以及隐式的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构）将包含有关所使用的块设备、inode 列表、文件系统根目录的 inode 指针以及超级块操作的指针的信息。</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构的部分定义如下：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">super_block</span> <span class="p">{</span>
         <span class="c1">//...</span>
-        <span class="kt">dev_t</span>                   <span class="n">s_dev</span><span class="p">;</span>              <span class="cm">/* identifier */</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>           <span class="n">s_blocksize_bits</span><span class="p">;</span>   <span class="cm">/* block size in bits */</span>
-        <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">s_blocksize</span><span class="p">;</span>        <span class="cm">/* block size in bytes */</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>           <span class="n">s_dirt</span><span class="p">;</span>             <span class="cm">/* dirty flag */</span>
-        <span class="n">loff_t</span>                  <span class="n">s_maxbytes</span><span class="p">;</span>         <span class="cm">/* max file size */</span>
-        <span class="k">struct</span> <span class="n">file_system_type</span> <span class="o">*</span><span class="n">s_type</span><span class="p">;</span>            <span class="cm">/* filesystem type */</span>
-        <span class="k">struct</span> <span class="n">super_operations</span> <span class="o">*</span><span class="n">s_op</span><span class="p">;</span>              <span class="cm">/* superblock methods */</span>
+        <span class="kt">dev_t</span>                   <span class="n">s_dev</span><span class="p">;</span>              <span class="cm">/* 标识符 */</span>
+        <span class="kt">unsigned</span> <span class="kt">char</span>           <span class="n">s_blocksize_bits</span><span class="p">;</span>   <span class="cm">/* 块大小（以位为单位） */</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">s_blocksize</span><span class="p">;</span>        <span class="cm">/* 块大小（以字节为单位） */</span>
+        <span class="kt">unsigned</span> <span class="kt">char</span>           <span class="n">s_dirt</span><span class="p">;</span>             <span class="cm">/* 脏标志 */</span>
+        <span class="n">loff_t</span>                  <span class="n">s_maxbytes</span><span class="p">;</span>         <span class="cm">/* 最大文件大小 */</span>
+        <span class="k">struct</span> <span class="n">file_system_type</span> <span class="o">*</span><span class="n">s_type</span><span class="p">;</span>            <span class="cm">/* 文件系统类型 */</span>
+        <span class="k">struct</span> <span class="n">super_operations</span> <span class="o">*</span><span class="n">s_op</span><span class="p">;</span>              <span class="cm">/* 超级块方法 */</span>
         <span class="c1">//...</span>
-        <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">s_flags</span><span class="p">;</span>            <span class="cm">/* mount flags */</span>
-        <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">s_magic</span><span class="p">;</span>            <span class="cm">/* filesystem’s magic number */</span>
-        <span class="k">struct</span> <span class="n">dentry</span>           <span class="o">*</span><span class="n">s_root</span><span class="p">;</span>            <span class="cm">/* directory mount point */</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">s_flags</span><span class="p">;</span>            <span class="cm">/* 挂载标志 */</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">s_magic</span><span class="p">;</span>            <span class="cm">/* 文件系统的魔数 */</span>
+        <span class="k">struct</span> <span class="n">dentry</span>           <span class="o">*</span><span class="n">s_root</span><span class="p">;</span>            <span class="cm">/* 目录挂载点 */</span>
         <span class="c1">//...</span>
-        <span class="kt">char</span>                    <span class="n">s_id</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>           <span class="cm">/* informational name */</span>
-        <span class="kt">void</span>                    <span class="o">*</span><span class="n">s_fs_info</span><span class="p">;</span>         <span class="cm">/* filesystem private info */</span>
+        <span class="kt">char</span>                    <span class="n">s_id</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>           <span class="cm">/* 信息标识符 */</span>
+        <span class="kt">void</span>                    <span class="o">*</span><span class="n">s_fs_info</span><span class="p">;</span>         <span class="cm">/* 文件系统私有信息 */</span>
 <span class="p">};</span>
 </pre></div>
 </div>
 <dl class="docutils">
-<dt>The superblock stores global information for an instance of a file system:</dt>
+<dt>超级块存储了文件系统实例的全局信息：</dt>
 <dd><ul class="first last simple">
-<li>the physical device on which it resides</li>
-<li>block size</li>
-<li>the maximum size of a file</li>
-<li>file system type</li>
-<li>the operations it supports</li>
-<li>magic number (identifies the file system)</li>
-<li>the root directory <code class="docutils literal"><span class="pre">dentry</span></code></li>
+<li>所使用的物理设备</li>
+<li>块大小</li>
+<li>文件的最大大小</li>
+<li>文件系统类型</li>
+<li>支持的操作</li>
+<li>魔数（用于标识文件系统）</li>
+<li>根目录的 <code class="docutils literal"><span class="pre">dentry</span></code></li>
 </ul>
 </dd>
 </dl>
-<p>Additionally, a generic pointer (<code class="docutils literal"><span class="pre">void</span> <span class="pre">*</span></code>) stores the private data of the file system.
-The superblock can be viewed as an abstract object to which its own data is added when there is a concrete implementation.</p>
-</div>
-<div class="section" id="superblock-operations">
-<span id="superblocksection"></span><h3>Superblock operations<a class="headerlink" href="#superblock-operations" title="Permalink to this headline">¶</a></h3>
-<p>The superblock operations are described by the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> structure:</p>
+<p>此外，一个通用指针 (<code class="docutils literal"><span class="pre">void</span> <span class="pre">*</span></code>) 用于存储文件系统的私有数据。超级块可以被视为一个抽象对象，在具体实现时，会向其中添加自己的数据。</p>
+<div class="section" id="section-10">
+<span id="superblocksection"></span><h3>超级块操作<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<p>超级块操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构描述：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">super_operations</span> <span class="p">{</span>
        <span class="c1">//...</span>
        <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">write_inode</span><span class="p">)</span> <span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="k">struct</span> <span class="n">writeback_control</span> <span class="o">*</span><span class="n">wbc</span><span class="p">);</span>
@@ -475,139 +454,127 @@ The superblock can be viewed as an abstract object to which its own data is adde
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The fields of the structure are function pointers with the following meanings:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">write_inode</span></code>, <code class="docutils literal"><span class="pre">alloc_inode</span></code>, <code class="docutils literal"><span class="pre">destroy_inode</span></code> write, allocate, respectively release resources associated with an inode and are described in the next lab</li>
-<li><code class="docutils literal"><span class="pre">put_super</span></code> is called when the superblock is released at <code class="docutils literal"><span class="pre">umount</span></code>; within this function, any resources (generally memory) from the file system's private data must be released;</li>
-<li><code class="docutils literal"><span class="pre">remount_fs</span></code> is called when the kernel detects a remount attempt (mount flag <code class="docutils literal"><span class="pre">MS_REMOUNTM</span></code>); most of the time here must be detected if a switch from read-only to read-write or vice versa is attempted; this can be done simply because both the old flags (in <code class="docutils literal"><span class="pre">sb-&gt;s_flags</span></code>) and the new flags (the <code class="docutils literal"><span class="pre">flags</span></code> argument) can be accessed; <code class="docutils literal"><span class="pre">data</span></code> is a pointer to the data sent by <code class="xref c c-func docutils literal"><span class="pre">mount()</span></code> that represent file system specific options;</li>
-<li><code class="docutils literal"><span class="pre">statfs</span></code> is called when a <code class="docutils literal"><span class="pre">statfs</span></code> system call is done (try <code class="docutils literal"><span class="pre">stat</span> <span class="pre">–f</span></code> or <code class="docutils literal"><span class="pre">df</span></code>); this call must fill the fields of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kstatfs</span></code> structure, as it is done, for example, in the <code class="xref c c-func docutils literal"><span class="pre">ext4_statfs()</span></code> function.</li>
+<p>该结构的字段是具有以下含义的函数指针：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">write_inode</span></code>, <code class="docutils literal"><span class="pre">alloc_inode</span></code> 与 <code class="docutils literal"><span class="pre">destroy_inode</span></code> 分别用于写入、分配和释放与 inode 相关的资源，将在下一个实验中进行详细描述。</li>
+<li><code class="docutils literal"><span class="pre">put_super</span></code> 在卸载时调用，释放文件系统私有数据的任何资源（通常是内存）；</li>
+<li><code class="docutils literal"><span class="pre">remount_fs</span></code> 在内核检测到重新挂载尝试（挂载标志 <code class="docutils literal"><span class="pre">MS_REMOUNTM</span></code>）时调用；大部分情况下，需要检测是否尝试从只读切换到读写或反之；这可以简单地通过访问旧标志（在 <code class="docutils literal"><span class="pre">sb-&gt;s_flags</span></code> 中）和新标志 (<code class="docutils literal"><span class="pre">flags</span></code> 参数) 来完成; <code class="docutils literal"><span class="pre">data</span></code> 是由 <code class="xref c c-func docutils literal"><span class="pre">mount()</span></code> 发送的表示文件系统特定选项的数据的指针；</li>
+<li><code class="docutils literal"><span class="pre">statfs</span></code> 在执行 <code class="docutils literal"><span class="pre">statfs</span></code> 系统调用时调用（尝试 <code class="docutils literal"><span class="pre">stat</span> <span class="pre">-f</span></code> 或 <code class="docutils literal"><span class="pre">df</span></code>）；此调用必须填充 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kstatfs</span></code> 结构的字段，就像在 <code class="xref c c-func docutils literal"><span class="pre">ext4_statfs()</span></code> 函数中所做的那样。</li>
 </ul>
-</div></blockquote>
 </div>
 </div>
-<div class="section" id="the-fill-super-function">
-<span id="fillsupersection"></span><h2>The <code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> function<a class="headerlink" href="#the-fill-super-function" title="Permalink to this headline">¶</a></h2>
-<p>As specified, the <code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> function is called to terminate the superblock initialization. This initialization involves filling the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> structure fields and the initialization of the root directory inode.</p>
-<p>An example of implementation is the <code class="xref c c-func docutils literal"><span class="pre">ramfs_fill_super()</span></code> function which is called to initialize the remaining fields in the superblock:</p>
+<div class="section" id="fill-super">
+<span id="fillsupersection"></span><h2><code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> 函数<a class="headerlink" href="#fill-super" title="Permalink to this headline">¶</a></h2>
+<p>如前所述, <code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> 函数用于超级块初始化的最后一段。此初始化包括填充 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构字段和根目录 inode 的初始化。</p>
+<p>一个实现示例是 <code class="xref c c-func docutils literal"><span class="pre">ramfs_fill_super()</span></code> 函数，它用于初始化超级块中的其余字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/pagemap.h&gt;</span><span class="cp"></span>
 
 <span class="cp">#define RAMFS_MAGIC     0x858458f6</span>
 
 <span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">super_operations</span> <span class="n">ramfs_ops</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="p">.</span><span class="n">statfs</span>         <span class="o">=</span> <span class="n">simple_statfs</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">drop_inode</span>     <span class="o">=</span> <span class="n">generic_delete_inode</span><span class="p">,</span>
-        <span class="p">.</span><span class="n">show_options</span>   <span class="o">=</span> <span class="n">ramfs_show_options</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">statfs</span>         <span class="o">=</span> <span class="n">simple_statfs</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">drop_inode</span>     <span class="o">=</span> <span class="n">generic_delete_inode</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">show_options</span>   <span class="o">=</span> <span class="n">ramfs_show_options</span><span class="p">,</span>
 <span class="p">};</span>
 
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">ramfs_fill_super</span><span class="p">(</span><span class="k">struct</span> <span class="n">super_block</span> <span class="o">*</span><span class="n">sb</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">silent</span><span class="p">)</span>
 <span class="p">{</span>
-        <span class="k">struct</span> <span class="n">ramfs_fs_info</span> <span class="o">*</span><span class="n">fsi</span><span class="p">;</span>
-        <span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">;</span>
-        <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">ramfs_fs_info</span> <span class="o">*</span><span class="n">fsi</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
 
-        <span class="n">save_mount_options</span><span class="p">(</span><span class="n">sb</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+  <span class="n">save_mount_options</span><span class="p">(</span><span class="n">sb</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
 
-        <span class="n">fsi</span> <span class="o">=</span> <span class="n">kzalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ramfs_fs_info</span><span class="p">),</span> <span class="n">GFP_KERNEL</span><span class="p">);</span>
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_fs_info</span> <span class="o">=</span> <span class="n">fsi</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fsi</span><span class="p">)</span>
-                <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
+  <span class="n">fsi</span> <span class="o">=</span> <span class="n">kzalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ramfs_fs_info</span><span class="p">),</span> <span class="n">GFP_KERNEL</span><span class="p">);</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_fs_info</span> <span class="o">=</span> <span class="n">fsi</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fsi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
 
-        <span class="n">err</span> <span class="o">=</span> <span class="n">ramfs_parse_options</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fsi</span><span class="o">-&gt;</span><span class="n">mount_opts</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+  <span class="n">err</span> <span class="o">=</span> <span class="n">ramfs_parse_options</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fsi</span><span class="o">-&gt;</span><span class="n">mount_opts</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
 
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_maxbytes</span>          <span class="o">=</span> <span class="n">MAX_LFS_FILESIZE</span><span class="p">;</span>
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_blocksize</span>         <span class="o">=</span> <span class="n">PAGE_SIZE</span><span class="p">;</span>
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_blocksize_bits</span>    <span class="o">=</span> <span class="n">PAGE_SHIFT</span><span class="p">;</span>
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_magic</span>             <span class="o">=</span> <span class="n">RAMFS_MAGIC</span><span class="p">;</span>
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_op</span>                <span class="o">=</span> <span class="o">&amp;</span><span class="n">ramfs_ops</span><span class="p">;</span>
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_time_gran</span>         <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_maxbytes</span>          <span class="o">=</span> <span class="n">MAX_LFS_FILESIZE</span><span class="p">;</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_blocksize</span>         <span class="o">=</span> <span class="n">PAGE_SIZE</span><span class="p">;</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_blocksize_bits</span>    <span class="o">=</span> <span class="n">PAGE_SHIFT</span><span class="p">;</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_magic</span>             <span class="o">=</span> <span class="n">RAMFS_MAGIC</span><span class="p">;</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_op</span>                <span class="o">=</span> <span class="o">&amp;</span><span class="n">ramfs_ops</span><span class="p">;</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_time_gran</span>         <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 
-        <span class="n">inode</span> <span class="o">=</span> <span class="n">ramfs_get_inode</span><span class="p">(</span><span class="n">sb</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">S_IFDIR</span> <span class="o">|</span> <span class="n">fsi</span><span class="o">-&gt;</span><span class="n">mount_opts</span><span class="p">.</span><span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-        <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_root</span> <span class="o">=</span> <span class="n">d_make_root</span><span class="p">(</span><span class="n">inode</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_root</span><span class="p">)</span>
-                <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
+  <span class="n">inode</span> <span class="o">=</span> <span class="n">ramfs_get_inode</span><span class="p">(</span><span class="n">sb</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">S_IFDIR</span> <span class="o">|</span> <span class="n">fsi</span><span class="o">-&gt;</span><span class="n">mount_opts</span><span class="p">.</span><span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_root</span> <span class="o">=</span> <span class="n">d_make_root</span><span class="p">(</span><span class="n">inode</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_root</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
 
-        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The kernel provides generic function to implement operations with file system structures.
-The <code class="xref c c-func docutils literal"><span class="pre">generic_delete_inode()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">simple_statfs()</span></code> functions used in the above code are such functions and can be used to implement the drivers if their functionality is sufficient.</p>
-<p>The <code class="xref c c-func docutils literal"><span class="pre">ramfs_fill_super()</span></code> function in the above code fills some fields in the superblock, then reads the root inode and allocates the root dentry.
-Reading the root inode is done in the <code class="xref c c-func docutils literal"><span class="pre">ramfs_get_inode()</span></code> function, and consists of allocating a new inode using <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> and initializing it. In order to free the inode, <code class="xref c c-func docutils literal"><span class="pre">iput()</span></code> is used, and <code class="xref c c-func docutils literal"><span class="pre">d_make_root()</span></code> is used to allocate the root dentry.</p>
-<p>An example implementation for a disk file system is the <code class="xref c c-func docutils literal"><span class="pre">minix_fill_super()</span></code> function in the minix file system.
-The functionality for the disk file system is similar to that of the virtual file system, with the exception of using the buffer cache.
-Also, the minix file system keeps private data using the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minix_sb_info</span></code> structure.
-A large part of this function deals with the initialization of these private data.
-The private data is allocated using the <code class="xref c c-func docutils literal"><span class="pre">kzalloc()</span></code> function and stored in the <code class="docutils literal"><span class="pre">s_fs_info</span></code> field of the superblock structure.</p>
-<p>VFS functions typically get as arguments the superblock, an inode and/or a dentry that contain a pointer to the superblock so that these private data can be easily accessed.</p>
+<p>内核提供了实现文件系统结构的操作的通用函数。上面代码中使用的 <code class="xref c c-func docutils literal"><span class="pre">generic_delete_inode()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">simple_statfs()</span></code> 函数就是这种函数，如果它们的功能足够，可以用于实现驱动程序。</p>
+<p>上面代码中的 <code class="xref c c-func docutils literal"><span class="pre">ramfs_fill_super()</span></code> 函数填充了超级块中的一些字段，然后读取根 inode 并分配根 dentry。读取根 inode 在 <code class="xref c c-func docutils literal"><span class="pre">ramfs_get_inode()</span></code> 函数中完成，它包括使用 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 函数分配新的 inode 并进行初始化。为了释放 inode，使用了 <code class="xref c c-func docutils literal"><span class="pre">iput()</span></code>，并使用 <code class="xref c c-func docutils literal"><span class="pre">d_make_root()</span></code> 函数分配根 dentry。</p>
+<p>一个用于磁盘文件系统的示例实现是 minix 文件系统中的 <code class="xref c c-func docutils literal"><span class="pre">minix_fill_super()</span></code> 函数。磁盘文件系统的功能与虚拟文件系统类似，唯一的区别是使用了缓冲区缓存。此外，minix 文件系统使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minix_sb_info</span></code> 结构来保存私有数据。这个函数的很大一部分工作是初始化这些私有数据。私有数据使用 <code class="xref c c-func docutils literal"><span class="pre">kzalloc()</span></code> 函数进行分配，并存储在超级块结构的 <code class="docutils literal"><span class="pre">s_fs_info</span></code> 字段中。</p>
+<p>VFS 函数通常以超级块、索引节点和/或包含指向超级块的指针的目录项作为实参，以便能够轻松访问这些私有数据。</p>
 </div>
-<div class="section" id="buffer-cache">
-<span id="buffercachesection"></span><h2>Buffer cache<a class="headerlink" href="#buffer-cache" title="Permalink to this headline">¶</a></h2>
-<p>Buffer cache is a kernel subsystem that handles caching (both read and write) blocks from block devices.
-The base entity used by buffer cache is the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> structure.
-The most important fields in this structure are:</p>
+<div class="section" id="section-11">
+<span id="buffercachesection"></span><h2>缓冲区缓存<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h2>
+<p>缓冲区缓存是处理块设备读写缓存的内核子系统。缓冲区缓存使用的基本实体是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> 结构。该结构中最重要的字段包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">b_data</span></code>, pointer to a memory area where the data was read from or where the data must be written to</li>
-<li><code class="docutils literal"><span class="pre">b_size</span></code>, buffer size</li>
-<li><code class="docutils literal"><span class="pre">b_bdev</span></code>, the block device</li>
-<li><code class="docutils literal"><span class="pre">b_blocknr</span></code>, the number of block on the device that has been loaded or needs to be saved on the disk</li>
-<li><code class="docutils literal"><span class="pre">b_state</span></code>, the status of the buffer</li>
+<li><code class="docutils literal"><span class="pre">b_data</span></code>，指向读取数据或写入数据的内存区域的指针</li>
+<li><code class="docutils literal"><span class="pre">b_size</span></code>，缓冲区大小</li>
+<li><code class="docutils literal"><span class="pre">b_bdev</span></code>，块设备</li>
+<li><code class="docutils literal"><span class="pre">b_blocknr</span></code>，已加载或需要保存在磁盘上的设备的块号</li>
+<li><code class="docutils literal"><span class="pre">b_state</span></code>，缓冲区的状态</li>
 </ul>
 </div></blockquote>
-<p>There are some important functions that work with these structures:</p>
+<p>以下是与这些结构一起使用的一些重要函数：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">__bread()</span></code>: reads a block with the given number and given size in a <code class="docutils literal"><span class="pre">buffer_head</span></code> structure; in case of success returns a pointer to the <code class="docutils literal"><span class="pre">buffer_head</span></code> structure, otherwise it returns <code class="docutils literal"><span class="pre">NULL</span></code>;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code>: does the same thing as the previous function, but the size of the read block is taken from the superblock, as well as the device from which the read is done;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">mark_buffer_dirty()</span></code>: marks the buffer as dirty (sets the <code class="docutils literal"><span class="pre">BH_Dirty</span></code> bit); the buffer will be written to the disk at a later time (from time to time the <code class="docutils literal"><span class="pre">bdflush</span></code> kernel thread wakes up and writes the buffers to disk);</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">brelse()</span></code>: frees up the memory used by the buffer, after it has previously written the buffer on disk if needed;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">map_bh()</span></code>: associates the buffer-head with the corresponding sector.</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">__bread()</span></code>：读取具有给定编号和给定大小的块到一个 <code class="docutils literal"><span class="pre">buffer_head</span></code> 结构中；如果成功，则返回指向 <code class="docutils literal"><span class="pre">buffer_head</span></code> 结构的指针，否则返回 <code class="docutils literal"><span class="pre">NULL</span></code>；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code>：与前一个函数相同，但读取的块的大小从超级块中获取，读取的设备也从超级块中获取；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">mark_buffer_dirty()</span></code>：将缓冲区标记为脏（设置 <code class="docutils literal"><span class="pre">BH_Dirty</span></code> 位）；缓冲区将在稍后的时间写入磁盘 (<code class="docutils literal"><span class="pre">bdflush</span></code> 内核线程会定期唤醒并将缓冲区写入磁盘)；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">brelse()</span></code>：在先前将缓冲区写入磁盘（如果需要）后，释放缓冲区使用的内存；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">map_bh()</span></code>：将 buffer-head 与相应的扇区关联。</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="functions-and-useful-macros">
-<h2>Functions and useful macros<a class="headerlink" href="#functions-and-useful-macros" title="Permalink to this headline">¶</a></h2>
-<p>The super block typically contains a map of occupied blocks (by inodes, dentries, data) in the form of a bitmap (vector of bits). To work with such maps, it is recommend to use the following features:</p>
+<div class="section" id="section-12">
+<h2>函数和有用的宏<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h2>
+<p>超级块通常包含以位图（位向量）形式表示的占用块的映射（由索引节点、目录条目、数据占用）。为了处理这种映射，建议使用以下功能：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">find_first_zero_bit()</span></code>, to find the first zero bit in a memory area. The size parameter means the number of bits in the search area;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">test_and_set_bit()</span></code>, to set a bit and get the old value;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">test_and_clear_bit()</span></code>, to delete a bit and get the old value;</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">test_and_change_bit()</span></code>, to invert the value of a bit and get the old value.</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">find_first_zero_bit()</span></code>，用于在内存区域中查找第一个为零的位。size 参数表示搜索区域中的位数；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">test_and_set_bit()</span></code>，设置位并获取旧值；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">test_and_clear_bit()</span></code>，删除位并获取旧值；</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">test_and_change_bit()</span></code>，取反位的值并获取旧值。</li>
 </ul>
 </div></blockquote>
-<p>The following macrodefinitions can be used to verify the type of an inode:</p>
+<p>以下宏定义可用于验证索引节点的类型：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">S_ISDIR</span></code> (<code class="docutils literal"><span class="pre">inode-&gt;i_mode</span></code>) to check if the inode is a directory;</li>
-<li><code class="docutils literal"><span class="pre">S_ISREG</span></code> (<code class="docutils literal"><span class="pre">inode-&gt;i_mode</span></code>) to check if the inode is a regular file (not a link or device file).</li>
+<li><code class="docutils literal"><span class="pre">S_ISDIR</span></code> (<code class="docutils literal"><span class="pre">inode-&gt;i_mode</span></code>)，用于检查索引节点是否为目录；</li>
+<li><code class="docutils literal"><span class="pre">S_ISREG</span></code> (<code class="docutils literal"><span class="pre">inode-&gt;i_mode</span></code>)，用于检查索引节点是否为普通文件（非链接或设备文件）。</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="further-reading">
-<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-13">
+<h2>进一步阅读<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li>Robert Love -- Linux Kernel Development, Second Edition -- Chapter
-12. The Virtual Filesystem</li>
-<li>Understanding the Linux Kernel, 3rd edition - Chapter 12. The Virtual
-Filesystem</li>
-<li><a class="reference external" href="http://www.coda.cs.cmu.edu/doc/talks/linuxvfs/">Linux Virtual File System (presentation)</a></li>
-<li><a class="reference external" href="http://www.cyberciti.biz/tips/understanding-unixlinux-file-system-part-i.html">Understanding Unix/Linux Filesystem</a></li>
-<li><a class="reference external" href="http://lwn.net/Articles/57369/">Creating Linux virtual filesystems</a></li>
-<li><a class="reference external" href="http://www.tldp.org/LDP/tlk/fs/filesystem.html">The Linux Documentation Project - VFS</a></li>
-<li><a class="reference external" href="http://www.linux.it/~rubini/docs/vfs/vfs.html">The &quot;Virtual File System&quot; in Linux</a></li>
-<li><a class="reference external" href="http://inglorion.net/documents/tutorials/tutorfs/">A Linux Filesystem Tutorial</a></li>
-<li><a class="reference external" href="http://www.win.tue.nl/~aeb/linux/lk/lk-8.html">The Linux Virtual File System</a></li>
+<li>Robert Love——Linux 内核开发，第二版——第 12 章 虚拟文件系统</li>
+<li>《深入理解 Linux 内核》，第 3 版——第 12 章 虚拟文件系统</li>
+<li><a class="reference external" href="http://www.coda.cs.cmu.edu/doc/talks/linuxvfs/">Linux 虚拟文件系统（演示）</a></li>
+<li><a class="reference external" href="http://www.cyberciti.biz/tips/understanding-unixlinux-file-system-part-i.html">理解 Unix/Linux 文件系统</a></li>
+<li><a class="reference external" href="http://lwn.net/Articles/57369/">创建 Linux 虚拟文件系统</a></li>
+<li><a href="#system-message-2"><span class="problematic" id="problematic-2">`Linux 文档项目——VFS`_</span></a></li>
+<li><a class="reference external" href="http://www.linux.it/~rubini/docs/vfs/vfs.html">Linux 中的“虚拟文件系统”</a></li>
+<li><a class="reference external" href="http://inglorion.net/documents/tutorials/tutorfs/">Linux 文件系统教程</a></li>
+<li><a class="reference external" href="http://www.win.tue.nl/~aeb/linux/lk/lk-8.html">Linux 虚拟文件系统</a></li>
 <li><a class="reference external" href="http://lxr.free-electrons.com/source/Documentation/filesystems/vfs.txt">Documentation/filesystems/vfs.txt</a></li>
-<li><a class="reference external" href="http://lxr.free-electrons.com/source/fs/">File systems sources</a></li>
+<li><a class="reference external" href="http://lxr.free-electrons.com/source/fs/">文件系统源代码</a></li>
 </ol>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-14">
+<h2>练习<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -619,7 +586,7 @@ Filesystem</li>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 filesystems。请参阅任务名称的练习。</p>
+<p>当前实验名称为 文件系统。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -638,9 +605,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/filesystems/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/文件系统/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-14">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -650,265 +617,228 @@ tools/labs $ make boot
 </div>
 <div class="section" id="myfs">
 <h3>myfs<a class="headerlink" href="#myfs" title="Permalink to this headline">¶</a></h3>
-<p>To begin, we plan to get familiar with the interface exposed by the Linux kernel and the Virtual File System (VFS) component. That is why, for the beginning, we will work with a simple, virtual file system (i.e. without physical disk support). The file system is called <code class="docutils literal"><span class="pre">myfs</span></code>.</p>
-<p>For this we will access the <code class="docutils literal"><span class="pre">myfs/</span></code> subdirectory in the laboratory skeleton. We will implement the superblock operations within this lab, and the next lab will continue with the inode operations.</p>
-<div class="section" id="register-and-unregister-the-myfs-file-system">
-<h4>1. Register and unregister the myfs file system<a class="headerlink" href="#register-and-unregister-the-myfs-file-system" title="Permalink to this headline">¶</a></h4>
-<p>The first step in working with the file system is to register and unregister it. We want to do this for the file system described in <code class="docutils literal"><span class="pre">myfs.c</span></code>. Check the file contents and follow the directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>.</p>
-<p>The steps you need to take are described in the section <a class="reference internal" href="../so2/lab8-filesystems-part1.html#registerunregistersection"><span class="std std-ref">Register and unregister filesystems</span></a>. Use the <code class="docutils literal"><span class="pre">&quot;myfs&quot;</span></code> string for the file system name.</p>
+<p>首先，我们计划熟悉 Linux 内核和虚拟文件系统（VFS）组件所提供的接口。为此，我们将使用一个简单的虚拟文件系统（即没有物理磁盘支持）。该文件系统名为 <code class="docutils literal"><span class="pre">myfs</span></code>。</p>
+<p>我们将在实验框架的 <code class="docutils literal"><span class="pre">myfs/</span></code> 子目录中进行操作。我们将在此实验中实现超级块操作，下一个实验将继续进行索引节点操作。</p>
+<div class="section" id="myfs-1">
+<h4>1. 注册和注销 myfs 文件系统<a class="headerlink" href="#myfs-1" title="Permalink to this headline">¶</a></h4>
+<p>处理文件系统的第一步是注册和注销它。我们要为 <code class="docutils literal"><span class="pre">myfs.c</span></code> 中描述的文件系统执行此操作。查看文件内容并按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的指示进行操作。</p>
+<p>在 <span class="xref std std-ref">RegisterUnregisterSection</span> 部分描述了需要执行的步骤。使用字符串 <code class="docutils literal"><span class="pre">&quot;myfs&quot;</span></code> 作为文件系统名称。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Within the file system structure, use the <code class="docutils literal"><span class="pre">myfs_mount</span></code> function present in the code skeleton to fill the superblock (done when mounting). In <code class="docutils literal"><span class="pre">myfs_mount</span></code> call the function specific to a file system without disk support. As an argument for the specific mount function, use the function of type <code class="docutils literal"><span class="pre">fill_super</span></code> defined in the code skeleton. You can review the <a class="reference internal" href="../so2/lab8-filesystems-part1.html#functionsmountkillsbsection"><span class="std std-ref">Functions mount, kill_sb</span></a> section.</p>
-<p class="last">To destroy the superblock (done at unmounting) use <code class="docutils literal"><span class="pre">kill_litter_super</span></code>, also a function specific to a file system without disk support. The function is already implemented, you need to fill it in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> structure.</p>
+<p>在文件系统结构中，使用代码框架中的 <code class="docutils literal"><span class="pre">myfs_mount</span></code> 函数填充超级块（在挂载时完成）。在 <code class="docutils literal"><span class="pre">myfs_mount</span></code> 中调用专用于没有磁盘支持的文件系统的函数。作为特定挂载函数的参数，使用代码框架中定义的 <code class="docutils literal"><span class="pre">fill_super</span></code> 类型的函数。你可以查看 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#functionsmountkillsbsection"><span class="std std-ref">mount 和 kill_sb 函数</span></a> 部分。</p>
+<p class="last">要销毁超级块（在卸载时完成），请使用 <code class="docutils literal"><span class="pre">kill_litter_super</span></code>，这也是特定于没有磁盘支持的文件系统的函数。该函数已经实现，你需要在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> 结构中填充它。</p>
 </div>
-<p>After completing the sections marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> , compile the module, copy it to the QEMU virtual machine, and start the virtual machine. Load the kernel module and then check the presence of the <code class="docutils literal"><span class="pre">myfs</span></code> file system within the <code class="docutils literal"><span class="pre">/proc/filesystems</span></code> file.</p>
-<p>At the moment, the file system is only registered, it does not expose operations to use it. If we try to mount it, the operation will fail. To try mounting, we create mount point <code class="docutils literal"><span class="pre">/mnt/myfs/</span></code>.</p>
+<p>完成标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的部分后，编译模块，将其复制到 QEMU 虚拟机中，并启动虚拟机。加载内核模块，然后检查 <code class="docutils literal"><span class="pre">/proc/filesystems</span></code> 文件中是否存在 <code class="docutils literal"><span class="pre">myfs</span></code> 文件系统。</p>
+<p>目前，文件系统只是注册了，它没有暴露可以使用的操作。如果我们尝试挂载它，操作将失败。为了尝试挂载，我们创建挂载点 <code class="docutils literal"><span class="pre">/mnt/myfs/</span></code>。</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mkdir -p /mnt/myfs
 </pre></div>
 </div>
-<p>and then we use the <code class="docutils literal"><span class="pre">mount</span></code> command:</p>
+<p>然后我们使用 <code class="docutils literal"><span class="pre">mount</span></code> 命令：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mount -t myfs none /mnt/myfs
 </pre></div>
 </div>
-<p>The error message we get shows that we have not implemented the operations that work on the superblock. We will have to implement the operations on the superblock and initialize the root inode. We will do this further.</p>
+<p>我们得到的错误消息显示我们还没有实现在超级块上的操作。我们将需要实现超级块上的操作并初始化根索引节点。我们将在后续步骤中完成这些操作。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal"><span class="pre">none</span></code> argument sent to the <code class="docutils literal"><span class="pre">mount</span></code> command indicates that we do not have a device from which to mount, the file system being a virtual one. Similarly, this is how the <code class="docutils literal"><span class="pre">procfs</span></code> or <code class="docutils literal"><span class="pre">sysfs</span></code> filesystems are mounted on Linux systems.</p>
+<p class="last">发送给 <code class="docutils literal"><span class="pre">mount</span></code> 命令的 <code class="docutils literal"><span class="pre">none</span></code> 实参表示我们没有要挂载的设备，因为文件系统是虚拟的。类似地，这也是 Linux 系统上挂载 <code class="docutils literal"><span class="pre">procfs</span></code> 或 <code class="docutils literal"><span class="pre">sysfs</span></code> 文件系统的方式。</p>
 </div>
 </div>
-<div class="section" id="completing-myfs-superblock">
-<h4>2. Completing myfs superblock<a class="headerlink" href="#completing-myfs-superblock" title="Permalink to this headline">¶</a></h4>
-<p>To be able to mount the file system, we need to fill its superblock's fields, that is, a generic VFS structure of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code>.
-We will fill out the structure within the <code class="xref c c-func docutils literal"><span class="pre">myfs_fill_super()</span></code> function; the superblock is represented by the variable <code class="docutils literal"><span class="pre">sb</span></code> passed as an argument to the function.
-Follow the hints marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code>.</p>
+<div class="section" id="myfs-2">
+<h4>2. 完成 myfs 的超级块<a class="headerlink" href="#myfs-2" title="Permalink to this headline">¶</a></h4>
+<p>为了能够挂载文件系统，我们需要填充其超级块的字段，即类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 的通用 VFS 结构。我们将在 <code class="xref c c-func docutils literal"><span class="pre">myfs_fill_super()</span></code> 函数内填充该结构；超级块由作为函数实参传递的变量 <code class="docutils literal"><span class="pre">sb</span></code> 表示。请按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的提示进行操作。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>To fill the <code class="docutils literal"><span class="pre">myfs_fill_super</span></code> function, you can start from the example in the section <a class="reference internal" href="../so2/lab8-filesystems-part1.html#fillsupersection"><span class="std std-ref">The fill_super() function</span></a>.</p>
-<p class="last">For the superblock structure fields, use the macros defined within the code skeleton wherever possible.</p>
+<p>要填充 <code class="docutils literal"><span class="pre">myfs_fill_super</span></code> 函数，你可以从 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#fillsupersection"><span class="std std-ref">fill_super() 函数</span></a> 部分中的示例开始。</p>
+<p class="last">对于超级块结构字段，请尽可能使用代码框架中定义的宏。</p>
 </div>
-<p>The <code class="docutils literal"><span class="pre">s_op</span></code> field in the superblock structure must be initialized to the superblock operations structures (type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code>). You need to define such a structure.</p>
-<p>For information on defining the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> structure and filling the superblock, see the section <a class="reference internal" href="../so2/lab8-filesystems-part1.html#superblocksection"><span class="std std-ref">Superblock operations</span></a>.</p>
+<p>超级块结构中的 <code class="docutils literal"><span class="pre">s_op</span></code> 字段必须初始化为超级块操作结构（类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code>）。你需要定义这样的结构。</p>
+<p>有关定义 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构和填充超级块的信息，请参阅 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#superblocksection"><span class="std std-ref">超级块操作</span></a> 部分。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Initialize the <code class="docutils literal"><span class="pre">drop_inode</span></code> and <code class="docutils literal"><span class="pre">statfs</span></code> fields of <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> structure.</p>
+<p class="last">初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构的 <code class="docutils literal"><span class="pre">drop_inode</span></code> 和 <code class="docutils literal"><span class="pre">statfs</span></code> 字段。</p>
 </div>
-<p>Although the superblock will be properly initialized at this time, the mount operation will continue to fail.
-In order for the operation to be successfully completed, the root inode will have to be initialized, which we will do for the next exercise.</p>
+<p>尽管此时超级块将被正确初始化，但挂载操作仍将失败。为了成功完成挂载操作，还需要初始化根索引节点，这将在下一个练习中进行操作。</p>
 </div>
-<div class="section" id="initialize-myfs-root-inode">
-<h4>3. Initialize myfs root inode<a class="headerlink" href="#initialize-myfs-root-inode" title="Permalink to this headline">¶</a></h4>
-<p>The root inode is the inode of the file system root directory (i.e. <code class="docutils literal"><span class="pre">/</span></code>).
-Initialization is done when the file system is mounted.
-The <code class="docutils literal"><span class="pre">myfs_fill_super</span></code> function, called at mount, is the one that calls the <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> function that creates and initializes an inode.
-Typically, this function is used to create and initialize all inodes; In this exercise, however, we will only create the root inode.</p>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">inode</span></code> is allocated inside the <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> function (local variable <code class="docutils literal"><span class="pre">inode</span></code>, allocated using the <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> function call).</p>
-<p>To successfully complete mounting the file system, you will need to fill the <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> function. Follow directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code>. A starting point is the <a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/fs/ramfs/inode.c#L63">ramfs_get_inode</a> function.</p>
+<div class="section" id="myfs-3">
+<h4>3. 初始化 myfs 根索引节点<a class="headerlink" href="#myfs-3" title="Permalink to this headline">¶</a></h4>
+<p>根索引节点是文件系统根目录（即 <code class="docutils literal"><span class="pre">/</span></code>）的索引节点。初始化是在文件系统挂载时完成的。在挂载时调用的 <code class="docutils literal"><span class="pre">myfs_fill_super</span></code> 函数会调用 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数来创建并初始化索引节点。通常，所有索引节点都是由此函数创建和初始化；但是，在本练习中，我们只创建根索引节点。</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">inode</span></code> 在 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数内进行分配（调用 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 函数，将返回的结果分配给局部变量 <code class="docutils literal"><span class="pre">inode</span></code>）。</p>
+<p>为了成功完成文件系统的挂载，你需要填充 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数。按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code> 的指示进行操作。可以参考 <a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/fs/ramfs/inode.c#L63">ramfs_get_inode</a> 函数。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>To initialize <code class="docutils literal"><span class="pre">uid</span></code>, <code class="docutils literal"><span class="pre">gid</span></code> and <code class="docutils literal"><span class="pre">mode</span></code> , you can use the <code class="xref c c-func docutils literal"><span class="pre">inode_init_owner()</span></code> function as it is used in <code class="xref c c-func docutils literal"><span class="pre">ramfs_get_inode()</span></code>.
-When you call <code class="xref c c-func docutils literal"><span class="pre">inode_init_owner()</span></code>, use <code class="docutils literal"><span class="pre">NULL</span></code> as the second parameter because there is no parent directory for the created inode.</p>
-<p>Initialize the <code class="docutils literal"><span class="pre">i_atime</span></code>, <code class="docutils literal"><span class="pre">i_ctime</span></code>, and <code class="docutils literal"><span class="pre">i_mtime</span></code> of the VFS inode to the value returned by the <code class="xref c c-func docutils literal"><span class="pre">current_time()</span></code> function.</p>
-<p>You will need to initialize the operations for the inode of type directory. To do this, follow the steps:</p>
+<p>要初始化 <code class="docutils literal"><span class="pre">uid</span></code>, <code class="docutils literal"><span class="pre">gid</span></code> 和 <code class="docutils literal"><span class="pre">mode</span></code>，可以使用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_owner()</span></code> 函数，就像在 <code class="xref c c-func docutils literal"><span class="pre">ramfs_get_inode()</span></code> 中那样。调用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_owner()</span></code> 时，应将 <code class="docutils literal"><span class="pre">NULL</span></code> 作为第二个参数，因为创建的索引节点没有父目录。</p>
+<p>将 VFS 索引节点的 <code class="docutils literal"><span class="pre">i_atime</span></code>, <code class="docutils literal"><span class="pre">i_ctime</span></code> 和 <code class="docutils literal"><span class="pre">i_mtime</span></code> 初始化为 <code class="xref c c-func docutils literal"><span class="pre">current_time()</span></code> 函数返回的值。</p>
+<p>你需要为目录类型的索引节点初始化操作。执行以下步骤：</p>
 <blockquote class="last">
 <div><ol class="arabic simple">
-<li>Check if this is a directory type inode using the <code class="docutils literal"><span class="pre">S_ISDIR</span></code> macro.</li>
-<li>For the <code class="docutils literal"><span class="pre">i_op</span></code> and <code class="docutils literal"><span class="pre">i_fop</span></code> fields, use kernel functions that are already implemented:<ul>
-<li>for <code class="docutils literal"><span class="pre">i_op</span></code>: <code class="xref c c-type docutils literal"><span class="pre">simple_dir_inode_operations</span></code>.</li>
-<li>for <code class="docutils literal"><span class="pre">i_fop</span></code>: <code class="xref c c-type docutils literal"><span class="pre">simple_dir_operations</span></code></li>
+<li>使用 <code class="docutils literal"><span class="pre">S_ISDIR</span></code> 宏检查这是否是目录类型的索引节点。</li>
+<li>对于 <code class="docutils literal"><span class="pre">i_op</span></code> 和 <code class="docutils literal"><span class="pre">i_fop</span></code> 字段，请使用已经实现的内核函数：<ul>
+<li>对于 <code class="docutils literal"><span class="pre">i_op</span></code>：使用 <code class="xref c c-type docutils literal"><span class="pre">simple_dir_inode_operations</span></code>。</li>
+<li>对于 <code class="docutils literal"><span class="pre">i_fop</span></code>：使用 <code class="xref c c-type docutils literal"><span class="pre">simple_dir_operations</span></code>。</li>
 </ul>
 </li>
-<li>Increase the number of links for the directory using the <code class="xref c c-func docutils literal"><span class="pre">inc_nlink()</span></code> function.</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">inc_nlink()</span></code> 函数增加目录的链接数。</li>
 </ol>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="test-myfs-mount-and-unmount">
-<h4>4. Test myfs mount and unmount<a class="headerlink" href="#test-myfs-mount-and-unmount" title="Permalink to this headline">¶</a></h4>
-<p>Now we can mount the filesystem.
-Follow the steps above to compile the kernel module, copy to the virtual machine, and start the virtual machine, then insert the kernel module, create the mount point <code class="docutils literal"><span class="pre">/mnt/myfs/</span></code>, and mount the file system.
-We verify that the file system was mounted by inspecting the <code class="docutils literal"><span class="pre">/proc/mounts</span></code> file.</p>
-<p>What inode number does the <code class="docutils literal"><span class="pre">/mnt/myfs</span></code> directory have? Why?</p>
+<div class="section" id="myfs-4">
+<h4>4. 测试 myfs 的挂载和卸载<a class="headerlink" href="#myfs-4" title="Permalink to this headline">¶</a></h4>
+<p>现在我们可以挂载文件系统了。按照上述步骤编译内核模块，将其复制到虚拟机中，启动虚拟机，然后插入内核模块，创建挂载点 <code class="docutils literal"><span class="pre">/mnt/myfs/</span></code>，并挂载文件系统。我们可以通过检查 <code class="docutils literal"><span class="pre">/proc/mounts</span></code> 文件来验证文件系统是否已挂载。</p>
+<p><a href="#system-message-1"><span class="problematic" id="problematic-1">``</span></a>/mnt/myfs``目录的索引节点号是多少？为什么？</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>To display the inode number of a directory, use the command:</p>
+<p>要显示目录的索引节点号，请使用以下命令：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ls -di /path/to/directory</span>
 </pre></div>
 </div>
-<p class="last">where <code class="docutils literal"><span class="pre">/path/to/directory/</span></code> is the path to the directory whose inode number we want to display.</p>
+<p class="last">其中 <code class="docutils literal"><span class="pre">/path/to/directory/</span></code> 是要显示其索引节点号的目录的路径。</p>
 </div>
-<p>We check myfs file system statistics using the following command:</p>
+<p>我们使用以下命令检查 myfs 文件系统的统计信息：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">stat -f /mnt/myfs</span>
 </pre></div>
 </div>
-<p>We want to see what the mount point <code class="docutils literal"><span class="pre">/mnt/myfs</span></code> contains and if we can create files.
-For this we run the commands:</p>
+<p>我们想查看挂载点 <code class="docutils literal"><span class="pre">/mnt/myfs</span></code> 的内容以及是否可以创建文件。为此，我们运行以下命令：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ls -la /mnt/myfs
 <span class="gp">#</span> touch /mnt/myfs/a.txt
 </pre></div>
 </div>
-<p>We can see that we can not create the <code class="docutils literal"><span class="pre">a.txt</span></code> file on the file system.
-This is because we have not implemented the operations to work with inodes in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> structure.
-We will implement these operations within the next lab.</p>
-<p>Unmount the file system using the command</p>
+<p>我们可以看到我们无法在文件系统上创建 <code class="docutils literal"><span class="pre">a.txt</span></code> 文件。这是因为我们尚未在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构中实现与索引节点相关的操作。我们将在下一个实验中实现这些操作。</p>
+<p>使用以下命令卸载文件系统：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">umount /mnt/myfs</span>
 </pre></div>
 </div>
-<p>Unload the kernel module corresponding to the file system as well.</p>
+<p>同时卸载对应的内核模块。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>To test the entire functionality, you can use the <code class="docutils literal"><span class="pre">test-myfs.sh</span></code> script:</p>
+<p>要测试整个功能，你可以使用 <code class="docutils literal"><span class="pre">test-myfs.sh</span></code> 脚本：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./test-myfs.sh</span>
 </pre></div>
 </div>
-<p>The script is copied to the virtual machine using <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> only if it is executable:</p>
+<p>该脚本将使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 将其复制到虚拟机，但前提是它具有可执行权限：</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">student@workstation:~/linux/tools/labs$</span> chmod +x skels/filesystems/myfs/test-myfs.sh
 </pre></div>
 </div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The statistics displayed for the file system are minimal because the information is provided by the simple_statfs function.</p>
+<p class="last">显示的文件系统统计信息很简单，因为这些信息是由 simple_statfs 函数提供的。</p>
 </div>
 </div>
 </div>
 <div class="section" id="minfs">
 <h3>minfs<a class="headerlink" href="#minfs" title="Permalink to this headline">¶</a></h3>
-<p>Next, we will implement the basics of a very simple file system, called <code class="docutils literal"><span class="pre">minfs</span></code>, with disk support.
-We will use a disk in the virtual machine that we will format and mount with the <code class="docutils literal"><span class="pre">minfs</span></code> filesystem.</p>
-<p>For this we will access the <code class="docutils literal"><span class="pre">minfs/kernel</span></code> directory from the laboratory skeleton and work with the code in <code class="docutils literal"><span class="pre">minfs.c</span></code>.
-Just like <code class="docutils literal"><span class="pre">myfs</span></code> we will not implement the operations for working with inodes. We will just limit to working with the superblock and, therefore, mounting.
-The rest of the operations will be implemented in the next lab.</p>
-<p>Follow the diagram below to clarify the role of structures within the <code class="docutils literal"><span class="pre">minfs</span></code> file system.</p>
+<p>接下来，我们将实现一个非常简单的文件系统，名为 <code class="docutils literal"><span class="pre">minfs</span></code>，这个文件系统支持磁盘。我们将使用虚拟机中的一个磁盘，格式化并挂载 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统。</p>
+<p>为此，我们需要从实验框架中访问 <code class="docutils literal"><span class="pre">minfs/kernel</span></code> 目录，并处理 <code class="docutils literal"><span class="pre">minfs.c</span></code> 中的代码。与 <code class="docutils literal"><span class="pre">myfs</span></code> 类似，我们不会实现与索引节点相关的操作，只限于处理超级块和挂载。其他操作将在下一个实验中实现。</p>
+<p>请按照下面的图表来理解 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统中各个结构的作用。</p>
 <img alt="../_images/minfs.png" src="../_images/minfs.png" />
-<div class="section" id="registering-and-unregistering-the-minfs-file-system">
-<h4>1. Registering and unregistering the minfs file system<a class="headerlink" href="#registering-and-unregistering-the-minfs-file-system" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="minfs-1">
+<h4>1. 注册和注销 minfs 文件系统<a class="headerlink" href="#minfs-1" title="Permalink to this headline">¶</a></h4>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Before solving the exercise, we need to add a disk to the virtual machine. To do this, generate a file that we will use as the disk image using the following command:</p>
+<p>在解决本练习之前，我们需要在虚拟机中添加一个磁盘。你可以使用以下命令生成一个文件作为磁盘镜像：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">dd if=/dev/zero of=mydisk.img bs=1M count=100</span>
 </pre></div>
 </div>
-<p class="last">and add the <code class="docutils literal"><span class="pre">-drive</span> <span class="pre">file=mydisk.img,if=virtio,format=raw</span></code> argument to the <code class="docutils literal"><span class="pre">qemu</span></code> command in <code class="docutils literal"><span class="pre">qemu/Makefile</span></code> (in the <code class="docutils literal"><span class="pre">QEMU_OPTS</span></code> variable).
-The new argument for the <code class="docutils literal"><span class="pre">qemu</span></code> command must be added after the one for the existing disk (<code class="docutils literal"><span class="pre">YOCTO_IMAGE</span></code>).</p>
+<p class="last">并且在 <code class="docutils literal"><span class="pre">qemu/Makefile</span></code> 文件中的 <code class="docutils literal"><span class="pre">qemu</span></code> 命令中添加 <code class="docutils literal"><span class="pre">-drive</span> <span class="pre">file=mydisk.img,if=virtio,format=raw</span></code> 参数（在 <code class="docutils literal"><span class="pre">QEMU_OPTS</span></code> 变量中）。新的 <code class="docutils literal"><span class="pre">qemu</span></code> 命令参数必须在现有磁盘参数 (<code class="docutils literal"><span class="pre">YOCTO_IMAGE</span></code>) 之后添加。</p>
 </div>
-<p>To register and unregister the file system, you will need to fill the <code class="docutils literal"><span class="pre">minfs_fs_type</span></code> and <code class="docutils literal"><span class="pre">minfs_mount</span></code> functions in <code class="docutils literal"><span class="pre">minfs.c</span></code>. Follow the directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>.</p>
+<p>要注册和注销文件系统，你需要在 <code class="docutils literal"><span class="pre">minfs.c</span></code> 中填写 <code class="docutils literal"><span class="pre">minfs_fs_type</span></code> 和 <code class="docutils literal"><span class="pre">minfs_mount</span></code> 函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的指引进行操作。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>In the file system structure, for mount, use the <code class="docutils literal"><span class="pre">minfs_mount</span></code> function from in the code skeleton.
-In this function, call the function to mount a file system with disk support (See the <a class="reference internal" href="../so2/lab8-filesystems-part1.html#functionsmountkillsbsection"><span class="std std-ref">Functions mount, kill_sb</span></a> section. Use <code class="xref c c-func docutils literal"><span class="pre">mount_bdev()</span></code>).
-Choose the most suitable function for destroying the superblock (done at unmount); keep in mind that it is a file system with disk support. Use the <code class="xref c c-func docutils literal"><span class="pre">kill_block_super()</span></code> function.</p>
-<p>Initialize the <code class="docutils literal"><span class="pre">fs_flags</span></code> field of the <code class="xref c c-type docutils literal"><span class="pre">minfs_fs_type</span></code> structure with the appropriate value for a file system with disk support. See the section <a class="reference internal" href="../so2/lab8-filesystems-part1.html#registerunregistersection"><span class="std std-ref">Register and unregister filesystems</span></a>.</p>
-<p class="last">The function for filling the superblock is <code class="docutils literal"><span class="pre">minfs_fill_super</span></code>.</p>
+<p>在文件系统结构中，对于挂载，请使用代码框架中的 <code class="docutils literal"><span class="pre">minfs_mount</span></code> 函数。在此函数中，调用带有磁盘支持的文件系统挂载函数（请参见 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#functionsmountkillsbsection"><span class="std std-ref">mount 和 kill_sb 函数</span></a> 部分。使用 <code class="xref c c-func docutils literal"><span class="pre">mount_bdev()</span></code>）。选择最合适的函数来销毁超级块（在卸载时完成）；请记住这是带有磁盘支持的文件系统。使用 <code class="xref c c-func docutils literal"><span class="pre">kill_block_super()</span></code> 函数。</p>
+<p>使用适当的值初始化 <code class="xref c c-type docutils literal"><span class="pre">minfs_fs_type</span></code> 结构的 <code class="docutils literal"><span class="pre">fs_flags</span></code> 字段，以适应带有磁盘支持的文件系统。请参阅 <span class="xref std std-ref">RegisterUnregisterSection</span> 部分。</p>
+<p class="last">填充超级块的函数是 <code class="docutils literal"><span class="pre">minfs_fill_super</span></code>。</p>
 </div>
-<p>After completing the sections marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>, compile the module, copy it into the QEMU virtual machine, and start the virtual machine.
-Load the kernel module and then check the presence of the <code class="docutils literal"><span class="pre">minfs</span></code> file system within the <code class="docutils literal"><span class="pre">/proc/filesystems</span></code> file.</p>
-<p>To test the mounting of the <code class="docutils literal"><span class="pre">minfs</span></code> file system we will need to format the disk with its structure. Formatting requires the <code class="docutils literal"><span class="pre">mkfs.minfs</span></code> formatting tool from the <code class="docutils literal"><span class="pre">minfs/user</span></code> directory. The utility is automatically compiled when running <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> and copied to the virtual machine at <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code>.</p>
-<p>After compiling, copying, and starting the virtual machine, format the <code class="docutils literal"><span class="pre">/dev/vdd</span></code> using the formatting utility:</p>
+<p>完成标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的部分后，编译模块，将其复制到 QEMU 虚拟机中，并启动虚拟机。加载内核模块，然后检查 <code class="docutils literal"><span class="pre">/proc/filesystems</span></code> 文件中是否存在 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统。</p>
+<p>为了测试 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统的挂载，我们需要使用其结构对磁盘进行格式化。格式化需要使用 <code class="docutils literal"><span class="pre">minfs/user</span></code> 目录下的 <code class="docutils literal"><span class="pre">mkfs.minfs</span></code> 格式化工具。该工具在运行 <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> 时会自动编译，并在 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 时复制到虚拟机中。</p>
+<p>编译、复制和启动虚拟机后，使用格式化工具对 <code class="docutils literal"><span class="pre">/dev/vdd</span></code> 进行格式化：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./mkfs.minfs /dev/vdd
 </pre></div>
 </div>
-<p>Load the kernel module:</p>
+<p>加载内核模块：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod minfs.ko
 </pre></div>
 </div>
-<p>Create mount point <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code>:</p>
+<p>创建挂载点 <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code>：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mkdir -p /mnt/minfs/
 </pre></div>
 </div>
-<p>and mount the filesystem</p>
+<p>并挂载文件系统</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mount -t minfs /dev/vdd /mnt/minfs/
 </pre></div>
 </div>
-<p>The operation fails because the root inode is not initialized.</p>
+<p>操作失败，因为根索引节点未初始化。</p>
 </div>
-<div class="section" id="completing-minfs-superblock">
-<h4>2. Completing minfs superblock<a class="headerlink" href="#completing-minfs-superblock" title="Permalink to this headline">¶</a></h4>
-<p>To be able to mount the file system, you will need to fill the superblock (i.e a structure with type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code>) within the <code class="docutils literal"><span class="pre">minfs_fill_super</span></code> function; it is the <code class="docutils literal"><span class="pre">s</span></code> argument of the function.
-The structure of operations on the superblock is already defined: <code class="docutils literal"><span class="pre">minfs_ops</span></code>.
-Follow the directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code>. You can also follow the implementation of the <a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/fs/minix/inode.c#L153">minix_fill_super</a> function.</p>
+<div class="section" id="minfs-2">
+<h4>2. 完善 minfs 超级块<a class="headerlink" href="#minfs-2" title="Permalink to this headline">¶</a></h4>
+<p>为了能够挂载文件系统，你需要在 <code class="docutils literal"><span class="pre">minfs_fill_super</span></code> 函数中填充超级块（即类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 的结构体），超级块对应该函数的 <code class="docutils literal"><span class="pre">s</span></code> 实参。操作超级块的结构已经定义好了: <code class="docutils literal"><span class="pre">minfs_ops</span></code>。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的指引操作。你还可以参考 <a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/fs/minix/inode.c#L153">minix_fill_super</a> 函数的实现。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Some structures are found in the header file <code class="docutils literal"><span class="pre">minfs.h</span></code>.</p>
-<p>For information on working with buffers, go to the <a class="reference internal" href="../so2/lab8-filesystems-part1.html#buffercachesection"><span class="std std-ref">Buffer cache</span></a> section.</p>
-<p>Read the first block on the disk (block with index 0).
-To read the block, use the <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> function.
-Cast the read data (the <code class="docutils literal"><span class="pre">b_data</span></code> field in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> structure) to the structure storing the <code class="docutils literal"><span class="pre">minfs</span></code> superblock information on the disk: <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_super_block</span></code>, defined in the source code file.</p>
-<p class="last">Structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_super_block</span></code> holds file system-specific information that is not found in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> generic structure (in this case only version).
-Those additional information (found in <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_super_block</span></code> (on disk) but not in <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> (VFS)) will be stored in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_sb_info</span></code> structure.</p>
+<p>一些结构可以在头文件 <code class="docutils literal"><span class="pre">minfs.h</span></code> 中找到。</p>
+<p>有关使用缓冲区的信息，请参阅 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#buffercachesection"><span class="std std-ref">缓冲区缓存</span></a> 部分。</p>
+<p>读取磁盘上的第一个块（索引为 0 的块）。要读取块，请使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 函数。将读取的数据（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> 结构中的 <code class="docutils literal"><span class="pre">b_data</span></code> 字段）转换为存储磁盘上的 <code class="docutils literal"><span class="pre">minfs</span></code> 超级块的信息的结构体：在源代码文件中定义的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_super_block</span></code>。</p>
+<p class="last">结构 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_super_block</span></code> 包含了文件系统特定的信息，这些信息在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 通用结构中找不到（在这种情况下只有版本号）。这些附加信息（在磁盘上的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_super_block</span></code> 中找到，但在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block`（VFS）中找不到）将存储在</span> <span class="pre">:c:type:`struct</span> <span class="pre">minfs_sb_info</span></code> 结构中。</p>
 </div>
-<p>To check the functionality, we need a function for reading the root inode.
-For the time being, use the <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> function from <code class="docutils literal"><span class="pre">myfs</span></code> file system exercises.
-Copy the function into the source code and call it the same as you did for myfs.
-The third argument when calling the <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> function is the inode creation permissions, similar to the virtual file system exercise (myfs).</p>
-<p>Validate the implementation by executing the commands from the previous exercise.</p>
+<p>为了检查功能，我们需要用于读取根索引节点的函数。这里暂时使用 <code class="docutils literal"><span class="pre">myfs</span></code> 文件系统练习中的 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数。将该函数复制到源代码中，并像处理 myfs 时一样调用它。调用 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数时的第三个参数是索引节点的创建权限，与虚拟文件系统练习（myfs）中的类似。</p>
+<p>执行上一个练习中的命令来验证实现。</p>
 </div>
-<div class="section" id="creating-and-destroying-minfs-inodes">
-<h4>3. Creating and destroying minfs inodes<a class="headerlink" href="#creating-and-destroying-minfs-inodes" title="Permalink to this headline">¶</a></h4>
-<p>For mounting, we need to initialize the root inode, and to get the root inode, we need to implement the functions to work with inodes.
-That is, you need to implement the <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> and <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> functions.
-Follow the directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code>. You can use the <code class="xref c c-func docutils literal"><span class="pre">minix_alloc_inode()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">minix_destroy_inode()</span></code> functions as a model.</p>
-<p>For the implementation, look at the macros and structures in the <code class="docutils literal"><span class="pre">minfs.h</span></code> header file.</p>
+<div class="section" id="minfs-3">
+<h4>3. 创建和销毁 minfs 索引节点<a class="headerlink" href="#minfs-3" title="Permalink to this headline">¶</a></h4>
+<p>挂载操作中，我们需要初始化根索引节点，并且为了获得根索引节点，我们需要实现与索引节点相关的函数。也就是说，你需要实现 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code> 的指示进行操作。你可以将 <code class="xref c c-func docutils literal"><span class="pre">minix_alloc_inode`()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_destroy_inode()</span></code> 函数作为参考。</p>
+<p>为了实现，请查看 <code class="docutils literal"><span class="pre">minfs.h</span></code> 头文件中的宏和结构。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>For memory allocation/deallocation in <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> and <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code>, we recommend using <code class="xref c c-func docutils literal"><span class="pre">kzalloc()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>.</p>
-<p>In <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> allocate structures with type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>, but only return structures with type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>, i.e. return those given by the <code class="docutils literal"><span class="pre">vfs_inode</span></code> field.</p>
-<p>In the <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> function, call <code class="xref c c-func docutils literal"><span class="pre">inode_init_once()</span></code> to initialize the inode.</p>
-<p class="last">In the <code class="docutils literal"><span class="pre">destroy_inode</span></code> function, you can access the structure with type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> using the <code class="docutils literal"><span class="pre">container_of</span></code> macro.</p>
+<p>要想实现在 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 中的内存分配/释放，建议使用 <code class="xref c c-func docutils literal"><span class="pre">kzalloc()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>。</p>
+<p>在 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 中，分配类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的结构体，但只返回类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 的结构体，即返回 <code class="docutils literal"><span class="pre">vfs_inode</span></code> 字段对应的结构体。</p>
+<p>在 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 函数中，调用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_once()</span></code> 来初始化索引节点。</p>
+<p class="last">在 <code class="docutils literal"><span class="pre">destroy_inode</span></code> 函数中，你可以使用 <code class="docutils literal"><span class="pre">container_of</span></code> 宏访问 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 结构体。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">In this exercise, you have implemented the <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> and <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> functions, but they are not yet called. The correctness of the implementation will be checked at the end of the next exercise.</p>
+<p class="last">在本练习中，你已经实现了 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数，但尚未调用它们。实现的正确性将在下一个练习的最后进行检查。</p>
 </div>
 </div>
-<div class="section" id="initialize-minfs-root-inode">
-<h4>4. Initialize minfs root inode<a class="headerlink" href="#initialize-minfs-root-inode" title="Permalink to this headline">¶</a></h4>
-<p>Initializing the root inode is required in order to mount the file system.
-For this, you will need to complete the <code class="docutils literal"><span class="pre">minfs_ops</span></code> structure with the <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> and <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> functions and fill the <code class="docutils literal"><span class="pre">minfs_iget</span></code> function.</p>
-<p>The <code class="docutils literal"><span class="pre">minfs_iget</span></code> function is the function called to allocate a VFS inode (i.e. <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>) and fill it with minfs inode-specific information from the disk (i.e. <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>).</p>
-<p>Follow the directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">4</span></code>.
-Fill out the <code class="docutils literal"><span class="pre">alloc_inode</span></code> and <code class="docutils literal"><span class="pre">destroy_inode</span></code> fields of <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> structure with the functions implemented in the previous step.</p>
-<p>The information about the root inode is found in the second block on the disk (the inode with index 1).
-Make <code class="docutils literal"><span class="pre">minfs_iget</span></code> read the root minfs inode from the disk (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>) and fill in the VFS inode (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>).</p>
-<p>In the <code class="docutils literal"><span class="pre">minfs_fill_super</span></code> function, replace the <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> call with the <code class="docutils literal"><span class="pre">minfs_iget</span></code> function call.</p>
+<div class="section" id="minfs-4">
+<h4>4. 初始化 minfs 根索引节点<a class="headerlink" href="#minfs-4" title="Permalink to this headline">¶</a></h4>
+<p>为了挂载文件系统，需要初始化根索引节点。为此，你需要完成 <code class="docutils literal"><span class="pre">minfs_ops</span></code> 结构体，包括 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数，并填充 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数。</p>
+<p><code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数用于分配 VFS 索引节点（即 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>），并用磁盘中的 minfs 索引节点特定信息（即 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>）来填充它。</p>
+<p>按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">4</span></code> 的指示进行操作。在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构体的 <code class="docutils literal"><span class="pre">alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">destroy_inode</span></code> 字段中填写在上一步中实现的函数。</p>
+<p>根索引节点的信息存储在磁盘上的第二个块中（索引为 1 的索引节点）。使 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 从磁盘中读取根 minfs 索引节点（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>）并填充 VFS 索引节点（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>）。</p>
+<p>在 <code class="docutils literal"><span class="pre">minfs_fill_super</span></code> 函数中，用 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数调用替换 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 的调用。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>To implement the <code class="docutils literal"><span class="pre">minfs_iget</span></code> function, follow the implementation of <a class="reference external" href="https://elixir.bootlin.com/linux/v4.15/source/fs/minix/inode.c#L460">V1_minix_iget</a>.
-To read a block, use the <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> function.
-Cast the read data (the <code class="docutils literal"><span class="pre">b_data</span></code> field of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> structure) to the minfs inode from the disk (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>).</p>
-<p>The <code class="docutils literal"><span class="pre">i_uid</span></code>, <code class="docutils literal"><span class="pre">i_gid</span></code>, <code class="docutils literal"><span class="pre">i_mode</span></code>, <code class="docutils literal"><span class="pre">i_size</span></code> must be filled in the VFS inode with the values in the minfs inode structure read from disk.
-To initialize the <code class="docutils literal"><span class="pre">i_uid</span></code> and <code class="docutils literal"><span class="pre">i_gid</span> <span class="pre">fields</span></code>, use the functions <code class="xref c c-func docutils literal"><span class="pre">i_uid_write()</span></code> , and <code class="xref c c-func docutils literal"><span class="pre">i_gid_write()</span></code>.</p>
-<p>Initialize the <code class="docutils literal"><span class="pre">i_atime</span></code> , <code class="docutils literal"><span class="pre">i_ctime</span></code>, and <code class="docutils literal"><span class="pre">i_mtime</span></code> fields of the VFS inode to the value returned by the <code class="xref c c-func docutils literal"><span class="pre">current_time()</span></code> function.</p>
-<p>You will need to initialize the operations for the inode with type directory. To do this, follow the steps:</p>
+<p>要实现 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数，请参考 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.15/source/fs/minix/inode.c#L460">V1_minix_iget</a> 的实现。要读取块，请使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 函数。将读取的数据（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> 结构中的 <code class="docutils literal"><span class="pre">b_data</span></code> 字段）强制转换为磁盘上的 minfs 索引节点（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>）。</p>
+<p>使用从磁盘读取的 minfs 索引节点结构中的值填充 VFS 索引节点中的 <code class="docutils literal"><span class="pre">i_uid</span></code>, <code class="docutils literal"><span class="pre">i_gid</span></code>, <code class="docutils literal"><span class="pre">i_mode</span></code> 以及 <code class="docutils literal"><span class="pre">i_size</span></code> 字段。要初始化 <code class="docutils literal"><span class="pre">i_uid</span></code> 和 <code class="docutils literal"><span class="pre">i_gid</span></code> 字段，请使用函数 <code class="xref c c-func docutils literal"><span class="pre">i_uid_write()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">i_gid_write()</span></code>。</p>
+<p>将 VFS 索引节点的 <code class="docutils literal"><span class="pre">i_atime</span></code>, <code class="docutils literal"><span class="pre">i_ctime</span></code> 和 <code class="docutils literal"><span class="pre">i_mtime</span></code> 字段初始化为 <code class="xref c c-func docutils literal"><span class="pre">current_time()</span></code> 函数的返回值。</p>
+<p>你需要为目录类型的索引节点初始化操作。请按照以下步骤进行操作：</p>
 <blockquote class="last">
 <div><ol class="arabic simple">
-<li>Check if this is a directory type inode using the <code class="docutils literal"><span class="pre">S_ISDIR</span></code> macro.</li>
-<li>For the <code class="docutils literal"><span class="pre">i_op</span></code> and <code class="docutils literal"><span class="pre">i_fop</span></code> fields, use kernel functions already implemented:<ul>
-<li>for <code class="docutils literal"><span class="pre">i_op</span></code>: <code class="xref c c-func docutils literal"><span class="pre">simple_dir_inode_operations()</span></code> .</li>
-<li>for <code class="docutils literal"><span class="pre">i_fop</span></code>: <code class="xref c c-func docutils literal"><span class="pre">simple_dir_operations()</span></code></li>
+<li>使用 <code class="docutils literal"><span class="pre">S_ISDIR</span></code> 宏检查是否为目录类型的索引节点。</li>
+<li>对于 <code class="docutils literal"><span class="pre">i_op</span></code> 和 <code class="docutils literal"><span class="pre">i_fop</span></code> 字段，使用已实现的内核函数：<ul>
+<li>对于 <code class="docutils literal"><span class="pre">i_op</span></code>：<code class="xref c c-func docutils literal"><span class="pre">simple_dir_inode_operations()</span></code>。</li>
+<li>对于 <code class="docutils literal"><span class="pre">i_fop</span></code>：<code class="xref c c-func docutils literal"><span class="pre">simple_dir_operations()</span></code>。</li>
 </ul>
 </li>
-<li>Increment the number of links for the directory using the <code class="xref c c-func docutils literal"><span class="pre">inc_nlink()</span></code> function.</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">inc_nlink()</span></code> 函数增加目录的链接数。</li>
 </ol>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="testing-of-minfs-mount-and-unmount">
-<h4>5. Testing of minfs mount and unmount<a class="headerlink" href="#testing-of-minfs-mount-and-unmount" title="Permalink to this headline">¶</a></h4>
-<p>Now we can mount the filesystem.
-Follow the steps above to compile the kernel module, copy to the virtual machine, start the virtual machine, and then insert the kernel module, create mount point <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code> and mount the file system.
-We verify that the file system was mounted by investigating the <code class="docutils literal"><span class="pre">/proc/mounts</span></code> file.</p>
-<p>We check that everything is fine by listing the mount point contents <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code>:</p>
+<div class="section" id="minfs-5">
+<h4>5. minfs 挂载和卸载的测试<a class="headerlink" href="#minfs-5" title="Permalink to this headline">¶</a></h4>
+<p>现在我们可以挂载文件系统了。按照上述步骤编译内核模块，将其复制到虚拟机中，启动虚拟机，然后插入内核模块，创建挂载点 <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code> 并挂载文件系统。我们通过查看 <code class="docutils literal"><span class="pre">/proc/mounts</span></code> 文件来验证文件系统是否已挂载。</p>
+<p>通过列出挂载点内容 <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code> 来检查是否一切正常：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ls /mnt/minfs/
 </pre></div>
 </div>
-<p>After mount and verification, unmount the file system and unload the module from the kernel.</p>
+<p>挂载和验证完成后，卸载文件系统并从内核中卸载模块。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Alternatively, to test the entire functionality, you can use the <code class="docutils literal"><span class="pre">test-minfs.sh</span></code> script:</p>
+<p>或者，你可以使用 <code class="docutils literal"><span class="pre">test-minfs.sh</span></code> 脚本来完整测试功能：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./test-minfs.sh
 </pre></div>
 </div>
-<p>The script is copied to the virtual machine when running the <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> command only if is executable.</p>
+<p>仅当该脚本是可执行文件，在运行 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 命令时该脚本会被复制到虚拟机中。</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">student@workstation:~/linux/tools/labs$</span> chmod +x skels/filesystems/minfs/user/test-minfs.sh
 </pre></div>
 </div>
