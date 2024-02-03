@@ -78,36 +78,36 @@
 <li class="toctree-l2"><a class="reference internal" href="lab7-block-device-drivers.html">SO2 Lab 07 - Block Device Drivers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab8-filesystems-part1.html">SO2 Lab 08 - File system drivers (Part 1)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lab 09 - File system drivers (Part 2)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lab-objectives">Lab objectives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">实验目标</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inode">Inode</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#the-inode-structure">The inode structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#inode-operations">Inode operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inode-1">inode 结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inode-2">Inode 操作</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#the-file-structure">The file structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#regular-files-inodes">Regular files inodes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#regular-files-inode-operations">Regular files inode operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#address-space-operations">Address space operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file">file 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">常规文件索引节点</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-4">常规文件索引节点操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-5">地址空间操作</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dentry-structure">Dentry structure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dentry-operations">Dentry operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dentry">Dentry 结构体</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dentry-1">Dentry 操作</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#directory-inodes-operations">Directory inodes operations</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#creating-an-inode">Creating an inode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-a-directory">Creating a directory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-a-link">Creating a link</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-a-symbolic-link">Creating a symbolic link</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#deleting-a-link">Deleting a link</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#deleting-a-directory">Deleting a directory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#searching-for-an-inode-in-a-directory">Searching for an inode in a directory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#iterating-through-entries-in-a-directory">Iterating through entries in a directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">目录索引节点操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">创建索引节点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">创建目录</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">创建链接</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-10">创建符号链接</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-11">删除链接</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-12">删除目录</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">在目录中搜索索引节点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-14">遍历目录中的条目</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#bitmap-operations">Bitmap operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#further-reading">Further reading</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-15">位图操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-16">进一步阅读</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-17">练习</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#myfs">myfs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#minfs">minfs</a></li>
 </ul>
@@ -153,7 +153,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../labs/deferred_work.html">延迟工作</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/block_device_drivers.html">块设备驱动程序</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/filesystems_part1.html">文件系统驱动程序（第一部分）</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../labs/filesystems_part2.html">File system drivers (Part 2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../labs/filesystems_part2.html">文件系统驱动程序（第二部分）</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/networking.html">Networking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/arm_kernel_development.html">Kernel Development on ARM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/memory_mapping.html">Memory mapping</a></li>
@@ -195,80 +195,71 @@
              
   <div class="section" id="so2-lab-09-file-system-drivers-part-2">
 <h1>SO2 Lab 09 - File system drivers (Part 2)<a class="headerlink" href="#so2-lab-09-file-system-drivers-part-2" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="lab-objectives">
-<h2>Lab objectives<a class="headerlink" href="#lab-objectives" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-1">
+<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>Improving the knowledge about inode, file and dentry.</li>
-<li>Acquiring knowledge about adding support for working with regular files and directories in VFS (<em>Virtual File System</em>).</li>
-<li>Acquiring knowledge about the internal implementation of a file system.</li>
+<li>提高对 inode、file 和 dentry 的了解。</li>
+<li>了解如何在 VFS（虚拟文件系统）中添加对常规文件和目录的支持。</li>
+<li>了解文件系统的内部实现。</li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="inode">
 <h2>Inode<a class="headerlink" href="#inode" title="Permalink to this headline">¶</a></h2>
-<p>The inode is an essential component of a UNIX file system and, at the same time, an important component of VFS. An inode is a metadata (it has information about information).
-An inode uniquely identifies a file on disk and holds information about it (uid, gid, access rights, access times, pointers to data blocks, etc.).
-An important aspect is that an inode does not have information about the file name (it is retained by the associated <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> structure).</p>
-<p>The inode refers to a file on the disk. To refer an open file (associated with a file descriptor within a process), the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> structure is used.
-An inode can have any number of (zero or more) <code class="docutils literal"><span class="pre">file</span></code> structures associated (multiple processes can open the same file, or a process can open the same file several times).</p>
-<p>Inode exists both as a VFS entity (in memory) and as a disk entity (for UNIX, HFS, NTFS, etc.).
-The inode in VFS is represented by the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>.
-Like the other structures in VFS, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> is a generic structure that covers the options for all supported file types, even those that do not have an associated disk entity (such as FAT).</p>
-<div class="section" id="the-inode-structure">
-<h3>The inode structure<a class="headerlink" href="#the-inode-structure" title="Permalink to this headline">¶</a></h3>
-<p>The inode structure is the same for all file systems. In general, file systems also have private information. These are referenced through the <code class="docutils literal"><span class="pre">i_private</span></code> field of the structure.
-Conventionally, the structure that keeps that particular information is called <code class="docutils literal"><span class="pre">&lt;fsname&gt;_inode_info</span></code>, where <code class="docutils literal"><span class="pre">fsname</span></code> represents the file system name. For example, minix and ext4 filesystems store particular information in structures <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minix_inode_info</span></code>, or <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">ext4_inode_info</span></code>.</p>
-<p>Some of the important fields of <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> are:</p>
+<p>inode 是 UNIX 文件系统的重要组成部分，同时也是 VFS 的重要组成部分。inode 是元数据（它包含信息的信息）。inode 是磁盘上文件的唯一标识，并保存文件的信息（uid、gid、访问权限、访问时间以及指向数据块的指针等）。重要的一点是，inode 不保存文件名信息（文件名由相关的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> 结构保存）。</p>
+<p>inode 用于引用磁盘上的文件。要引用打开的文件（与进程内的文件描述符相关联），需要使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 结构。一个 inode 可以关联任意数量的（零个或多个） <code class="docutils literal"><span class="pre">file</span></code> 结构（多个进程可以打开同一个文件，或者一个进程可以多次打开同一个文件）。</p>
+<p>inode 既存在于 VFS 中（内存中），也存在于磁盘中（对于 UNIX、HFS 以及 NTFS 等）。VFS 中的 inode 由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构表示。和 VFS 中的其他结构一样, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 是通用结构，涵盖了所有支持的文件类型的选项，甚至包括那些没有关联磁盘实体的文件类型（比如 FAT 文件系统）。</p>
+<div class="section" id="inode-1">
+<h3>inode 结构<a class="headerlink" href="#inode-1" title="Permalink to this headline">¶</a></h3>
+<p>inode 结构在所有文件系统中都是相同的。一般情况下，文件系统还有私有信息，这些信息通过结构的 <code class="docutils literal"><span class="pre">i_private</span></code> 字段引用。按照惯例，保存特定信息的结构被称为 <code class="docutils literal"><span class="pre">&lt;fsname&gt;_inode_info</span></code>，其中 <code class="docutils literal"><span class="pre">fsname</span></code> 表示文件系统名称。例如，minix 和 ext4 文件系统将特定信息保存在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minix_inode_info</span></code> 或 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">ext4_inode_info</span></code> 结构中。</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 的一些重要字段包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">i_sb</span></code> : The superblock structure of the file system the inode belongs to.</li>
-<li><code class="docutils literal"><span class="pre">i_rdev</span></code>: the device on which this file system is mounted</li>
-<li><code class="docutils literal"><span class="pre">i_ino</span></code> : the number of the inode (uniquely identifies the inode within the file system)</li>
-<li><code class="docutils literal"><span class="pre">i_blkbits</span></code>: number of bits used for the block size == log<sub>2</sub>(block size)</li>
-<li><code class="docutils literal"><span class="pre">i_mode</span></code>, <code class="docutils literal"><span class="pre">i_uid</span></code>, <code class="docutils literal"><span class="pre">i_gid</span></code>: access rights, uid, gid</li>
-<li><code class="docutils literal"><span class="pre">i_size</span></code>: file/directory/etc. size in bytes</li>
-<li><code class="docutils literal"><span class="pre">i_mtime</span></code>, <code class="docutils literal"><span class="pre">i_atime</span></code>, <code class="docutils literal"><span class="pre">i_ctime</span></code>: change, access, and creation time</li>
-<li><code class="docutils literal"><span class="pre">i_nlink</span></code>: the number of names entries (dentries) that use this inode; for file systems without links (either hard or symbolic) this is always set to 1</li>
-<li><code class="docutils literal"><span class="pre">i_blocks</span></code>: the number of blocks used by the file (all blocks, not just data); this is only used by the quota subsystem</li>
-<li><code class="docutils literal"><span class="pre">i_op</span></code>, <code class="docutils literal"><span class="pre">i_fop</span></code>: pointers to operations structures: <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> and <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code>; <code class="docutils literal"><span class="pre">i_mapping-&gt;a_ops</span></code> contains a pointer to <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">i_count</span></code>: the inode counter indicating how many kernel components use it.</li>
+<li><code class="docutils literal"><span class="pre">i_sb</span></code>：inode 所属的文件系统的超级块结构。</li>
+<li><code class="docutils literal"><span class="pre">i_rdev</span></code>：挂载的文件系统所在的设备</li>
+<li><code class="docutils literal"><span class="pre">i_ino</span></code>：inode 的编号（在文件系统内唯一标识 inode）</li>
+<li><code class="docutils literal"><span class="pre">i_blkbits</span></code>：块大小使用的比特数 == log<sub>2</sub>(块大小)</li>
+<li><code class="docutils literal"><span class="pre">i_mode</span></code>, <code class="docutils literal"><span class="pre">i_uid</span></code> 以及 <code class="docutils literal"><span class="pre">i_gid</span></code>：访问权限、uid 以及 gid</li>
+<li><code class="docutils literal"><span class="pre">i_size</span></code>：文件/目录等的大小（以字节为单位）</li>
+<li><code class="docutils literal"><span class="pre">i_mtime</span></code>, <code class="docutils literal"><span class="pre">i_atime</span></code> 以及 <code class="docutils literal"><span class="pre">i_ctime</span></code>：修改、访问和创建时间</li>
+<li><code class="docutils literal"><span class="pre">i_nlink</span></code>：使用此 inode 的名称条目（dentry）的数量；对于没有链接（既没有硬链接也没有符号链接）的文件系统，这个值总是设置为 1</li>
+<li><code class="docutils literal"><span class="pre">i_blocks</span></code>：文件使用的块数（所有块，不仅仅是数据块）；这仅由配额子系统使用</li>
+<li><code class="docutils literal"><span class="pre">i_op</span></code>, <code class="docutils literal"><span class="pre">i_fop</span></code>：指向操作结构的指针：<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code>; <code class="docutils literal"><span class="pre">i_mapping-&gt;a_ops</span></code> 包含指向 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code> 的指针。</li>
+<li><code class="docutils literal"><span class="pre">i_count</span></code>：inode 计数器，指示有多少内核组件在使用它。</li>
 </ul>
 </div></blockquote>
-<p>Some functions that can be used to work with inodes:</p>
+<p>一些可用于处理 inode 的函数包括：</p>
 <blockquote>
 <div><ul>
-<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code>: creates a new inode, sets the <code class="docutils literal"><span class="pre">i_nlink</span></code> field to 1 and initializes <code class="docutils literal"><span class="pre">i_blkbits</span></code>, <code class="docutils literal"><span class="pre">i_sb</span></code> and <code class="docutils literal"><span class="pre">i_dev</span></code>;</p>
+<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code>：创建新的 inode，将 <code class="docutils literal"><span class="pre">i_nlink</span></code> 字段设置为 1，并初始化 <code class="docutils literal"><span class="pre">i_blkbits</span></code>, <code class="docutils literal"><span class="pre">i_sb</span></code> 和 <code class="docutils literal"><span class="pre">i_dev</span></code>；</p>
 </li>
-<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">insert_inode_hash()</span></code>: adds the inode to the hash table of inodes; an interesting effect of this call is that the inode will be written to the disk if it is marked as dirty;</p>
+<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">insert_inode_hash()</span></code>：将 inode 添加到 inode 哈希表中；这个调用的一个有趣的效果是，如果 inode 被标记为脏，它将被写入磁盘；</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">An inode created with <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> is not in the hash table, and unless you have serious reasons not to, you must enter it in the hash table;</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 创建的 inode 不在哈希表中，除非你有充分的理由，否则你必须将其加入哈希表；</p>
 </div>
 </li>
-<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">mark_inode_dirty()</span></code>: marks the inode as dirty; at a later moment, it will be written on the disc;</p>
+<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">mark_inode_dirty()</span></code>：将 inode 标记为脏；稍后它将被写入磁盘；</p>
 </li>
-<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code>: loads the inode with the given number from the disk, if it is not already loaded;</p>
+<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code>：从磁盘加载具有给定编号的 inode，如果它尚未加载。</p>
 </li>
-<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">unlock_new_inode()</span></code>: used in conjunction with <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code>, releases the lock on the inode;</p>
+<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">unlock_new_inode()</span></code>：与 <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> 一起使用，释放对 inode 的锁定；</p>
 </li>
-<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">iput()</span></code>: tells the kernel that the work on the inode is finished; if no one else uses it, it will be destroyed (after being written on the disk if it is maked as dirty);</p>
+<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">iput()</span></code>：告诉内核对 inode 的操作已经完成；如果没有其他进程在使用它，它将被销毁（如果被标记为脏，那么写入磁盘后再销毁）；</p>
 </li>
-<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">make_bad_inode()</span></code>: tells the kernel that the inode can not be used; It is generally used from the function that reads the inode when the inode could not be read from the disk, being invalid.</p>
+<li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">make_bad_inode()</span></code>：告诉内核该 inode 无法使用；通常在从磁盘读取 inode 时发现无法读取的情况下使用，表示该 inode 无效。</p>
 </li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="inode-operations">
-<h3>Inode operations<a class="headerlink" href="#inode-operations" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="getting-an-inode">
-<h4>Getting an inode<a class="headerlink" href="#getting-an-inode" title="Permalink to this headline">¶</a></h4>
-<p>One of the main inode operations is obtaining an inode (the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> in VFS).
-Until version <code class="docutils literal"><span class="pre">2.6.24</span></code> of the Linux kernel, the developer defined a <code class="docutils literal"><span class="pre">read_inode</span></code> function.
-Starting with version <code class="docutils literal"><span class="pre">2.6.25</span></code>, the developer must define a <code class="docutils literal"><span class="pre">&lt;fsname&gt;_iget</span></code> where <code class="docutils literal"><span class="pre">&lt;fsname&gt;</span></code> is the name of the file system.
-This function is responsible with finding the VFS inode if it exists or creating a new one and filling it with the information from the disk.</p>
-<p>Generally, this function will call <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> to get the inode structure from VFS. If the inode is newly created then it will need to read the inode from the disk (using <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code>) and fill in the useful information.</p>
-<p>An example of such a function is <code class="xref c c-func docutils literal"><span class="pre">minix_iget()</span></code>:</p>
+<div class="section" id="inode-2">
+<h3>Inode 操作<a class="headerlink" href="#inode-2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="inode-3">
+<h4>获取 inode<a class="headerlink" href="#inode-3" title="Permalink to this headline">¶</a></h4>
+<p>获取 inode（在 VFS 中的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>）是主要的 inode 操作之一。在 Linux 内核版本 <code class="docutils literal"><span class="pre">2.6.24</span></code> 之前，开发者定义了 <code class="docutils literal"><span class="pre">read_inode</span></code> 函数。从版本 <code class="docutils literal"><span class="pre">2.6.25</span></code> 开始，开发者必须定义 <code class="docutils literal"><span class="pre">&lt;fsname&gt;_iget</span></code> 函数，其中 <code class="docutils literal"><span class="pre">&lt;fsname&gt;</span></code> 是文件系统的名称。这个函数负责查找 VFS 中的 inode，如果存在则获取该 inode，否则创建一个新的 inode，并用磁盘中的信息填充它。</p>
+<p>一般情况下，这个函数会调用 <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> 从 VFS 中获取 inode 结构。如果 inode 是新创建的，则需要从磁盘中读取 inode（使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code>），并填充有用的信息。</p>
+<p>一个示例函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_iget()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="nf">V1_minix_iget</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">)</span>
 <span class="p">{</span>
       <span class="k">struct</span> <span class="n">buffer_head</span> <span class="o">*</span> <span class="n">bh</span><span class="p">;</span>
@@ -299,65 +290,53 @@ This function is responsible with finding the VFS inode if it exists or creating
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The minix_iget function gets the VFS inode using <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code>.
-If the inode is already existing (not new == the <code class="docutils literal"><span class="pre">I_NEW</span></code> flag is not set) the function returns.
-Otherwise, the function calls the <code class="xref c c-func docutils literal"><span class="pre">V1_minix_iget()</span></code> function that will read the inode from the disk using <code class="xref c c-func docutils literal"><span class="pre">minix_V1_raw_inode()</span></code> and then complete the VFS inode with the read information.</p>
+<p>minix_iget 函数使用 <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> 函数获取 VFS inode。如果该 inode 已经存在（非新建，即 <code class="docutils literal"><span class="pre">I_NEW</span></code> 标志未设置），则函数返回。否则，函数调用 <code class="xref c c-func docutils literal"><span class="pre">V1_minix_iget()</span></code> 函数，该函数将使用 <code class="xref c c-func docutils literal"><span class="pre">minix_V1_raw_inode()</span></code> 从磁盘读取 inode，然后使用读取的信息完成 VFS inode 的初始化。</p>
 </div>
-<div class="section" id="superoperations">
-<h4>Superoperations<a class="headerlink" href="#superoperations" title="Permalink to this headline">¶</a></h4>
-<p>Many of the superoperations (components of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> structure used by the superblock) are used when working with inodes. These operations are described next:</p>
+<div class="section" id="section-2">
+<h4>超级块操作<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h4>
+<p>许多超级块使用的超级块操作（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构的组成部分）在处理 inode 时使用。下面描述了这些操作：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">alloc_inode</span></code>: allocates an inode.
-Usually, this funcion allocates a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">&lt;fsname&gt;_inode_info</span></code> structure and performs basic VFS inode initialization (using <code class="xref c c-func docutils literal"><span class="pre">inode_init_once()</span></code>);
-minix uses for allocation the <code class="xref c c-func docutils literal"><span class="pre">kmem_cache_alloc()</span></code> function that interacts with the SLAB subsystem.
-For each allocation, the cache construction is called, which in the case of minix is the <code class="xref c c-func docutils literal"><span class="pre">init_once()</span></code> function.
-Alternatively, <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> can be used, in which case the <code class="xref c c-func docutils literal"><span class="pre">inode_init_once()</span></code> function should be called.
-The <code class="xref c c-func docutils literal"><span class="pre">alloc_inode()</span></code> function will be called by the <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> functions.</li>
-<li><code class="docutils literal"><span class="pre">write_inode</span></code> : saves/updates the inode received as a parameter on disk; to update the inode, though inefficient, for beginners it is recommended to use the following sequence of operations:<ul>
-<li>load the inode from the disk using the <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> function;</li>
-<li>modify the buffer according to the saved inode;</li>
-<li>mark the buffer as dirty using <code class="xref c c-func docutils literal"><span class="pre">mark_buffer_dirty()</span></code>; the kernel will then handle its writing on the disk;</li>
-<li>an example is the <code class="xref c c-func docutils literal"><span class="pre">minix_write_inode()</span></code> function in the <code class="docutils literal"><span class="pre">minix</span></code> file system</li>
+<li><code class="docutils literal"><span class="pre">alloc_inode</span></code>: 分配 inode。通常，此函数会分配一个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">&lt;fsname&gt;_inode_info</span></code> 结构，并执行基本的 VFS inode 初始化（使用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_once()</span></code>）；minix 使用 <code class="xref c c-func docutils literal"><span class="pre">kmem_cache_alloc()</span></code> 函数进行分配，该函数与 SLAB 子系统交互。对于每个分配，都会调用缓存构造函数，在 minix 的情况下是 <code class="xref c c-func docutils literal"><span class="pre">init_once()</span></code> 函数。或者，也可以使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>，在这种情况下，应调用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_once()</span></code> 函数。<code class="xref c c-func docutils literal"><span class="pre">alloc_inode()</span></code> 函数将由 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> 函数调用。</li>
+<li><code class="docutils literal"><span class="pre">write_inode</span></code>：将作为参数接收的 inode 保存/更新到磁盘；要更新 inode，尽管效率不高，但对于初学者来说，建议使用以下操作：<ul>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 函数从磁盘加载 inode；</li>
+<li>根据保存的 inode 修改缓冲区；</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">mark_buffer_dirty()</span></code> 将缓冲区标记为脏；内核将处理其在磁盘上的写入；</li>
+<li>一个示例是 <code class="docutils literal"><span class="pre">minix</span></code> 文件系统中的 <code class="xref c c-func docutils literal"><span class="pre">minix_write_inode()</span></code> 函数。</li>
 </ul>
 </li>
-<li><code class="docutils literal"><span class="pre">evict_inode</span></code>: removes any information about the inode with the number received in the <code class="docutils literal"><span class="pre">i_ino</span></code> field from the disk and memory (both the inode on the disk and the associated data blocks). This involves performing the following operations:<ul>
-<li>delete the inode from the disk;</li>
-<li>updates disk bitmaps (if any);</li>
-<li>delete the inode from the page cache by calling <code class="xref c c-func docutils literal"><span class="pre">truncate_inode_pages()</span></code>;</li>
-<li>delete the inode from memory by calling <code class="xref c c-func docutils literal"><span class="pre">clear_inode()</span></code> ;</li>
-<li>an example is the <code class="xref c c-func docutils literal"><span class="pre">minix_evict_inode()</span></code> function from the minix file system.</li>
+<li><code class="docutils literal"><span class="pre">evict_inode</span></code>：从磁盘和内存中移除通过 <code class="docutils literal"><span class="pre">i_ino</span></code> 字段接收的 inode 的任何信息（包括磁盘上的 inode 和相关的数据块）。这涉及执行以下操作：<ul>
+<li>从磁盘中删除 inode；</li>
+<li>更新磁盘位图（如果有）；</li>
+<li>通过调用 <code class="xref c c-func docutils literal"><span class="pre">truncate_inode_pages()</span></code> 从 page cache 中删除 inode；</li>
+<li>通过调用 <code class="xref c c-func docutils literal"><span class="pre">clear_inode()</span></code> 从内存中删除 inode；</li>
+<li>一个示例是 minix 文件系统中的 <code class="xref c c-func docutils literal"><span class="pre">minix_evict_inode()</span></code> 函数。</li>
 </ul>
 </li>
-<li><code class="docutils literal"><span class="pre">destroy_inode</span></code> releases the memory occupied by inode</li>
+<li><code class="docutils literal"><span class="pre">destroy_inode</span></code> 释放 inode 占用的内存</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="inode-operations-1">
-<h4>inode_operations<a class="headerlink" href="#inode-operations-1" title="Permalink to this headline">¶</a></h4>
-<p>The inode operations are described by the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> structure.</p>
-<p>Inodes are of several types: file, directory, special file (pipe, fifo), block device, character device, link etc.
-For this reason, the operations that an inode needs to implement are different for each type of inode.
-Below are detailed operations for a <a class="reference internal" href="#fileinodes"><span class="std std-ref">file type inode</span></a> and a <a class="reference internal" href="#directoryinodes"><span class="std std-ref">directory inode</span></a>.</p>
-<p>The operations of an inode are initialized and accessed using the <code class="docutils literal"><span class="pre">i_op</span></code> field of the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>.</p>
+<div class="section" id="inode-operations">
+<h4>inode_operations<a class="headerlink" href="#inode-operations" title="Permalink to this headline">¶</a></h4>
+<p>索引节点操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> 结构描述。</p>
+<p>索引节点分为多种类型：文件、目录、特殊文件（管道、FIFO）、块设备、字符设备以及链接等。因此，每种类型的索引节点需要实现的操作都不同。下面详细介绍了对 <a class="reference internal" href="#fileinodes"><span class="std std-ref">文件类型的索引节点</span></a> 和 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录类型的索引节点</span></a> 的操作。</p>
+<p>对索引节点的操作通过 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构中的 <code class="docutils literal"><span class="pre">i_op</span></code> 字段进行初始化和访问。</p>
 </div>
 </div>
 </div>
-<div class="section" id="the-file-structure">
-<h2>The file structure<a class="headerlink" href="#the-file-structure" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal"><span class="pre">file</span></code> structure corresponds to a file open by a process and exists only in memory, being associated with an inode.
-It is the closest VFS entity to user-space; the structure fields contain familiar information of a user-space file (access mode, file position, etc.) and the operations with it are performed by known system calls (<code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code> , etc.).</p>
-<p>The file operations are described by the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> structure.</p>
-<p>The file operations for a file system are initialized using the <code class="docutils literal"><span class="pre">i_fop</span></code> field of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> structure.
-When opening a file, the VFS initializes the <code class="docutils literal"><span class="pre">f_op</span></code> field of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> structure with address of <code class="docutils literal"><span class="pre">inode-&gt;i_fop</span></code>, such that subsequent system calls use the value stored in the <code class="docutils literal"><span class="pre">file-&gt;f_op</span></code>.</p>
+<div class="section" id="file">
+<h2>file 结构<a class="headerlink" href="#file" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">file</span></code> 结构对应于由进程打开的文件，仅存在于内存中，并与索引节点关联。它是最接近用户空间的 VFS 实体；结构字段包含用户空间文件的熟悉信息（访问模式、文件位置等），与之相关的操作由已知的系统调用 (<code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code> 等)执行。</p>
+<p>文件操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构描述。</p>
+<p>文件系统的文件操作使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构中的 <code class="docutils literal"><span class="pre">i_fop</span></code> 字段进行初始化。在打开文件时，VFS 使用 <code class="docutils literal"><span class="pre">inode-&gt;i_fop</span></code> 的地址初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 结构的 <code class="docutils literal"><span class="pre">f_op</span></code> 字段，因此后续的系统调用使用存储在 <code class="docutils literal"><span class="pre">file-&gt;f_op</span></code> 中的值。</p>
 </div>
-<div class="section" id="regular-files-inodes">
-<span id="fileinodes"></span><h2>Regular files inodes<a class="headerlink" href="#regular-files-inodes" title="Permalink to this headline">¶</a></h2>
-<p>To work with the inode, the <code class="docutils literal"><span class="pre">i_op</span></code> and <code class="docutils literal"><span class="pre">i_fop</span></code> fields of the inode structure must be filled in.
-The type of the inode determines the operations that it needs to implement.</p>
-<div class="section" id="regular-files-inode-operations">
-<span id="fileoperations"></span><h3>Regular files inode operations<a class="headerlink" href="#regular-files-inode-operations" title="Permalink to this headline">¶</a></h3>
-<p>In the <code class="docutils literal"><span class="pre">minix</span></code> file system, the <code class="docutils literal"><span class="pre">minix_file_inode_operations</span></code> structure is defined for the operations on an inode and for the file operations the <code class="docutils literal"><span class="pre">minix_file_operations</span></code> structure is defined:</p>
+<div class="section" id="section-3">
+<span id="fileinodes"></span><h2>常规文件索引节点<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>要使用索引节点，必须填充索引节点结构的 <code class="docutils literal"><span class="pre">i_op</span></code> 和 <code class="docutils literal"><span class="pre">i_fop</span></code> 字段。索引节点的类型决定了它需要实现的操作。</p>
+<div class="section" id="section-4">
+<span id="fileoperations"></span><h3>常规文件索引节点操作<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">minix</span></code> 文件系统为索引节点操作定义了 <code class="docutils literal"><span class="pre">minix_file_inode_operations</span></code> 结构，而对于文件操作，则定义了 <code class="docutils literal"><span class="pre">minix_file_operations</span></code> 结构：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="k">struct</span> <span class="n">file_operations</span> <span class="n">minix_file_operations</span> <span class="o">=</span> <span class="p">{</span>
          <span class="p">.</span><span class="n">llseek</span>         <span class="o">=</span> <span class="n">generic_file_llseek</span><span class="p">,</span>
          <span class="p">.</span><span class="n">read_iter</span>      <span class="o">=</span> <span class="n">generic_file_read_iter</span><span class="p">,</span>
@@ -381,10 +360,8 @@ The type of the inode determines the operations that it needs to implement.</p>
         <span class="c1">//...</span>
 </pre></div>
 </div>
-<p>The functions <code class="xref c c-func docutils literal"><span class="pre">generic_file_llseek()</span></code> , <code class="xref c c-func docutils literal"><span class="pre">generic_file_mmap()</span></code> , <code class="xref c c-func docutils literal"><span class="pre">generic_file_read_iter()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">generic_file_write_iter()</span></code> are implemented in the kernel.</p>
-<p>For simple file systems, only the truncation operation (<code class="docutils literal"><span class="pre">truncate</span></code> system call) must be implemented.
-Although initially there was a dedicated operation, starting with 3.14 the operation was embedded in <code class="docutils literal"><span class="pre">setattr</span></code>: if the paste size is different from the current size of the inode, then a truncate operation must be performed.
-An example of implementing this verification is in the <code class="xref c c-func docutils literal"><span class="pre">minix_setattr()</span></code> function:</p>
+<p>内核中实现了 <code class="xref c c-func docutils literal"><span class="pre">generic_file_llseek()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">generic_file_mmap()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">generic_file_read_iter()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">generic_file_write_iter()</span></code> 函数。</p>
+<p>对于简单的文件系统，只需要实现截断操作 (<code class="docutils literal"><span class="pre">truncate</span></code> 系统调用)。尽管最初有一个专用的操作，但从 3.14 版本开始，该操作已嵌入到 <code class="docutils literal"><span class="pre">setattr</span></code> 中：如果粘贴大小与索引节点的当前大小不同，则必须执行截断操作。在 <code class="xref c c-func docutils literal"><span class="pre">minix_setattr()</span></code> 函数中，有实现此验证的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">minix_setattr</span><span class="p">(</span><span class="k">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">dentry</span><span class="p">,</span> <span class="k">struct</span> <span class="n">iattr</span> <span class="o">*</span><span class="n">attr</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span> <span class="o">=</span> <span class="n">d_inode</span><span class="p">(</span><span class="n">dentry</span><span class="p">);</span>
@@ -410,23 +387,22 @@ An example of implementing this verification is in the <code class="xref c c-fun
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The truncate operation involves:</p>
+<p>截断操作涉及以下内容：</p>
 <blockquote>
 <div><ul class="simple">
-<li>freeing blocks of data on the disk that are now extra (if the new dimension is smaller than the old one) or allocating new blocks (for cases where the new dimension is larger)</li>
-<li>updating disk bit maps (if used);</li>
-<li>updating the inode;</li>
-<li>filling with zero the space that was left unused from the last block using the <code class="xref c c-func docutils literal"><span class="pre">block_truncate_page()</span></code> function.</li>
+<li>释放磁盘上多余的数据块（如果新尺寸小于旧尺寸），或者分配新的数据块（当新尺寸较大时）；</li>
+<li>更新磁盘位图（如果使用）；</li>
+<li>更新索引节点；</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">block_truncate_page()</span></code> 函数，将上一个块中未使用的空间填充为零。</li>
 </ul>
 </div></blockquote>
-<p>An example of the implementation of the cropping operation is the <code class="xref c c-func docutils literal"><span class="pre">minix_truncate()</span></code> function in the <code class="docutils literal"><span class="pre">minix</span></code> file system.</p>
+<p>在 <code class="docutils literal"><span class="pre">minix</span></code> 文件系统中，有一个实现截断操作的示例是 <code class="xref c c-func docutils literal"><span class="pre">minix_truncate()</span></code> 函数。</p>
 </div>
-<div class="section" id="address-space-operations">
-<span id="addressspaceoperations"></span><h3>Address space operations<a class="headerlink" href="#address-space-operations" title="Permalink to this headline">¶</a></h3>
-<p>There is a close link between the address space of a process and files: the execution of the programs is done almost exclusively by mapping the file into the process address space.
-Because this approach works very well and is quite general, it can also be used for regular system calls such as <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">write</span></code>.</p>
-<p>The structure that describes the address space is <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space</span></code>, and the operations with it are described by the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code>. To initialize the address space operations, fill <code class="docutils literal"><span class="pre">inode-&gt;i_mapping-&gt;a_ops</span></code> of the file type inode.</p>
-<p>An example is the <code class="docutils literal"><span class="pre">minix_aops</span></code> structure in the minix file system:</p>
+<div class="section" id="section-5">
+<span id="addressspaceoperations"></span><h3>地址空间操作<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
+<p>进程的地址空间与文件之间有着密切的联系：程序的执行几乎完全是通过将文件映射到进程的地址空间中进行的。由于这种方法非常有效且相当通用，因此也可以用于常规的系统调用，如 <code class="docutils literal"><span class="pre">read</span></code> 和 <code class="docutils literal"><span class="pre">write</span></code>。</p>
+<p>描述地址空间的结构是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space</span></code>，与之相关的操作由结构 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code> 描述。要初始化地址空间操作，请填充文件类型索引节点的 <code class="docutils literal"><span class="pre">inode-&gt;i_mapping-&gt;a_ops</span></code>。</p>
+<p>一个示例是 minix 文件系统中的 <code class="docutils literal"><span class="pre">minix_aops</span></code> 结构：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">address_space_operations</span> <span class="n">minix_aops</span> <span class="o">=</span> <span class="p">{</span>
        <span class="p">.</span><span class="n">readpage</span> <span class="o">=</span> <span class="n">minix_readpage</span><span class="p">,</span>
        <span class="p">.</span><span class="n">writepage</span> <span class="o">=</span> <span class="n">minix_writepage</span><span class="p">,</span>
@@ -442,8 +418,7 @@ Because this approach works very well and is quite general, it can also be used 
 <span class="c1">//...</span>
 </pre></div>
 </div>
-<p>The <code class="xref c c-func docutils literal"><span class="pre">generic_write_end()</span></code> function is already implemented.
-Most of the specific functions are very easy to implement, as follows:</p>
+<p><code class="xref c c-func docutils literal"><span class="pre">generic_write_end()</span></code> 函数已经实现。大多数特定函数非常容易实现，如下所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">minix_writepage</span><span class="p">(</span><span class="k">struct</span> <span class="n">page</span> <span class="o">*</span><span class="n">page</span><span class="p">,</span> <span class="k">struct</span> <span class="n">writeback_control</span> <span class="o">*</span><span class="n">wbc</span><span class="p">)</span>
 <span class="p">{</span>
          <span class="k">return</span> <span class="n">block_write_full_page</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">minix_get_block</span><span class="p">,</span> <span class="n">wbc</span><span class="p">);</span>
@@ -484,65 +459,56 @@ Most of the specific functions are very easy to implement, as follows:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>All that needs to be done is to implement <code class="xref c c-type docutils literal"><span class="pre">minix_get_block</span></code>, which has to translate a block of a file into a block on the device.
-If the flag <code class="docutils literal"><span class="pre">create</span></code> received as a parameter is set, a new block must be allocated.
-In case a new block is created, the bit map must be updated accordingly.
-To notify the kernel not to read the block from the disk, <code class="docutils literal"><span class="pre">bh</span></code> must be marked with <code class="xref c c-func docutils literal"><span class="pre">set_buffer_new()</span></code>. The buffer must be associated with the block through <code class="xref c c-func docutils literal"><span class="pre">map_bh()</span></code>.</p>
+<p>只需实现 <code class="xref c c-type docutils literal"><span class="pre">minix_get_block</span></code> 函数，该函数将文件的一个数据块转换为设备上的一个数据块。如果接收到的 <code class="docutils literal"><span class="pre">create</span></code> 标志被设置，那么必须分配一个新的数据块。在创建新的数据块时，必须相应地更新位图。为了通知内核不要从磁盘中读取该数据块，必须使用 <code class="xref c c-func docutils literal"><span class="pre">set_buffer_new()</span></code> 函数标记 <code class="docutils literal"><span class="pre">bh</span></code>。通过 <code class="xref c c-func docutils literal"><span class="pre">map_bh()</span></code> 函数，将缓冲区与数据块关联起来。</p>
 </div>
 </div>
-<div class="section" id="dentry-structure">
-<h2>Dentry structure<a class="headerlink" href="#dentry-structure" title="Permalink to this headline">¶</a></h2>
-<p>Directories operations use the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> structure.
-Its main task is to make links between inodes and filenames.
-The important fields of this structure are presented below:</p>
+<div class="section" id="dentry">
+<h2>Dentry 结构体<a class="headerlink" href="#dentry" title="Permalink to this headline">¶</a></h2>
+<p>目录操作使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> 结构体。它的主要任务是在索引节点和文件名之间建立链接。该结构体的重要字段如下所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">dentry</span> <span class="p">{</span>
         <span class="c1">//...</span>
-        <span class="k">struct</span> <span class="n">inode</span>             <span class="o">*</span><span class="n">d_inode</span><span class="p">;</span>     <span class="cm">/* associated inode */</span>
+        <span class="k">struct</span> <span class="n">inode</span>             <span class="o">*</span><span class="n">d_inode</span><span class="p">;</span>     <span class="cm">/* 关联的索引节点 */</span>
         <span class="c1">//...</span>
-        <span class="k">struct</span> <span class="n">dentry</span>            <span class="o">*</span><span class="n">d_parent</span><span class="p">;</span>    <span class="cm">/* dentry object of parent */</span>
-        <span class="k">struct</span> <span class="n">qstr</span>              <span class="n">d_name</span><span class="p">;</span>       <span class="cm">/* dentry name */</span>
+        <span class="k">struct</span> <span class="n">dentry</span>            <span class="o">*</span><span class="n">d_parent</span><span class="p">;</span>    <span class="cm">/* 父目录的 dentry 对象 */</span>
+        <span class="k">struct</span> <span class="n">qstr</span>              <span class="n">d_name</span><span class="p">;</span>       <span class="cm">/* dentry 名称 */</span>
         <span class="c1">//...</span>
 
-        <span class="k">struct</span> <span class="n">dentry_operations</span> <span class="o">*</span><span class="n">d_op</span><span class="p">;</span>        <span class="cm">/* dentry operations table */</span>
-        <span class="k">struct</span> <span class="n">super_block</span>       <span class="o">*</span><span class="n">d_sb</span><span class="p">;</span>        <span class="cm">/* superblock of file */</span>
-        <span class="kt">void</span>                     <span class="o">*</span><span class="n">d_fsdata</span><span class="p">;</span>    <span class="cm">/* filesystem-specific data */</span>
+        <span class="k">struct</span> <span class="n">dentry_operations</span> <span class="o">*</span><span class="n">d_op</span><span class="p">;</span>        <span class="cm">/* dentry 操作表 */</span>
+        <span class="k">struct</span> <span class="n">super_block</span>       <span class="o">*</span><span class="n">d_sb</span><span class="p">;</span>        <span class="cm">/* 文件的超级块 */</span>
+        <span class="kt">void</span>                     <span class="o">*</span><span class="n">d_fsdata</span><span class="p">;</span>    <span class="cm">/* 文件系统特定的数据 */</span>
         <span class="c1">//...</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Fields meaning:</p>
+<p>字段含义：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">d_inode</span></code>: the inode referenced by this dentry;</li>
-<li><code class="docutils literal"><span class="pre">d_parent</span></code>: the dentry associated with the parent directory;</li>
-<li><code class="docutils literal"><span class="pre">d_name</span></code>: a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">qstr</span></code> structure that contains the fields <code class="docutils literal"><span class="pre">name</span></code> and <code class="docutils literal"><span class="pre">len</span></code> (the name and the length of the name).</li>
-<li><code class="docutils literal"><span class="pre">d_op</span></code>: operations with dentries, represented by the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry_operations</span></code> structure.
-The kernel implements default operations so there is no need to (re)implement them. Some file systems can do optimizations based on the specific structure of the dentries.</li>
-<li><code class="docutils literal"><span class="pre">d_fsdata</span></code>: field reserved for the file system that implements dentry operations;</li>
+<li><code class="docutils literal"><span class="pre">d_inode</span></code>：由该 dentry 引用的索引节点；</li>
+<li><code class="docutils literal"><span class="pre">d_parent</span></code>：与父目录相关联的 dentry；</li>
+<li><code class="docutils literal"><span class="pre">d_name</span></code>：<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">qstr</span></code> 结构，包含字段 <code class="docutils literal"><span class="pre">name</span></code> 和 <a href="#system-message-1"><span class="problematic" id="problematic-1">``</span></a>len``（名称和名称的长度）。</li>
+<li><code class="docutils literal"><span class="pre">d_op</span></code>：与 dentry 相关的操作，由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry_operations</span></code> 结构表示。内核实现了默认操作，因此无需（重新）实现它们。某些文件系统可以根据 dentry 的特定结构进行优化。</li>
+<li><code class="docutils literal"><span class="pre">d_fsdata</span></code>：保留给实现 dentry 操作的文件系统特定的字段；</li>
 </ul>
 </div></blockquote>
-<div class="section" id="dentry-operations">
-<h3>Dentry operations<a class="headerlink" href="#dentry-operations" title="Permalink to this headline">¶</a></h3>
-<p>The most commonly operations applied to dentries are:</p>
+<div class="section" id="dentry-1">
+<h3>Dentry 操作<a class="headerlink" href="#dentry-1" title="Permalink to this headline">¶</a></h3>
+<p>应用于 dentry 的最常见操作包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">d_make_root</span></code>: allocates the root dentry. It is generally used in the function that is called to read the superblock (<code class="docutils literal"><span class="pre">fill_super</span></code>), which must initialize the root directory.
-So the root inode is obtained from the superblock and is used as an argument to this function, to fill the <code class="docutils literal"><span class="pre">s_root</span></code> field from the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> structure.</li>
-<li><code class="docutils literal"><span class="pre">d_add</span></code>: associates a dentry with an inode; the dentry received as a parameter in the calls discussed above signifies the entry (name, length) that needs to be created. This function will be used when creating/loading a new inode that does not have a dentry associated with it and has not yet been introduced to the hash table of inodes (at <code class="docutils literal"><span class="pre">lookup</span></code>);</li>
-<li><code class="docutils literal"><span class="pre">d_instantiate</span></code>: The lighter version of the previous call, in which the dentry was previously added in the hash table.</li>
+<li><code class="docutils literal"><span class="pre">d_make_root</span></code>：分配根 dentry。通常在读取超级块的函数 (<code class="docutils literal"><span class="pre">fill_super</span></code>) 中使用，该函数必须初始化根目录。因此，我们从超级块获取根索引节点，并将其作为实参传递给此函数，以填充 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构的 <code class="docutils literal"><span class="pre">s_root</span></code> 字段。</li>
+<li><code class="docutils literal"><span class="pre">d_add</span></code>：将 dentry 与索引节点关联起来；在上述讨论中，作为参数传递的 dentry 表示需要创建的条目（名称、长度）。在创建/加载尚未与任何 dentry 关联并尚未添加到索引节点哈希表中的新索引节点时，将使用此函数（在 <code class="docutils literal"><span class="pre">lookup</span></code> 中）。</li>
+<li><code class="docutils literal"><span class="pre">d_instantiate</span></code>：上述调用的轻量级版本，其中 dentry 先前已添加到哈希表中。</li>
 </ul>
 </div></blockquote>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last"><code class="docutils literal"><span class="pre">d_instantiate</span></code> must be used to implement create calls (<code class="docutils literal"><span class="pre">mkdir</span></code>, <code class="docutils literal"><span class="pre">mknod</span></code>, <code class="docutils literal"><span class="pre">rename</span></code>, <code class="docutils literal"><span class="pre">symlink</span></code>) and  NOT <code class="docutils literal"><span class="pre">d_add</span></code>.</p>
+<p class="last"><code class="docutils literal"><span class="pre">d_instantiate</span></code> 必须用于实现创建调用 (<code class="docutils literal"><span class="pre">mkdir</span></code>, <code class="docutils literal"><span class="pre">mknod</span></code>, <code class="docutils literal"><span class="pre">rename</span></code> 以及  <code class="docutils literal"><span class="pre">symlink</span></code>)，而不是 <code class="docutils literal"><span class="pre">d_add</span></code>。</p>
 </div>
 </div>
 </div>
-<div class="section" id="directory-inodes-operations">
-<span id="directoryinodes"></span><h2>Directory inodes operations<a class="headerlink" href="#directory-inodes-operations" title="Permalink to this headline">¶</a></h2>
-<p>The operations for directory type inodes have a higher complexity level than the ones for files.
-The developer must define operations for inodes and operations for files.
-In <code class="docutils literal"><span class="pre">minix</span></code>, these operations are defined in <code class="xref c c-type docutils literal"><span class="pre">minix_dir_inode_operations</span></code> and <code class="xref c c-type docutils literal"><span class="pre">minix_dir_operations</span></code>:</p>
+<div class="section" id="section-6">
+<span id="directoryinodes"></span><h2>目录索引节点操作<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<p>目录类型的索引节点相关的操作比文件类型的索引节点操作复杂得多。开发人员必须定义索引节点的操作和文件的操作。在 <code class="docutils literal"><span class="pre">minix</span></code> 中，这些操作定义在 <code class="xref c c-type docutils literal"><span class="pre">minix_dir_inode_operations</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">minix_dir_operations</span></code> 中：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">inode_operations</span> <span class="n">minix_dir_inode_operations</span> <span class="o">=</span> <span class="p">{</span>
       <span class="p">.</span><span class="n">create</span> <span class="o">=</span> <span class="n">minix_create</span><span class="p">,</span>
       <span class="p">.</span><span class="n">lookup</span> <span class="o">=</span> <span class="n">minix_lookup</span><span class="p">,</span>
@@ -571,151 +537,131 @@ In <code class="docutils literal"><span class="pre">minix</span></code>, these o
        <span class="c1">//...</span>
 </pre></div>
 </div>
-<p>The only function already implemented is <code class="xref c c-func docutils literal"><span class="pre">generic_read_dir()</span></code>.</p>
-<p>The functions that implement the operations on directory inodes are the ones described below.</p>
-<div class="section" id="creating-an-inode">
-<h3>Creating an inode<a class="headerlink" href="#creating-an-inode" title="Permalink to this headline">¶</a></h3>
-<p>The inode creation function is indicated by the field <code class="docutils literal"><span class="pre">create</span></code> in the <code class="docutils literal"><span class="pre">inode_operations</span></code> structure.
-In the minix case, the function is <code class="xref c c-func docutils literal"><span class="pre">minix_create()</span></code>.
-This function is called by the <code class="docutils literal"><span class="pre">open</span></code> and <code class="docutils literal"><span class="pre">creat</span></code> system calls. Such a function performs the following operations:</p>
+<p>我们唯一已经实现的函数是 <code class="xref c c-func docutils literal"><span class="pre">generic_read_dir()</span></code>。</p>
+<p>实现目录索引节点操作的函数如下所述。</p>
+<div class="section" id="section-7">
+<h3>创建索引节点<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<p>索引节点创建函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">create</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_create()</span></code>。此函数由 <code class="docutils literal"><span class="pre">open</span></code> 和 <code class="docutils literal"><span class="pre">creat</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Introduces a new entry into the physical structure on the disk; the update of the bit maps on the disk must not be forgotten.</li>
-<li>Configures access rights to those received as a parameter.</li>
-<li>Marks the inode as dirty with the <code class="xref c c-func docutils literal"><span class="pre">mark_inode_dirty()</span></code> function.</li>
-<li>Instantiates the directory entry (<code class="docutils literal"><span class="pre">dentry</span></code>) with the <code class="docutils literal"><span class="pre">d_instantiate</span></code> function.</li>
+<li>在磁盘上的物理结构中引入新条目；不要忘记更新磁盘上的位图。</li>
+<li>使用传入函数的访问权限配置访问权限。</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">mark_inode_dirty()</span></code> 函数将索引节点标记为脏。</li>
+<li>使用 <code class="docutils literal"><span class="pre">d_instantiate</span></code> 函数实例化目录条目 (<code class="docutils literal"><span class="pre">dentry</span></code>)。</li>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="creating-a-directory">
-<h3>Creating a directory<a class="headerlink" href="#creating-a-directory" title="Permalink to this headline">¶</a></h3>
-<p>The directory creation function is indicated by the <code class="docutils literal"><span class="pre">mkdir</span></code> field in the <code class="docutils literal"><span class="pre">inode_operations</span></code> structure.
-In the minix case, the function is <code class="xref c c-func docutils literal"><span class="pre">minix_mkdir()</span></code>.
-This function is called by the <code class="docutils literal"><span class="pre">mkdir</span></code> system call. Such a function performs the following operations:</p>
+<div class="section" id="section-8">
+<h3>创建目录<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<p>目录创建函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">mkdir</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_mkdir()</span></code>。此函数由 <code class="docutils literal"><span class="pre">mkdir</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Calls <code class="xref c c-func docutils literal"><span class="pre">minix_create()</span></code>.</li>
-<li>Allocates a data block for the directory.</li>
-<li>Creates the <code class="docutils literal"><span class="pre">&quot;.&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;..&quot;</span></code> entries.</li>
+<li>调用 <code class="xref c c-func docutils literal"><span class="pre">minix_create()</span></code>。</li>
+<li>为目录分配一个数据块。</li>
+<li>创建 <code class="docutils literal"><span class="pre">&quot;.&quot;</span></code> 和 <code class="docutils literal"><span class="pre">&quot;..&quot;</span></code> 条目。</li>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="creating-a-link">
-<h3>Creating a link<a class="headerlink" href="#creating-a-link" title="Permalink to this headline">¶</a></h3>
-<p>The link creation function (hard link) is indicated by the <code class="docutils literal"><span class="pre">symlink</span></code> field in the <code class="docutils literal"><span class="pre">inode_operations</span></code> structure.
-In the minix case, the function is <code class="xref c c-func docutils literal"><span class="pre">minix_link()</span></code>.
-This function is called by the <code class="docutils literal"><span class="pre">link</span></code> system call. Such a function performs the following operations:</p>
+<div class="section" id="section-9">
+<h3>创建链接<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<p>链接创建函数（硬链接）由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">link</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_link()</span></code>。此函数由 <code class="docutils literal"><span class="pre">link</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ul class="simple">
-<li>Binds the new dentry to the inode.</li>
-<li>Increments the <code class="docutils literal"><span class="pre">i_nlink</span></code> field of the inode.</li>
-<li>Marks the inode as dirty using the <code class="xref c c-func docutils literal"><span class="pre">mark_inode_dirty()</span></code> function.</li>
+<li>将新的 dentry 绑定到索引节点。</li>
+<li>递增索引节点的 <code class="docutils literal"><span class="pre">i_nlink</span></code> 字段。</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">mark_inode_dirty()</span></code> 函数将索引节点标记为脏。</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="creating-a-symbolic-link">
-<h3>Creating a symbolic link<a class="headerlink" href="#creating-a-symbolic-link" title="Permalink to this headline">¶</a></h3>
-<p>The symbolic link creation function is indicated by the <code class="docutils literal"><span class="pre">symlink</span></code> field in the <code class="docutils literal"><span class="pre">inode_operations</span></code> structure.
-In the minix case, the function is <code class="xref c c-func docutils literal"><span class="pre">minix_symlink()</span></code>.
-The operations to be performed are similar to <code class="docutils literal"><span class="pre">minix_link</span></code> with the differences being given by the fact that a symbolic link is created.</p>
+<div class="section" id="section-10">
+<h3>创建符号链接<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<p>符号链接创建函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">symlink</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_symlink()</span></code>。要执行的操作与 <code class="docutils literal"><span class="pre">minix_link</span></code> 类似，区别在于创建了一个符号链接。</p>
 </div>
-<div class="section" id="deleting-a-link">
-<h3>Deleting a link<a class="headerlink" href="#deleting-a-link" title="Permalink to this headline">¶</a></h3>
-<p>The link delete function (hard link) is indicated by the <code class="docutils literal"><span class="pre">unlink</span></code> field in the <code class="docutils literal"><span class="pre">inode_operations</span></code> structure.
-In the minix case, the function is <code class="xref c c-func docutils literal"><span class="pre">minix_unlink()</span></code>.
-This function is called by the <code class="docutils literal"><span class="pre">unlink</span></code> system call. Such a function performs the following operations:</p>
+<div class="section" id="section-11">
+<h3>删除链接<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<p>链接删除函数（硬链接）由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">unlink</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_unlink()</span></code>。此函数由 <code class="docutils literal"><span class="pre">unlink</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Deletes the directory entry given as a parameter from the physical disk structure.</li>
-<li>Decrements the <code class="docutils literal"><span class="pre">i_nlink</span></code> counter of the inode to which the entry points (otherwise the inode will never be deleted).</li>
+<li>从物理磁盘结构中删除作为参数给出的 dentry</li>
+<li>将条目指向的索引节点的 <code class="docutils literal"><span class="pre">i_nlink</span></code> 计数器减一（否则该索引节点将永远不会被删除）</li>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="deleting-a-directory">
-<h3>Deleting a directory<a class="headerlink" href="#deleting-a-directory" title="Permalink to this headline">¶</a></h3>
-<p>The directory delete function is indicated by the <code class="docutils literal"><span class="pre">rmdir</span></code> field in the <code class="docutils literal"><span class="pre">inode_operations</span></code> structure.
-In the minix case, the function is <code class="xref c c-func docutils literal"><span class="pre">minix_rmdir()</span></code>.
-This function is called by the <code class="docutils literal"><span class="pre">rmdir</span></code> system call.
-Such a function performs the following operations:</p>
+<div class="section" id="section-12">
+<h3>删除目录<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<p>目录删除函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">rmdir</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_rmdir()</span></code>。此函数由 <code class="docutils literal"><span class="pre">rmdir</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Performs the operations done by <code class="docutils literal"><span class="pre">minix_unlink</span></code>.</li>
-<li>Ensures that the directory is empty; otherwise, returns <code class="docutils literal"><span class="pre">ENOTEMPTY</span></code>.</li>
-<li>Also deletes the data blocks.</li>
+<li>执行 <code class="docutils literal"><span class="pre">minix_unlink</span></code> 完成的操作</li>
+<li>确保目录为空；否则，返回 <code class="docutils literal"><span class="pre">ENOTEMPTY</span></code></li>
+<li>还删除数据块</li>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="searching-for-an-inode-in-a-directory">
-<h3>Searching for an inode in a directory<a class="headerlink" href="#searching-for-an-inode-in-a-directory" title="Permalink to this headline">¶</a></h3>
-<p>The function that searches for an entry in a directory and extracts the inode is indicated by the <code class="docutils literal"><span class="pre">lookup</span></code> field in the <code class="docutils literal"><span class="pre">inode_operations</span></code> structure.
-In the minix case, the function is <code class="docutils literal"><span class="pre">minix_lookup</span></code>.
-This function is called indirectly when information about the inode associated with an entry in a directory is needed.
-Such a function performs the following operations:</p>
+<div class="section" id="section-13">
+<h3>在目录中搜索索引节点<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<p>在目录中搜索条目并提取索引节点的函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">lookup</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="docutils literal"><span class="pre">minix_lookup</span></code>。当需要有关与目录中条目关联的索引节点的信息时，会间接调用此函数。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Searches in the directory indicated by <code class="docutils literal"><span class="pre">dir</span></code> the entry having the name <code class="docutils literal"><span class="pre">dentry-&gt;d_name.name</span></code>.</li>
-<li>If the entry is found, it will return <code class="docutils literal"><span class="pre">NULL</span></code> and associate the inode with the name using the <code class="xref c c-func docutils literal"><span class="pre">d_add()</span></code> function.</li>
-<li>Otherwise, returns <code class="docutils literal"><span class="pre">ERR_PTR</span></code>.</li>
+<li>在由 <code class="docutils literal"><span class="pre">dir</span></code> 指示的目录中搜索具有名称 <code class="docutils literal"><span class="pre">dentry-&gt;d_name.name</span></code> 的条目</li>
+<li>如果找到条目，则返回 <code class="docutils literal"><span class="pre">NULL</span></code> 并使用 <code class="xref c c-func docutils literal"><span class="pre">d_add()</span></code> 函数将索引节点与名称关联</li>
+<li>否则，返回 <code class="docutils literal"><span class="pre">ERR_PTR</span></code></li>
 </ol>
 </div></blockquote>
 </div>
-<div class="section" id="iterating-through-entries-in-a-directory">
-<h3>Iterating through entries in a directory<a class="headerlink" href="#iterating-through-entries-in-a-directory" title="Permalink to this headline">¶</a></h3>
-<p>The function which iterates through the entries in a directory (lists the directory contents) is indicated by the field <code class="docutils literal"><span class="pre">iterate</span></code> in the <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> structure.
-In the minix case, the function is <code class="docutils literal"><span class="pre">minix_readdir</span></code>.
-This function is called by the <code class="docutils literal"><span class="pre">readdir</span></code> system call.</p>
-<p>The function returns either all entries in the directory or just a part when the buffer allocated for it is not available.
-A call of this function can return:</p>
+<div class="section" id="section-14">
+<h3>遍历目录中的条目<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<p>在目录中遍历条目（列出目录内容）的函数由 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">iterate</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="docutils literal"><span class="pre">minix_readdir</span></code>。此函数由 <code class="docutils literal"><span class="pre">readdir</span></code> 系统调用调用。</p>
+<p>该函数返回目录中的所有条目，或者当为其分配的缓冲区不可用时，仅返回部分条目。此函数的调用可能返回：</p>
 <blockquote>
 <div><ul class="simple">
-<li>a number equal to the existing number of entries if there is enough space in the corresponding user space buffer;</li>
-<li>a number smaller than the actual number of entries, as much as there was space in the corresponding user space buffer;</li>
-<li><code class="docutils literal"><span class="pre">0</span></code>, where there are no more entries to read.</li>
+<li>如果对应的用户空间缓冲区有足够的空间，则返回与现有条目数相等的数字；</li>
+<li>小于实际条目数的数字，对应的用户空间缓冲区中有多少空间，就返回多少；</li>
+<li><code class="docutils literal"><span class="pre">0</span></code>，表示没有更多条目可读取。</li>
 </ul>
 </div></blockquote>
-<p>The function will be called consecutively until all available entries are read. The function is called at least twice.</p>
+<p>该函数将连续调用，直到读取完所有可用的条目。该函数至少会被调用两次。</p>
 <blockquote>
 <div><ul class="simple">
-<li>It is only called twice if:<ul>
-<li>the first call reads all entries and returns their number;</li>
-<li>the second call returns 0, having no other entries to read.</li>
+<li>在以下情况下仅调用两次：<ul>
+<li>第一次调用读取所有条目并返回它们的数量；</li>
+<li>第二次调用返回 0，表示没有其他条目可读取。</li>
 </ul>
 </li>
-<li>It is called more than twice if the first call does not return the total number of entries.</li>
+<li>如果第一次调用未返回总条目数，则会多次调用该函数。</li>
 </ul>
 </div></blockquote>
-<p>The function performs the following operations:</p>
+<p>该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Iterates over the entries (the dentries) from the current directory.</li>
-<li>For each dentry found, increments <code class="docutils literal"><span class="pre">ctx-&gt;pos</span></code>.</li>
-<li>For each valid dentry (an inode other than <code class="docutils literal"><span class="pre">0</span></code>, for example), calls the <code class="xref c c-func docutils literal"><span class="pre">dir_emit()</span></code> function.</li>
-<li>If the <code class="xref c c-func docutils literal"><span class="pre">dir_emit()</span></code> function returns a value other than zero, it means that the buffer in the user space is full and the function returns.</li>
+<li>遍历当前目录中的条目（dentry）。</li>
+<li>对于找到的每个 dentry，递增 <code class="docutils literal"><span class="pre">ctx-&gt;pos</span></code>。</li>
+<li>对于每个有效的 dentry（例如，除了 <code class="docutils literal"><span class="pre">0</span></code> 之外的索引节点），调用 <code class="xref c c-func docutils literal"><span class="pre">dir_emit()</span></code> 函数。</li>
+<li>如果 <code class="xref c c-func docutils literal"><span class="pre">dir_emit()</span></code> 函数返回非零值，表示用户空间的缓冲区已满，函数将返回。</li>
 </ol>
 </div></blockquote>
-<p>The arguments of the <code class="docutils literal"><span class="pre">dir_emit</span></code> function are:</p>
+<p><code class="docutils literal"><span class="pre">dir_emit</span></code> 函数的参数包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">ctx</span></code> is the directory iteration context, passed as an argument to the <code class="docutils literal"><span class="pre">iterate</span></code> function;</li>
-<li><code class="docutils literal"><span class="pre">name</span></code> is the name of the entry (a string of characters);</li>
-<li><code class="docutils literal"><span class="pre">name_len</span></code> is the length of the entry name;</li>
-<li><code class="docutils literal"><span class="pre">ino</span></code> is the inode number associated with the entry;</li>
-<li><code class="docutils literal"><span class="pre">type</span></code> identifies the entry type: <code class="docutils literal"><span class="pre">DT_REG</span></code> (file), <code class="docutils literal"><span class="pre">DT_DIR</span></code> (directory), <code class="docutils literal"><span class="pre">DT_UNKNOWN</span></code> etc. <code class="docutils literal"><span class="pre">DT_UNKNOWN</span></code> can be used when the entry type is unknown.</li>
+<li><code class="docutils literal"><span class="pre">ctx</span></code> 是目录遍历上下文，其作为参数传递给 <code class="docutils literal"><span class="pre">iterate</span></code> 函数；</li>
+<li><code class="docutils literal"><span class="pre">name</span></code> 是条目的名称（字符串）；</li>
+<li><code class="docutils literal"><span class="pre">name_len</span></code> 是条目名称的长度；</li>
+<li><code class="docutils literal"><span class="pre">ino</span></code> 是与条目关联的索引节点号；</li>
+<li><code class="docutils literal"><span class="pre">type</span></code> 标识条目类型: <code class="docutils literal"><span class="pre">DT_REG``（文件）,</span> <span class="pre">``DT_DIR``（目录）,</span> <span class="pre">``DT_UNKNOWN</span></code> 等。当条目类型未知时，可以使用 <code class="docutils literal"><span class="pre">DT_UNKNOWN</span></code>。</li>
 </ul>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="bitmap-operations">
-<span id="bitmapoperations"></span><h2>Bitmap operations<a class="headerlink" href="#bitmap-operations" title="Permalink to this headline">¶</a></h2>
-<p>When working with the file systems, management information (what block is free or busy, what inode is free or busy) is stored using bitmaps.
-For this we often need to use bit operations. Such operations are:</p>
+<div class="section" id="section-15">
+<span id="bitmapoperations"></span><h2>位图操作<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h2>
+<p>在处理文件系统时，管理信息（哪个块是空闲的或忙碌的，哪个索引节点是空闲的或忙碌的）使用位图存储。为此，我们经常需要使用位操作。这些操作包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li>searching the first 0 bit: representing a free block or inode</li>
-<li>marking a bit as 1: marking a busy block or inode</li>
+<li>搜索第一个为 0 的位：表示一个空闲的块或索引节点</li>
+<li>将位标记为 1：标记忙碌的块或索引节点</li>
 </ul>
 </div></blockquote>
-<p>The bitmap operations are found in headers from <code class="docutils literal"><span class="pre">include/asm-generic/bitops</span></code>, especially in <code class="docutils literal"><span class="pre">find.h</span></code> and <code class="docutils literal"><span class="pre">atomic.h</span></code>. Usual functions, with names indicating their role, are:</p>
+<p>位图操作可以在 <code class="docutils literal"><span class="pre">include/asm-generic/bitops</span></code> 目录下的头文件中找到，特别是在 <code class="docutils literal"><span class="pre">find.h</span></code> 和 <code class="docutils literal"><span class="pre">atomic.h</span></code> 中。常见的函数（它们的名称指示其作用）包括：</p>
 <blockquote>
 <div><ul class="simple">
 <li><code class="xref c c-func docutils literal"><span class="pre">find_first_zero_bit()</span></code></li>
@@ -726,57 +672,55 @@ For this we often need to use bit operations. Such operations are:</p>
 <li><code class="xref c c-func docutils literal"><span class="pre">test_and_clear_bit()</span></code></li>
 </ul>
 </div></blockquote>
-<p>These functions usually receive the address of the bitmap, possibly its size (in bytes) and, if necessary, the index of the bit that needs to be activated (set) or deactivated (clear).</p>
-<p>Some usage examples are listed below:</p>
+<p>这些函数通常接收位图的地址，可能还有其大小（以字节为单位），如果需要，还要指定需要激活（设置）或停用（清除）的位的索引。</p>
+<p>下面列出了一些使用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">map</span><span class="p">;</span>
 <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">array_map</span><span class="p">[</span><span class="n">NUM_BYTES</span><span class="p">];</span>
 <span class="kt">size_t</span> <span class="n">idx</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">changed</span><span class="p">;</span>
 
-<span class="cm">/* Find first zero bit in 32 bit integer. */</span>
+<span class="cm">/* 在 32 位整数中找到第一个为 0 的位。 */</span>
 <span class="n">idx</span> <span class="o">=</span> <span class="n">find_first_zero_bit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">map</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
-<span class="n">printk</span> <span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;The %zu-th bit is the first zero bit.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">);</span>
+<span class="n">printk</span> <span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;第 %zu 位是第一个为 0 的位。</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">);</span>
 
-<span class="cm">/* Find first one bit in NUM_BYTES bytes array. */</span>
+<span class="cm">/* 在 NUM_BYTES 字节的数组中找到第一个为 1 的位。 */</span>
 <span class="n">idx</span> <span class="o">=</span> <span class="n">find_first_bit</span><span class="p">(</span><span class="n">array_map</span><span class="p">,</span> <span class="n">NUM_BYTES</span> <span class="o">*</span> <span class="mi">8</span><span class="p">);</span>
-<span class="n">printk</span> <span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;The %zu-th bit is the first one bit.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">);</span>
+<span class="n">printk</span> <span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;第 %zu 位是第一个为 1 的位。</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">);</span>
 
 <span class="cm">/*</span>
-<span class="cm"> * Clear the idx-th bit in integer.</span>
-<span class="cm"> * It is assumed idx is less the number of bits in integer.</span>
+<span class="cm"> * 清除整数中的第 idx 位。</span>
+<span class="cm"> * 假设 idx 小于整数的位数。</span>
 <span class="cm"> */</span>
 <span class="n">clear_bit</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">map</span><span class="p">);</span>
 
 <span class="cm">/*</span>
-<span class="cm"> * Test and set the idx-th bit in array.</span>
-<span class="cm"> * It is assumed idx is less the number of bits in array.</span>
+<span class="cm"> * 测试并设置数组中的第 idx 位。</span>
+<span class="cm"> * 假设 idx 小于数组的位数。</span>
 <span class="cm"> */</span>
 <span class="n">changed</span> <span class="o">=</span> <span class="n">__test_and_set_bit</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sbi</span><span class="o">-&gt;</span><span class="n">imap</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">changed</span><span class="p">)</span>
-      <span class="n">printk</span><span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;%zu-th bit changed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">);</span>
+      <span class="n">printk</span><span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&quot;%zu 位已更改</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="further-reading">
-<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-16">
+<h2>进一步阅读<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li>Robert Love -- Linux Kernel Development, Second Edition -- Chapter
-12. The Virtual Filesystem</li>
-<li>Understanding the Linux Kernel, 3rd edition - Chapter 12. The Virtual
-Filesystem</li>
-<li><a class="reference external" href="http://www.coda.cs.cmu.edu/doc/talks/linuxvfs/">Linux Virtual File System (presentation)</a></li>
-<li><a class="reference external" href="http://www.cyberciti.biz/tips/understanding-unixlinux-file-system-part-i.html">Understanding Unix/Linux Filesystem</a></li>
-<li><a class="reference external" href="http://lwn.net/Articles/57369/">Creating Linux virtual filesystems</a></li>
-<li><a class="reference external" href="http://www.tldp.org/LDP/tlk/fs/filesystem.html">The Linux Documentation Project - VFS</a></li>
-<li><a class="reference external" href="http://www.linux.it/~rubini/docs/vfs/vfs.html">The &quot;Virtual File System&quot; in Linux</a></li>
-<li><a class="reference external" href="http://inglorion.net/documents/tutorials/tutorfs/">A Linux Filesystem Tutorial</a></li>
-<li><a class="reference external" href="http://www.win.tue.nl/~aeb/linux/lk/lk-8.html">The Linux Virtual File System</a></li>
+<li>Robert Love《Linux 内核开发》，第二版——第 12 章 虚拟文件系统</li>
+<li>了解 Linux 内核，第 3 版——第 12 章 虚拟文件系统</li>
+<li><a class="reference external" href="http://www.coda.cs.cmu.edu/doc/talks/linuxvfs/">Linux 虚拟文件系统（演示）</a></li>
+<li><a class="reference external" href="http://www.cyberciti.biz/tips/understanding-unixlinux-file-system-part-i.html">理解 Unix/Linux 文件系统</a></li>
+<li><a class="reference external" href="http://lwn.net/Articles/57369/">创建 Linux 虚拟文件系统</a></li>
+<li><a class="reference external" href="http://www.tldp.org/LDP/tlk/fs/filesystem.html">Linux 文档项目——VFS</a></li>
+<li><a class="reference external" href="http://www.linux.it/~rubini/docs/vfs/vfs.html">Linux 中的“虚拟文件系统”</a></li>
+<li><a class="reference external" href="http://inglorion.net/documents/tutorials/tutorfs/">Linux 文件系统教程</a></li>
+<li><a class="reference external" href="http://www.win.tue.nl/~aeb/linux/lk/lk-8.html">Linux 虚拟文件系统</a></li>
 <li><a class="reference external" href="http://lxr.free-electrons.com/source/Documentation/filesystems/vfs.txt">Documentation/filesystems/vfs.txt</a></li>
-<li><a class="reference external" href="http://lxr.free-electrons.com/source/fs/">File systems sources</a></li>
+<li><a class="reference external" href="http://lxr.free-electrons.com/source/fs/">文件系统源代码</a></li>
 </ol>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-17">
+<h2>练习<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -788,7 +732,7 @@ Filesystem</li>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 filesystems。请参阅任务名称的练习。</p>
+<p>当前实验名称为 文件系统。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -807,9 +751,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/filesystems/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/文件系统/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-17">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -819,94 +763,81 @@ tools/labs $ make boot
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p>In this lab, we will continue the implementation of the file systems started in the previous one.
-For this, we will generate the laboratory skeleton using the following command:</p>
+<p>在本实验中，我们将继续实现之前实验中的文件系统。为此，我们将使用以下命令生成实验的框架：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">TODO=5 LABS=filesystems make skels</span>
 </pre></div>
 </div>
-<p class="last">After this, we will start the implementation from <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code>.</p>
+<p class="last">之后，我们将从 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 开始实现。</p>
 </div>
 <div class="section" id="myfs">
 <h3>myfs<a class="headerlink" href="#myfs" title="Permalink to this headline">¶</a></h3>
-<p>For the exercises below, we will use the <code class="docutils literal"><span class="pre">myfs</span></code> file system whose implementation we started with the previous lab.
-We stopped after mounting the file system and now we will continue with the operations for regular files and directories.
-At the end of these exercises, we will be able to create, modify and delete regular directories and files.</p>
-<p>We will mostly use the <code class="docutils literal"><span class="pre">inode</span></code> and <code class="docutils literal"><span class="pre">dentry</span></code> VFS structures.
-The <code class="docutils literal"><span class="pre">inode</span></code> structure defines a file (of any type: regular, directory, link), while the <code class="docutils literal"><span class="pre">dentry</span></code> structure defines a name, which is an entry in a directory.</p>
-<p>For this we will access the <code class="docutils literal"><span class="pre">myfs</span></code> directory in the lab skeleton.
-The previously generated skeleton contains the solution for the previous lab; we will start from this. As in the previous lab, we will use the <code class="docutils literal"><span class="pre">ramfs</span></code> file system as a starting point.</p>
-<div class="section" id="directory-operations">
-<h4>1. Directory operations<a class="headerlink" href="#directory-operations" title="Permalink to this headline">¶</a></h4>
-<p>To begin with, we will implement the operations for working with directories.
-The operations of creating a file or deleting a file are also directory operations; these operations result in adding or deleting a directory entry (<em>dentry</em>).</p>
-<p>At the end of this exercise we will be able to create and delete entries in the file system. We will not be able to read and write to regular files; we will do so in the next exercise.</p>
-<p>Follow directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> which will guide you through the steps you need to take.</p>
-<p>You will need to specify the following directory operations:</p>
+<p>在下面的练习中，我们将使用 <code class="docutils literal"><span class="pre">myfs</span></code> 文件系统，这是我们在上一个实验中开始实现的。我们之前挂载了文件系统，现在我们将继续进行常规文件和目录的操作。在完成这些练习之后，我们将能够创建、修改和删除常规目录和文件。</p>
+<p>我们将主要使用 <code class="docutils literal"><span class="pre">inode</span></code> 和 <code class="docutils literal"><span class="pre">dentry</span></code> VFS 结构。 <code class="docutils literal"><span class="pre">inode</span></code> 结构定义了文件（可以是任何类型：常规文件、目录、链接），而 <code class="docutils literal"><span class="pre">dentry</span></code> 结构定义了名称，即目录中的条目。</p>
+<p>为此，我们将访问实验框架中的 <code class="docutils literal"><span class="pre">myfs</span></code> 目录。之前生成的框架包含了上一个实验的解决方案；我们将从这里开始。与前一个实验一样，我们将使用 <code class="docutils literal"><span class="pre">ramfs</span></code> 文件系统作为起点。</p>
+<div class="section" id="section-18">
+<h4>1. 目录操作<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h4>
+<p>首先，我们将实现用于处理目录的操作。创建文件或删除文件的操作也是目录操作；这些操作会导致添加或删除目录条目 (<em>dentry</em>)。</p>
+<p>到本练习结束时，我们将能够在文件系统中创建和删除条目。我们还不能读取和写入常规文件；我们将在下一个练习中进行常规文件的读取和写入。</p>
+<p>按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的指示进行操作，这将指导你完成所需的步骤。</p>
+<p>你需要指定以下目录操作：</p>
 <blockquote>
 <div><ul class="simple">
-<li>create a file (<code class="docutils literal"><span class="pre">create</span></code> function)</li>
-<li>search (<code class="docutils literal"><span class="pre">lookup</span></code> function)</li>
-<li>link (<code class="docutils literal"><span class="pre">link</span></code> function)</li>
-<li>create directory (<code class="docutils literal"><span class="pre">mkdir</span></code> function)</li>
-<li>deletion (<code class="docutils literal"><span class="pre">rmdir</span></code> and <code class="docutils literal"><span class="pre">unlink</span></code> functions)</li>
-<li>create node (<code class="docutils literal"><span class="pre">mknod</span></code>)</li>
-<li>rename (<code class="docutils literal"><span class="pre">rename</span></code> function)</li>
+<li>创建文件 (<code class="docutils literal"><span class="pre">create</span></code> 函数)</li>
+<li>搜索 (<code class="docutils literal"><span class="pre">lookup</span></code> 函数)</li>
+<li>链接 (<code class="docutils literal"><span class="pre">link</span></code> 函数)</li>
+<li>创建目录 (<code class="docutils literal"><span class="pre">mkdir</span></code> 函数)</li>
+<li>删除 (<code class="docutils literal"><span class="pre">rmdir</span></code> 和 <code class="docutils literal"><span class="pre">unlink</span></code> 函数)</li>
+<li>创建节点 (<code class="docutils literal"><span class="pre">mknod</span></code>)</li>
+<li>重命名 (<code class="docutils literal"><span class="pre">rename</span></code> 函数)</li>
 </ul>
 </div></blockquote>
-<p>For this, define the <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code> structure in the code, where marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code>.
-To begin, just define the structure <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code>; you will define the structures <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>, <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code> , and <code class="docutils literal"><span class="pre">myfs_aops</span></code> in the next exercise.</p>
+<p>为此，请在标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的位置的代码中定义 <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code> 结构。首先，只需定义 <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code> 结构；你将在下一个练习中定义 <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>, <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code> 和 <code class="docutils literal"><span class="pre">myfs_aops</span></code> 结构。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>Read the section <a class="reference internal" href="#directoryinodes"><span class="std std-ref">Directory inodes operations</span></a></p>
-<p class="last">As a model, you are following the <code class="docutils literal"><span class="pre">ramfs_dir_inode_operations</span></code> structure.</p>
+<p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
+<p class="last">作为参考，你可以查看 <code class="docutils literal"><span class="pre">ramfs_dir_inode_operations</span></code> 结构。</p>
 </div>
-<p>Implement the <code class="docutils literal"><span class="pre">mkdir</span></code>, <code class="docutils literal"><span class="pre">mknod</span></code> and <code class="docutils literal"><span class="pre">create</span></code> operations inside <code class="docutils literal"><span class="pre">myfs_mkdir</span></code>, <code class="docutils literal"><span class="pre">myfs_mknod</span></code> and <code class="docutils literal"><span class="pre">myfs_create</span></code>.
-These operations will allow you to create directories and files in the file system.</p>
+<p>在 <code class="docutils literal"><span class="pre">myfs_mkdir</span></code>, <code class="docutils literal"><span class="pre">myfs_mknod</span></code> 和 <code class="docutils literal"><span class="pre">myfs_create</span></code> 中实现 <code class="docutils literal"><span class="pre">mkdir</span></code>, <code class="docutils literal"><span class="pre">mknod</span></code> 和 <code class="docutils literal"><span class="pre">create</span></code> 操作。这些操作将允许你在文件系统中创建目录和文件。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>We recommend making the code modular using a <code class="docutils literal"><span class="pre">mknod</span></code> function, which you can also use for the next exercise.
-For inode reading and allocation, use <code class="docutils literal"><span class="pre">myfs_get_inode</span></code>, which is already implemented.</p>
-<p>As a model, follow the next functions implemented in the <code class="docutils literal"><span class="pre">ramfs</span></code> file system:</p>
-<blockquote class="last">
+<p>我们建议使用 <code class="docutils literal"><span class="pre">mknod</span></code> 函数使代码模块化，你也可以在下一个练习中使用它。对于 inode 的读取和分配，请使用已经实现的 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数。</p>
+<p>请按规范，按照文件系统 <code class="docutils literal"><span class="pre">ramfs</span></code> 中已实现的下列函数操作：</p>
+<blockquote>
 <div><ul class="simple">
 <li><code class="xref c c-func docutils literal"><span class="pre">ramfs_mknod()</span></code></li>
 <li><code class="xref c c-func docutils literal"><span class="pre">ramfs_mkdir()</span></code></li>
 <li><code class="xref c c-func docutils literal"><span class="pre">ramfs_create()</span></code></li>
 </ul>
 </div></blockquote>
-</div>
-<p>For the other functions, use generic calls (<code class="docutils literal"><span class="pre">simple_*</span></code>) already defined in VFS.</p>
-<p>In the <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> function, initialize the operations fields of the directory inodes:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">i_op</span></code> must be initialized to the address of the structure <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code>;</li>
-<li><code class="docutils literal"><span class="pre">i_fop</span></code> must be initialized to the address of the structure <code class="docutils literal"><span class="pre">simple_dir_operations</span></code>, defined in VFS.</li>
+<p>对于其他函数，请使用已在 VFS 中定义的通用调用 (<code class="docutils literal"><span class="pre">simple_*</span></code>)。</p>
+<p>在 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数中，初始化目录 inode 的操作字段：</p>
+<ul class="last simple">
+<li><code class="docutils literal"><span class="pre">i_op</span></code> 必须初始化为结构体 <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code> 的地址；</li>
+<li><code class="docutils literal"><span class="pre">i_fop</span></code> 必须初始化为在 VFS 中定义的结构体 <code class="docutils literal"><span class="pre">simple_dir_operations</span></code> 的地址。</li>
 </ul>
-</div></blockquote>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><code class="docutils literal"><span class="pre">i_op</span></code> is a pointer to a structure of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> containing operations that have to do with the inode, which are, for a directory, creating a new entry, listing entries, deleting entries, etc.</p>
-<p class="last"><code class="docutils literal"><span class="pre">i_fop</span></code> is a pointer to a structure of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> containing operations that have to do with the <code class="docutils literal"><span class="pre">file</span></code> structure associated with the inode, such as <code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code>, and <code class="docutils literal"><span class="pre">lseek</span></code>.</p>
 </div>
-<div class="section" id="testing">
-<h5>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h5>
-<p>Once the module is done, we can test the creation of files and directories.
-To do this, we compile the kernel module (using <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code>) and copy the resulting file (<code class="docutils literal"><span class="pre">myfs.ko</span></code>) and the test scripts (<code class="docutils literal"><span class="pre">test-myfs-{1,2}.sh</span></code>) in the virtual machine directory (using <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code>).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The test scripts are copied to the virtual machine using <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> only if they are executable:</p>
+<p><code class="docutils literal"><span class="pre">i_op</span></code> 是指向类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> 的结构体指针，其中包含与 inode 相关的操作，对于目录来说，包括创建新条目、列出条目以及删除条目等。</p>
+<p class="last"><code class="docutils literal"><span class="pre">i_fop</span></code> 是指向类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 的结构体指针，其中包含和与 inode 关联的 <code class="docutils literal"><span class="pre">file</span></code> 结构有关的操作，例如 <code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code> 和 <code class="docutils literal"><span class="pre">lseek</span></code>。</p>
+</div>
+<div class="section" id="section-19">
+<h5>测试<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h5>
+<p>完成模块后，我们可以测试文件和目录的创建。为此，我们编译内核模块（使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code>），并将生成的文件 (<code class="docutils literal"><span class="pre">myfs.ko</span></code>) 和测试脚本 (<code class="docutils literal"><span class="pre">test-myfs-{1,2}.sh</span></code>) 复制到虚拟机目录中（使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code>）。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>只有当测试脚本可执行时，它们才会被 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 复制到虚拟机中：</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">student@workstation:~/linux/tools/labs$</span> chmod +x skels/filesystems/myfs/test-myfs-*.sh
 </pre></div>
 </div>
 </div>
-<p>After starting the virtual machine, insert the module, create the mount point and mount the file system:</p>
+<p>启动虚拟机后，插入模块，创建挂载点并挂载文件系统：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod myfs.ko
 <span class="gp">#</span> mkdir -p /mnt/myfs
 <span class="gp">#</span> mount -t myfs none /mnt/myfs
 </pre></div>
 </div>
-<p>Now we can create file hierarchies and subdirectories in the mounted directory (<code class="docutils literal"><span class="pre">/mnt/myfs</span></code>).
-We use commands like the ones below:</p>
+<p>现在我们可以在挂载的目录 (<code class="docutils literal"><span class="pre">/mnt/myfs</span></code>) 中创建文件层次结构和子目录。我们可以使用以下类似的命令：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> touch /mnt/myfs/peanuts.txt
 <span class="gp">#</span> mkdir -p /mnt/myfs/mountain/forest
 <span class="gp">#</span> touch /mnt/myfs/mountain/forest/tree.txt
@@ -914,280 +845,231 @@ We use commands like the ones below:</p>
 <span class="gp">#</span> rmdir /mnt/myfs/mountain/forest
 </pre></div>
 </div>
-<p>At this time we can not read or write files. When running commands such as the following ones we will get errors.</p>
+<p>此时，我们无法读取或写入文件。当运行以下类似的命令时，我们将收到错误消息。</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> <span class="nb">echo</span> <span class="s2">&quot;chocolate&quot;</span> &gt; /mnt/myfs/peanuts.txt
 <span class="gp">#</span> cat /mnt/myfs/peanuts.txt
 </pre></div>
 </div>
-<p>This happens because we have not implemented the operations for working with files; we will do so further.</p>
-<p>To unload the kernel module, use the command</p>
+<p>这是因为我们尚未实现用于处理文件的操作；我们将在后续实现。</p>
+<p>要卸载内核模块，请使用以下命令：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">umount /mnt/myfs</span>
 <span class="go">rmmod myfs</span>
 </pre></div>
 </div>
-<p>To test the functionality provided by the kernel module, we can use the dedicated script <code class="docutils literal"><span class="pre">test-myfs-1.sh</span></code>.
-If the implementation is correct, no error messages will be displayed.</p>
+<p>要测试内核模块提供的功能，可以使用专用脚本 <code class="docutils literal"><span class="pre">test-myfs-1.sh</span></code>。如果实现正确，将不会显示任何错误消息。</p>
 </div>
 </div>
-<div class="section" id="file-operations">
-<h4>2. File operations<a class="headerlink" href="#file-operations" title="Permalink to this headline">¶</a></h4>
-<p>We want to implement the operations for working with files, which are used for accessing a file's content: read, write, truncate, etc.
-For this you will specify the operations described in the structures <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> and <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code>.</p>
-<p>Follow the locations marked with <code class="docutils literal"><span class="pre">TODO</span></code> 6 which will guide you through the steps you need to take.</p>
-<p>Start by defining <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code> and <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>.</p>
+<div class="section" id="section-20">
+<h4>2. 文件操作<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h4>
+<p>我们想要实现用于处理文件的操作，这些操作用于访问文件的内容：读取、写入以及截断等。为此，你需要指定在结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code>、<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code> 中描述的操作。</p>
+<p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span></code> 6 的指示进行操作，这将引导你完成所需的步骤。</p>
+<p>首先定义 <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code> 和 <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>Read the section <a class="reference internal" href="#fileoperations"><span class="std std-ref">Regular files inode operations</span></a>.</p>
-<p>Use the generic function provided by VFS.</p>
-<p class="last">An example of implementation is the <code class="docutils literal"><span class="pre">ramfs</span></code> file system.
-Follow the implementation of <code class="docutils literal"><span class="pre">ramfs_file_inode_operations</span></code> and <code class="docutils literal"><span class="pre">ramfs_file_operations</span></code>.</p>
+<p>请阅读 <a class="reference internal" href="#fileoperations"><span class="std std-ref">常规文件索引节点操作</span></a> 部分。</p>
+<p>使用 VFS 提供的通用函数。</p>
+<p class="last"><code class="docutils literal"><span class="pre">ramfs</span></code> 文件系统是一个实现示例。请参考 <code class="docutils literal"><span class="pre">ramfs_file_inode_operations</span></code> 和 <code class="docutils literal"><span class="pre">ramfs_file_operations</span></code> 的实现。</p>
 </div>
-<p>Inside the function <code class="docutils literal"><span class="pre">myfs_get_inode</span></code>, initialize the operations fields for the regular file inodes:</p>
+<p>在函数 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 中，为常规文件 inode 初始化操作字段：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">i_op</span></code> must be initialized to <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code>;</li>
-<li><code class="docutils literal"><span class="pre">i_fop</span></code> msust be initialized to <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">i_op</span></code> 必须初始化为 <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">i_fop</span></code> 必须初始化为 <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>。</li>
 </ul>
 </div></blockquote>
-<p>Continue with defining the structure <code class="docutils literal"><span class="pre">myfs_aops</span></code>.</p>
+<p>接下来定义 <code class="docutils literal"><span class="pre">myfs_aops</span></code> 结构体。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>Read the section <a class="reference internal" href="#addressspaceoperations"><span class="std std-ref">Address space operations</span></a>.</p>
-<p>Use the generic functions provided by VFS.</p>
-<p>An implementation example is the <code class="docutils literal"><span class="pre">ramfs</span></code> file system: the <code class="docutils literal"><span class="pre">ramfs_aops</span></code> structure.</p>
-<p class="last">You do not need to define the function of type <code class="docutils literal"><span class="pre">set_page_dirty</span></code>.</p>
+<p>请阅读 <a class="reference internal" href="#addressspaceoperations"><span class="std std-ref">地址空间操作</span></a> 部分。</p>
+<p>使用 VFS 提供的通用函数。</p>
+<p><code class="docutils literal"><span class="pre">ramfs</span></code> 文件系统是一个实现示例: <code class="docutils literal"><span class="pre">ramfs_aops</span></code> 结构体。</p>
+<p class="last">你不需要定义 <code class="docutils literal"><span class="pre">set_page_dirty</span></code> 类型的函数。</p>
 </div>
-<p>Initialize the <code class="docutils literal"><span class="pre">i_mapping-&gt;a_ops</span></code> field of the inode structure to <code class="docutils literal"><span class="pre">myfs_aops</span></code>.</p>
-<div class="section" id="testing-1">
-<h5>Testing<a class="headerlink" href="#testing-1" title="Permalink to this headline">¶</a></h5>
-<p>For testing, we use the steps described in the previous exercise.
-In addition to those steps, we will now be able to read, write and modify a file using commands like the ones below:</p>
+<p>将 inode 结构体的 <code class="docutils literal"><span class="pre">i_mapping-&gt;a_ops</span></code> 字段初始化为 <code class="docutils literal"><span class="pre">myfs_aops</span></code>。</p>
+<div class="section" id="section-21">
+<h5>测试<a class="headerlink" href="#section-21" title="Permalink to this headline">¶</a></h5>
+<p>为了测试，我们使用前面练习中描述的步骤。除了那些步骤之外，我们现在可以使用类似以下的命令来读取、写入和修改文件：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> <span class="nb">echo</span> <span class="s2">&quot;chocolate&quot;</span> &gt; /mnt/myfs/peanuts.txt
 <span class="gp">#</span> cat /mnt/myfs/peanuts.txt
 </pre></div>
 </div>
-<p>To test the functionality provided by the module, we can use the dedicated script:</p>
+<p>要测试模块提供的功能，可以使用专用脚本：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./test-myfs-2.sh
 </pre></div>
 </div>
-<p>If the implementation is correct, no error messages will be displayed when running the above script.</p>
+<p>如果实现正确，在运行上述脚本时将不会显示任何错误消息。</p>
 </div>
 </div>
 </div>
 <div class="section" id="minfs">
 <h3>minfs<a class="headerlink" href="#minfs" title="Permalink to this headline">¶</a></h3>
-<p>For the exercises below, we will use the minfs file system whose development started in the previous lab.
-This is a file system with disk support.
-We stopped after mounting the file system and now we will continue with the operations on regular files and directories.
-At the end of these exercises we will be able to create and delete entries in the file system.</p>
-<p>We will mainly use the <code class="xref c c-type docutils literal"><span class="pre">inode</span></code> and <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code> VFS structures.
-The inode structure defines a file (of any type: regular, directory, link), while the dentry structure defines a name, which is a directory entry.</p>
-<p>For this we will access the <code class="docutils literal"><span class="pre">minfs/kernel</span></code> directory from the laboratory skeleton.
-The generated skeleton contains the solution from the previous lab; we will start from this.
-As in the previous lab, we will use the <code class="docutils literal"><span class="pre">minix</span></code> file system as a starting point.</p>
-<p>We will use the formatting tool <code class="docutils literal"><span class="pre">mkfs.minfs</span></code> in the <code class="docutils literal"><span class="pre">minfs/user</span></code> directory which is automatically compiled when running <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> and copied to the virtual machine at <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code>.</p>
-<p>The formatting tool prepares a virtual machine disk using a command like</p>
+<p>在下面的练习中，我们将使用在上一个实验中开始开发的 minfs 文件系统。这是带有磁盘支持的文件系统。我们之前在挂载文件系统后止住脚步，现在我们将继续进行常规文件和目录的操作。在完成这些练习后，我们将能够在文件系统中创建和删除条目。</p>
+<p>我们将主要使用 <code class="xref c c-type docutils literal"><span class="pre">inode</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code> VFS 结构。inode 结构定义了文件（可以是任何类型：常规文件、目录、链接），而 dentry 结构定义了名称，即目录条目。</p>
+<p>为此，我们将访问实验框架中的 <code class="docutils literal"><span class="pre">minfs/kernel</span></code> 目录。生成的实验框架包含了上一个实验的最终结果；我们将从这里开始。与上一个实验一样，我们将 <code class="docutils literal"><span class="pre">minix</span></code> 文件系统作为起点。</p>
+<p>我们将使用 <code class="docutils literal"><span class="pre">minfs/user</span></code> 目录中的格式化工具 <code class="docutils literal"><span class="pre">mkfs.minfs</span></code>，该工具通过运行 <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> 来自动编译并通过 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 将其复制到虚拟机中的目录中。</p>
+<p>格式化工具使用类似下面的命令来准备虚拟机磁盘：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./mkfs.minfs /dev/vdb
 </pre></div>
 </div>
-<p>After formatting, the disk has a structure like the one in the diagram below:</p>
+<p>格式化后，磁盘的结构如下图所示：</p>
 <img alt="../_images/minfs_arch1.png" src="../_images/minfs_arch1.png" />
-<p>As shown in the diagram, <code class="docutils literal"><span class="pre">minfs</span></code> is a minimalist file system.
-<code class="docutils literal"><span class="pre">minfs</span></code> contains a maximum of 32 inodes, each inode having a single data block (the file size is limited to block size).
-The super block contains a 32-bit map (<code class="docutils literal"><span class="pre">imap</span></code>), each bit indicating the use of an inode.</p>
+<p>如图所示, <code class="docutils literal"><span class="pre">minfs</span></code> 是极简的文件系统。 <code class="docutils literal"><span class="pre">minfs</span></code> 包含最多 32 个 inode，每个 inode 有一个数据块（文件大小限制为块大小）。超级块包含 32 位的位图 (<code class="docutils literal"><span class="pre">imap</span></code>)，每位表示一个 inode 的使用情况。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Before you start working, go through the <code class="docutils literal"><span class="pre">minfs/kernel/minfs.h</span></code> header file.
-This file contains the structures and macros that will be used in these exercises.
-These structures and macros define the file system as described in the diagram above.</p>
+<p class="last">在开始工作之前，请仔细阅读 <code class="docutils literal"><span class="pre">minfs/kernel/minfs.h</span></code> 头文件。此文件包含了这些练习中将使用的结构体和宏。这些结构体和宏定义了上面图表中描述的文件系统。</p>
 </div>
-<div class="section" id="iterate-operation">
-<h4>1. Iterate operation<a class="headerlink" href="#iterate-operation" title="Permalink to this headline">¶</a></h4>
-<p>At first we want to be able to list the contents of the root directory.
-For this we must be able to read the entries in the root directory, which means implementing the <code class="docutils literal"><span class="pre">iterate</span></code> operation.
-The <code class="docutils literal"><span class="pre">iterate</span></code> operation is a field within the <code class="docutils literal"><span class="pre">minfs_dir_operations</span></code> structure (of type <code class="docutils literal"><span class="pre">file_operations</span></code>) and is implemented by the function <code class="docutils literal"><span class="pre">minfs_readdir</span></code>. We need to implement this function.</p>
-<p>Follow directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> which will guide you through the steps you need to take.</p>
+<div class="section" id="section-22">
+<h4>1. 迭代操作<a class="headerlink" href="#section-22" title="Permalink to this headline">¶</a></h4>
+<p>首先，我们希望能够列出根目录的内容。为此，我们必须能够读取根目录中的条目，这意味着要实现 <code class="docutils literal"><span class="pre">iterate</span></code> 操作。 <code class="docutils literal"><span class="pre">iterate</span></code> 操作是 <code class="docutils literal"><span class="pre">minfs_dir_operations</span></code> 结构体（类型为 <code class="docutils literal"><span class="pre">file_operations</span></code>）中的一个字段，由函数 <code class="docutils literal"><span class="pre">minfs_readdir</span></code> 实现。我们需要实现这个函数。</p>
+<p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的位置进行操作，这将引导你完成所需的步骤。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>Read the section <a class="reference internal" href="#directoryinodes"><span class="std std-ref">Directory inodes operations</span></a></p>
-<p>As a starting point, follow the <code class="xref c c-func docutils literal"><span class="pre">minix_readdir()</span></code> function.
-The function is rather complicated, but it gives you an insight into the steps you have to do.</p>
-<p class="last">Follow, in <code class="docutils literal"><span class="pre">minfs.c</span></code> and <code class="docutils literal"><span class="pre">minfs.h</span></code>, the definitions of structures <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code> and <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>.
-You will use them in the <code class="docutils literal"><span class="pre">minfs_readdir</span></code> implementation.</p>
+<p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
+<p>作为起点，请参考 <code class="xref c c-func docutils literal"><span class="pre">minix_readdir()</span></code> 函数。该函数相当复杂，但它可以帮助你了解需要执行的步骤。</p>
+<p class="last">接下来，在 <code class="docutils literal"><span class="pre">minfs.c</span></code> 和 <code class="docutils literal"><span class="pre">minfs.h</span></code> 中，查看结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code> 和 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的定义。你将在 <code class="docutils literal"><span class="pre">minfs_readdir</span></code> 实现中使用它们。</p>
 </div>
-<p>Obtain the inode and the structure <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> associated with the directory.
-The structure <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> is useful to find out the directory's data block.
-From this structure you get the <code class="docutils literal"><span class="pre">data_block</span></code> field, representing the data block index on the disk.</p>
+<p>获取与目录关联的 inode 和结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>。结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 可以帮助我们查找目录的数据块。从这个结构体中，你可以获取 <code class="docutils literal"><span class="pre">data_block</span></code> 字段，表示磁盘上的数据块索引。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">To get the structure <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> structure, use <code class="xref c c-func docutils literal"><span class="pre">list_entry()</span></code> or <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>.</p>
+<p class="last">要获取结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>，请使用 <code class="xref c c-func docutils literal"><span class="pre">list_entry()</span></code> 或 <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>。</p>
 </div>
-<p>Use <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> to read the directory data block.</p>
+<p>使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 读取目录的数据块。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>The data block of the directory is indicated by the <code class="docutils literal"><span class="pre">data_block</span></code> field of the structure <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> corresponding to the directory.</p>
-<p class="last">The data in the block is referenced by the <code class="docutils literal"><span class="pre">b_data</span></code> field of the <code class="docutils literal"><span class="pre">buffer_head</span></code> structure (the usual code will be <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code>).
-This block (being the data block of a directory) contains an array of at most <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> entries of type <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> (directory entries specific to <code class="docutils literal"><span class="pre">minfs</span></code>).
-Use casting to <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span> <span class="pre">*</span></code> to work with the data in the block.</p>
+<p>目录的数据块由与目录对应的结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的 <code class="docutils literal"><span class="pre">data_block</span></code> 字段指示。</p>
+<p class="last">块中的数据由 <code class="docutils literal"><span class="pre">buffer_head</span></code> 结构体的 <code class="docutils literal"><span class="pre">b_data</span></code> 字段引用（通常的代码将是 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code>）。该块（作为目录的数据块）包含一个数组，该数组具有最多 <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> 个条目，类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> (<code class="docutils literal"><span class="pre">minfs</span></code> 特定的目录条目)。可以通过强制转换为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span> <span class="pre">*</span></code> 来处理块中的数据。</p>
 </div>
-<p>Iterate over all the entries in the data block and fill the user space buffer inside the <code class="docutils literal"><span class="pre">for</span></code> loop.</p>
+<p>在数据块中迭代所有条目，并在 <code class="docutils literal"><span class="pre">for</span></code> 循环中填充用户空间缓冲区。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>For each index, get the corresponding entry of the <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> by using pointer arithmetics on the <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> field.
-Ignore dentries that have an <code class="docutils literal"><span class="pre">ino</span></code> field equal to 0. Such a dentry is a free slot in the director's dentry list.</p>
-<p>For each valid entry, there is an existing call <code class="xref c c-func docutils literal"><span class="pre">dir_emit()</span></code> with the appropriate parameters. This is the call that sends the dentries to the caller (and then to user space).</p>
-<p class="last">Check the call examples in <code class="xref c c-func docutils literal"><span class="pre">qnx6_readdir()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">minix_readdir()</span></code>.</p>
+<p>对于每个索引，通过在 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> 字段上进行指针运算，获取相应的 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 条目。请忽略 <code class="docutils literal"><span class="pre">ino</span></code> 字段等于 0 的目录条目。这样的目录条目是目录条目列表中的空槽。</p>
+<p>对于每个有效的条目，都用适当参数调用了 <code class="xref c c-func docutils literal"><span class="pre">dir_emit()</span></code>。这个调用将把 dentry 发送给调用者（然后发送到用户空间）。</p>
+<p class="last">在 <code class="xref c c-func docutils literal"><span class="pre">qnx6_readdir()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_readdir()</span></code> 中查看调用示例。</p>
 </div>
-<div class="section" id="testing-2">
-<h5>Testing<a class="headerlink" href="#testing-2" title="Permalink to this headline">¶</a></h5>
-<p>Once the module is done, we can test the listing of the root directory contents.
-To do this, we compile the kernel module (<code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code>) and copy the result to the virtual machine together with the test scripts (<code class="docutils literal"><span class="pre">minfs/user/test-minfs-{0,1}.sh</span></code>) and the formatting utility (<code class="docutils literal"><span class="pre">minfs/user/mkfs.minfs</span></code>) using <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code>, then start the machine.</p>
+<div class="section" id="section-23">
+<h5>测试<a class="headerlink" href="#section-23" title="Permalink to this headline">¶</a></h5>
+<p>完成模块后，我们可以测试列出根目录内容的功能。为此，我们编译内核模块 (<code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code>)，将结果与测试脚本 (<code class="docutils literal"><span class="pre">minfs/user/test-minfs-{0,1}.sh</span></code>) 和格式化工具 (<code class="docutils literal"><span class="pre">minfs/user/mkfs.minfs</span></code>) 一起复制到虚拟机中（使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 命令），然后启动虚拟机。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The test scripts are copied to the virtual machine only if they are executable:</p>
+<p>只有当测试脚本具有可执行权限时，它们才会被复制到虚拟机中：</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">student@eg106:~/src/linux/tools/labs$</span> chmod +x skels/filesystems/minfs/user/test-minfs*.sh
 </pre></div>
 </div>
 </div>
-<p>After we start the virtual machine, we format the <code class="docutils literal"><span class="pre">/dev/vdb</span></code> disk, create the mount point and mount the file system:</p>
+<p>启动虚拟机后，我们格式化 <code class="docutils literal"><span class="pre">/dev/vdb</span></code> 磁盘，创建挂载点并挂载文件系统：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./mkfs.minfs /dev/vdb
 <span class="gp">#</span> mkdir -p /mnt/minfs
 <span class="gp">#</span> mount -t minfs /dev/vdb /mnt/minfs
 </pre></div>
 </div>
-<p>Now we can list the contents of the root directory:</p>
+<p>现在，我们可以列出根目录的内容：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ls -l /mnt/minfs
 </pre></div>
 </div>
-<p>We notice that there is already a file (<code class="docutils literal"><span class="pre">a.txt</span></code>); it is created by the formatting utility.</p>
-<p>We also notice that we are not allowed to display information for a file using the <code class="docutils literal"><span class="pre">ls</span></code> command.
-This is because we have not implemented the <code class="docutils literal"><span class="pre">lookup</span></code> function. We will implement it in the next exercise.</p>
-<p>To test the functionality provided by the module, we can use the dedicated script:</p>
+<p>我们注意到已经有一个文件 (<code class="docutils literal"><span class="pre">a.txt</span></code>)；它是由格式化工具创建的。</p>
+<p>我们还注意到，我们不能使用 <code class="docutils literal"><span class="pre">ls</span></code> 命令显示文件的信息。这是因为我们还没有实现 <code class="docutils literal"><span class="pre">lookup</span></code> 函数。我们将在下一个练习中实现它。</p>
+<p>为了测试模块提供的功能，我们可以使用专用脚本：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./test-minfs-0.sh
 <span class="gp">#</span> ./test-minfs-1.sh
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="lookup-operation">
-<h4>2. Lookup operation<a class="headerlink" href="#lookup-operation" title="Permalink to this headline">¶</a></h4>
-<p>To properly list the contents of a directory, we need to implement the search functionality, ie the <code class="docutils literal"><span class="pre">lookup</span></code> operation.
-The <code class="docutils literal"><span class="pre">lookup</span></code> operation is a field within the <code class="docutils literal"><span class="pre">minfs_dir_inode_operations</span></code> structure (of type <code class="docutils literal"><span class="pre">inode_operations</span></code>) and is implemented by the <code class="docutils literal"><span class="pre">minfs_lookup</span></code> function.
-This function (<code class="docutils literal"><span class="pre">minfs_lookup</span></code>) needs to be implemented.
-We will actually implement the <code class="docutils literal"><span class="pre">minfs_find_entry</span></code> function called by <code class="docutils literal"><span class="pre">minfs_lookup</span></code> .</p>
-<p>Follow directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">6</span></code> which will tell you the steps you need to take.</p>
+<div class="section" id="section-24">
+<h4>2. 查找操作<a class="headerlink" href="#section-24" title="Permalink to this headline">¶</a></h4>
+<p>为了正确列出目录的内容，我们需要实现搜索功能，即 <code class="docutils literal"><span class="pre">lookup</span></code> 操作。 <code class="docutils literal"><span class="pre">lookup</span></code> 操作是 <code class="docutils literal"><span class="pre">minfs_dir_inode_operations</span></code> 结构体（类型为 <code class="docutils literal"><span class="pre">inode_operations</span></code>）中的字段，由 <code class="docutils literal"><span class="pre">minfs_lookup</span></code> 函数实现。我们需要实现函数 <code class="docutils literal"><span class="pre">minfs_lookup</span></code>。实际上，我们需要实现 <code class="docutils literal"><span class="pre">minfs_lookup</span></code> 函数调用的 <code class="docutils literal"><span class="pre">minfs_find_entry</span></code> 函数。</p>
+<p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">6</span></code> 的位置提示的步骤进行操作。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>Read the section <a class="reference internal" href="#directoryinodes"><span class="std std-ref">Directory inodes operations</span></a></p>
-<p class="last">As a starting point, read the functions <code class="xref c c-func docutils literal"><span class="pre">qnx6_find_entry()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">minix_find_entry()</span></code>.</p>
+<p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
+<p class="last">作为起点，请阅读函数 <code class="xref c c-func docutils literal"><span class="pre">qnx6_find_entry()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_find_entry()</span></code>。</p>
 </div>
-<p>In the <code class="docutils literal"><span class="pre">minfs_find_entry</span></code> function, iterate over the directory where the dentry is: <code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code>.
-Iterating means going through the entries in the directory's data block (of type <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>) and locate, if it exists, the requested entry.</p>
+<p>在 <code class="docutils literal"><span class="pre">minfs_find_entry</span></code> 函数中，迭代包含目标 dentry 的目录： <code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code>。迭代意味着遍历目录数据块（类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>）中的条目，并定位（如果存在）所请求的条目。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>From the structure of type <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> corresponding to the directory, find out the data block index and read it (<code class="docutils literal"><span class="pre">sb_read</span></code>).
-You will access the block contents using <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code>.
-The directory data block contains an array of at most <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> entries of type <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>.
-Use pointer arithmetics to get entries of type <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> from the data block (<code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code>).</p>
-<p>Check the presence of the name (stored in the local variable <code class="docutils literal"><span class="pre">name</span></code>) in the directory (if there is an entry in the data block whose name is a string equal to the given name). Use <code class="xref c c-func docutils literal"><span class="pre">strcmp()</span></code> to verify.</p>
-<p>Ignore dentries that have an <code class="docutils literal"><span class="pre">ino</span></code> field equal to <code class="docutils literal"><span class="pre">0</span></code>. Those dentries are free slots in the directory dentry list.</p>
-<p class="last">Store in the <code class="docutils literal"><span class="pre">final_de</span></code> variable the dentry found.
-If you do not find any dentry, then the <code class="docutils literal"><span class="pre">final_de</span></code> variable will have the value <code class="docutils literal"><span class="pre">NULL</span></code>, the value with which it was initialized.</p>
+<p>从与目录对应的类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的结构体中，找出数据块索引并读取它 (<code class="docutils literal"><span class="pre">sb_read</span></code>)。你需要使用 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> 访问块内容。目录数据块包含一个条目数组，该数组最多包含 <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> 个类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的条目。使用指针运算从数据块 (<code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code>) 中获取类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的条目。</p>
+<p>检查目录中是否存在指定名称（存储在局部变量 <code class="docutils literal"><span class="pre">name</span></code> 中）的条目（数据块中存在一个名称等于给定名称的条目）。使用 <code class="xref c c-func docutils literal"><span class="pre">strcmp()</span></code> 进行验证。</p>
+<p>忽略 <code class="docutils literal"><span class="pre">ino</span></code> 字段等于 <code class="docutils literal"><span class="pre">0</span></code> 的目录条目。这些目录条目是目录条目列表中的空槽。</p>
+<p class="last">将找到的 dentry 存储在变量 <code class="docutils literal"><span class="pre">final_de</span></code> 中。如果没有找到任何 dentry，则变量 <code class="docutils literal"><span class="pre">final_de</span></code> 的值将为 <code class="docutils literal"><span class="pre">NULL</span></code>，即其初始化值。</p>
 </div>
-<p>Comment the <code class="docutils literal"><span class="pre">simple_lookup</span></code> call in the <code class="docutils literal"><span class="pre">minfs_lookup</span></code> function to invoke the implementation of <code class="docutils literal"><span class="pre">minfs_readdir</span></code>.</p>
-<div class="section" id="testing-3">
-<h5>Testing<a class="headerlink" href="#testing-3" title="Permalink to this headline">¶</a></h5>
-<p>For testing, we use the steps described in the previous exercise.
-The long file listing (<code class="docutils literal"><span class="pre">ls</span> <span class="pre">-l</span></code>) of the contents of a directory (root directory) will display permissions and other file-specific information:</p>
+<p>在 <code class="docutils literal"><span class="pre">minfs_lookup</span></code> 函数中注释掉 <code class="docutils literal"><span class="pre">simple_lookup</span></code> 调用，以调用 <code class="docutils literal"><span class="pre">minfs_readdir</span></code> 的实现。</p>
+<div class="section" id="section-25">
+<h5>测试<a class="headerlink" href="#section-25" title="Permalink to this headline">¶</a></h5>
+<p>为了进行测试，我们使用前面练习中描述的步骤。列出目录（根目录）的长文件列表 (<code class="docutils literal"><span class="pre">ls</span> <span class="pre">-l</span></code>) 将显示权限和其他文件特定信息：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ls -l /mnt/minfs
 </pre></div>
 </div>
-<p>To test the functionality provided by the module, we can use the dedicated scripts:</p>
+<p>为了测试模块提供的功能，我们可以使用专用脚本：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./test-minfs-0.sh
 <span class="gp">#</span> ./test-minfs-1.sh
 </pre></div>
 </div>
-<p>If the implementation is correct, no error messages will be displayed when running the scripts above.</p>
+<p>如果实现正确，运行上面的脚本时将不会显示任何错误消息。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>After mounting the file system using the command</p>
+<p>在使用以下命令挂载文件系统后：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mount -t minfs /dev/vdb /mnt/minfs
 </pre></div>
 </div>
-<p>we try to create a file using the command</p>
+<p>我们尝试使用以下命令创建一个文件：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> touch /mnt/minfs/peanuts.txt
 </pre></div>
 </div>
-<p class="last">We notice that we get an error because we did not implement the directory operations that allow us to create a file.
-We will do this for the next exercise.</p>
+<p class="last">这时我们遇到了错误，因为我们还没有实现创建文件的目录操作。我们将在下一个练习中实现这个功能。</p>
 </div>
 </div>
 </div>
-<div class="section" id="create-operation">
-<h4>3. Create operation<a class="headerlink" href="#create-operation" title="Permalink to this headline">¶</a></h4>
-<p>In order to allow the creation of a file in a directory, we must implement the <code class="docutils literal"><span class="pre">create</span></code> operation.
-The <code class="docutils literal"><span class="pre">create</span></code> operation is a field in the <code class="docutils literal"><span class="pre">minfs_dir_inode_operations</span></code> structure (of type <code class="xref c c-type docutils literal"><span class="pre">inode_operations</span></code>) and is implemented by the <code class="docutils literal"><span class="pre">minfs_create</span></code> function. We need to implement this function.
-In fact, we will implement the <code class="docutils literal"><span class="pre">minfs_new_inode</span></code> (which creates and initializes an inode) and <code class="docutils literal"><span class="pre">minfs_add_link</span></code> which adds a link (or name or <em>dentry</em>) for the created inode.</p>
-<p>Follow directions marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">7</span></code> which will guide you through the steps you need to take.</p>
+<div class="section" id="section-26">
+<h4>3. 创建操作<a class="headerlink" href="#section-26" title="Permalink to this headline">¶</a></h4>
+<p>为了能够在目录中创建文件，我们必须实现 <code class="docutils literal"><span class="pre">create</span></code> 操作。 <code class="docutils literal"><span class="pre">create</span></code> 操作是 <code class="docutils literal"><span class="pre">minfs_dir_inode_operations</span></code> 结构体（类型为 <code class="docutils literal"><span class="pre">inode_operations</span></code>）中的字段，由 <code class="docutils literal"><span class="pre">minfs_create</span></code> 函数实现。我们需要实现这个函数。实际上，我们将实现 <a href="#system-message-2"><span class="problematic" id="problematic-2">``</span></a>minfs_new_inode``（创建和初始化 inode）和 <a href="#system-message-3"><span class="problematic" id="problematic-3">``</span></a>minfs_add_link``（为创建的 inode 添加一个链接、名称或 <em>dentry</em>）函数。</p>
+<p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">7</span></code> 的指示进行操作。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>Read the section <a class="reference internal" href="#directoryinodes"><span class="std std-ref">Directory inodes operations</span></a></p>
-<p class="last">Inspect the code in the <code class="docutils literal"><span class="pre">minfs_create</span></code> and the skeleton of functions <code class="docutils literal"><span class="pre">minfs_new_inode</span></code> and <code class="docutils literal"><span class="pre">minfs_add_link</span></code>.</p>
+<p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
+<p class="last">查看 <code class="docutils literal"><span class="pre">minfs_create</span></code> 函数的代码和 <code class="docutils literal"><span class="pre">minfs_new_inode</span></code>, <code class="docutils literal"><span class="pre">minfs_add_link</span></code> 函数的骨架。</p>
 </div>
-<p>Implement the function <code class="docutils literal"><span class="pre">minfs_new_inode</span></code>. Inside this function you will create (using <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code>) and initialize an inode. The initialization is done using the data from disk.</p>
+<p>实现函数 <code class="docutils literal"><span class="pre">minfs_new_inode</span></code>。在这个函数中，你将使用 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 函数创建并初始化 inode。初始化是使用磁盘上的数据完成的。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>Use the <code class="xref c c-func docutils literal"><span class="pre">minix_new_inode()</span></code> function as a model.
-Find the first free inode in imap (<code class="docutils literal"><span class="pre">sbi-&gt;imap</span></code>).
-Use bitwise operations (<code class="docutils literal"><span class="pre">find_first_zero_bit</span></code> and <code class="docutils literal"><span class="pre">set_bit</span></code>).
-Read the <a class="reference internal" href="#bitmapoperations"><span class="std std-ref">Bitmap operations</span></a> section.</p>
-<p>The buffer for the superblock (<code class="docutils literal"><span class="pre">sbi-&gt;sbh</span></code>) must be marked as dirty .</p>
-<p class="last">You must initialize the usual fields as it is done for the <code class="docutils literal"><span class="pre">myfs</span></code> file system.
-Initialize the <code class="docutils literal"><span class="pre">i_mode</span></code> field to <code class="docutils literal"><span class="pre">0</span></code> in the call to <code class="docutils literal"><span class="pre">inode_init_owner</span></code>. It will be initialized in the caller later.</p>
+<p>以函数 <code class="xref c c-func docutils literal"><span class="pre">minix_new_inode()</span></code> 为模型。在 imap (<code class="docutils literal"><span class="pre">sbi-&gt;imap</span></code>) 中找到第一个空闲的 inode。使用位操作 (<code class="docutils literal"><span class="pre">find_first_zero_bit</span></code> 和 <code class="docutils literal"><span class="pre">set_bit</span></code>)。请阅读 <a class="reference internal" href="#bitmapoperations"><span class="std std-ref">位图操作</span></a> 部分。</p>
+<p>将超级块的缓冲区 (<code class="docutils literal"><span class="pre">sbi-&gt;sbh</span></code>) 标记为脏。</p>
+<p class="last">你必须像 <code class="docutils literal"><span class="pre">myfs</span></code> 文件系统中做的那样初始化常规字段。在调用 <code class="docutils literal"><span class="pre">inode_init_owner</span></code> 时，将 <code class="docutils literal"><span class="pre">i_mode</span></code> 字段初始化为 <code class="docutils literal"><span class="pre">0</span></code>。稍后在调用者中进行初始化。</p>
 </div>
-<p>Implement the <code class="docutils literal"><span class="pre">minfs_add_link</span></code> function. The function adds a new dentry (<code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>) to the parent directory data block (<code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code>).</p>
+<p>实现函数 <code class="docutils literal"><span class="pre">minfs_add_link</span></code>。该函数将新的 dentry (<code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>) 添加到父目录数据块 (<code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code>) 中。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">Use the function <code class="docutils literal"><span class="pre">minix_add_link</span></code> function as a model.</p>
+<p class="last">以函数 <code class="docutils literal"><span class="pre">minix_add_link</span></code> 为模型。</p>
 </div>
-<p>In <code class="docutils literal"><span class="pre">minfs_add_link</span></code> we want to find the first free place for the dentry.
-For this, you will iterate over the directory data block and you will find the first free entry. A free dentry has the <code class="docutils literal"><span class="pre">ino</span></code> field equal to <code class="docutils literal"><span class="pre">0</span></code>.</p>
+<p>在 <code class="docutils literal"><span class="pre">minfs_add_link</span></code> 中，我们希望找到 dentry 的第一个空闲位置。为此，你需要迭代目录数据块，并找到第一个空闲条目。空闲的 dentry 的 <code class="docutils literal"><span class="pre">ino</span></code> 字段等于 <code class="docutils literal"><span class="pre">0</span></code>。</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>In order to work with the directory, get the inode of type <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> corresponding to the parent directory (the <strong>dir</strong> inode).
-Do not use the variable <code class="docutils literal"><span class="pre">inode</span></code> to get <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>; that inode belongs to the file, not to the parent directory inside which you want to add the link/dentry.
-To get the <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> structure, use <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>.</p>
-<p>The structure <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> is useful for finding the directory data block (the one indicated by the <code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code>, which is the <code class="docutils literal"><span class="pre">dir</span></code> variable).
-From this structure, get the <code class="docutils literal"><span class="pre">data_block</span></code> field, representing index of the data block on the disk.
-This block contains the entries in the directory. Use <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> to read the block and then <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> to refer to the data.
-The block contains at most <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> entries of type <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>.</p>
-<p>If all entries are occupied, return <code class="docutils literal"><span class="pre">-ENOSPC</span></code>.</p>
-<p>Iterate over the entries in the data block using the variable <code class="docutils literal"><span class="pre">de</span></code> and extract the first free entry (for which the <code class="docutils literal"><span class="pre">ino</span></code> field is <code class="docutils literal"><span class="pre">0</span></code>).</p>
-<p>When you have found a free place, fill in the corresponding entry:</p>
+<p>为了处理目录，获取与父目录对应的类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的 inode（即 <strong>dir</strong> inode）。不要使用变量 <code class="docutils literal"><span class="pre">inode</span></code> 来获取 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>；该 inode 属于文件，而不是你想要向其中添加链接/目录项的父目录。要获取 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 结构体，请使用 <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>。</p>
+<p>结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 对于查找目录数据块（由 <code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code> 指示的块，即 <code class="docutils literal"><span class="pre">dir</span></code> 变量）非常有用。从这个结构体中获取 <code class="docutils literal"><span class="pre">data_block</span></code> 字段，表示磁盘上的数据块的索引。该块包含目录中的条目。使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 读取块，然后使用 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> 引用数据。该块最多包含 <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> 个类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的条目。</p>
+<p>如果所有条目都被占用，则返回 <code class="docutils literal"><span class="pre">-ENOSPC</span></code>。</p>
+<p>使用变量 <code class="docutils literal"><span class="pre">de</span></code> 迭代数据块中的条目，并提取第一个空闲条目 (<code class="docutils literal"><span class="pre">ino</span></code> 字段为 <code class="docutils literal"><span class="pre">0</span></code>)。</p>
+<p>当找到空闲位置时，填充相应的条目：</p>
 <blockquote>
 <div><ul class="simple">
-<li>the <code class="docutils literal"><span class="pre">inode-&gt;i_ino</span></code> field in <code class="docutils literal"><span class="pre">de-&gt;ino</span></code></li>
-<li>the <code class="docutils literal"><span class="pre">dentry-&gt;d_name.name</span></code> field in <code class="docutils literal"><span class="pre">de-&gt;name</span></code></li>
+<li>将 <code class="docutils literal"><span class="pre">inode-&gt;i_ino</span></code> 字段填写到 <code class="docutils literal"><span class="pre">de-&gt;ino</span></code></li>
+<li>将 <code class="docutils literal"><span class="pre">dentry-&gt;d_name.name</span></code> 字段填写到 <code class="docutils literal"><span class="pre">de-&gt;name</span></code></li>
 </ul>
 </div></blockquote>
-<p class="last">Then mark the buffer dirty.</p>
+<p class="last">然后将缓冲区标记为脏。</p>
 </div>
-<div class="section" id="testing-4">
-<h5>Testing<a class="headerlink" href="#testing-4" title="Permalink to this headline">¶</a></h5>
-<p>For testing, we use the steps described in the previous exercise.
-Now we can create files within the file system:</p>
+<div class="section" id="section-27">
+<h5>测试<a class="headerlink" href="#section-27" title="Permalink to this headline">¶</a></h5>
+<p>为了进行测试，我们使用前面练习中描述的步骤。现在我们可以在文件系统中创建文件：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> touch /mnt/minfs/peanuts.txt
 </pre></div>
 </div>
-<p>To test the functionality provided by the module, we can use the dedicated script:</p>
+<p>为了测试模块提供的功能，我们可以使用专用脚本：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./test-minfs-2.sh
 </pre></div>
 </div>
-<p>If the deployment is valid, no error messages will be displayed following the above script run.</p>
+<p>如果实现正确，运行上面的脚本时将不会显示任何错误消息。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The current implementation of the <code class="docutils literal"><span class="pre">minfs</span></code> file system is not definitive.
-To be complete, the implementations needs function to delete files, create and delete directories, rename entries, and modify the contents of a file.</p>
+<p class="last">目前的 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统的实现还不完整。要完善实现，还需要添加删除文件的功能、创建和删除目录的功能、重命名条目的功能以及修改文件内容的功能。</p>
 </div>
 </div>
 </div>
