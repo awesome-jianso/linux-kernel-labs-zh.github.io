@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Networking &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>网络 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -85,32 +85,32 @@
 <li class="toctree-l1"><a class="reference internal" href="block_device_drivers.html">块设备驱动程序</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filesystems_part1.html">文件系统驱动程序（第一部分）</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filesystems_part2.html">文件系统驱动程序（第二部分）</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Networking</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#networking-in-user-space">Networking in user space</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">网络</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#section-2">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-3">概述</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">用户空间中的网络编程</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#linux-networking">Linux networking</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#the-struct-socket-structure">The <code class="docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> structure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#operations-on-the-socket-structure">Operations on the socket structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-struct-socket-fields">The <code class="docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux">Linux 网络编程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#struct-socket"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#socket">对 socket 结构的操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#struct-socket-1"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 字段</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#the-struct-sock-structure">The <code class="docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#the-struct-sk-buff-structure">The <code class="docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#struct-sock"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#struct-sk-buff"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构体</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#conversions-1">Conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-8">转换</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#netfilter-1">netfilter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#netcat">netcat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#further-reading">Further reading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#displaying-packets-in-kernel-space">1. Displaying packets in kernel space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#filtering-by-destination-address">2. Filtering by destination address</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#listening-on-a-tcp-socket">3. Listening on a TCP socket</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#accepting-connections-in-kernel-space">4. Accepting connections in kernel space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#udp-socket-sender">5. UDP socket sender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-9">进一步阅读</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-10">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-11">1. 在内核空间中显示数据包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-12">2. 按目标地址进行过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tcp-socket">3. 监听 TCP socket</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-13">4. 在内核空间接受连接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#udp-1">5. UDP 套接字发送方</a></li>
 </ul>
 </li>
 </ul>
@@ -142,7 +142,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Networking</li>
+      <li class="breadcrumb-item active">网络</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/labs/networking.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -152,148 +152,94 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="networking">
-<h1>Networking<a class="headerlink" href="#networking" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="lab-objectives">
-<h2>Lab objectives<a class="headerlink" href="#lab-objectives" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="section-1">
+<h1>网络<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-2">
+<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>Understanding the Linux kernel networking architecture</li>
-<li>Acquiring practical IP packet management skills using a packet filter or
-firewall</li>
-<li>Familiarize yourself with how to use sockets at the Linux kernel level</li>
+<li>理解 Linux 内核网络架构</li>
+<li>掌握使用数据包（packet）过滤器或防火墙进行 IP 数据包管理</li>
+<li>熟悉在 Linux 内核级别使用套接字的方法</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>The development of the Internet has led to an exponential increase in network
-applications and, as a consequence, to increasing the speed and productivity
-requirements of an operating system's networking subsystem. The networking
-subsystem is not an essential component of an operating system kernel (the Linux
-kernel can be compiled without networking support). It is, however, quite
-unlikely for a computing system (or even an embedded device) to have a
-non-networked operating system due to the need for connectivity. Modern operating
-systems use the <a class="reference external" href="https://en.wikipedia.org/wiki/Internet_protocol_suite">TCP/IP stack</a>. Their kernel
-implements protocols up to the transport layer, while application layer protocols
-are typically implemented in user space (HTTP, FTP, SSH, etc.).</p>
-<div class="section" id="networking-in-user-space">
-<h3>Networking in user space<a class="headerlink" href="#networking-in-user-space" title="Permalink to this headline">¶</a></h3>
-<p>In user space the abstraction of network communication is the socket. The
-socket abstracts a communication channel and is the kernel-based TCP/IP stack
-interaction interface. An IP socket is associated with an IP address, the
-transport layer protocol used (TCP, UDP etc) and a port. Common function calls
-that use sockets are: creation (<code class="docutils literal"><span class="pre">socket</span></code>), initialization
-(<code class="docutils literal"><span class="pre">bind</span></code>), connecting (<code class="docutils literal"><span class="pre">connect</span></code>), waiting for a connection
-(<code class="docutils literal"><span class="pre">listen</span></code>, <code class="docutils literal"><span class="pre">accept</span></code>), closing a socket (<code class="docutils literal"><span class="pre">close</span></code>).</p>
-<p>Network communication is accomplished via <code class="docutils literal"><span class="pre">read</span></code>/<code class="docutils literal"><span class="pre">write</span></code> or <code class="docutils literal"><span class="pre">recv</span></code>/<code class="docutils literal"><span class="pre">send</span></code> calls
-for TCP sockets and <code class="docutils literal"><span class="pre">recvfrom</span></code>/<code class="docutils literal"><span class="pre">sendto</span></code> for UDP sockets. Transmission and
-reception operations are transparent to the application, leaving encapsulation
-and transmission over network at the kernel's discretion. However, it is
-possible to implement the TCP/IP stack in user space using raw sockets (the
-<code class="docutils literal"><span class="pre">PF_PACKET</span></code> option when creating a socket), or implementing an application
-layer protocol in kernel (<a class="reference external" href="http://en.wikipedia.org/wiki/TUX_web_server">TUX web server</a>).</p>
-<p>For more details about user space programming using sockets, see <a class="reference external" href="https://www.beej.us/guide/bgnet/">Beej's Guide to
-Network Programming Using Internet
-Sockets</a>.</p>
+<div class="section" id="section-3">
+<h2>概述<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>互联网的发展导致网络应用程序呈指数增长，因此操作系统的网络子系统对速度和生产力的要求也在不断增加。网络子系统并非操作系统内核的必需组件（Linux 内核可以选择在编译时不包含网络支持）。然而，由于对连接的需要，计算机系统（甚至嵌入式设备）很少会使用不支持网络的操作系统。现代操作系统使用 <a class="reference external" href="https://zh.wikipedia.org/zh-cn/TCP/IP协议族">TCP/IP 协议栈</a>。它们的内核实现了传输层以下的协议，而应用层协议通常在用户空间实现（如 HTTP、FTP 以及 SSH 等）。</p>
+<div class="section" id="section-4">
+<h3>用户空间中的网络编程<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<p>套接字（socket）是在用户空间中，对于网络通信的抽象。套接字抽象了通信通道，也是基于内核的 TCP/IP 栈交互接口。IP 套接字与 IP 地址、所使用的传输层协议（如 TCP、UDP 等）和端口相关联。常用的使用套接字的函数调用有：创建 (<code class="docutils literal"><span class="pre">socket</span></code>)、初始化 (<code class="docutils literal"><span class="pre">bind</span></code>)、连接 (<code class="docutils literal"><span class="pre">connect</span></code>)、等待连接 (<code class="docutils literal"><span class="pre">listen</span></code>, <code class="docutils literal"><span class="pre">accept</span></code>) 以及关闭套接字 (<code class="docutils literal"><span class="pre">close</span></code>)。</p>
+<p>我们通过 <code class="docutils literal"><span class="pre">read</span></code>/<code class="docutils literal"><span class="pre">write</span></code> 或 <code class="docutils literal"><span class="pre">recv</span></code>/<code class="docutils literal"><span class="pre">send</span></code> 调用实现 TCP 套接字的网络通信，通过 <code class="docutils literal"><span class="pre">recvfrom</span></code>/<code class="docutils literal"><span class="pre">sendto</span></code> 调用实现 UDP 套接字的网络通信。传输和接收操作对应用程序来说是透明的，封装和网络传输由内核自行决定。然而，也可以使用原始套接字（创建套接字时使用 <code class="docutils literal"><span class="pre">PF_PACKET</span></code> 选项）在用户空间中实现 TCP/IP 栈，或者在内核中实现应用层协议（例如 <a class="reference external" href="https://zh.wikipedia.org/zh-cn/TUX_Web服务器">TUX web 服务器</a>）。</p>
+<p>有关使用套接字进行用户空间编程的更多详细信息，请参阅 <a class="reference external" href="https://www.beej.us/guide/bgnet/">Beej 的网络套接字编程指南</a>。</p>
 </div>
 </div>
-<div class="section" id="linux-networking">
-<h2>Linux networking<a class="headerlink" href="#linux-networking" title="Permalink to this headline">¶</a></h2>
-<p>The Linux kernel provides three basic structures for working with network
-packets: <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> and <code class="xref c c-type docutils literal"><span class="pre">struct</span>
-<span class="pre">sk_buff</span></code>.</p>
-<p>The first two are abstractions of a socket:</p>
+<div class="section" id="linux">
+<h2>Linux 网络编程<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<p>Linux 内核提供了三种基本的用于处理网络数据包的结构：<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code>、<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code>。</p>
+<p>前两者是对套接字的抽象：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> is an abstraction very close to user space, ie <a class="reference external" href="http://en.wikipedia.org/wiki/Berkeley_sockets">BSD
-sockets</a> used to program
-network applications;</li>
-<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> or <em>INET socket</em> in Linux terminology is the network
-representation of a socket.</li>
+<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 是非常接近用户空间的抽象，即用于编写网络应用程序的 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/Berkeley套接字">BSD 套接字</a>；</li>
+<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 或 Linux 术语中的 <em>INET 套接字</em> 是套接字的网络表示。</li>
 </ul>
 </div></blockquote>
-<p>The two structures are related: the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> contains an INET
-socket field, and the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> has a BSD socket that holds it.</p>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> structure is the representation of a network packet
-and its status. The structure is created when a kernel packet is received,
-either from the user space or from the network interface.</p>
-<div class="section" id="the-struct-socket-structure">
-<h3>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> structure<a class="headerlink" href="#the-struct-socket-structure" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> structure is the kernel representation of a BSD
-socket, the operations that can be executed on it are similar to those offered
-by the kernel (through system calls). Common operations with sockets
-(creation, initialization/bind, closing, etc.) result in specific system
-calls; they work with the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> structure.</p>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> operations are described in <code class="file docutils literal"><span class="pre">net/socket.c</span></code> and
-are independent of the protocol type. The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> structure is thus
-a generic interface over particular network operations implementations.
-Typically, the names of these operations begin with the <code class="docutils literal"><span class="pre">sock_</span></code> prefix.</p>
-<div class="section" id="operations-on-the-socket-structure">
-<span id="socketstructops"></span><h4>Operations on the socket structure<a class="headerlink" href="#operations-on-the-socket-structure" title="Permalink to this headline">¶</a></h4>
-<p>Socket operations are:</p>
-<div class="section" id="creation">
-<h5>Creation<a class="headerlink" href="#creation" title="Permalink to this headline">¶</a></h5>
-<p>Creation is similar to calling the <code class="xref c c-func docutils literal"><span class="pre">socket()</span></code> function in user space, but the
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> created will be stored in the <code class="docutils literal"><span class="pre">res</span></code> parameter:</p>
+<p>这两个结构有关联: <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 包含 INET 套接字字段，而每个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 都有一个 BSD 套接字持有它。</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构是网络数据包及其状态的表示。当从用户空间或网络接口接收到内核数据包时，该结构被创建。</p>
+<div class="section" id="struct-socket">
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构<a class="headerlink" href="#struct-socket" title="Permalink to this headline">¶</a></h3>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构是 BSD 套接字的内核表示，可以执行在它上面执行的操作类似于内核提供的操作（通过系统调用）。使用套接字的常见操作（创建、初始化/绑定、关闭等）会导致特定的系统调用；它们与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构一起工作。</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 的操作在 <code class="file docutils literal"><span class="pre">net/socket.c</span></code> 中进行描述，且与协议类型无关。因此, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构是特定网络操作实现的通用接口。通常，这些操作的名称以 <code class="docutils literal"><span class="pre">sock_</span></code> 前缀开头。</p>
+<div class="section" id="socket">
+<span id="socketstructops"></span><h4>对 socket 结构的操作<a class="headerlink" href="#socket" title="Permalink to this headline">¶</a></h4>
+<p>socket 相关操作包括：</p>
+<div class="section" id="section-5">
+<h5>创建<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h5>
+<p>创建类似于在用户空间调用 <code class="xref c c-func docutils literal"><span class="pre">socket()</span></code> 函数，但创建的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 将存储在 <code class="docutils literal"><span class="pre">res</span></code> 参数中：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">int</span> <span class="pre">sock_create(int</span> <span class="pre">family,</span> <span class="pre">int</span> <span class="pre">type,</span> <span class="pre">int</span> <span class="pre">protocol,</span> <span class="pre">struct</span> <span class="pre">socket</span> <span class="pre">**res)</span></code>
-creates a socket after the <code class="xref c c-func docutils literal"><span class="pre">socket()</span></code> system call;</li>
-<li><code class="docutils literal"><span class="pre">int</span> <span class="pre">sock_create_kern(struct</span> <span class="pre">net</span> <span class="pre">*net,</span> <span class="pre">int</span> <span class="pre">family,</span> <span class="pre">int</span> <span class="pre">type,</span> <span class="pre">int</span> <span class="pre">protocol,</span>
-<span class="pre">struct</span> <span class="pre">socket</span> <span class="pre">**res)</span></code> creates a kernel socket;</li>
-<li><code class="docutils literal"><span class="pre">int</span> <span class="pre">sock_create_lite(int</span> <span class="pre">family,</span> <span class="pre">int</span> <span class="pre">type,</span> <span class="pre">int</span> <span class="pre">protocol,</span> <span class="pre">struct</span> <span class="pre">socket</span> <span class="pre">**res)</span></code>
-creates a kernel socket without parameter sanity checks.</li>
+<li><code class="docutils literal"><span class="pre">int</span> <span class="pre">sock_create(int</span> <span class="pre">family,</span> <span class="pre">int</span> <span class="pre">type,</span> <span class="pre">int</span> <span class="pre">protocol,</span> <span class="pre">struct</span> <span class="pre">socket</span> <span class="pre">**res)</span></code>：在 <code class="xref c c-func docutils literal"><span class="pre">socket()</span></code> 系统调用之后创建 socket；</li>
+<li><code class="docutils literal"><span class="pre">int</span> <span class="pre">sock_create_kern(struct</span> <span class="pre">net</span> <span class="pre">*net,</span> <span class="pre">int</span> <span class="pre">family,</span> <span class="pre">int</span> <span class="pre">type,</span> <span class="pre">int</span> <span class="pre">protocol,</span> <span class="pre">struct</span> <span class="pre">socket</span> <span class="pre">**res)</span></code>：创建内核 socket；</li>
+<li><code class="docutils literal"><span class="pre">int</span> <span class="pre">sock_create_lite(int</span> <span class="pre">family,</span> <span class="pre">int</span> <span class="pre">type,</span> <span class="pre">int</span> <span class="pre">protocol,</span> <span class="pre">struct</span> <span class="pre">socket</span> <span class="pre">**res)</span></code>：创建内核 socket, 不经过参数完整性检查。</li>
 </ul>
 </div></blockquote>
-<p>The parameters of these calls are as follows:</p>
+<p>这些调用的参数如下：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">net</span></code>, where it is present, used as reference to the network namespace used;
-we will usually initialize it with <code class="docutils literal"><span class="pre">init_net</span></code>;</li>
-<li><code class="docutils literal"><span class="pre">family</span></code> represents the family of protocols used in the transfer of
-information; they usually begin with the <code class="docutils literal"><span class="pre">PF_</span></code> (Protocol Family) string;
-the constants representing the family of protocols used are found in
-<code class="file docutils literal"><span class="pre">linux/socket.h</span></code>, of which the most commonly used is <code class="docutils literal"><span class="pre">PF_INET</span></code>, for
-TCP/IP protocols;</li>
-<li><code class="docutils literal"><span class="pre">type</span></code> is the type of socket; the constants used for this parameter are
-found in <code class="file docutils literal"><span class="pre">linux/net.h</span></code>, of which the most used are <code class="docutils literal"><span class="pre">SOCK_STREAM</span></code> for
-a connection based source-to-destination communication and <code class="docutils literal"><span class="pre">SOCK_DGRAM</span></code>
-for connectionless communication;</li>
-<li><code class="docutils literal"><span class="pre">protocol</span></code> represents the protocol used and is closely related to the
-<code class="docutils literal"><span class="pre">type</span></code> parameter; the constants used for this parameter are found in
-<code class="file docutils literal"><span class="pre">linux/in.h</span></code>, of which the most used are <code class="docutils literal"><span class="pre">IPPROTO_TCP</span></code> for TCP and
-<code class="docutils literal"><span class="pre">IPPROTO_UDP</span></code> for UDP.</li>
+<li><code class="docutils literal"><span class="pre">net</span></code> (如果存在)用作对所使用的网络命名空间的引用；通常我们会使用 <code class="docutils literal"><span class="pre">init_net</span></code> 进行初始化；</li>
+<li><code class="docutils literal"><span class="pre">family</span></code> 表示在信息传输中使用的协议族；它们通常以 <code class="docutils literal"><span class="pre">PF_``(协议族)字符串开头；表示所使用的协议族的常量可以在</span> <span class="pre">:file:`linux/socket.h`</span> <span class="pre">中找到，其中最常用的是</span> <span class="pre">``PF_INET</span></code>，用于 TCP/IP 协议；</li>
+<li><code class="docutils literal"><span class="pre">type</span></code> 是 socket 的类型；用于此参数的常量可以在 <code class="file docutils literal"><span class="pre">linux/net.h</span></code> 中找到，其中最常用的是 <code class="docutils literal"><span class="pre">SOCK_STREAM</span></code> (用于基于连接的源到目的地通信)以及 <code class="docutils literal"><span class="pre">SOCK_DGRAM</span></code> (用于无连接通信)；</li>
+<li><code class="docutils literal"><span class="pre">protocol</span></code> 表示使用的协议，与 <code class="docutils literal"><span class="pre">type</span></code> 参数密切相关；用于此参数的常量可以在 <code class="file docutils literal"><span class="pre">linux/in.h</span></code> 中找到，其中最常用的是 <code class="docutils literal"><span class="pre">IPPROTO_TCP</span></code> (用于 TCP)， <code class="docutils literal"><span class="pre">IPPROTO_UDP</span></code> (用于 UDP)。</li>
 </ul>
 </div></blockquote>
-<p>To create a TCP socket in kernel space, you must call:</p>
+<p>要在内核空间中创建 TCP socket，你需要调用：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
 
 <span class="n">err</span> <span class="o">=</span> <span class="n">sock_create_kern</span><span class="p">(</span><span class="o">&amp;</span><span class="n">init_net</span><span class="p">,</span> <span class="n">PF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="n">IPPROTO_TCP</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sock</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="cm">/* handle error */</span>
+        <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>and for creating UDP sockets:</p>
+<p>要在内核空间中创建 UDP socket，你需要调用：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
 
 <span class="n">err</span> <span class="o">=</span> <span class="n">sock_create_kern</span><span class="p">(</span><span class="o">&amp;</span><span class="n">init_net</span><span class="p">,</span> <span class="n">PF_INET</span><span class="p">,</span> <span class="n">SOCK_DGRAM</span><span class="p">,</span> <span class="n">IPPROTO_UDP</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sock</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="cm">/* handle error */</span>
+        <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>A usage sample is part of the <code class="xref c c-func docutils literal"><span class="pre">sys_socket()</span></code> system call handler:</p>
+<p>一个使用示例是 <code class="xref c c-func docutils literal"><span class="pre">sys_socket()</span></code> 系统调用处理程序的一部分：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">SYSCALL_DEFINE3</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="n">family</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="n">protocol</span><span class="p">)</span>
 <span class="p">{</span>
       <span class="kt">int</span> <span class="n">retval</span><span class="p">;</span>
       <span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">;</span>
       <span class="kt">int</span> <span class="n">flags</span><span class="p">;</span>
 
-      <span class="cm">/* Check the SOCK_* constants for consistency.  */</span>
+      <span class="cm">/* 检查 SOCK_* 常量是否一致。 */</span>
       <span class="n">BUILD_BUG_ON</span><span class="p">(</span><span class="n">SOCK_CLOEXEC</span> <span class="o">!=</span> <span class="n">O_CLOEXEC</span><span class="p">);</span>
       <span class="n">BUILD_BUG_ON</span><span class="p">((</span><span class="n">SOCK_MAX</span> <span class="o">|</span> <span class="n">SOCK_TYPE_MASK</span><span class="p">)</span> <span class="o">!=</span> <span class="n">SOCK_TYPE_MASK</span><span class="p">);</span>
       <span class="n">BUILD_BUG_ON</span><span class="p">(</span><span class="n">SOCK_CLOEXEC</span> <span class="o">&amp;</span> <span class="n">SOCK_TYPE_MASK</span><span class="p">);</span>
@@ -316,14 +262,12 @@ for connectionless communication;</li>
 </pre></div>
 </div>
 </div>
-<div class="section" id="closing">
-<h5>Closing<a class="headerlink" href="#closing" title="Permalink to this headline">¶</a></h5>
-<p>Close connection (for sockets using connection) and release associated
-resources:</p>
+<div class="section" id="section-6">
+<h5>关闭连接<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h5>
+<p>关闭连接（对于使用连接的 socket）并释放相关资源：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">void</span> <span class="pre">sock_release(struct</span> <span class="pre">socket</span> <span class="pre">*sock)</span></code> calls the <code class="docutils literal"><span class="pre">release</span></code> function in
-the <code class="docutils literal"><span class="pre">ops</span></code> field of the socket structure:</li>
+<li><code class="docutils literal"><span class="pre">void</span> <span class="pre">sock_release(struct</span> <span class="pre">socket</span> <span class="pre">*sock)</span></code> 调用 socket 结构 <code class="docutils literal"><span class="pre">ops</span></code> 字段中的 <code class="docutils literal"><span class="pre">release</span></code> 函数：</li>
 </ul>
 </div></blockquote>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">sock_release</span><span class="p">(</span><span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">)</span>
@@ -340,9 +284,9 @@ the <code class="docutils literal"><span class="pre">ops</span></code> field of 
 </pre></div>
 </div>
 </div>
-<div class="section" id="sending-receiving-messages">
-<h5>Sending/receiving messages<a class="headerlink" href="#sending-receiving-messages" title="Permalink to this headline">¶</a></h5>
-<p>The messages are sent/received using the following functions:</p>
+<div class="section" id="section-7">
+<h5>发送/接收消息<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h5>
+<p>使用以下函数来发送/接收消息：</p>
 <blockquote>
 <div><ul class="simple">
 <li><code class="docutils literal"><span class="pre">int</span> <span class="pre">sock_recvmsg(struct</span> <span class="pre">socket</span> <span class="pre">*sock,</span> <span class="pre">struct</span> <span class="pre">msghdr</span> <span class="pre">*msg,</span> <span class="pre">int</span> <span class="pre">flags);</span></code></li>
@@ -351,25 +295,15 @@ the <code class="docutils literal"><span class="pre">ops</span></code> field of 
 <li><code class="docutils literal"><span class="pre">int</span> <span class="pre">kernel_sendmsg(struct</span> <span class="pre">socket</span> <span class="pre">*sock,</span> <span class="pre">struct</span> <span class="pre">msghdr</span> <span class="pre">*msg,</span> <span class="pre">struct</span> <span class="pre">kvec</span> <span class="pre">*vec,</span> <span class="pre">size_t</span> <span class="pre">num,</span> <span class="pre">size_t</span> <span class="pre">size);</span></code></li>
 </ul>
 </div></blockquote>
-<p>The message sending/receiving functions will then call the <code class="docutils literal"><span class="pre">sendmsg</span></code>/
-<code class="docutils literal"><span class="pre">recvmsg</span></code> function in the <code class="docutils literal"><span class="pre">ops</span></code> field of the socket. Functions
-containing <code class="docutils literal"><span class="pre">kernel_</span></code> as a prefix are used when the socket is used in the
-kernel.</p>
-<p>The parameters are:</p>
+<p>消息的发送/接收函数将调用 socket <code class="docutils literal"><span class="pre">ops</span></code> 字段中的 <code class="docutils literal"><span class="pre">sendmsg</span></code>/<code class="docutils literal"><span class="pre">recvmsg</span></code> 函数。当 socket 在内核中使用时，应使用以 <code class="docutils literal"><span class="pre">kernel_</span></code> 为前缀的函数。</p>
+<p>参数包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">msg</span></code>, a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> structure, containing the message to be
-sent/received. Among the important components of this structure are <code class="docutils literal"><span class="pre">msg_name</span></code>
-and <code class="docutils literal"><span class="pre">msg_namelen</span></code>, which, for UDP sockets, must be filled in with the address
-to which the message is sent (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sockaddr_in</span></code>);</li>
-<li><code class="docutils literal"><span class="pre">vec</span></code>, a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> structure, containing a pointer to the buffer
-containing its data and size; as can be seen, it has a similar structure to the
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iovec</span></code> structure (the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iovec</span></code> structure
-corresponds to the user space data, and the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> structure
-corresponds to kernel space data).</li>
+<li><code class="docutils literal"><span class="pre">msg</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> 结构，包含要发送/接收的消息。该结构的重要组成部分包括 <code class="docutils literal"><span class="pre">msg_name</span></code> 和 <code class="docutils literal"><span class="pre">msg_namelen</span></code>，对于 UDP 套接字，必须使用目标地址填充 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sockaddr_in</span></code>)；</li>
+<li><code class="docutils literal"><span class="pre">vec</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> 结构，其中有一个指针指向缓冲区，缓冲区内包含该 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> 结构的数据和大小；正如所见，它的结构类似于 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iovec</span></code> 结构 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iovec</span></code> 结构对应用户空间数据，而 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> 结构对应内核空间数据)。</li>
 </ul>
 </div></blockquote>
-<p>A usage example can be seen in the <code class="xref c c-func docutils literal"><span class="pre">sys_sendto()</span></code> system call handler:</p>
+<p>可以在 <code class="xref c c-func docutils literal"><span class="pre">sys_sendto()</span></code> 系统调用处理程序中看到用法示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">SYSCALL_DEFINE6</span><span class="p">(</span><span class="n">sendto</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span>
               <span class="kt">unsigned</span> <span class="kt">int</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sockaddr</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span>
               <span class="kt">int</span><span class="p">,</span> <span class="n">addr_len</span><span class="p">)</span>
@@ -413,17 +347,17 @@ corresponds to kernel space data).</li>
 </div>
 </div>
 </div>
-<div class="section" id="the-struct-socket-fields">
-<h4>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> fields<a class="headerlink" href="#the-struct-socket-fields" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="struct-socket-1">
+<h4><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 字段<a class="headerlink" href="#struct-socket-1" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm"> *  struct socket - general BSD socket</span>
-<span class="cm"> *  @state: socket state (%SS_CONNECTED, etc)</span>
-<span class="cm"> *  @type: socket type (%SOCK_STREAM, etc)</span>
-<span class="cm"> *  @flags: socket flags (%SOCK_NOSPACE, etc)</span>
-<span class="cm"> *  @ops: protocol specific socket operations</span>
-<span class="cm"> *  @file: File back pointer for gc</span>
-<span class="cm"> *  @sk: internal networking protocol agnostic socket representation</span>
-<span class="cm"> *  @wq: wait queue for several uses</span>
+<span class="cm"> *  struct socket——通用的 BSD socket</span>
+<span class="cm"> *  @state: socket 状态（%SS_CONNECTED 等）</span>
+<span class="cm"> *  @type: socket 类型（%SOCK_STREAM 等）</span>
+<span class="cm"> *  @flags: socket 标志（%SOCK_NOSPACE 等）</span>
+<span class="cm"> *  @ops: 协议特定的 socket 操作</span>
+<span class="cm"> *  @file: 反向指向 file 的指针，用于垃圾回收</span>
+<span class="cm"> *  @sk: 内部的网络协议无关 socket 表示</span>
+<span class="cm"> *  @wq: 有多种用途的等待队列</span>
 <span class="cm"> */</span>
 <span class="k">struct</span> <span class="n">socket</span> <span class="p">{</span>
       <span class="n">socket_state</span>            <span class="n">state</span><span class="p">;</span>
@@ -440,21 +374,17 @@ corresponds to kernel space data).</li>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The noteworthy fields are:</p>
+<p>值得注意的字段包括：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">ops</span></code> - the structure that stores pointers to protocol-specific functions;</li>
-<li><code class="docutils literal"><span class="pre">sk</span></code> - The <code class="docutils literal"><span class="pre">INET</span> <span class="pre">socket</span></code> associated with it.</li>
+<li><code class="docutils literal"><span class="pre">ops</span></code>——该结构内部有指针，指针指向协议特定函数；</li>
+<li><code class="docutils literal"><span class="pre">sk</span></code>——与之关联的 <code class="docutils literal"><span class="pre">INET</span> <span class="pre">socket</span></code>。</li>
 </ul>
 </div></blockquote>
-<div class="section" id="the-struct-proto-ops-structure">
-<h5>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> structure<a class="headerlink" href="#the-struct-proto-ops-structure" title="Permalink to this headline">¶</a></h5>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> structure contains the implementations of the specific
-operations implemented (TCP, UDP, etc.); these functions will be called from
-generic functions through <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> (<code class="xref c c-func docutils literal"><span class="pre">sock_release()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">sock_sendmsg()</span></code>, etc.)</p>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> structure therefore contains a number of function
-pointers for specific protocol implementations:</p>
+<div class="section" id="struct-proto-ops">
+<h5><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> 结构<a class="headerlink" href="#struct-proto-ops" title="Permalink to this headline">¶</a></h5>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> 结构体包含了特定操作（TCP、UDP 等）的实现；这些函数将通过通用函数(如 <code class="xref c c-func docutils literal"><span class="pre">sock_release()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">sock_sendmsg()</span></code> 等)使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 为参数来调用。</p>
+<p>因此, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> 结构体包含了一些特定协议实现的函数指针：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">proto_ops</span> <span class="p">{</span>
       <span class="kt">int</span>             <span class="n">family</span><span class="p">;</span>
       <span class="k">struct</span> <span class="n">module</span>   <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
@@ -476,10 +406,7 @@ pointers for specific protocol implementations:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The initialization of the <code class="docutils literal"><span class="pre">ops</span></code> field from <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> is done in
-the <code class="xref c c-func docutils literal"><span class="pre">__sock_create()</span></code> function, by calling the <code class="xref c c-func docutils literal"><span class="pre">create()</span></code> function,
-specific to each protocol; an equivalent call is the implementation of the
-<code class="xref c c-func docutils literal"><span class="pre">__sock_create()</span></code> function:</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构体的 <code class="docutils literal"><span class="pre">ops</span></code> 字段的初始化是在 <code class="xref c c-func docutils literal"><span class="pre">__sock_create()</span></code> 函数中完成的，该函数通过调用针对每个协议的 <code class="xref c c-func docutils literal"><span class="pre">create()</span></code> 函数来实现；等效调用是 <code class="xref c c-func docutils literal"><span class="pre">__sock_create()</span></code> 函数的实现：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">//...</span>
       <span class="n">err</span> <span class="o">=</span> <span class="n">pf</span><span class="o">-&gt;</span><span class="n">create</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">kern</span><span class="p">);</span>
       <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
@@ -487,14 +414,8 @@ specific to each protocol; an equivalent call is the implementation of the
 <span class="c1">//...</span>
 </pre></div>
 </div>
-<p>This will instantiate the function pointers with calls specific to the protocol
-type associated with the socket. The <code class="xref c c-func docutils literal"><span class="pre">sock_register()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">sock_unregister()</span></code> calls are used to fill the <code class="docutils literal"><span class="pre">net_families</span></code> vector.</p>
-<p>For the rest of the socket operations (other than creating, closing, and
-sending/receiving a message as described above in the <a class="reference internal" href="#operations-on-the-socket-structure">Operations on the socket
-structure</a> section), the functions sent via pointers in this structure will be
-called. For example, for <code class="docutils literal"><span class="pre">bind</span></code>, which associates a socket with a socket on
-the local machine, we will have the following code sequence:</p>
+<p>这将使用与 socket 关联的协议类型特定的调用来实例化函数指针。 <code class="xref c c-func docutils literal"><span class="pre">sock_register()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">sock_unregister()</span></code> 调用用于填充 <code class="docutils literal"><span class="pre">net_families</span></code> 向量。</p>
+<p>对于 socket 结构的其余操作（除了在 <a class="reference internal" href="#socket">对 socket 结构的操作</a> 部分中描述的创建、关闭和发送/接收消息之外），将调用通过这个结构中的指针传递的函数。例如，对于 <code class="docutils literal"><span class="pre">bind</span></code> 操作（它将一个 socket 与一个本地机器上的 socket 关联）有以下代码：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define MY_PORT 60000</span>
 
 <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">addr</span> <span class="o">=</span> <span class="p">{</span>
@@ -506,23 +427,18 @@ the local machine, we will have the following code sequence:</p>
 <span class="c1">//...</span>
       <span class="n">err</span> <span class="o">=</span> <span class="n">sock</span><span class="o">-&gt;</span><span class="n">ops</span><span class="o">-&gt;</span><span class="n">bind</span> <span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
       <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-              <span class="cm">/* handle error */</span>
+                <span class="cm">/* 处理错误 */</span>
       <span class="p">}</span>
 <span class="c1">//...</span>
 </pre></div>
 </div>
-<p>As you can see, for transmitting the address and port information that
-will be associated with the socket, a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sockaddr_in</span></code> is filled.</p>
+<p>在以上代码中，用于传输与 socket 关联的地址和端口信息的是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sockaddr_in</span></code> 结构体。</p>
 </div>
 </div>
 </div>
-<div class="section" id="the-struct-sock-structure">
-<h3>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> structure<a class="headerlink" href="#the-struct-sock-structure" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> describes an <code class="docutils literal"><span class="pre">INET</span></code> socket. Such a structure is
-associated with a user space socket and implicitly with a <code class="xref c c-type docutils literal"><span class="pre">struct</span>
-<span class="pre">socket</span></code> structure. The structure is used to store information about the status
-of a connection. The structure's fields and associated operations usually begin
-with the <code class="docutils literal"><span class="pre">sk_</span></code> string. Some fields are listed below:</p>
+<div class="section" id="struct-sock">
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 结构<a class="headerlink" href="#struct-sock" title="Permalink to this headline">¶</a></h3>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 结构描述了 <code class="docutils literal"><span class="pre">INET</span></code> 套接字。这样的结构与用户空间的 socket 相关联，并且与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构相关联，其中与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构的关联是隐式的。该结构用于存储关于连接状态的信息。结构体的字段和相关操作通常以 <code class="docutils literal"><span class="pre">sk_</span></code> 字符串开头。以下列出了一些字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sock</span> <span class="p">{</span>
       <span class="c1">//...</span>
       <span class="kt">unsigned</span> <span class="kt">int</span>            <span class="nl">sk_padding</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -549,20 +465,16 @@ with the <code class="docutils literal"><span class="pre">sk_</span></code> stri
 <p></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">sk_protocol</span></code> is the type of protocol used by the socket;</li>
-<li><code class="docutils literal"><span class="pre">sk_type</span></code> is the socket type (<code class="docutils literal"><span class="pre">SOCK_STREAM</span></code>, <code class="docutils literal"><span class="pre">SOCK_DGRAM</span></code>, etc.);</li>
-<li><code class="docutils literal"><span class="pre">sk_socket</span></code> is the BSD socket that holds it;</li>
-<li><code class="docutils literal"><span class="pre">sk_send_head</span></code> is the list of <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> structures for
-transmission;</li>
-<li>the function pointers at the end are callbacks for different situations.</li>
+<li><code class="docutils literal"><span class="pre">sk_protocol</span></code> 是套接字使用的协议类型；</li>
+<li><code class="docutils literal"><span class="pre">sk_type</span></code> 是套接字类型 (<code class="docutils literal"><span class="pre">SOCK_STREAM</span></code>, <code class="docutils literal"><span class="pre">SOCK_DGRAM</span></code> 等)；</li>
+<li><code class="docutils literal"><span class="pre">sk_socket</span></code> 是持有该套接字的 BSD 套接字；</li>
+<li><code class="docutils literal"><span class="pre">sk_send_head</span></code> 是用于传输的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构列表；</li>
+<li>最后的函数指针是用于不同情况的回调函数。</li>
 </ul>
 </div></blockquote>
-<p>Initializing the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> and attaching it to a BSD socket is done
-using the callback created from <code class="docutils literal"><span class="pre">net_families</span></code> (called
-<code class="xref c c-func docutils literal"><span class="pre">__sock_create()</span></code>). Here's how to initialize the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code>
-structure for the IP protocol, in the <code class="xref c c-func docutils literal"><span class="pre">inet_create()</span></code> function:</p>
+<p>使用从 <code class="docutils literal"><span class="pre">net_families</span></code> 创建的回调函数(称为 <code class="xref c c-func docutils literal"><span class="pre">__sock_create()</span></code>) 来初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 并将其附加到 BSD 套接字。以下是在 <code class="xref c c-func docutils literal"><span class="pre">inet_create()</span></code> 函数中初始化 IP 协议的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 结构体的方法：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm"> *    Create an inet socket.</span>
+<span class="cm"> *   创建 inet 套接字。</span>
 <span class="cm"> */</span>
 
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">inet_create</span><span class="p">(</span><span class="k">struct</span> <span class="n">net</span> <span class="o">*</span><span class="n">net</span><span class="p">,</span> <span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">,</span> <span class="kt">int</span> <span class="n">protocol</span><span class="p">,</span>
@@ -593,106 +505,89 @@ structure for the IP protocol, in the <code class="xref c c-func docutils litera
 </pre></div>
 </div>
 </div>
-<div class="section" id="the-struct-sk-buff-structure">
-<span id="structskbuff"></span><h3>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> structure<a class="headerlink" href="#the-struct-sk-buff-structure" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> (socket buffer) describes a network packet. The
-structure fields contain information about both the header and packet contents,
-the protocols used, the network device used, and pointers to the other
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code>. A summary description of the content of the structure
-is presented below:</p>
+<div class="section" id="struct-sk-buff">
+<span id="structskbuff"></span><h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构体<a class="headerlink" href="#struct-sk-buff" title="Permalink to this headline">¶</a></h3>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> (套接字缓冲区)描述了一个网络数据包。该结构的字段包含有关报头和数据包内容、使用的协议、使用的网络设备以及指向其他 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 的指针的信息。下面是该结构体的内容的概要描述：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="p">{</span>
+  <span class="k">union</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="p">{</span>
+      <span class="cm">/* 这两个成员必须放在最前面。 */</span>
+      <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+      <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
+
       <span class="k">union</span> <span class="p">{</span>
-              <span class="k">struct</span> <span class="p">{</span>
-                      <span class="cm">/* These two members must be first. */</span>
-                      <span class="k">struct</span> <span class="n">sk_buff</span>          <span class="o">*</span><span class="n">next</span><span class="p">;</span>
-                      <span class="k">struct</span> <span class="n">sk_buff</span>          <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
-
-                      <span class="k">union</span> <span class="p">{</span>
-                              <span class="k">struct</span> <span class="n">net_device</span>       <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
-                              <span class="cm">/* Some protocols might use this space to store information,</span>
-<span class="cm">                               * while device pointer would be NULL.</span>
-<span class="cm">                               * UDP receive path is one user.</span>
-<span class="cm">                               */</span>
-                              <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">dev_scratch</span><span class="p">;</span>
-                      <span class="p">};</span>
-              <span class="p">};</span>
-
-              <span class="k">struct</span> <span class="n">rb_node</span>  <span class="n">rbnode</span><span class="p">;</span> <span class="cm">/* used in netem &amp; tcp stack */</span>
+        <span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+        <span class="cm">/* 一些协议可能会使用此空间来存储信息，此种情形下设备指针为 NULL。</span>
+<span class="cm">         * UDP 接收路径就是其中之一。</span>
+<span class="cm">         */</span>
+        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">dev_scratch</span><span class="p">;</span>
       <span class="p">};</span>
-      <span class="k">struct</span> <span class="n">sock</span>             <span class="o">*</span><span class="n">sk</span><span class="p">;</span>
+    <span class="p">};</span>
 
-        <span class="k">union</span> <span class="p">{</span>
-              <span class="n">ktime_t</span>         <span class="n">tstamp</span><span class="p">;</span>
-              <span class="n">u64</span>             <span class="n">skb_mstamp</span><span class="p">;</span>
-      <span class="p">};</span>
+    <span class="k">struct</span> <span class="n">rb_node</span> <span class="n">rbnode</span><span class="p">;</span> <span class="cm">/* 在 netem 和 tcp 栈中使用 */</span>
+  <span class="p">};</span>
+  <span class="k">struct</span> <span class="n">sock</span> <span class="o">*</span><span class="n">sk</span><span class="p">;</span>
 
-      <span class="cm">/*</span>
-<span class="cm">       * This is the control buffer. It is free to use for every</span>
-<span class="cm">       * layer. Please put your private variables there. If you</span>
-<span class="cm">       * want to keep them across layers you have to do a skb_clone()</span>
-<span class="cm">       * first. This is owned by whoever has the skb queued ATM.</span>
-<span class="cm">       */</span>
-      <span class="kt">char</span>                    <span class="n">cb</span><span class="p">[</span><span class="mi">48</span><span class="p">]</span> <span class="n">__aligned</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+  <span class="k">union</span> <span class="p">{</span>
+    <span class="n">ktime_t</span> <span class="n">tstamp</span><span class="p">;</span>
+    <span class="n">u64</span> <span class="n">skb_mstamp</span><span class="p">;</span>
+  <span class="p">};</span>
 
-      <span class="kt">unsigned</span> <span class="kt">long</span>           <span class="n">_skb_refdst</span><span class="p">;</span>
-      <span class="kt">void</span>                    <span class="p">(</span><span class="o">*</span><span class="n">destructor</span><span class="p">)(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">);</span>
-        <span class="k">union</span> <span class="p">{</span>
-              <span class="k">struct</span> <span class="p">{</span>
-                      <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">_skb_refdst</span><span class="p">;</span>
-                      <span class="kt">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">destructor</span><span class="p">)(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">);</span>
-              <span class="p">};</span>
-              <span class="k">struct</span> <span class="n">list_head</span>        <span class="n">tcp_tsorted_anchor</span><span class="p">;</span>
-      <span class="p">};</span>
-      <span class="cm">/* ... */</span>
+  <span class="cm">/*</span>
+<span class="cm">   * 这是控制缓冲区。每一层都可以自由使用它。</span>
+<span class="cm">   * 请将你的私有变量放在这里。如果要在多个层之间保留这些变量，首先必须进行 skb_clone()。</span>
+<span class="cm">   * 此缓冲区由当前此 skb 的队列的所有者拥有。</span>
+<span class="cm">   */</span>
+  <span class="kt">char</span> <span class="n">cb</span><span class="p">[</span><span class="mi">48</span><span class="p">]</span> <span class="n">__aligned</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
 
-      <span class="kt">unsigned</span> <span class="kt">int</span>            <span class="n">len</span><span class="p">,</span>
-                              <span class="n">data_len</span><span class="p">;</span>
-      <span class="n">__u16</span>                   <span class="n">mac_len</span><span class="p">,</span>
-                              <span class="n">hdr_len</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">_skb_refdst</span><span class="p">;</span>
+  <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">destructor</span><span class="p">)(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">);</span>
+  <span class="k">union</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="p">{</span>
+      <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">_skb_refdst</span><span class="p">;</span>
+      <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">destructor</span><span class="p">)(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="k">struct</span> <span class="n">list_head</span> <span class="n">tcp_tsorted_anchor</span><span class="p">;</span>
+  <span class="p">};</span>
+  <span class="cm">/* ... */</span>
 
-         <span class="cm">/* ... */</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">,</span>
+               <span class="n">data_len</span><span class="p">;</span>
+  <span class="n">__u16</span> <span class="n">mac_len</span><span class="p">,</span>
+        <span class="n">hdr_len</span><span class="p">;</span>
 
-      <span class="n">__be16</span>                  <span class="n">protocol</span><span class="p">;</span>
-      <span class="n">__u16</span>                   <span class="n">transport_header</span><span class="p">;</span>
-      <span class="n">__u16</span>                   <span class="n">network_header</span><span class="p">;</span>
-      <span class="n">__u16</span>                   <span class="n">mac_header</span><span class="p">;</span>
+  <span class="cm">/* ... */</span>
 
-      <span class="cm">/* private: */</span>
-      <span class="n">__u32</span>                   <span class="n">headers_end</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-      <span class="cm">/* public: */</span>
+  <span class="n">__be16</span> <span class="n">protocol</span><span class="p">;</span>
+  <span class="n">__u16</span> <span class="n">transport_header</span><span class="p">;</span>
+  <span class="n">__u16</span> <span class="n">network_header</span><span class="p">;</span>
+  <span class="n">__u16</span> <span class="n">mac_header</span><span class="p">;</span>
 
-      <span class="cm">/* These elements must be at the end, see alloc_skb() for details.  */</span>
-      <span class="n">sk_buff_data_t</span>          <span class="n">tail</span><span class="p">;</span>
-      <span class="n">sk_buff_data_t</span>          <span class="n">end</span><span class="p">;</span>
-      <span class="kt">unsigned</span> <span class="kt">char</span>           <span class="o">*</span><span class="n">head</span><span class="p">,</span>
-                              <span class="o">*</span><span class="n">data</span><span class="p">;</span>
-      <span class="kt">unsigned</span> <span class="kt">int</span>            <span class="n">truesize</span><span class="p">;</span>
-      <span class="n">refcount_t</span>              <span class="n">users</span><span class="p">;</span>
+  <span class="cm">/* 私有：*/</span>
+  <span class="n">__u32</span> <span class="n">headers_end</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+  <span class="cm">/* 公有：*/</span>
+
+  <span class="cm">/* 这些元素必须放在最后。有关详细信息，请参阅 alloc_skb()。*/</span>
+  <span class="n">sk_buff_data_t</span> <span class="n">tail</span><span class="p">;</span>
+  <span class="n">sk_buff_data_t</span> <span class="n">end</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">truesize</span><span class="p">;</span>
+  <span class="n">refcount_t</span> <span class="n">users</span><span class="p">;</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>where:</p>
+<p>其中：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">next</span></code> and <code class="docutils literal"><span class="pre">prev</span></code> are pointers to the next, and previous element in the
-buffer list;</li>
-<li><code class="docutils literal"><span class="pre">dev</span></code> is the device which sends or receives the buffer;</li>
-<li><code class="docutils literal"><span class="pre">sk</span></code> is the socket associated with the buffer;</li>
-<li><code class="docutils literal"><span class="pre">destructor</span></code> is the callback that deallocates the buffer;</li>
-<li><code class="docutils literal"><span class="pre">transport_header</span></code>, <code class="docutils literal"><span class="pre">network_header</span></code>, and <code class="docutils literal"><span class="pre">mac_header</span></code> are offsets
-between the beginning of the packet and the beginning of the various headers
-in the packets. They are internally maintained by the various processing
-layers through which the packet passes. To get pointers to the headers, use
-one of the following functions: <code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">udp_hdr()</span></code>,
-<code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code>, etc. In principle, each protocol provides a function to
-get a reference to the header of that protocol within a received packet.
-Keep in mind that the <code class="docutils literal"><span class="pre">network_header</span></code> field is not set until the packet
-reaches the network layer and the <code class="docutils literal"><span class="pre">transport_header</span></code> field is not set
-until the packet reaches the transport layer.</li>
+<li><code class="docutils literal"><span class="pre">next</span></code> 和 <code class="docutils literal"><span class="pre">prev</span></code> 是指向缓冲区列表中下一个和前一个元素的指针；</li>
+<li><code class="docutils literal"><span class="pre">dev</span></code> 是发送或接收缓冲区内容的设备；</li>
+<li><code class="docutils literal"><span class="pre">sk</span></code> 是与缓冲区相关联的套接字；</li>
+<li><code class="docutils literal"><span class="pre">destructor</span></code> 是负责释放缓冲区的回调函数；</li>
+<li><code class="docutils literal"><span class="pre">transport_header</span></code>, <code class="docutils literal"><span class="pre">network_header</span></code> 和 <code class="docutils literal"><span class="pre">mac_header</span></code> 是数据包起始位置和各个头部起始位置之间的偏移量。它们由数据包经过的各个处理层内部维护。要获取指向头部的指针，请使用以下函数之一: <code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">udp_hdr()</span></code> 以及 <code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code> 等。原则上，每个协议都对应一个函数。这些函数用于在接收到的数据包中，获取对该协议的头部的引用。请注意，当数据包到达网络层时, <code class="docutils literal"><span class="pre">network_header</span></code> 字段才被设置；而当数据包到达传输层时, <code class="docutils literal"><span class="pre">transport_header</span></code> 字段才被设置。</li>
 </ul>
 </div></blockquote>
-<p>The structure of an <a class="reference external" href="https://en.wikipedia.org/wiki/IPv4#Header">IP header</a>
-(<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iphdr</span></code>) has the following fields:</p>
+<p><a class="reference external" href="https://zh.wikipedia.org/zh-cn/IPv4#首部">IP 头部</a> 的结构 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iphdr</span></code>) 包含以下字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">iphdr</span> <span class="p">{</span>
 <span class="cp">#if defined(__LITTLE_ENDIAN_BITFIELD)</span>
       <span class="n">__u8</span>    <span class="nl">ihl</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span>
@@ -712,20 +607,19 @@ until the packet reaches the transport layer.</li>
       <span class="n">__sum16</span> <span class="n">check</span><span class="p">;</span>
       <span class="n">__be32</span>  <span class="n">saddr</span><span class="p">;</span>
       <span class="n">__be32</span>  <span class="n">daddr</span><span class="p">;</span>
-      <span class="cm">/*The options start here. */</span>
+      <span class="cm">/* 可选项由此开始 */</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>where:</p>
+<p>其中：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">protocol</span></code> is the transport layer protocol used;</li>
-<li><code class="docutils literal"><span class="pre">saddr</span></code> is the source IP address;</li>
-<li><code class="docutils literal"><span class="pre">daddr</span></code> is the destination IP address.</li>
+<li><code class="docutils literal"><span class="pre">protocol</span></code> 是使用的传输层协议；</li>
+<li><code class="docutils literal"><span class="pre">saddr</span></code> 是源 IP 地址；</li>
+<li><code class="docutils literal"><span class="pre">daddr</span></code> 是目标 IP 地址。</li>
 </ul>
 </div></blockquote>
-<p>The structure of a <a class="reference external" href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_segment_structure">TCP header</a>
-(<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">tcphdr</span></code>) has the following fields:</p>
+<p><a class="reference external" href="https://zh.wikipedia.org/zh-cn/传输控制协议#封包結構">TCP 头部</a> 的结构 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">tcphdr</span></code>) 具有以下字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">tcphdr</span> <span class="p">{</span>
       <span class="n">__be16</span>  <span class="n">source</span><span class="p">;</span>
       <span class="n">__be16</span>  <span class="n">dest</span><span class="p">;</span>
@@ -762,17 +656,15 @@ until the packet reaches the transport layer.</li>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>where:</p>
+<p>其中：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">source</span></code> is the source port;</li>
-<li><code class="docutils literal"><span class="pre">dest</span></code> is the destination port;</li>
-<li><code class="docutils literal"><span class="pre">syn</span></code>, <code class="docutils literal"><span class="pre">ack</span></code>, <code class="docutils literal"><span class="pre">fin</span></code> are the TCP flags used; for a more detailed view,
-see this <a class="reference external" href="http://www.eventhelix.com/Realtimemantra/Networking/Tcp.pdf">diagram</a>.</li>
+<li><code class="docutils literal"><span class="pre">source</span></code> 是源端口；</li>
+<li><code class="docutils literal"><span class="pre">dest</span></code> 是目标端口；</li>
+<li>常使用的 TCP 标志包括 <code class="docutils literal"><span class="pre">syn</span></code>, <code class="docutils literal"><span class="pre">ack</span></code> 以及 <code class="docutils literal"><span class="pre">fin</span></code>；要想对其有更详细地了解，请参见此 <a class="reference external" href="http://www.eventhelix.com/Realtimemantra/Networking/Tcp.pdf">图表</a>。</li>
 </ul>
 </div></blockquote>
-<p>The structure of a <a class="reference external" href="https://en.wikipedia.org/wiki/User_Datagram_Protocol#Packet_structure">UDP header</a>
-(<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">udphdr</span></code>) has the following fields:</p>
+<p><a class="reference external" href="https://zh.wikipedia.org/zh-cn/用户数据报协议#UDP的分组结构">UDP 头部</a> 的结构（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">udphdr</span></code>）具有以下字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">udphdr</span> <span class="p">{</span>
       <span class="n">__be16</span>  <span class="n">source</span><span class="p">;</span>
       <span class="n">__be16</span>  <span class="n">dest</span><span class="p">;</span>
@@ -781,92 +673,68 @@ see this <a class="reference external" href="http://www.eventhelix.com/Realtimem
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>where:</p>
+<p>其中：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">source</span></code> is the source port;</li>
-<li><code class="docutils literal"><span class="pre">dest</span></code> is the destination port.</li>
+<li><code class="docutils literal"><span class="pre">source</span></code> 是源端口；</li>
+<li><code class="docutils literal"><span class="pre">dest</span></code> 是目标端口。</li>
 </ul>
 </div></blockquote>
-<p>An example of accessing the information present in the headers of a network
-packet is as follows:</p>
+<p>访问网络数据包头部中的信息的示例如下：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">;</span>
 
-<span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">iph</span> <span class="o">=</span> <span class="n">ip_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>                 <span class="cm">/* IP header */</span>
-<span class="cm">/* iph-&gt;saddr  - source IP address */</span>
-<span class="cm">/* iph-&gt;daddr  - destination IP address */</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">protocol</span> <span class="o">==</span> <span class="n">IPPROTO_TCP</span><span class="p">)</span> <span class="p">{</span>              <span class="cm">/* TCP protocol */</span>
-        <span class="k">struct</span> <span class="n">tcphdr</span> <span class="o">*</span><span class="n">tcph</span> <span class="o">=</span> <span class="n">tcp_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>      <span class="cm">/* TCP header */</span>
-        <span class="cm">/* tcph-&gt;source  - source TCP port */</span>
-        <span class="cm">/* tcph-&gt;dest    - destination TCP port */</span>
-<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">protocol</span> <span class="o">==</span> <span class="n">IPPROTO_UDP</span><span class="p">)</span> <span class="p">{</span>       <span class="cm">/* UDP protocol */</span>
-        <span class="k">struct</span> <span class="n">udphdr</span> <span class="o">*</span><span class="n">udph</span> <span class="o">=</span> <span class="n">udp_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>      <span class="cm">/* UDP header */</span>
-        <span class="cm">/* udph-&gt;source  - source UDP port */</span>
-        <span class="cm">/* udph-&gt;dest    - destination UDP port */</span>
+<span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">iph</span> <span class="o">=</span> <span class="n">ip_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>                 <span class="cm">/* IP 头部 */</span>
+<span class="cm">/* iph-&gt;saddr  - 源 IP 地址 */</span>
+<span class="cm">/* iph-&gt;daddr  - 目标 IP 地址 */</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">protocol</span> <span class="o">==</span> <span class="n">IPPROTO_TCP</span><span class="p">)</span> <span class="p">{</span>              <span class="cm">/* TCP 协议 */</span>
+        <span class="k">struct</span> <span class="n">tcphdr</span> <span class="o">*</span><span class="n">tcph</span> <span class="o">=</span> <span class="n">tcp_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>      <span class="cm">/* TCP 头部 */</span>
+        <span class="cm">/* tcph-&gt;source —— 源 TCP 端口 */</span>
+        <span class="cm">/* tcph-&gt;dest   —— 目标 TCP 端口 */</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">protocol</span> <span class="o">==</span> <span class="n">IPPROTO_UDP</span><span class="p">)</span> <span class="p">{</span>       <span class="cm">/* UDP 协议 */</span>
+        <span class="k">struct</span> <span class="n">udphdr</span> <span class="o">*</span><span class="n">udph</span> <span class="o">=</span> <span class="n">udp_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>      <span class="cm">/* UDP 头部 */</span>
+        <span class="cm">/* udph-&gt;source —— 源 UDP 端口 */</span>
+        <span class="cm">/* udph-&gt;dest   —— 目标 UDP 端口 */</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="conversions-1">
-<span id="conversions"></span><h2>Conversions<a class="headerlink" href="#conversions-1" title="Permalink to this headline">¶</a></h2>
-<p>In different systems, there are several ways of ordering bytes in a word
-(<a class="reference external" href="http://en.wikipedia.org/wiki/Endianness">Endianness</a>), including: <a class="reference external" href="http://en.wikipedia.org/wiki/Endianness#Big-endian">Big
-Endian</a> (the most
-significant byte first) and <a class="reference external" href="http://en.wikipedia.org/wiki/Endianness#Little-endian">Little
-Endian</a> (the least
-significant byte first). Since a network interconnects systems with different
-platforms, the Internet has imposed a standard sequence for the storage of
-numerical data, called <a class="reference external" href="http://en.wikipedia.org/wiki/Endianness#Endianness_in_networking">network byte-order</a>. In
-contrast, the byte sequence for the representation of numerical data on the host
-computer is called host byte-order. Data received/sent from/to the network is in
-the network byte-order format and should be converted between this format and
-the host byte-order.</p>
-<p>For converting we use the following macros:</p>
+<div class="section" id="section-8">
+<span id="conversions"></span><h2>转换<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h2>
+<p>不同系统的字，有多种字节的顺序方式 (<a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序">字节序</a>)，包括: <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#大端序">大端序</a> (最高位字节在前) 和 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#小端序">小端序</a> (最低位字节在前)。由于网络连接了具有不同平台的系统，因此互联网对于数值数据的存储已经强加了一种标准序列，称为 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#网络序">网络字节序</a>。相反，主机计算机上，表示数值数据的字节序列称为主机字节序。从网络接收/发送的数据采用网络字节序格式，并且应该在该格式和主机字节序之间进行转换。</p>
+<p>为了进行转换，我们使用以下宏：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">u16</span> <span class="pre">htons(u16</span> <span class="pre">x)</span></code> converts a 16 bit integer from host byte-order to
-network byte-order (host to network short);</li>
-<li><code class="docutils literal"><span class="pre">u32</span> <span class="pre">htonl(u32</span> <span class="pre">x)</span></code> converts a 32 bit integer from host byte-order to
-network byte-order (host to network long);</li>
-<li><code class="docutils literal"><span class="pre">u16</span> <span class="pre">ntohs(u16</span> <span class="pre">x)</span></code> converts a 16 bit integer from network byte-order to
-host byte-order (network to host short);</li>
-<li><code class="docutils literal"><span class="pre">u32</span> <span class="pre">ntohl(u32</span> <span class="pre">x)</span></code> converts a 32 bit integer from network byte-order to
-host byte-order (network to host long).</li>
+<li><code class="docutils literal"><span class="pre">u16</span> <span class="pre">htons(u16</span> <span class="pre">x)</span></code> 将 16 位整数从主机字节序转换为网络字节序（主机到网络短整数）；</li>
+<li><code class="docutils literal"><span class="pre">u32</span> <span class="pre">htonl(u32</span> <span class="pre">x)</span></code> 将 32 位整数从主机字节序转换为网络字节序（主机到网络长整数）；</li>
+<li><code class="docutils literal"><span class="pre">u16</span> <span class="pre">ntohs(u16</span> <span class="pre">x)</span></code> 将 16 位整数从网络字节序转换为主机字节序（网络到主机短整数）；</li>
+<li><code class="docutils literal"><span class="pre">u32</span> <span class="pre">ntohl(u32</span> <span class="pre">x)</span></code> 将 32 位整数从网络字节序转换为主机字节序（网络到主机长整数）。</li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="netfilter-1">
 <span id="netfilter"></span><h2>netfilter<a class="headerlink" href="#netfilter-1" title="Permalink to this headline">¶</a></h2>
-<p>Netfilter is the name of the kernel interface for capturing network packets for
-modifying/analyzing them (for filtering, NAT, etc.). <a class="reference external" href="http://www.netfilter.org/">The netfilter</a> interface is used in user space by <a class="reference external" href="http://www.frozentux.net/documents/iptables-tutorial/">iptables</a>.</p>
-<p>In the Linux kernel, packet capture using netfilter is done by attaching hooks.
-Hooks can be specified in different locations in the path followed by a kernel
-network packet, as needed. An organization chart with the route followed by a
-package and the possible areas for a hook can be found <a class="reference external" href="http://linux-ip.net/nf/nfk-traversal.png">here</a>.</p>
-<p>The header included when using netfilter is <code class="file docutils literal"><span class="pre">linux/netfilter.h</span></code>.</p>
-<p>A hook is defined through the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">nf_hook_ops</span></code> structure:</p>
+<p>Netfilter 是一个内核接口，用于捕获网络数据包以对其进行修改/分析（用于过滤、NAT 等）。在用户空间中，由 <a class="reference external" href="http://www.frozentux.net/documents/iptables-tutorial/">iptables</a> 使用 <a class="reference external" href="http://www.netfilter.org/">netfilter</a> 接口。</p>
+<p>在 Linux 内核中，使用 netfilter 进行数据包捕获是通过附加钩子（hook）来实现的。钩子可以在内核网络数据包所经过的路径的不同位置指定，你可以根据需要进行配置。你可以在 <a class="reference external" href="http://linux-ip.net/nf/nfk-traversal.png">这里</a> 找到一张组织图，组织图上显示数据包所经过的路径以及钩子可能出现的区域。</p>
+<p>使用 netfilter 时包含的头文件是 <code class="file docutils literal"><span class="pre">linux/netfilter.h</span></code>。</p>
+<p>钩子通过 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">nf_hook_ops</span></code> 结构体进行定义：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">nf_hook_ops</span> <span class="p">{</span>
-      <span class="cm">/* User fills in from here down. */</span>
+      <span class="cm">/* 用户从这里开始填写。*/</span>
       <span class="n">nf_hookfn</span>               <span class="o">*</span><span class="n">hook</span><span class="p">;</span>
       <span class="k">struct</span> <span class="n">net_device</span>       <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
       <span class="kt">void</span>                    <span class="o">*</span><span class="n">priv</span><span class="p">;</span>
       <span class="n">u_int8_t</span>                <span class="n">pf</span><span class="p">;</span>
       <span class="kt">unsigned</span> <span class="kt">int</span>            <span class="n">hooknum</span><span class="p">;</span>
-      <span class="cm">/* Hooks are ordered in ascending priority. */</span>
+      <span class="cm">/* 钩子按优先级升序排列。*/</span>
       <span class="kt">int</span>                     <span class="n">priority</span><span class="p">;</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>where:</p>
+<p>其中：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">pf</span></code> is the package type (<code class="docutils literal"><span class="pre">PF_INET</span></code>, etc.);</li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal"><span class="pre">priority</span></code> is the priority; priorities are defined in</dt>
-<dd><code class="file docutils literal"><span class="pre">uapi/linux/netfilter_ipv4.h</span></code> as follows:</dd>
-</dl>
-</li>
+<li><code class="docutils literal"><span class="pre">pf</span></code> 是数据包类型 (<code class="docutils literal"><span class="pre">PF_INET</span></code> 等)；</li>
+<li><code class="docutils literal"><span class="pre">priority</span></code> 是优先级；优先级在 <code class="file docutils literal"><span class="pre">uapi/linux/netfilter_ipv4.h</span></code> 中定义如下：</li>
 </ul>
 </div></blockquote>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">nf_ip_hook_priorities</span> <span class="p">{</span>
@@ -890,11 +758,8 @@ package and the possible areas for a hook can be found <a class="reference exter
 <p></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">dev</span></code> is the device (network interface) on which the capture is
-intended;</li>
-<li><code class="docutils literal"><span class="pre">hooknum</span></code> is the type of hook used. When a packet is captured, the
-processing mode is defined by the <code class="docutils literal"><span class="pre">hooknum</span></code> and <code class="docutils literal"><span class="pre">hook</span></code> fields. For IP,
-hook types are defined in <code class="file docutils literal"><span class="pre">linux/netfilter.h</span></code>:</li>
+<li><code class="docutils literal"><span class="pre">dev</span></code> 是捕获操作针对的设备（网络接口）；</li>
+<li><code class="docutils literal"><span class="pre">hooknum</span></code> 是我们使用的钩子类型。当捕获到数据包时，处理模式由 <code class="docutils literal"><span class="pre">hooknum</span></code> 和 <code class="docutils literal"><span class="pre">hook</span></code> 字段定义。对于 IP，钩子类型在 <code class="file docutils literal"><span class="pre">linux/netfilter.h</span></code> 中定义：</li>
 </ul>
 </div></blockquote>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">nf_inet_hooks</span> <span class="p">{</span>
@@ -910,10 +775,7 @@ hook types are defined in <code class="file docutils literal"><span class="pre">
 <p></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">hook</span></code> is the handler called when capturing a network packet (packet sent
-as a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> structure). The <code class="docutils literal"><span class="pre">private</span></code> field is private information
-handed to the handler. The capture handler prototype is defined by the
-<code class="xref c c-type docutils literal"><span class="pre">nf_hookfn</span></code> type:</li>
+<li><code class="docutils literal"><span class="pre">hook</span></code> 是在捕获网络数据包时调用的处理程序（数据包以 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构体形式发送）。 <code class="docutils literal"><span class="pre">private</span></code> 字段是传递给处理程序的私有信息。捕获处理程序的原型由 <code class="xref c c-type docutils literal"><span class="pre">nf_hookfn</span></code> 类型定义：</li>
 </ul>
 </div></blockquote>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">nf_hook_state</span> <span class="p">{</span>
@@ -931,16 +793,9 @@ handed to the handler. The capture handler prototype is defined by the
                              <span class="k">const</span> <span class="k">struct</span> <span class="n">nf_hook_state</span> <span class="o">*</span><span class="n">state</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>For the <code class="xref c c-func docutils literal"><span class="pre">nf_hookfn()</span></code> capture function, the <code class="docutils literal"><span class="pre">priv</span></code> parameter is the
-private information with which the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">nf_hook_ops</span></code> was
-initialized. <code class="docutils literal"><span class="pre">skb</span></code> is the pointer to the captured network packet. Based on
-<code class="docutils literal"><span class="pre">skb</span></code> information, packet filtering decisions are made. The function's
-<code class="docutils literal"><span class="pre">state</span></code> parameter is the status information related to the packet capture,
-including the input interface, the output interface, the priority, the hook
-number. Priority and hook number are useful for allowing the same function to
-be called by several hooks.</p>
-<p>A capture handler can return one of the constants <code class="docutils literal"><span class="pre">NF_*</span></code>:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Responses from hook functions. */</span>
+<p>捕获函数 <code class="xref c c-func docutils literal"><span class="pre">nf_hookfn()</span></code> 中, <code class="docutils literal"><span class="pre">priv</span></code> 参数是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">nf_hook_ops</span></code> 初始化时传递的私有信息。 <code class="docutils literal"><span class="pre">skb</span></code> 是指向捕获的网络数据包的指针。根据 <code class="docutils literal"><span class="pre">skb</span></code> 的信息，可以进行数据包过滤决策。函数的 <code class="docutils literal"><span class="pre">state</span></code> 参数是与数据包捕获相关的状态信息，包括输入接口、输出接口、优先级和钩子号。优先级和钩子号可使同一个函数被多个钩子调用。</p>
+<p>捕获处理程序可以返回以下常量之一 (<code class="docutils literal"><span class="pre">NF_*</span></code>)：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* hook 函数的响应结果 */</span>
 <span class="cp">#define NF_DROP 0</span>
 <span class="cp">#define NF_ACCEPT 1</span>
 <span class="cp">#define NF_STOLEN 2</span>
@@ -950,11 +805,9 @@ be called by several hooks.</p>
 <span class="cp">#define NF_MAX_VERDICT NF_STOP</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">NF_DROP</span></code> is used to filter (ignore) a packet, and <code class="docutils literal"><span class="pre">NF_ACCEPT</span></code> is used to
-accept a packet and forward it.</p>
-<p>Registering/unregistering a hook is done using the functions defined in
-<code class="file docutils literal"><span class="pre">linux/netfilter.h</span></code>:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Function to register/unregister hook points. */</span>
+<p><code class="docutils literal"><span class="pre">NF_DROP</span></code> 用于过滤（忽略）数据包, <code class="docutils literal"><span class="pre">NF_ACCEPT</span></code> 用于接受数据包并将其转发。</p>
+<p>通过使用在 <code class="file docutils literal"><span class="pre">linux/netfilter.h</span></code> 中定义的函数来注册/注销一个 hook：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 注册/注销 hook 点的函数 */</span>
 <span class="kt">int</span> <span class="nf">nf_register_net_hook</span><span class="p">(</span><span class="k">struct</span> <span class="n">net</span> <span class="o">*</span><span class="n">net</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">nf_hook_ops</span> <span class="o">*</span><span class="n">ops</span><span class="p">);</span>
 <span class="kt">void</span> <span class="nf">nf_unregister_net_hook</span><span class="p">(</span><span class="k">struct</span> <span class="n">net</span> <span class="o">*</span><span class="n">net</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">nf_hook_ops</span> <span class="o">*</span><span class="n">ops</span><span class="p">);</span>
 <span class="kt">int</span> <span class="nf">nf_register_net_hooks</span><span class="p">(</span><span class="k">struct</span> <span class="n">net</span> <span class="o">*</span><span class="n">net</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">nf_hook_ops</span> <span class="o">*</span><span class="n">reg</span><span class="p">,</span>
@@ -965,24 +818,16 @@ accept a packet and forward it.</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p>Prior to version 3.11-rc2 of the Linux kernel,
-there are some restrictions related to the use of header extraction functions
-from a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> structure set as a parameter in a netfilter
-hook. While the IP header can be obtained each time using <code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code>,
-the TCP and UDP headers can be obtained with <code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">udp_hdr()</span></code> only for packages that come from inside the system rather
-than the ones that are received from outside the system. In the latter case,
-you must manually calculate the header offset in the package:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// For TCP packets (iph-&gt;protocol == IPPROTO_TCP)</span>
+<p>在 Linux 内核 3.11-rc2 版本之前，作为 netfilter 钩子参数的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构，内部的头部提取函数有一些限制。虽然每次都可以使用 <code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code> 获取 IP 头部，但是用于获取 TCP 和 UDP 头部的 <code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">udp_hdr()</span></code> 函数，却只能对从系统内部，而非外部接收的数据包使用。对于后者的情况，需要手动计算数据包中的头部偏移量：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// TCP 数据包 (iph-&gt;protocol == IPPROTO_TCP)</span>
 <span class="n">tcph</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">tcphdr</span><span class="o">*</span><span class="p">)((</span><span class="n">__u32</span><span class="o">*</span><span class="p">)</span><span class="n">iph</span> <span class="o">+</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">ihl</span><span class="p">);</span>
-<span class="c1">// For UDP packets (iph-&gt;protocol == IPPROTO_UDP)</span>
+<span class="c1">// UDP 数据包 (iph-&gt;protocol == IPPROTO_UDP)</span>
 <span class="n">udph</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">udphdr</span><span class="o">*</span><span class="p">)((</span><span class="n">__u32</span><span class="o">*</span><span class="p">)</span><span class="n">iph</span> <span class="o">+</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">ihl</span><span class="p">);</span>
 </pre></div>
 </div>
-<p class="last">This code works in all filtering situations, so it's recommended to use it
-instead of header access functions.</p>
+<p class="last">这段代码适用于所有过滤场景，因此建议使用它来替代头部访问函数。</p>
 </div>
-<p>A usage example for a netfilter hook is shown below:</p>
+<p>下面是一个 netfilter hook 的使用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/netfilter.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/netfilter_ipv4.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/net.h&gt;</span><span class="cp"></span>
@@ -995,7 +840,7 @@ instead of header access functions.</p>
               <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span>
               <span class="k">const</span> <span class="k">struct</span> <span class="n">nf_hook_state</span> <span class="o">*</span><span class="n">state</span><span class="p">)</span>
 <span class="p">{</span>
-      <span class="cm">/* process packet */</span>
+      <span class="cm">/* 处理数据包 */</span>
       <span class="c1">//...</span>
 
       <span class="k">return</span> <span class="n">NF_ACCEPT</span><span class="p">;</span>
@@ -1025,52 +870,48 @@ instead of header access functions.</p>
 </div>
 <div class="section" id="netcat">
 <h2>netcat<a class="headerlink" href="#netcat" title="Permalink to this headline">¶</a></h2>
-<p>When developing applications that include networking code, one of the most
-used tools is netcat. Also nicknamed &quot;Swiss-army knife for TCP / IP&quot;. It allows:</p>
+<p>在开发包含网络编程的应用程序时，常用的工具包括 netcat。它也被昵称为“TCP/IP 的瑞士军刀”。它可以用于以下功能：</p>
 <blockquote>
 <div><ul class="simple">
-<li>Initiating TCP connections;</li>
-<li>Waiting for a TCP connection;</li>
-<li>Sending and receiving UDP packets;</li>
-<li>Displaying traffic in hexdump format;</li>
-<li>Run a program after establishing a connection (eg, a shell);</li>
-<li>Set special options in sent packages.</li>
+<li>发起 TCP 连接；</li>
+<li>等待 TCP 连接；</li>
+<li>发送和接收 UDP 数据包；</li>
+<li>以十六进制转储（hexdump）格式显示流量；</li>
+<li>在建立连接后运行程序（例如，一个 shell）；</li>
+<li>在发送的数据包中设置特殊选项。</li>
 </ul>
 </div></blockquote>
-<p>Initiating TCP connections:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">nc hostname port</span>
+<p>发起 TCP 连接：</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">nc 主机名 端口号</span>
 </pre></div>
 </div>
-<p>Listening to a TCP port:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">nc -l -p port</span>
+<p>监听 TCP 端口：</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">nc -l -p 端口号</span>
 </pre></div>
 </div>
-<p>Sending and receiving UDP packets is done adding the <code class="docutils literal"><span class="pre">-u</span></code> command line option.</p>
+<p>发送和接收 UDP 数据包，需要添加 <code class="docutils literal"><span class="pre">-u</span></code> 命令行选项。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The command is <strong class="command">nc</strong>; often <strong class="command">netcat</strong> is an alias for this
-command. There are other implementations of the netcat command, some of which
-have slightly different parameters than the classic implementation. Run
-<strong class="command">man nc</strong> or <strong class="command">nc -h</strong> to check how to use it.</p>
+<p class="last">命令是 <strong class="command">nc</strong>；通常 <strong class="command">netcat</strong> 是此命令的别名。还有其他实现 netcat 命令的版本，其中一些与经典实现参数略有不同。运行 <strong class="command">man nc</strong> 或 <strong class="command">nc -h</strong> 以查看如何使用它。</p>
 </div>
-<p>For more information on netcat, check the following <a class="reference external" href="https://www.win.tue.nl/~aeb/linux/hh/netcat_tutorial.pdf">tutorial</a>.</p>
+<p>有关 netcat 的更多信息，请参阅以下 <a class="reference external" href="https://www.win.tue.nl/~aeb/linux/hh/netcat_tutorial.pdf">教程</a>。</p>
 </div>
-<div class="section" id="further-reading">
-<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-9">
+<h2>进一步阅读<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li>Understanding Linux Network Internals</li>
-<li><a class="reference external" href="http://www.cs.unh.edu/cnrg/gherrin/">Linux IP networking</a></li>
-<li><a class="reference external" href="http://www.stllinux.org/meeting_notes/2001/0719/myTUX/">The TUX Web Server</a></li>
-<li><a class="reference external" href="https://www.beej.us/guide/bgnet/">Beej's Guide to Network Programming Using Internet Sockets</a></li>
-<li><a class="reference external" href="http://www.linuxjournal.com/article/7660">Kernel Korner - Network Programming in the Kernel</a></li>
-<li><a class="reference external" href="http://phrack.org/issues/61/13.html">Hacking the Linux Kernel Network Stack</a></li>
-<li><a class="reference external" href="http://www.netfilter.org/">The netfilter.org project</a></li>
-<li><a class="reference external" href="https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture">A Deep Dive Into Iptables and Netfilter Architecture</a></li>
-<li><a class="reference external" href="http://www.linuxfoundation.org/en/Net:Main_Page">Linux Foundation Networking Page</a></li>
+<li>了解 Linux 网络内部</li>
+<li><a class="reference external" href="http://www.cs.unh.edu/cnrg/gherrin/">Linux IP 网络</a></li>
+<li><a href="#system-message-1"><span class="problematic" id="problematic-1">`TUX Web 服务器`_</span></a></li>
+<li><a class="reference external" href="https://www.beej.us/guide/bgnet/">Beej 的互联网套接字网络编程指南</a></li>
+<li><a class="reference external" href="http://www.linuxjournal.com/article/7660">内核中的网络编程——Kernel Korner</a></li>
+<li><a class="reference external" href="http://phrack.org/issues/61/13.html">深入 Linux 内核网络堆栈</a></li>
+<li><a class="reference external" href="http://www.netfilter.org/">netfilter.org 项目</a></li>
+<li><a class="reference external" href="https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture">深入了解 Iptables 和 Netfilter 架构</a></li>
+<li><a class="reference external" href="http://www.linuxfoundation.org/en/Net:Main_Page">Linux 基金会网络页面</a></li>
 </ol>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-10">
+<h2>练习<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -1082,7 +923,7 @@ have slightly different parameters than the classic implementation. Run
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 networking。请参阅任务名称的练习。</p>
+<p>当前实验名称为 网络。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -1101,9 +942,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/networking/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/网络/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-10">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -1113,50 +954,25 @@ tools/labs $ make boot
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">You need to make sure that the <code class="docutils literal"><span class="pre">netfilter</span></code> support is active in kernel. It
-is enabled via <code class="docutils literal"><span class="pre">CONFIG_NETFILTER</span></code>. To activate it, run <strong class="command">make menuconfig</strong> in
-the <code class="file docutils literal"><span class="pre">linux</span></code> directory and check the <code class="docutils literal"><span class="pre">Network</span> <span class="pre">packet</span> <span class="pre">filtering</span> <span class="pre">framework</span>
-<span class="pre">(Netfilter)</span></code> option in <code class="docutils literal"><span class="pre">Networking</span> <span class="pre">support</span> <span class="pre">-&gt;</span> <span class="pre">Networking</span> <span class="pre">options</span></code>. If it
-was not enabled, enable it (as builtin, not external module - it must be
-marked with <code class="docutils literal"><span class="pre">*</span></code>).</p>
+<p class="last">你需要确保内核支持 <code class="docutils literal"><span class="pre">netfilter</span></code>。可以通过 <code class="docutils literal"><span class="pre">CONFIG_NETFILTER</span></code> 来启用它。要激活它，请在 <code class="file docutils literal"><span class="pre">linux</span></code> 目录中运行 <strong class="command">make menuconfig</strong>，并在 <code class="docutils literal"><span class="pre">Networking</span> <span class="pre">support</span> <span class="pre">-&gt;</span> <span class="pre">Networking</span> <span class="pre">options</span></code> 中勾选 <code class="docutils literal"><span class="pre">Network</span> <span class="pre">packet</span> <span class="pre">filtering</span> <span class="pre">framework</span> <span class="pre">(Netfilter)</span></code> 选项。如果它未启用，请启用它（作为内置功能，而不是外部模块——必须带有 <code class="docutils literal"><span class="pre">*</span></code> 标记）。</p>
 </div>
-<div class="section" id="displaying-packets-in-kernel-space">
-<h3>1. Displaying packets in kernel space<a class="headerlink" href="#displaying-packets-in-kernel-space" title="Permalink to this headline">¶</a></h3>
-<p>Write a kernel module that displays the source address and port for TCP packets
-that initiate an outbound connection. Start from the code in
-<code class="file docutils literal"><span class="pre">1-2-netfilter</span></code> and fill in the areas marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>, taking into
-account the comments below.</p>
-<p>You will need to register a netfilter hook of type <code class="docutils literal"><span class="pre">NF_INET_LOCAL_OUT</span></code> as explained
-in the <a class="reference internal" href="#netfilter">netfilter</a> section.</p>
-<p><a class="reference internal" href="#the-struct-sk-buff-structure">The struct sk_buff structure</a> lets you access the packet headers using
-specific functions. The <code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code> function returns the IP header as a
-pointer to a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iphdr</span></code> structure. The <code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code> function
-returns the TCP header as a pointer to a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">tcphdr</span></code> structure.</p>
-<p>The <a class="reference external" href="http://www.eventhelix.com/Realtimemantra/Networking/Tcp.pdf">diagram</a> explains how to make a TCP connection. The connection initiation
-packet has the <code class="docutils literal"><span class="pre">SYN</span></code> flag set in the TCP header and the <code class="docutils literal"><span class="pre">ACK</span></code> flag cleared.</p>
+<div class="section" id="section-11">
+<h3>1. 在内核空间中显示数据包<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<p>编写一个内核模块，显示发起出站连接的 TCP 数据包的源地址和端口。从 <code class="file docutils literal"><span class="pre">1-2-netfilter</span></code> 中的代码开始，并填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的区域，同时考虑下面的注释。</p>
+<p>你需要注册一个类型为 <code class="docutils literal"><span class="pre">NF_INET_LOCAL_OUT</span></code> 的 netfilter 钩子，如 <a href="#system-message-2"><span class="problematic" id="problematic-2">`netfilter`_</span></a> 部分所述。</p>
+<p>借助 <a href="#system-message-3"><span class="problematic" id="problematic-3">`struct sk_buff 结构`_</span></a>, 你可以使用特定的函数访问数据包头部。<code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code> 函数以返回指向 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iphdr</span></code> 结构的指针的形式，返回 IP 头部。<code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code> 函数以返回指向 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">tcphdr</span></code> 结构的指针的形式，返回 TCP 头部。</p>
+<p><a class="reference external" href="http://www.eventhelix.com/Realtimemantra/Networking/Tcp.pdf">图表</a> 解释了如何建立 TCP 连接。连接初始化数据包在 TCP 头部中设置了 <code class="docutils literal"><span class="pre">SYN</span></code> 标志，并清除了 <code class="docutils literal"><span class="pre">ACK</span></code> 标志。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>To display the source IP address, use the <code class="docutils literal"><span class="pre">%pI4</span></code> format of the printk
-function. Details can be found in the <a class="reference external" href="https://www.kernel.org/doc/Documentation/printk-formats.txt">kernel documentation</a> (<code class="docutils literal"><span class="pre">IPv4</span>
-<span class="pre">addresses</span></code> section). The following is an example code snippet that uses
-<code class="docutils literal"><span class="pre">%pI4</span></code>:</p>
+<p>要显示源 IP 地址，请使用 printk 函数的 <code class="docutils literal"><span class="pre">%pI4</span></code> 格式。详细信息可以在 <a class="reference external" href="https://www.kernel.org/doc/Documentation/printk-formats.txt">内核文档</a> (<code class="docutils literal"><span class="pre">IPv4</span> <span class="pre">addresses</span></code> 部分)中找到。以下是使用 <code class="docutils literal"><span class="pre">%pI4</span></code> 的示例代码片段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;IP address is %pI4</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">saddr</span><span class="p">);</span>
 </pre></div>
 </div>
-<p class="last">When using the <code class="docutils literal"><span class="pre">%pI4</span></code> format, the argument to printk is a pointer. Hence the
-construction <code class="docutils literal"><span class="pre">&amp;iph-&gt;saddr</span></code> (with operator &amp; - ampersand) instead of
-<code class="docutils literal"><span class="pre">iph-&gt;saddr</span></code>.</p>
+<p class="last">在使用 <code class="docutils literal"><span class="pre">%pI4</span></code> 格式时，printk 的实参是指针。因此，构造应为 <code class="docutils literal"><span class="pre">&amp;iph-&gt;saddr</span></code> （带有 &amp; 运算符）而不是 <code class="docutils literal"><span class="pre">iph-&gt;saddr</span></code>。</p>
 </div>
-<p>The source TCP port is, in the TCP header, in the <a class="reference external" href="http://en.wikipedia.org/wiki/Endianness#Endianness_in_networking">network byte-order</a> format.
-Read through the <a class="reference internal" href="../so2/lab10-networking.html#conversions"><span class="std std-ref">Conversions</span></a> section. Use <code class="xref c c-func docutils literal"><span class="pre">ntohs()</span></code> to convert.</p>
-<p>For testing, use the <code class="file docutils literal"><span class="pre">1-2-netfilter/user/test-1.sh</span></code> file. The test creates
-a connection to the localhost, a connection that will be intercepted and
-displayed by the kernel module. The script is copied on the virtual machine by
-the <strong class="command">make copy</strong> command only if it is marked as executable. The script
-uses the statically compiled <strong class="command">netcat</strong> tool stored in
-<code class="file docutils literal"><span class="pre">skels/networking/netcat</span></code>; this program must have execution
-permissions.</p>
-<p>After running the checker the output should be similar to the one bellow:</p>
+<p>在 TCP 头部中，源 TCP 端口以 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#网络序">网络字节序</a> 格式表示。请阅读 <span class="xref std std-ref">转换</span> 部分。使用 <code class="xref c c-func docutils literal"><span class="pre">ntohs()</span></code> 进行转换。</p>
+<p>为了进行测试，请使用 <code class="file docutils literal"><span class="pre">1-2-netfilter/user/test-1.sh</span></code> 文件。该测试创建一个到本地主机的连接，然后由内核模块拦截和显示该连接。 <strong class="command">make copy</strong> 命令仅会在该脚本标记为可执行的情况下，才会将该脚本复制到虚拟机上。该脚本使用静态编译得到的 <strong class="command">netcat</strong> 工具，该工具的路径是 <code class="file docutils literal"><span class="pre">skels/networking/netcat</span></code>；此程序必须具有执行权限。</p>
+<p>运行检查器后，输出应类似于下面的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp"># ./test-1.sh</span>
 <span class="p">[</span>  <span class="mf">229.783512</span><span class="p">]</span> <span class="n">TCP</span> <span class="n">connection</span> <span class="n">initiated</span> <span class="n">from</span> <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">44716</span>
 <span class="n">Should</span> <span class="n">show</span> <span class="n">up</span> <span class="n">in</span> <span class="n">filter</span><span class="p">.</span>
@@ -1164,43 +980,24 @@ permissions.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="filtering-by-destination-address">
-<h3>2. Filtering by destination address<a class="headerlink" href="#filtering-by-destination-address" title="Permalink to this headline">¶</a></h3>
-<p>Extend the module from exercise 1 so that you can specify a destination address
-by means of a <code class="docutils literal"><span class="pre">MY_IOCTL_FILTER_ADDRESS</span></code> ioctl call. You'll only show packages
-containing the specified destination address. To solve this task, fill in the
-areas marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> and follow the specifications below.</p>
-<p>To implement the ioctl routine, you must fill out the <code class="docutils literal"><span class="pre">my_ioctl</span></code> function.
-Review the section in <a class="reference internal" href="../so2/lab3-device-drivers.html#ioctl"><span class="std std-ref">ioctl</span></a>. The address sent from user space is in
-<a class="reference external" href="http://en.wikipedia.org/wiki/Endianness#Endianness_in_networking">network byte-order</a>, so there will be <strong>NO need</strong> for conversion.</p>
+<div class="section" id="section-12">
+<h3>2. 按目标地址进行过滤<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<p>扩展练习 1 中的模块，以便你可以通过 <code class="docutils literal"><span class="pre">MY_IOCTL_FILTER_ADDRESS</span></code> ioctl 调用指定目标地址。注意只显示包含指定目标地址的数据包。为了解决这个任务，填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的区域，并按照以下规范进行操作。</p>
+<p>要实现 ioctl 例程，你必须填写 <code class="docutils literal"><span class="pre">my_ioctl</span></code> 函数。请查看 <a class="reference internal" href="../so2/lab3-device-drivers.html#ioctl"><span class="std std-ref">ioctl</span></a> 部分的内容。从用户空间发送的地址使用 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#网络序">网络字节序</a>, 因此 <strong>无需</strong> 进行转换。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The IP address sent via <code class="docutils literal"><span class="pre">ioctl</span></code> is sent by address, not by value. The
-address must be stored in the <code class="docutils literal"><span class="pre">ioctl_set_addr</span></code> variable. For copying use
-<code class="xref c c-func docutils literal"><span class="pre">copy_from_user()</span></code>.</p>
+<p class="last">通过 <code class="docutils literal"><span class="pre">ioctl</span></code> 发送的 IP 地址是通过地址发送的，而不是通过值发送的。地址必须存储在 <code class="docutils literal"><span class="pre">ioctl_set_addr</span></code> 变量中。可以使用 <code class="xref c c-func docutils literal"><span class="pre">copy_from_user()</span></code> 进行复制。</p>
 </div>
-<p>To compare the addresses, fill out the <code class="docutils literal"><span class="pre">test_daddr</span></code> function. Addresses in
-network byte-order will be used without having to convert addresses (if they
-are equal from left to right they will be equal if reversed too).</p>
-<p>The <code class="docutils literal"><span class="pre">test_daddr</span></code> function must be called from the netfilter hook to display
-the connection initialization packets for which the destination address is the
-one sent through the ioctl routine. The connection initiation packet has the
-<code class="docutils literal"><span class="pre">SYN</span></code> flag set in the TCP header and the <code class="docutils literal"><span class="pre">ACK</span></code> flag cleared.  You have to
-check two things:</p>
+<p>要比较地址，请填写 <code class="docutils literal"><span class="pre">test_daddr</span></code> 函数。这里我们无需转换地址，即可将（使用网络字节序的）地址进行比较（如果从左到右相等，则反转后也相等）。</p>
+<p>如果要显示按目标地址过滤出的连接初始化数据包（这些过滤出的数据包，其目标地址与我们通过 ioctl 例程发送的地址相符），那么 <code class="docutils literal"><span class="pre">test_daddr</span></code> 函数必须在 netfilter 钩子中调用。连接初始化数据包在 TCP 头部中设置了 <code class="docutils literal"><span class="pre">SYN</span></code> 标志，并清除了 <code class="docutils literal"><span class="pre">ACK</span></code> 标志。你需要检查两件事情：</p>
 <blockquote>
 <div><ul class="simple">
-<li>the TCP flags;</li>
-<li>the destination address of the packet (using <code class="docutils literal"><span class="pre">test_addr</span></code>).</li>
+<li>TCP 标志；</li>
+<li>数据包的目标地址（使用 <code class="docutils literal"><span class="pre">test_addr</span></code>）。</li>
 </ul>
 </div></blockquote>
-<p>For testing, use the <code class="file docutils literal"><span class="pre">1-2-netfilter/user/test-2.sh</span></code> script. This script
-needs to compile the <code class="file docutils literal"><span class="pre">1-2-netfilter/user/test.c</span></code> file in the test
-executable. Compilation is done automatically on the physical system when
-running the <strong class="command">make build</strong> command. The test script is copied to the
-virtual machine only if it is marked as executable. The script uses the
-statically compiled <strong class="command">netcat</strong> tool in <code class="file docutils literal"><span class="pre">skels/networking/netcat</span></code>;
-this executable must have execution permissions.</p>
-<p>After running the checker the output should be similar to the one bellow:</p>
+<p>为了进行测试，请使用 <code class="file docutils literal"><span class="pre">1-2-netfilter/user/test-2.sh</span></code> 脚本。此脚本需要编译 <code class="file docutils literal"><span class="pre">1-2-netfilter/user/test.c</span></code> 文件以生成测试可执行文件。在物理系统上运行 <strong class="command">make build</strong> 命令时，会自动进行编译。只有标记为可执行，该测试脚本才会复制到虚拟机上。该脚本使用静态编译的 <strong class="command">netcat</strong> 工具（在 <code class="file docutils literal"><span class="pre">skels/networking/netcat</span></code> 中）；该可执行文件必须具有执行权限。</p>
+<p>运行检查器后，输出应类似于下面的示例：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./test-2.sh
 <span class="go">[  797.673535] TCP connection initiated from 127.0.0.1:44721</span>
 <span class="go">Should show up in filter.</span>
@@ -1208,131 +1005,73 @@ this executable must have execution permissions.</p>
 <span class="go">Check dmesg output.</span>
 </pre></div>
 </div>
-<p>The test ask for packet filtering first for the <code class="docutils literal"><span class="pre">127.0.0.1</span></code> IP address and
-then for the <code class="docutils literal"><span class="pre">127.0.0.2</span></code> IP address. The first connection initiation packet
-(to <code class="docutils literal"><span class="pre">127.0.0.1</span></code>) is intercepted and displayed by the filter, while the second
-(to <code class="docutils literal"><span class="pre">127.0.0.2</span></code>) is not intercepted.</p>
+<p>测试首先要求对 <code class="docutils literal"><span class="pre">127.0.0.1</span></code> IP 地址进行数据包过滤，然后对 <code class="docutils literal"><span class="pre">127.0.0.2</span></code> IP 地址进行过滤。第一个连接初始化数据包（到 <code class="docutils literal"><span class="pre">127.0.0.1</span></code>）被过滤器拦截并显示，而第二个数据包（到 <code class="docutils literal"><span class="pre">127.0.0.2</span></code>）则未被拦截。</p>
 </div>
-<div class="section" id="listening-on-a-tcp-socket">
-<h3>3. Listening on a TCP socket<a class="headerlink" href="#listening-on-a-tcp-socket" title="Permalink to this headline">¶</a></h3>
-<p>Write a kernel module that creates a TCP socket that listens to connections on
-port <code class="docutils literal"><span class="pre">60000</span></code> on the loopback interface (in <code class="docutils literal"><span class="pre">init_module</span></code>). Start from the
-code in <code class="file docutils literal"><span class="pre">3-4-tcp-sock</span></code> fill in the areas marked with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> taking
-into account the observations below.</p>
-<p>Read the <a class="reference internal" href="#operations-on-the-socket-structure">Operations on the socket structure</a> and <a class="reference internal" href="#the-struct-proto-ops-structure">The struct proto_ops
-structure</a> sections.</p>
-<p>The <code class="docutils literal"><span class="pre">sock</span></code> socket is a <code class="docutils literal"><span class="pre">server</span> <span class="pre">socket</span></code> and must be put in the listening
-state. That is, the <code class="docutils literal"><span class="pre">bind</span></code> and <code class="docutils literal"><span class="pre">listen</span></code> operations must be applied to the
-socket. For the <code class="docutils literal"><span class="pre">bind</span></code> and <code class="docutils literal"><span class="pre">listen</span></code> equivalent, in kernel space you will
-need to call <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;...;</span></code> examples of such functions you can call are
-<code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;bind</span></code>, <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;listen</span></code> etc.</p>
+<div class="section" id="tcp-socket">
+<h3>3. 监听 TCP socket<a class="headerlink" href="#tcp-socket" title="Permalink to this headline">¶</a></h3>
+<p>编写一个内核模块，在回环接口（loopback interface）（在 <code class="docutils literal"><span class="pre">init_module</span></code> 中）上创建监听连接的 TCP 套接字，监听端口为 <code class="docutils literal"><span class="pre">60000</span></code>。从 <code class="file docutils literal"><span class="pre">3-4-tcp-sock</span></code> 中的代码开始，填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的区域，同时考虑以下观察结果。</p>
+<p>请阅读 <a class="reference internal" href="#socket">对 socket 结构的操作</a> 和 <a class="reference internal" href="#struct-proto-ops">struct proto_ops 结构</a> 部分。</p>
+<p><code class="docutils literal"><span class="pre">sock</span></code> socket 是 <code class="docutils literal"><span class="pre">服务器套接字</span></code>，因此必须处于监听状态。也就是说，必须对该 socket 执行 <code class="docutils literal"><span class="pre">bind</span></code> 和 <code class="docutils literal"><span class="pre">listen</span></code> 操作。在内核空间中，要执行类似于 <code class="docutils literal"><span class="pre">bind</span></code> 和 <code class="docutils literal"><span class="pre">listen</span></code> 的操作，你需要调用类似 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;...;</span></code> 的函数。你可以调用的示例函数包括 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;bind</span></code>, <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;listen</span></code> 等。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>For example, call <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;bind</span></code>, or <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;listen</span></code> functions, see
-how they are called in the <code class="xref c c-func docutils literal"><span class="pre">sys_bind()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">sys_listen()</span></code> system
-call handlers.</p>
-<p class="last">Look for the system call handlers in the <code class="docutils literal"><span class="pre">net/socket.c</span></code> file in the Linux
-kernel source code tree.</p>
+<p>例如，调用 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;bind</span></code> 或 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;listen</span></code> 函数，查看在 <code class="xref c c-func docutils literal"><span class="pre">sys_bind()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">sys_listen()</span></code> 系统调用处理程序中调用它们的方式。</p>
+<p class="last">在 Linux 内核源代码树的 <code class="docutils literal"><span class="pre">net/socket.c</span></code> 文件中，查找系统调用处理程序。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">For the second argument of the <code class="docutils literal"><span class="pre">listen</span></code> (backlog) call, use the
-<code class="docutils literal"><span class="pre">LISTEN_BACKLOG</span></code>.</p>
+<p class="last">对于 <code class="docutils literal"><span class="pre">listen</span></code> 的第二个参数（backlog），请使用 <code class="docutils literal"><span class="pre">LISTEN_BACKLOG</span></code>。</p>
 </div>
-<p>Remember to release the socket in the module's exit function and in the area
-marked with error labels; use <code class="xref c c-func docutils literal"><span class="pre">sock_release()</span></code>.</p>
-<p>For testing, run the <strong class="command">3-4-tcp_sock/test-3.sh</strong> script. The script is
-copied on the virtual machine by <strong class="command">make copy</strong> only if it is marked as
-executable.</p>
-<p>After running the test, a TCP socket will be displayed by listening to
-connections on port <code class="docutils literal"><span class="pre">60000</span></code>.</p>
+<p>在模块的退出函数和标有错误标签的区域中记得释放 socket；可以使用 <code class="xref c c-func docutils literal"><span class="pre">sock_release()</span></code> 来释放。</p>
+<p>要进行测试，请运行 <strong class="command">3-4-tcp_sock/test-3.sh</strong> 脚本。只有在标记为可执行时，该脚本才会通过 <strong class="command">make copy</strong> 复制到虚拟机上。</p>
+<p>运行测试后，将显示一个 TCP 套接字，通过监听端口 <code class="docutils literal"><span class="pre">60000</span></code> 进行连接。</p>
 </div>
-<div class="section" id="accepting-connections-in-kernel-space">
-<h3>4. Accepting connections in kernel space<a class="headerlink" href="#accepting-connections-in-kernel-space" title="Permalink to this headline">¶</a></h3>
-<p>Expand the module from the previous exercise to allow an external connection (no
-need to send any message, only accept new connections). Fill in the areas marked
-with <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code>.</p>
-<p>Read the <a class="reference internal" href="#operations-on-the-socket-structure">Operations on the socket structure</a> and <a class="reference internal" href="#the-struct-proto-ops-structure">The struct proto_ops
-structure</a> sections.</p>
-<p>For the kernel space <code class="docutils literal"><span class="pre">accept</span></code> equivalent, see the system call handler for
-<code class="xref c c-func docutils literal"><span class="pre">sys_accept4()</span></code>. Follow the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.17/source/drivers/staging/lustre/lnet/lnet/lib-socket.c#L511">lnet_sock_accept</a>
-implementation, and how the <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;accept</span></code> call is used. Use <code class="docutils literal"><span class="pre">0</span></code> as
-the value for the second to last argument (<code class="docutils literal"><span class="pre">flags</span></code>), and <code class="docutils literal"><span class="pre">true</span></code> for the
-last argument (<code class="docutils literal"><span class="pre">kern</span></code>).</p>
+<div class="section" id="section-13">
+<h3>4. 在内核空间接受连接<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<p>扩展上一个练习中的模块，以允许外部连接（无需发送任何消息，只需接受新连接）。填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的区域。</p>
+<p>请阅读 <a class="reference internal" href="#socket">对 socket 结构的操作</a> 和 <a class="reference internal" href="#struct-proto-ops">struct proto_ops 结构</a> 部分。</p>
+<p>对于内核空间的 <code class="docutils literal"><span class="pre">accept</span></code> 等效操作，请参阅 <code class="xref c c-func docutils literal"><span class="pre">sys_accept4()</span></code> 系统调用处理程序。请查看 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.17/source/drivers/staging/lustre/lnet/lnet/lib-socket.c#L511">lnet_sock_accept</a> 实现，以及如何使用 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;accept</span></code> 调用。将倒数第二个参数 (<code class="docutils literal"><span class="pre">flags</span></code>) 的值设为 <code class="docutils literal"><span class="pre">0</span></code>，将最后一个参数 (<code class="docutils literal"><span class="pre">kern</span></code>) 的值设为 <code class="docutils literal"><span class="pre">true</span></code>。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Look for the system call handlers in the <code class="docutils literal"><span class="pre">net/socket.c</span></code> file in the Linux
-kernel source code tree.</p>
+<p class="last">在 Linux 内核源代码树的 <code class="docutils literal"><span class="pre">net/socket.c</span></code> 文件中查找系统调用处理程序。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The new socket (<code class="docutils literal"><span class="pre">new_sock</span></code>) must be created with the
-<code class="xref c c-func docutils literal"><span class="pre">sock_create_lite()</span></code> function and then its operations must be configured
-using</p>
+<p>必须使用 <code class="xref c c-func docutils literal"><span class="pre">sock_create_lite()</span></code> 函数创建新套接字 (<code class="docutils literal"><span class="pre">new_sock</span></code>)，然后使用以下方式配置其操作：</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="go">newsock-&gt;ops = sock-&gt;ops;</span>
 </pre></div>
 </div>
 </div>
-<p>Print the address and port of the destination socket. To find the peer name of a
-socket (its address), refer to the <code class="xref c c-func docutils literal"><span class="pre">sys_getpeername()</span></code> system call handler.</p>
+<p>打印目标 socket 的地址和端口。要查找 socket 的对等名称（即地址），请参考 <code class="xref c c-func docutils literal"><span class="pre">sys_getpeername()</span></code> 系统调用处理程序。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The first argument for the <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;getname</span></code> function will be the
-connection socket, ie <code class="docutils literal"><span class="pre">new_sock</span></code>, the one initialized with by the <code class="docutils literal"><span class="pre">accept</span></code>
-call.</p>
-<p>The last argument of the <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;getname</span></code> function will be <code class="docutils literal"><span class="pre">1</span></code>,
-meaning that we want to know about the endpoint or the peer (<em>remote end</em> or
-<em>peer</em>).</p>
-<p class="last">Display the peer address (indicated by the <code class="docutils literal"><span class="pre">raddr</span></code> variable) using the
-<code class="docutils literal"><span class="pre">print_sock_address</span></code> macro defined in the file.</p>
+<p><code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;getname</span></code> 函数的第一个参数是连接套接字，即通过 <code class="docutils literal"><span class="pre">accept</span></code> 调用初始化的 <code class="docutils literal"><span class="pre">new_sock</span></code>。</p>
+<p><code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;getname</span></code> 函数的最后一个参数是 <code class="docutils literal"><span class="pre">1</span></code>，表示我们想要了解有关端点或对等点 (<em>远程端</em> 或 <em>对等点</em>) 的信息。</p>
+<p class="last">使用文件中定义的 <code class="docutils literal"><span class="pre">print_sock_address</span></code> 宏显示对等地址（由 <code class="docutils literal"><span class="pre">raddr</span></code> 变量指示）。</p>
 </div>
-<p>Release the newly created socket (after accepting the connection) in the module
-exit function and after the error label. After adding the <code class="docutils literal"><span class="pre">accept</span></code> code to the
-module initialization function, the <strong class="command">insmod</strong> operation will lock until
-a connection is established. You can unlock using <strong class="command">netcat</strong> on that
-port. Consequently, the test script from the previous exercise will not work.</p>
-<p>For testing, run the <code class="file docutils literal"><span class="pre">3-4-tcp_sock/test-4.sh</span></code> script. The script is copied on
-the virtual machine by <strong class="command">make copy</strong> only if it is marked as executable.</p>
-<p>Nothing special will be displayed (in the kernel buffer). The success of the
-test will be defined by the connection establishment. Then use <code class="docutils literal"><span class="pre">Ctrl+c</span></code> to
-stop the test script, and then you can remove the kernel module.</p>
+<p>在模块的退出函数中，以及在错误标签之后，释放新创建的套接字（接受连接后）。在将 <code class="docutils literal"><span class="pre">accept</span></code> 代码添加到模块初始化函数之后，<strong class="command">insmod</strong> 操作将会阻塞，直到建立连接。你可以使用 <strong class="command">netcat</strong> 在该端口上解锁。因此，上一个练习中的测试脚本将无法工作。</p>
+<p>要进行测试，请运行 <code class="file docutils literal"><span class="pre">3-4-tcp_sock/test-4.sh</span></code> 脚本。只有在标记为可执行时，该脚本才会通过 <strong class="command">make copy</strong> 复制到虚拟机上。</p>
+<p>不会显示任何特殊内容（在内核缓冲区中）。测试的成功将由连接的建立来确定。然后使用 <code class="docutils literal"><span class="pre">Ctrl+c</span></code> 停止测试脚本，然后可以移除内核模块。</p>
 </div>
-<div class="section" id="udp-socket-sender">
-<h3>5. UDP socket sender<a class="headerlink" href="#udp-socket-sender" title="Permalink to this headline">¶</a></h3>
-<p>Write a kernel module that creates a UDP socket and sends the message from the
-<code class="docutils literal"><span class="pre">MY_TEST_MESSAGE</span></code> macro on the socket to the loopback address on port
-<code class="docutils literal"><span class="pre">60001</span></code>.</p>
-<p>Start from the code in <code class="file docutils literal"><span class="pre">5-udp-sock</span></code>.</p>
-<p>Read the <a class="reference internal" href="#operations-on-the-socket-structure">Operations on the socket structure</a> and <a class="reference internal" href="#the-struct-proto-ops-structure">The struct proto_ops
-structure</a> sections.</p>
-<p>To see how to send messages in the kernel space, see the <code class="xref c c-func docutils literal"><span class="pre">sys_send()</span></code>
-system call handler or <a class="reference internal" href="#sending-receiving-messages">Sending/receiving messages</a>.</p>
+<div class="section" id="udp-1">
+<h3>5. UDP 套接字发送方<a class="headerlink" href="#udp-1" title="Permalink to this headline">¶</a></h3>
+<p>编写一个内核模块，其创建一个 UDP socket，并将来自 socket 的 <code class="docutils literal"><span class="pre">MY_TEST_MESSAGE</span></code> 宏的消息发送到回环地址的端口 <code class="docutils literal"><span class="pre">60001</span></code>。</p>
+<p>从 <code class="file docutils literal"><span class="pre">5-udp-sock</span></code> 中的代码开始。</p>
+<p>请阅读 <a class="reference internal" href="#socket">对 socket 结构的操作</a> 和 <a class="reference internal" href="#struct-proto-ops">struct proto_ops 结构</a> 部分。</p>
+<p>要了解如何在内核空间中发送消息，请参阅 <code class="xref c c-func docutils literal"><span class="pre">sys_send()</span></code> 系统调用处理程序或 <a class="reference internal" href="#section-7">发送/接收消息</a>。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>The <code class="docutils literal"><span class="pre">msg_name</span></code> field of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> structure must be
-initialized to the destination address (pointer to <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sockaddr</span></code>)
-and the <code class="docutils literal"><span class="pre">msg_namelen</span></code> field to the address size.</p>
-<p>Initialize the <code class="docutils literal"><span class="pre">msg_flags</span></code> field of the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> structure
-to <code class="docutils literal"><span class="pre">0</span></code>.</p>
-<p class="last">Initialize the <code class="docutils literal"><span class="pre">msg_control</span></code> and <code class="docutils literal"><span class="pre">msg_controllen</span></code> fields of the
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> structure to <code class="docutils literal"><span class="pre">NULL</span></code> and <code class="docutils literal"><span class="pre">0</span></code> respectively.</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> 结构的 <code class="docutils literal"><span class="pre">msg_name</span></code> 字段必须初始化为目标地址（指向 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sockaddr</span></code> 的指针）, <code class="docutils literal"><span class="pre">msg_namelen</span></code> 字段必须初始化为地址大小。</p>
+<p>将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> 结构的 <code class="docutils literal"><span class="pre">msg_flags</span></code> 字段初始化为 <code class="docutils literal"><span class="pre">0</span></code>。</p>
+<p class="last">将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> 结构的 <code class="docutils literal"><span class="pre">msg_control</span></code> 和 <code class="docutils literal"><span class="pre">msg_controllen</span></code> 字段分别初始化为 <code class="docutils literal"><span class="pre">NULL</span></code> 和 <code class="docutils literal"><span class="pre">0</span></code>。</p>
 </div>
-<p>For sending the message use <code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code>.</p>
-<p>The message transmission parameters are retrieved from the kernel space. Cast
-the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iovec</span></code> structure pointer to a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> pointer
-in the <code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code> call.</p>
+<p>要发送消息，请使用 <code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code>。</p>
+<p>消息传输参数从内核空间中检索。在 <code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code> 调用中，将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iovec</span></code> 结构指针转换为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> 指针。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">The last two parameters of <code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code> are <code class="docutils literal"><span class="pre">1</span></code> (number of I/O
-vectors) and <code class="docutils literal"><span class="pre">len</span></code> (message size).</p>
+<p class="last"><code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code> 的最后两个参数分别为 <code class="docutils literal"><span class="pre">1</span></code> (I/O 向量的数量) 和 <code class="docutils literal"><span class="pre">len</span></code> (消息大小)。</p>
 </div>
-<p>For testing, use the <code class="file docutils literal"><span class="pre">test-5.sh</span></code> file. The script is copied on the virtual
-machine by the <strong class="command">make copy</strong> command only if it is marked as executable.
-The script uses the statically compiled <code class="docutils literal"><span class="pre">netcat</span></code> tool stored in
-<code class="file docutils literal"><span class="pre">skels/networking/netcat</span></code>; this executable must have execution
-permissions.</p>
-<p>For a correct implementation, running the <code class="file docutils literal"><span class="pre">test-5.sh</span></code> script will cause
-the <code class="docutils literal"><span class="pre">kernelsocket</span></code> message to be displayed like in the output below:</p>
+<p>要进行测试，请使用 <code class="file docutils literal"><span class="pre">test-5.sh</span></code> 脚本。只有在标记为可执行时，该脚本才会通过 <strong class="command">make copy</strong> 复制到虚拟机上。该脚本使用存储在 <code class="file docutils literal"><span class="pre">skels/networking/netcat</span></code> 中的静态编译的 <code class="docutils literal"><span class="pre">netcat</span></code> 工具；该可执行文件必须具有执行权限。</p>
+<p>如果正确实现，运行 <code class="file docutils literal"><span class="pre">test-5.sh</span></code> 脚本后，将显示类似下面的输出中的 <code class="docutils literal"><span class="pre">kernelsocket</span></code> 消息：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">/root # ./test-5.sh</span>
 <span class="go">+ pid=1059</span>
 <span class="go">+ sleep 1</span>
