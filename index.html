@@ -85,7 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part1.html">文件系统驱动程序（第一部分）</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part2.html">文件系统驱动程序（第二部分）</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/networking.html">网络</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/arm_kernel_development.html">Kernel Development on ARM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/arm_kernel_development.html">ARM 内核开发</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/memory_mapping.html">Memory mapping</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/device_model.html">Linux Device Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/kernel_profiling.html">Kernel Profiling</a></li>
@@ -872,24 +872,24 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lab11-arm-kernel-development.html">SO2 Lab 11 - Kernel Development on ARM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#system-on-a-chip">System on a Chip</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#board-support-package">Board Support package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#toolchain">Toolchain</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#compiling-the-linux-kernel-on-arm">Compiling the Linux kernel on ARM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-2">片上系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-3">板级支持软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-4">工具链</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#arm-linux">编译 ARM 版 Linux 内核</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#linux-kernel-image">Linux kernel image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#linux">Linux 内核镜像</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#rootfs">Rootfs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#device-tree">Device tree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-5">设备树</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#qemu">Qemu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#intro">0. Intro</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#boot">1. Boot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#cpu-information">2. CPU information</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#i-o-memory">3. I/O memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-6">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-7">0. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-8">1. 启动</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#cpu">2. CPU 信息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#i-o">3. I/O 内存</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#hello-world">4. Hello World</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#simple-device">5. Simple device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab11-arm-kernel-development.html#section-9">5. 简单设备</a></li>
 </ul>
 </li>
 </ul>
@@ -1767,25 +1767,25 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/arm_kernel_development.html">Kernel Development on ARM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#system-on-a-chip">System on a Chip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#board-support-package">Board Support package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#toolchain">Toolchain</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#compiling-the-linux-kernel-on-arm">Compiling the Linux kernel on ARM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/arm_kernel_development.html">ARM 内核开发</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#section-1">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#section-2">片上系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#section-3">板级支持软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#section-4">工具链</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#arm-linux">编译 ARM 版 Linux 内核</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#linux-kernel-image">Linux kernel image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#linux">Linux 内核镜像</a></li>
 <li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#rootfs">Rootfs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#device-tree">Device tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#section-5">设备树</a></li>
 <li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#qemu">Qemu</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#intro">0. Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#boot">1. Boot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#cpu-information">2. CPU information</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#i-o-memory">3. I/O memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/arm_kernel_development.html#section-6">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#section-7">0. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#section-8">1. 启动</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#cpu">2. CPU 信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#i-o">3. I/O 内存</a></li>
 <li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#hello-world">4. Hello World</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#simple-device">5. Simple device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/arm_kernel_development.html#section-9">5. 简单设备</a></li>
 </ul>
 </li>
 </ul>
