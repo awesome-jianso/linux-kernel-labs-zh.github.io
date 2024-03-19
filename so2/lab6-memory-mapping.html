@@ -458,7 +458,7 @@ tools/labs $ make boot
 <p>遍历所有虚拟页面，并对于每个页面：
 * 确定物理地址
 * 使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 进行映射</p>
-<p class="last">确保每次都确定物理地址，并且使用同一个页面范围进行映射。</p>
+<p class="last">确保每次都确定物理地址，并且只映射一个页面。</p>
 </div>
 <p>测试的方法是，加载内核模块并运行：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>root@qemux86:~# skels/memory_mapping/test/mmap-test <span class="m">1</span>
