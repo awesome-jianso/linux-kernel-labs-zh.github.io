@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/filesystems_part2.html">文件系统驱动程序（第二部分）</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/networking.html">网络</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/arm_kernel_development.html">ARM 内核开发</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/memory_mapping.html">Memory mapping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/memory_mapping.html">内存映射</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/device_model.html">Linux Device Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/kernel_profiling.html">Kernel Profiling</a></li>
 </ul>
@@ -654,21 +654,21 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lab6-memory-mapping.html">SO2 Lab 06 - Memory Mapping</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#structures-used-for-memory-mapping">Structures used for memory mapping</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-3">用于内存映射的结构</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#struct-page"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#struct-vm-area-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#struct-mm-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#device-driver-memory-mapping">Device driver memory mapping</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#further-reading">Further reading</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#exercises">Exercises</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#mapping-contiguous-physical-memory-to-userspace">1. Mapping contiguous physical memory to userspace</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#mapping-non-contiguous-physical-memory-to-userspace">2. Mapping non-contiguous physical memory to userspace</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#read-write-operations-in-mapped-memory">3. Read / write operations in mapped memory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#display-memory-mapped-in-procfs">4. Display memory mapped in procfs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-4">设备驱动程序的内存映射</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-5">进一步阅读</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-6">练习</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-7">1. 将连续的物理内存映射到用户空间</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-8">2. 将非连续的物理内存映射到用户空间</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#section-9">3. 在映射内存中进行读写操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab6-memory-mapping.html#procfs">4. 在 procfs 中显示内存映射</a></li>
 </ul>
 </li>
 </ul>
@@ -1790,22 +1790,22 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/memory_mapping.html">Memory mapping</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#structures-used-for-memory-mapping">Structures used for memory mapping</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="labs/memory_mapping.html">内存映射</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#section-2">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#section-3">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#section-4">用于内存映射的结构</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#struct-page"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#struct-vm-area-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#struct-mm-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#device-driver-memory-mapping">Device driver memory mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#further-reading">Further reading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#mapping-contiguous-physical-memory-to-userspace">1. Mapping contiguous physical memory to userspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#mapping-non-contiguous-physical-memory-to-userspace">2. Mapping non-contiguous physical memory to userspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#read-write-operations-in-mapped-memory">3. Read / write operations in mapped memory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#display-memory-mapped-in-procfs">4. Display memory mapped in procfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#section-5">设备驱动程序的内存映射</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#section-6">进一步阅读</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/memory_mapping.html#section-7">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#section-8">1. 将连续的物理内存映射到用户空间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#section-9">2. 将非连续的物理内存映射到用户空间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#section-10">3. 在映射内存中进行读写操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/memory_mapping.html#procfs">4. 在 procfs 中显示内存映射</a></li>
 </ul>
 </li>
 </ul>

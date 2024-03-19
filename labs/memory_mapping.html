@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memory mapping &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>内存映射 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -87,22 +87,22 @@
 <li class="toctree-l1"><a class="reference internal" href="filesystems_part2.html">文件系统驱动程序（第二部分）</a></li>
 <li class="toctree-l1"><a class="reference internal" href="networking.html">网络</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arm_kernel_development.html">ARM 内核开发</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Memory mapping</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#lab-objectives">Lab objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#structures-used-for-memory-mapping">Structures used for memory mapping</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">内存映射</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#section-2">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-3">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-4">用于内存映射的结构</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#struct-page"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#struct-vm-area-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#struct-mm-struct"><code class="docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#device-driver-memory-mapping">Device driver memory mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#further-reading">Further reading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mapping-contiguous-physical-memory-to-userspace">1. Mapping contiguous physical memory to userspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mapping-non-contiguous-physical-memory-to-userspace">2. Mapping non-contiguous physical memory to userspace</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#read-write-operations-in-mapped-memory">3. Read / write operations in mapped memory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#display-memory-mapped-in-procfs">4. Display memory mapped in procfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-5">设备驱动程序的内存映射</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-6">进一步阅读</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-7">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-8">1. 将连续的物理内存映射到用户空间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-9">2. 将非连续的物理内存映射到用户空间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-10">3. 在映射内存中进行读写操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#procfs">4. 在 procfs 中显示内存映射</a></li>
 </ul>
 </li>
 </ul>
@@ -132,7 +132,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Memory mapping</li>
+      <li class="breadcrumb-item active">内存映射</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/labs/memory_mapping.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -142,17 +142,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="memory-mapping">
-<h1>Memory mapping<a class="headerlink" href="#memory-mapping" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="lab-objectives">
-<h2>Lab objectives<a class="headerlink" href="#lab-objectives" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="section-1">
+<h1>内存映射<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-2">
+<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Understand address space mapping mechanisms</li>
-<li>Learn about the most important structures related to memory management</li>
+<li>理解地址空间映射机制</li>
+<li>了解与内存管理相关的重要结构</li>
 </ul>
-<p>Keywords:</p>
+<p>关键词：</p>
 <ul class="simple">
-<li>address space</li>
+<li>地址空间</li>
 <li><code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code></li>
 <li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code></li>
 <li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code></li>
@@ -162,77 +162,38 @@
 <li><code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code></li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>In the Linux kernel it is possible to map a kernel address space to a
-user address space. This eliminates the overhead of copying user space
-information into the kernel space and vice versa. This can be done
-through a device driver and the user space device interface
-(<code class="file docutils literal"><span class="pre">/dev</span></code>).</p>
-<p>This feature can be used by implementing the <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> operation
-in the device driver's <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> and using the
-<code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> system call in user space.</p>
-<p>The basic unit for virtual memory management is a page, which size is
-usually 4K, but it can be up to 64K on some platforms. Whenever we
-work with virtual memory we work with two types of addresses: virtual
-address and physical address. All CPU access (including from kernel
-space) uses virtual addresses that are translated by the MMU into
-physical addresses with the help of page tables.</p>
-<p>A physical page of memory is identified by the Page Frame Number
-(PFN). The PFN can be easily computed from the physical address by
-dividing it with the size of the page (or by shifting the physical
-address with PAGE_SHIFT bits to the right).</p>
+<div class="section" id="section-3">
+<h2>概述<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<p>在 Linux 内核中，我们可以将内核地址空间映射到用户地址空间。这样可以消除将用户空间信息复制到内核空间或相反操作的开销。这可以通过设备驱动程序和用户空间设备接口 (<code class="file docutils literal"><span class="pre">/dev</span></code>) 来实现。</p>
+<p>我们可以通过在设备驱动程序的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 中实现 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 操作，并在用户空间中通过 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 系统调用来使用此功能。</p>
+<p>虚拟内存管理的基本单位是页面。页面的大小通常为 4K，但在某些平台上可以达到 64K。虚拟内存技术会使用两种类型的地址：虚拟地址和物理地址。所有 CPU 访问（包括来自内核空间的访问）访问的都是虚拟地址，然后由 MMU 将虚拟地址转换为物理地址，转换过程依靠页表来完成。</p>
+<p>物理内存页面由页面帧号（PFN）标识。PFN 可以通过将物理地址除以页面的大小（或通过将物理地址向右移动 PAGE_SHIFT 位）来轻松计算得到。</p>
 <a class="reference internal image-reference" href="../_images/paging.png"><img alt="../_images/paging.png" src="../_images/paging.png" style="width: 49%;" /></a>
-<p>For efficiency reasons, the virtual address space is divided into
-user space and kernel space. For the same reason, the kernel space
-contains a memory mapped zone, called <strong>lowmem</strong>, which is contiguously
-mapped in physical memory, starting from the lowest possible physical
-address (usually 0). The virtual address where lowmem is mapped is
-defined by <code class="xref c c-macro docutils literal"><span class="pre">PAGE_OFFSET</span></code>.</p>
-<p>On a 32bit system, not all available memory can be mapped in lowmem and
-because of that there is a separate zone in kernel space called
-<strong>highmem</strong> which can be used to arbitrarily map physical memory.</p>
-<p>Memory allocated by <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> resides in lowmem and it is
-physically contiguous. Memory allocated by <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> is not
-contiguous and does not reside in lowmem (it has a dedicated zone in
-highmem).</p>
+<p>出于效率考量，虚拟地址空间被划分为用户空间和内核空间。出于同样的考量，内核空间包含一个内存映射区域，称为 <strong>lowmem（低内存）</strong>。lowmem 从最低物理地址（通常为 0）开始，以连续方式映射到物理内存。lowmem 映射的虚拟地址由 <code class="xref c c-macro docutils literal"><span class="pre">PAGE_OFFSET</span></code> 定义。</p>
+<p>在 32 位系统上，不是所有可用内存都可以映射到 lowmem 中，因此内核空间中有一个单独的区域称为 <strong>highmem（高内存）</strong>，可用于映射任意物理内存。</p>
+<p>由 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 分配的内存位于 lowmem 中，是物理连续的。由 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 分配的内存不是连续的，也不位于 lowmem 中（它在 highmem 中有一个专用区域）。</p>
 <a class="reference internal image-reference" href="../_images/kernel-virtmem-map.png"><img alt="../_images/kernel-virtmem-map.png" src="../_images/kernel-virtmem-map.png" style="width: 49%;" /></a>
 </div>
-<div class="section" id="structures-used-for-memory-mapping">
-<h2>Structures used for memory mapping<a class="headerlink" href="#structures-used-for-memory-mapping" title="Permalink to this headline">¶</a></h2>
-<p>Before discussing about the memory mapping mechanism over a device,
-we will present some of the basic structures used by the Linux memory
-management subsystem.
-Some of the basic structures are: <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code>,
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code>.</p>
+<div class="section" id="section-4">
+<h2>用于内存映射的结构<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<p>在讨论设备上的内存映射机制之前，我们将介绍 Linux 内存管理子系统使用的一些基本结构。其中一些基本结构包括：<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 以及 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code>。</p>
 <div class="section" id="struct-page">
 <h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code><a class="headerlink" href="#struct-page" title="Permalink to this headline">¶</a></h3>
-<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> is used to embed information about all physical
-pages in the system. The kernel has a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> structure
-for all pages in the system.</p>
-<p>There are many functions that interact with this structure:</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> 用于嵌入系统中所有物理页面的信息。内核为系统中的每个页面，都配有一个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> 结构。</p>
+<p>有许多函数与此结构交互：</p>
 <ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">virt_to_page()</span></code> returns the page associated with a virtual
-address</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">pfn_to_page()</span></code> returns the page associated with a page frame
-number</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">page_to_pfn()</span></code> return the page frame number associated with a
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code></li>
-<li><code class="xref c c-func docutils literal"><span class="pre">page_address()</span></code> returns the virtual address of a
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code>; this functions can be called only for pages from
-lowmem</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">kmap()</span></code> creates a mapping in kernel for an arbitrary physical
-page (can be from highmem) and returns a virtual address that can be
-used to directly reference the page</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">virt_to_page()</span></code> 返回与虚拟地址关联的页面</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">pfn_to_page()</span></code> 返回与页面帧号关联的页面</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">page_to_pfn()</span></code> 返回与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> 关联的页面帧号</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">page_address()</span></code> 返回 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> 的虚拟地址；此函数只能用于 lowmem 中的页面</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">kmap()</span></code> 为任意物理页面（可以来自 highmem）在内核中创建映射，并返回虚拟地址，该虚拟地址可用于直接引用该页面</li>
 </ul>
 </div>
 <div class="section" id="struct-vm-area-struct">
 <h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code><a class="headerlink" href="#struct-vm-area-struct" title="Permalink to this headline">¶</a></h3>
-<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> holds information about a contiguous
-virtual memory area. The memory areas of a process can be viewed by
-inspecting the <em>maps</em> attribute of the process via procfs:</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 保存连续虚拟内存区域的信息。可以通过检查进程的 <em>maps</em> 属性（通过 procfs）来查看进程的内存区域：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>root@qemux86:~# cat /proc/1/maps
-<span class="c1">#address          perms offset  device inode     pathname</span>
+<span class="c1">#地址             权限  偏移     设备  inode      路径</span>
 <span class="m">08048000</span>-08050000 r-xp <span class="m">00000000</span> fe:00 <span class="m">761</span>        /sbin/init.sysvinit
 <span class="m">08050000</span>-08051000 r--p <span class="m">00007000</span> fe:00 <span class="m">761</span>        /sbin/init.sysvinit
 <span class="m">08051000</span>-08052000 rw-p <span class="m">00008000</span> fe:00 <span class="m">761</span>        /sbin/init.sysvinit
@@ -250,81 +211,51 @@ b7766000-b7767000 r-xp <span class="m">00000000</span> <span class="m">00</span>
 bfa15000-bfa36000 rw-p <span class="m">00000000</span> <span class="m">00</span>:00 <span class="m">0</span>          <span class="o">[</span>stack<span class="o">]</span>
 </pre></div>
 </div>
-<p>A memory area is characterized by a start address, a stop address,
-length, permissions.</p>
-<p>A <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> is created at each <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code>
-call issued from user space. A driver that supports the <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code>
-operation must complete and initialize the associated
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code>. The most important fields of this
-structure are:</p>
+<p>内存区域由起始地址、结束地址、长度和权限来描述。</p>
+<p>每次从用户空间发出 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 调用时，系统都会创建一个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code>。一个驱动程序要想支持 <code class="xref c c-func docutils literal"><span class="pre">map()</span></code> 操作，必须完成并初始化与之关联的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code>。该结构的重要字段包括：</p>
 <ul class="simple">
-<li><code class="xref c c-member docutils literal"><span class="pre">vm_start</span></code>, <code class="xref c c-member docutils literal"><span class="pre">vm_end</span></code> - the beginning and the end of
-the memory area, respectively (these fields also appear in
-<code class="file docutils literal"><span class="pre">/proc/&lt;pid&gt;/maps</span></code>);</li>
-<li><code class="xref c c-member docutils literal"><span class="pre">vm_file</span></code> - the pointer to the associated file structure (if any);</li>
-<li><code class="xref c c-member docutils literal"><span class="pre">vm_pgoff</span></code> - the offset of the area within the file;</li>
-<li><code class="xref c c-member docutils literal"><span class="pre">vm_flags</span></code> - a set of flags;</li>
-<li><code class="xref c c-member docutils literal"><span class="pre">vm_ops</span></code> - a set of working functions for this area</li>
-<li><code class="xref c c-member docutils literal"><span class="pre">vm_next</span></code>, <code class="xref c c-member docutils literal"><span class="pre">vm_prev</span></code> - the areas of the same process
-are chained by a list structure</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">vm_start</span></code> 以及 <code class="xref c c-member docutils literal"><span class="pre">vm_end</span></code> ——内存区域的起始和结束地址（这些字段也出现在 <code class="file docutils literal"><span class="pre">/proc/&lt;pid&gt;/maps</span></code> 中）；</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">vm_file</span></code> ——关联 file 结构的指针（如果有的话）；</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">vm_pgoff</span></code> ——区域在文件中的偏移量；</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">vm_flags</span></code> ——一组标志；</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">vm_ops</span></code> ——该区域的工作函数集合；</li>
+<li><code class="xref c c-member docutils literal"><span class="pre">vm_next</span></code> 以及 <code class="xref c c-member docutils literal"><span class="pre">vm_prev</span></code> ——同一进程的区域通过链表结构连接起来。</li>
 </ul>
 </div>
 <div class="section" id="struct-mm-struct">
 <h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code><a class="headerlink" href="#struct-mm-struct" title="Permalink to this headline">¶</a></h3>
-<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> encompasses all memory areas associated
-with a process. The <code class="xref c c-member docutils literal"><span class="pre">mm</span></code> field of <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>
-is a pointer to the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> of the current process.</p>
+<p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> 包含与进程关联的所有内存区域。<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">mm</span></code> 字段是一个指针，指向当前进程的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code>。</p>
 </div>
 </div>
-<div class="section" id="device-driver-memory-mapping">
-<h2>Device driver memory mapping<a class="headerlink" href="#device-driver-memory-mapping" title="Permalink to this headline">¶</a></h2>
-<p>Memory mapping is one of the most interesting features of a Unix
-system. From a driver's point of view, the memory-mapping facility
-allows direct memory access to a user space device.</p>
-<p>To assign a <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> operation to a driver, the <code class="xref c c-member docutils literal"><span class="pre">mmap</span></code>
-field of the device driver's <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> must be
-implemented. If that is the case, the user space process can then use
-the <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> system call on a file descriptor associated with
-the device.</p>
-<p>The mmap system call takes the following parameters:</p>
+<div class="section" id="section-5">
+<h2>设备驱动程序的内存映射<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<p>内存映射是 Unix 系统中最有趣的功能之一。从驱动程序的角度来看，内存映射机制允许直接访问用户空间设备的内存。</p>
+<p>要将 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 操作分配给驱动程序，必须实现设备驱动程序的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">mmap</span></code> 字段。如果这样做了，用户空间进程可以对与设备关联的文件描述符使用 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 系统调用。</p>
+<p>mmap 系统调用有以下参数：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="o">*</span><span class="nf">mmap</span><span class="p">(</span><span class="n">caddr_t</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prot</span><span class="p">,</span>
            <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>To map memory between a device and user space, the user process must
-open the device and issue the <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> system call with the resulting
-file descriptor.</p>
-<p>The device driver <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> operation has the following signature:</p>
+<p>要在设备和用户空间之间映射内存，用户进程必须对设备执行 open 操作，并使用得到的文件描述符发出 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 系统调用。</p>
+<p>设备驱动程序的 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 操作具有以下签名：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">mmap</span><span class="p">)(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">,</span> <span class="k">struct</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The <em>filp</em> field is a pointer to a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> created when
-the device is opened from user space. The <em>vma</em> field is used to
-indicate the virtual address space where the memory should be mapped
-by the device. A driver should allocate memory (using
-<code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>) and then
-map it to the user address space as indicated by the <em>vma</em> parameter
-using helper functions such as <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>.</p>
-<p><code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> will map a contiguous physical address space
-into the virtual space represented by <code class="xref c c-type docutils literal"><span class="pre">vm_area_struct</span></code>:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">remap_pfn_range</span> <span class="p">(</span><span class="n">structure</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">addr</span><span class="p">,</span>
-                     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pfn</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span><span class="p">,</span> <span class="n">pgprot_t</span> <span class="n">prot</span><span class="p">);</span>
+<p><em>filp</em> 字段是一个指针，指向在用户空间打开设备时创建的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code>。 <em>vma</em> 字段用于指示设备应该将内存映射到哪一个虚拟地址空间。驱动程序应该分配内存 (使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 或者 <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>), 然后使用辅助函数（如:c:func:<cite>remap_pfn_range</cite>）根据 <em>vma</em> 参数将其映射到用户地址空间。</p>
+<p><code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 将连续的物理地址空间映射到由 <code class="xref c c-type docutils literal"><span class="pre">vm_area_struct</span></code> 表示的虚拟空间：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">remap_pfn_range</span><span class="p">(</span><span class="k">struct</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">addr</span><span class="p">,</span>
+                    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pfn</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span><span class="p">,</span> <span class="n">pgprot_t</span> <span class="n">prot</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> expects the following parameters:</p>
+<p><code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 需要以下参数：</p>
 <ul class="simple">
-<li><em>vma</em>  - the virtual memory space in which mapping is made;</li>
-<li><em>addr</em> - the virtual address space from where remapping begins; page
-tables for the virtual address space between addr and addr + size
-will be formed as needed</li>
-<li><em>pfn</em> - the page frame number to which the virtual address should be
-mapped</li>
-<li><em>size</em> - the size (in bytes) of the memory to be mapped</li>
-<li><em>prot</em> - protection flags for this mapping</li>
+<li><em>vma</em> ——进行映射的虚拟内存空间；</li>
+<li><em>addr</em> ——重新映射开始的虚拟地址空间；将根据需要形成 addr 和 addr + size 之间的虚拟地址空间的页表</li>
+<li><em>pfn</em> ——虚拟地址应映射到的页帧号</li>
+<li><em>size</em> ——要映射的内存的大小（以字节为单位）</li>
+<li><em>prot</em> ——此映射的保护标志</li>
 </ul>
-<p>Here is an example of using this function that contiguously maps the
-physical memory starting at page frame number <em>pfn</em> (memory that was
-previously allocated) to the <em>vma-&gt;vm_start</em> virtual address:</p>
+<p>以下是使用该函数的示例，该示例将从页帧号 <em>pfn*（先前分配的内存）开始的物理内存连续映射到 *vma-&gt;vm_start</em> 虚拟地址：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">;</span>
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">len</span> <span class="o">=</span> <span class="n">vma</span><span class="o">-&gt;</span><span class="n">vm_end</span> <span class="o">-</span> <span class="n">vma</span><span class="o">-&gt;</span><span class="n">vm_start</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">ret</span> <span class="p">;</span>
@@ -336,23 +267,19 @@ previously allocated) to the <em>vma-&gt;vm_start</em> virtual address:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>To obtain the page frame number of the physical memory we must
-consider how the memory allocation was performed. For each
-<code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>, we must
-used a different approach. For <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> we can use something
-like:</p>
+<p>要获得物理内存的页帧号，我们必须考虑内存分配是如何进行的。对于 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 或者 <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>, 我们必须使用不同的方法。对于 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>，我们可以使用类似以下的方法：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">char</span> <span class="o">*</span><span class="n">kmalloc_area</span><span class="p">;</span>
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pfn</span> <span class="o">=</span> <span class="n">virt_to_phys</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">kmalloc_area</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="n">PAGE_SHIFT</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>while for <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code>:</p>
+<p>而对于 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">char</span> <span class="o">*</span><span class="n">vmalloc_area</span><span class="p">;</span>
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pfn</span> <span class="o">=</span> <span class="n">vmalloc_to_pfn</span><span class="p">(</span><span class="n">vmalloc_area</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>and finally for <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>:</p>
+<p>最后对于 <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">page</span> <span class="o">*</span><span class="n">page</span><span class="p">;</span>
 
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pfn</span> <span class="o">=</span> <span class="n">page_to_pfn</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
@@ -360,16 +287,9 @@ like:</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">Note that memory allocated with <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> is not
-physically contiguous so if we want to map a range allocated
-with <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code>, we have to map each page individually
-and compute the physical address for each page.</p>
+<p class="last">请注意，使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 分配的内存在物理上不连续，因此如果我们想要映射使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 分配的范围，我们必须逐个映射每个页面，并计算每个页面的物理地址。</p>
 </div>
-<p>Since the pages are mapped to user space, they might be swapped
-out. To avoid this we must set the PG_reserved bit on the page.
-Enabling is done using <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> while reseting it
-(which must be done before freeing the memory) is done with
-<code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code>:</p>
+<p>由于这些页面被映射到的是用户空间，它们可能会被交换出去。为了避免这种情况，我们必须在页面上设置 PG_reserved 位。我们可以使用 <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 来启用它，也可以使用 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 来重置它（在释放内存之前必须执行此操作）：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">alloc_mmap_pages</span><span class="p">(</span><span class="kt">int</span> <span class="n">npages</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
@@ -396,18 +316,18 @@ Enabling is done using <code class="xref c c-func docutils literal"><span class=
 </pre></div>
 </div>
 </div>
-<div class="section" id="further-reading">
-<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-6">
+<h2>进一步阅读<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch15.pdf">Linux Device Drivers 3rd Edition - Chapter 15. Memory Mapping and DMA</a></li>
-<li><a class="reference external" href="http://www.xml.com/ldd/chapter/book/ch13.html">Linux Device Driver mmap Skeleton</a></li>
-<li><a class="reference external" href="http://lwn.net/Articles/28746/">Driver porting: supporting mmap ()</a></li>
-<li><a class="reference external" href="http://www.linuxjournal.com/article/1287">Device Drivers Concluded</a></li>
+<li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch15.pdf">Linux 设备驱动程序第 3 版——第 15 章 内存映射和 DMA</a></li>
+<li><a class="reference external" href="http://www.xml.com/ldd/chapter/book/ch13.html">Linux 设备驱动程序 mmap 骨架</a></li>
+<li><a class="reference external" href="http://lwn.net/Articles/28746/">驱动程序移植：支持 mmap ()</a></li>
+<li><a class="reference external" href="http://www.linuxjournal.com/article/1287">设备驱动程序结束</a></li>
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Mmap">mmap</a></li>
 </ul>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-7">
+<h2>练习<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -419,7 +339,7 @@ Enabling is done using <code class="xref c c-func docutils literal"><span class=
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 memory_mapping。请参阅任务名称的练习。</p>
+<p>当前实验名称为 内存映射。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -438,9 +358,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/memory_mapping/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/内存映射/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-7">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -448,187 +368,135 @@ tools/labs $ make boot
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
-<div class="section" id="mapping-contiguous-physical-memory-to-userspace">
-<h3>1. Mapping contiguous physical memory to userspace<a class="headerlink" href="#mapping-contiguous-physical-memory-to-userspace" title="Permalink to this headline">¶</a></h3>
-<p>Implement a device driver that maps contiguous physical memory
-(e.g. obtained via <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>) to userspace.</p>
-<p>Review the <a class="reference internal" href="#device-driver-memory-mapping">Device driver memory mapping</a> section, generate the
-skeleton for the task named <strong>kmmap</strong> and fill in the areas marked
-with <strong>TODO 1</strong>.</p>
-<p>Start with allocating a NPAGES+2 memory area page using <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>
-in the module init function and find the first address in the area that is
-aligned to a page boundary.</p>
+<div class="section" id="section-8">
+<h3>1. 将连续的物理内存映射到用户空间<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<p>实现一个设备驱动程序，将连续的物理内存（例如通过 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 获得的内存）映射到用户空间。</p>
+<p>查看 <a class="reference internal" href="#section-5">设备驱动程序的内存映射</a> 部分，生成名为 <strong>kmmap</strong> 的任务的框架，并填写标有 <strong>TODO 1</strong> 的区域。</p>
+<p>在模块初始化函数中，首先使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 分配一个 NPAGES+2 个页面的内存区域，并找到该区域中对齐到页边界的第一个地址。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>The size of a page is <em>PAGE_SIZE</em>.</p>
-<p>Store the allocated area in <em>kmalloc_ptr</em> and the page
-aligned address in <em>kmalloc_area</em>:</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">PAGE_ALIGN()</span></code> to determine <em>kmalloc_area</em>.</p>
+<p>一个页面的大小为 <em>PAGE_SIZE</em>。</p>
+<p>将分配的区域存储在 <em>kmalloc_ptr</em> 中，将对齐的地址存储在 <em>kmalloc_area</em> 中：</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">PAGE_ALIGN()</span></code> 函数来确定 <em>kmalloc_area</em>。</p>
 </div>
-<p>Enable the PG_reserved bit of each page with
-<code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code>. Clear the bit with
-<code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> before freeing the memory.</p>
+<p>使用 <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 将每个页面的 PG_reserved 位设置为启用状态。在释放内存之前，使用 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 清除该位。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">virt_to_page()</span></code> to translate virtual pages into
-physical pages, as required by <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code>
-and <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code>.</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">virt_to_page()</span></code> 将虚拟页转换为物理页, <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 所需的是物理页面。</p>
 </div>
-<p>For verification purpose (using the test below), fill in the first 4
-bytes of each page with the following values: 0xaa, 0xbb, 0xcc, 0xdd.</p>
-<p>Implement the <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> driver function.</p>
+<p>为了验证目的（使用下面的测试），在每个页面的前 4 个字节中填入以下值：0xaa、0xbb、0xcc 以及 0xdd。</p>
+<p>实现 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 驱动程序函数。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>For mapping, use <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>. The third
-argument for <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> is a page frame number (PFN).</p>
-<p>To convert from virtual kernel address to physical address,
-use <code class="xref c c-func docutils literal"><span class="pre">virt_to_phys()</span></code>.</p>
-<p class="last">To convert a physical address to its PFN, shift the address
-with PAGE_SHIFT bits to the right.</p>
+<p>要想映射，使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>。<code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 的第三个参数是页帧号（PFN）。</p>
+<p>要从虚拟内核地址转换为物理地址，请使用 <code class="xref c c-func docutils literal"><span class="pre">virt_to_phys()</span></code>。</p>
+<p class="last">要将物理地址转换为其 PFN，请将地址右移 PAGE_SHIFT 位。</p>
 </div>
-<p>For testing, load the kernel module and run:</p>
+<p>用于测试的方法是，加载内核模块并运行：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>root@qemux86:~# skels/memory_mapping/test/mmap-test <span class="m">1</span>
 </pre></div>
 </div>
-<p>If everything goes well, the test will show &quot;matched&quot; messages.</p>
+<p>如果一切顺利，测试将显示“matched”消息。</p>
 </div>
-<div class="section" id="mapping-non-contiguous-physical-memory-to-userspace">
-<h3>2. Mapping non-contiguous physical memory to userspace<a class="headerlink" href="#mapping-non-contiguous-physical-memory-to-userspace" title="Permalink to this headline">¶</a></h3>
-<p>Implement a device driver that maps non-contiguous physical memory
-(e.g. obtained via <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code>) to userspace.</p>
-<p>Review the <a class="reference internal" href="#device-driver-memory-mapping">Device driver memory mapping</a> section, generate the
-skeleton for the task named <strong>vmmap</strong> and fill in the areas marked
-with <strong>TODO 1</strong>.</p>
-<p>Allocate a memory area of NPAGES with <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code>.</p>
+<div class="section" id="section-9">
+<h3>2. 将非连续的物理内存映射到用户空间<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<p>实现一个设备驱动程序，将非连续的物理内存（例如通过:c:func:<a href="#system-message-1"><span class="problematic" id="problematic-1">`</span></a>vmalloc`获得的内存）映射到用户空间。</p>
+<p>查看`设备驱动程序内存映射`_部分，生成名为**vmmap**的任务的框架，并填写标有**TODO 1**的区域。</p>
+<p>使用:c:func:<a href="#system-message-2"><span class="problematic" id="problematic-2">`</span></a>vmalloc`分配一个NPAGES大小的内存区域。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">The size of a page is <em>PAGE_SIZE</em>.
-Store the allocated area in <em>vmalloc_area</em>.
-Memory allocated by <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> is paged aligned.</p>
+<p class="last">一个页面的大小为*PAGE_SIZE*。
+将分配的区域存储在*vmalloc_area*中。
+由:c:func:<a href="#system-message-3"><span class="problematic" id="problematic-3">`</span></a>vmalloc`分配的内存是按页对齐的。</p>
 </div>
-<p>Enable the PG_reserved bit of each page with
-<code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code>. Clear the bit with
-<code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> before freeing the memory.</p>
+<p>使用:c:func:<a href="#system-message-4"><span class="problematic" id="problematic-4">`</span></a>SetPageReserved`将每个页面的PG_reserved位设置为启用状态。在释放内存之前，使用:c:func:<a href="#system-message-5"><span class="problematic" id="problematic-5">`</span></a>ClearPageReserved`清除该位。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">vmalloc_to_page()</span></code> to translate virtual pages
-into physical pages used by the functions
-<code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code>.</p>
+<p class="last">使用:c:func:<a href="#system-message-6"><span class="problematic" id="problematic-6">`</span></a>vmalloc_to_page`将虚拟页转换为物理页，用于:c:func:<a href="#system-message-7"><span class="problematic" id="problematic-7">`</span></a>SetPageReserved`和:c:func:<a href="#system-message-8"><span class="problematic" id="problematic-8">`</span></a>ClearPageReserved`函数。</p>
 </div>
-<p>For verification purpose (using the test below), fill in the first 4
-bytes of each page with the following values: 0xaa, 0xbb, 0xcc, 0xdd.</p>
-<p>Implement the mmap driver function.</p>
+<p>为了验证目的（使用下面的测试），在每个页面的前4个字节中填入以下值：0xaa、0xbb、0xcc、0xdd。</p>
+<p>实现:mmap驱动程序函数。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">To convert from virtual vmalloc address to physical address,
-use <code class="xref c c-func docutils literal"><span class="pre">vmalloc_to_pfn()</span></code> which returns a PFN directly.</p>
+<p class="last">要将虚拟vmalloc地址转换为物理地址，使用:c:func:<a href="#system-message-9"><span class="problematic" id="problematic-9">`</span></a>vmalloc_to_pfn`直接返回PFN。</p>
 </div>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p>vmalloc pages are not physically contiguous so it is
-needed to use <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> for each page.</p>
-<p>Loop through all virtual pages and for each:
-* determine the physical address
-* map it with <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code></p>
-<p class="last">Make sure that you determine the physical address
-each time and that you use a range of one page for mapping.</p>
+<p>vmalloc页面不是物理连续的，因此需要为每个页面使用:c:func:<cite>remap_pfn_range</cite>。</p>
+<p>遍历所有虚拟页面，并对于每个页面：
+* 确定物理地址
+* 使用:c:func:<a href="#system-message-10"><span class="problematic" id="problematic-10">`</span></a>remap_pfn_range`进行映射</p>
+<p class="last">确保每次都确定物理地址，并且使用一个页面范围进行映射。</p>
 </div>
-<p>For testing, load the kernel module and run:</p>
+<p>用于测试的方法是，加载内核模块并运行：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>root@qemux86:~# skels/memory_mapping/test/mmap-test <span class="m">1</span>
 </pre></div>
 </div>
-<p>If everything goes well, the test will show &quot;matched&quot; messages.</p>
+<p>如果一切顺利，测试将显示“matched”消息。</p>
 </div>
-<div class="section" id="read-write-operations-in-mapped-memory">
-<h3>3. Read / write operations in mapped memory<a class="headerlink" href="#read-write-operations-in-mapped-memory" title="Permalink to this headline">¶</a></h3>
-<p>Modify one of the previous modules to allow read / write operations on
-your device. This is a didactic exercise to see that the same space
-can also be used with the <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> call and with <code class="xref c c-func docutils literal"><span class="pre">read()</span></code>
-and <code class="xref c c-func docutils literal"><span class="pre">write()</span></code> calls.</p>
-<p>Fill in areas marked with <strong>TODO 2</strong>.</p>
+<div class="section" id="section-10">
+<h3>3. 在映射内存中进行读写操作<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<p>修改之前的模块之一，以允许在设备上进行读写操作。这是一个教学练习，可以看到相同的空间既可以使用 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 调用，也可以使用 <code class="xref c c-func docutils literal"><span class="pre">read()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">write()</span></code> 调用。</p>
+<p>填写标有 <strong>TODO 2</strong> 的区域。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The offset parameter sent to the read / write operation can
-be ignored as all reads / writes from the test program will
-be done with 0 offsets.</p>
+<p class="last">读/写操作的偏移参数可以忽略，因为测试程序中的所有读/写操作偏移都是 0。</p>
 </div>
-<p>For testing, load the kernel module and run:</p>
+<p>用于测试的方法是，加载内核模块并运行：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>root@qemux86:~# skels/memory_mapping/test/mmap-test <span class="m">2</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="display-memory-mapped-in-procfs">
-<h3>4. Display memory mapped in procfs<a class="headerlink" href="#display-memory-mapped-in-procfs" title="Permalink to this headline">¶</a></h3>
-<p>Using one of the previous modules, create a procfs file in which you
-display the total memory mapped by the calling process.</p>
-<p>Fill in the areas marked with <strong>TODO 3</strong>.</p>
-<p>Create a new entry in procfs (<code class="xref c c-macro docutils literal"><span class="pre">PROC_ENTRY_NAME</span></code>, defined in
-<code class="file docutils literal"><span class="pre">mmap-test.h</span></code>) that will show the total memory mapped by the process
-that called the <code class="xref c c-func docutils literal"><span class="pre">read()</span></code> on that file.</p>
+<div class="section" id="procfs">
+<h3>4. 在 procfs 中显示内存映射<a class="headerlink" href="#procfs" title="Permalink to this headline">¶</a></h3>
+<p>使用之前的模块之一，在其中创建一个 procfs 文件，显示调用进程映射的总内存。</p>
+<p>填写标有 <strong>TODO 3</strong> 的区域。</p>
+<p>在 procfs 中创建一个新条目 (<code class="xref c c-macro docutils literal"><span class="pre">PROC_ENTRY_NAME</span></code>, 在 <code class="file docutils literal"><span class="pre">mmap-test.h</span></code> 中定义)，该条目将显示调用 <code class="xref c c-func docutils literal"><span class="pre">read()</span></code> 的进程映射的总内存。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">proc_create()</span></code>. For the mode parameter, use 0,
-and for the parent parameter use NULL. Use
-<code class="xref c c-func docutils literal"><span class="pre">my_proc_file_ops()</span></code> for operations.</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">proc_create()</span></code>。mode 参数使用 0，parent 参数使用 NULL。使用 <code class="xref c c-func docutils literal"><span class="pre">my_proc_file_ops()</span></code> 进行操作。</p>
 </div>
-<p>In the module exit function, delete the <code class="xref c c-macro docutils literal"><span class="pre">PROC_ENTRY_NAME</span></code> entry
-using <code class="xref c c-func docutils literal"><span class="pre">remove_proc_entry()</span></code>.</p>
+<p>在模块退出函数中，使用 <code class="xref c c-func docutils literal"><span class="pre">remove_proc_entry()</span></code> 删除 <code class="xref c c-macro docutils literal"><span class="pre">PROC_ENTRY_NAME</span></code> 条目。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>A (complex) use and description of the <code class="xref c c-type docutils literal"><span class="pre">struct</span>
-<span class="pre">seq_file</span></code> interface can be found here in this <a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x861.html">example</a> .</p>
-<p class="last">For this exercise, just a simple use of the interface
-described <a class="reference external" href="http://lwn.net/Articles/22355/">here</a> is
-sufficient. Check the &quot;extra-simple&quot; API described there.</p>
+<p>可以在此 <a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x861.html">示例</a> 中找到 (复杂的) <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">seq_file</span></code> 接口的使用和说明。</p>
+<p class="last">对于这个练习，只需使用 <a class="reference external" href="http://lwn.net/Articles/22355/">这里</a> 描述的接口的简单用法即可。请查看那里描述的“extra-simple” API。</p>
 </div>
-<p>In the <code class="xref c c-func docutils literal"><span class="pre">my_seq_show()</span></code> function you will need to:</p>
+<p>在 <code class="xref c c-func docutils literal"><span class="pre">my_seq_show()</span></code> 函数中，你需要：</p>
 <ul>
-<li><p class="first">Obtain the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> structure of the current process
-using the <code class="xref c c-func docutils literal"><span class="pre">get_task_mm()</span></code> function.</p>
+<li><p class="first">使用 <code class="xref c c-func docutils literal"><span class="pre">get_task_mm()</span></code> 函数获取当前进程的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> 结构。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">The current process is available via the <em>current</em> variable
-of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct*</span></code>.</p>
+<p class="last">当前进程可以通过类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct*</span></code> 的 <em>current</em> 变量获得。</p>
 </div>
 </li>
-<li><p class="first">Iterate through the entire <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> list
-associated with the process.</p>
+<li><p class="first">遍历与进程关联的整个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 列表。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use the variable <code class="xref c c-data docutils literal"><span class="pre">vma_iterator</span></code> and start from
-<code class="xref c c-data docutils literal"><span class="pre">mm-&gt;mmap</span></code>. Use the <code class="xref c c-member docutils literal"><span class="pre">vm_next</span></code> field of
-the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> to navigate through
-the list of memory areas. Stop when you reach <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code>.</p>
+<p class="last">使用变量 <code class="xref c c-data docutils literal"><span class="pre">vma_iterator</span></code>，从 <code class="xref c c-data docutils literal"><span class="pre">mm-&gt;mmap</span></code> 开始。使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">vm_next</span></code> 字段在内存区域列表中导航。直到达到 <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code> 时停止。</p>
 </div>
 </li>
-<li><p class="first">Use <em>vm_start</em> and <em>vm_end</em> for each area to compute the total size.</p>
+<li><p class="first">对于每个区域，使用 <em>vm_start</em> 和 <em>vm_end</em> 计算总大小。</p>
 </li>
-<li><p class="first">Use <code class="xref c c-func docutils literal"><span class="pre">pr_info(&quot;%lx</span> <span class="pre">%lxn,</span> <span class="pre">...)()</span></code> to print <em>vm_start</em> and <em>vm_end</em> for
-each area.</p>
+<li><p class="first">使用 <code class="xref c c-func docutils literal"><span class="pre">pr_info(&quot;%lx</span> <span class="pre">%lxn,</span> <span class="pre">...)()</span></code> 为每个区域打印 <em>vm_start</em> 和 <em>vm_end</em>。</p>
 </li>
-<li><p class="first">To release <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code>, decrement the reference
-counter of the structure using <code class="xref c c-func docutils literal"><span class="pre">mmput()</span></code>.</p>
+<li><p class="first">要释放 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code>，请使用 <code class="xref c c-func docutils literal"><span class="pre">mmput()</span></code> 递减结构的引用计数器。</p>
 </li>
-<li><p class="first">Use <code class="xref c c-func docutils literal"><span class="pre">seq_printf()</span></code> to write to the file. Show only the total count,
-no other messages. Do not even show newline (n).</p>
+<li><p class="first">使用 <code class="xref c c-func docutils literal"><span class="pre">seq_printf()</span></code> 写入文件。仅显示总计数，不显示其他消息。甚至不要显示换行符（n）。</p>
 </li>
 </ul>
-<p>In <code class="xref c c-func docutils literal"><span class="pre">my_seq_open()</span></code> register the display function
-(<code class="xref c c-func docutils literal"><span class="pre">my_seq_show()</span></code>) using <code class="xref c c-func docutils literal"><span class="pre">single_open()</span></code>.</p>
+<p>在 <code class="xref c c-func docutils literal"><span class="pre">my_seq_open()</span></code> 中，使用 <code class="xref c c-func docutils literal"><span class="pre">single_open()</span></code> 注册显示函数 (<code class="xref c c-func docutils literal"><span class="pre">my_seq_show()</span></code>)。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="xref c c-func docutils literal"><span class="pre">single_open()</span></code> can use <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code> as its third argument.</p>
+<p class="last"><code class="xref c c-func docutils literal"><span class="pre">single_open()</span></code> 可以使用 NULL 作为其第三个参数。</p>
 </div>
-<p>For testing, load the kernel module and run:</p>
+<p>测试的方法是，加载内核模块并运行：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>root@qemux86:~# skels/memory_mapping/test/mmap-test <span class="m">3</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The test waits for a while (it has an internal sleep
-instruction). As long as the test waits, use the
-<strong class="command">pmap</strong> command in another console to see the
-mappings of the test and compare those to the test results.</p>
+<p class="last">测试会等待一段时间（其中包含一个 sleep 指令）。只要测试在等待，就可以在另一个控制台中使用 :pmap 命令查看测试的映射，并将其与测试结果进行比较。</p>
 </div>
 </div>
 </div>
