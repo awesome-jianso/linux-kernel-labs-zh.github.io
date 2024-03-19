@@ -421,7 +421,7 @@ tools/labs $ make boot
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p>vmalloc 页面不是物理连续的，因此需要为每个页面单独使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>。</p>
-<p>遍历所有虚拟页面，并对于每个页面：
+<p>遍历所有虚拟页面，并对于每个页面:
 * 确定物理地址
 * 使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 进行映射</p>
 <p class="last">确保每次都确定物理地址，并且只映射一个页面。</p>
