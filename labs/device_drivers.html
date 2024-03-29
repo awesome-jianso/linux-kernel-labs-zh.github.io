@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html4" lang="zh-CN" >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'None',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -813,6 +813,15 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 <h3>6. 写操作<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h3>
 <p>添加将消息写入内核缓冲区以替换预定义消息的功能。在驱动程序中实现写函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的注释进行操作。</p>
 <p>此时忽略偏移参数。你可以假设驱动程序缓冲区足够大。你无需检查写函数大小参数的有效性。</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p>设备驱动程序操作的原型位于 file_operations 结构中。使用以下命令进行测试：</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;arpeggio&quot;</span>&gt; /dev/so2_cdev
+cat /dev/so2_cdev
+</pre></div>
+</div>
+<p class="last">请阅读 <a href="#system-message-5"><span class="problematic" id="problematic-5">`读和写`_</span></a> 小节和 <a class="reference internal" href="#section-8">访问进程地址空间</a> 小节。</p>
+</div>
 </div>
 <div class="section" id="ioctl-2">
 <h3>7. ioctl 操作<a class="headerlink" href="#ioctl-2" title="Permalink to this headline">¶</a></h3>
@@ -825,6 +834,16 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 <li>为了进行测试，我们将使用一个用户空间程序 (<code class="docutils literal"><span class="pre">user/so2_cdev_test.c</span></code>) 来调用具有所需参数的 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数。</li>
 </ol>
 </div></blockquote>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p>宏 <code class="docutils literal"><span class="pre">MY_IOCTL_PRINT</span></code> 在文件 <code class="docutils literal"><span class="pre">include/so2_cdev.h</span></code> 中定义，该文件在内核模块和用户空间程序之间共享。</p>
+<p class="last">请阅读实验中的 <a class="reference internal" href="#ioctl">ioctl</a> 章节。</p>
+</div>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p>用户空间代码在 <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> 时会自动编译，并在 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 时被复制。</p>
+<p class="last">由于我们需要为 32 位的 qemu 机器编译程序，如果你的主机是 64 位的，那么你需要安装 <code class="docutils literal"><span class="pre">gcc-multilib</span></code> 软件包。</p>
+</div>
 </div>
 </div>
 <div class="section" id="section-20">
@@ -860,6 +879,10 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 <li>为进行测试，将所需的命令行参数传递给用户空间程序。</li>
 </ol>
 <p>当进程被添加到队列中时，它将保持阻塞状态；要运行队列命令，请使用 Alt+F2 打开虚拟机中的新控制台；可以使用 Alt+F1 返回到上一个控制台。如果是通过 SSH 连接到虚拟机的，请打开新的控制台。</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">阅读实验中的 <a class="reference internal" href="#ioctl">ioctl</a> 和 <a class="reference internal" href="#section-11">等待队列</a> 部分。</p>
+</div>
 </div>
 <div class="section" id="o-nonblock">
 <h3>O_NONBLOCK 实现<a class="headerlink" href="#o-nonblock" title="Permalink to this headline">¶</a></h3>
