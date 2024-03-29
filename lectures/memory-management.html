@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memory Management &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Memory Management &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Filesystem Management" href="fs.html" />
     <link rel="prev" title="地址空间" href="address-space.html" /> 
 </head>
@@ -136,10 +137,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="memory-management">
-<h1>Memory Management<a class="headerlink" href="#memory-management" title="Permalink to this headline">¶</a></h1>
+<h1>Memory Management<a class="headerlink" href="#memory-management" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="memory-management-slides.html">View slides</a></p>
 <div class="section" id="lecture-objectives">
-<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="Permalink to this headline">¶</a></h2>
+<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-memory-management simple">
 <li>Physical Memory Management<ul>
 <li>Page allocations</li>
@@ -151,7 +152,7 @@
 </ul>
 </div>
 <div class="section" id="physical-memory-management">
-<h2>Physical Memory Management<a class="headerlink" href="#physical-memory-management" title="Permalink to this headline">¶</a></h2>
+<h2>Physical Memory Management<a class="headerlink" href="#physical-memory-management" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-physical-memory-management simple">
 <li>Algorithms and data structure that keep track of physical memory
 pages</li>
@@ -167,7 +168,7 @@ times is a page used, position in swap or file, buffers for this
 page, position int the page cache, etc.</li>
 </ul>
 <div class="section" id="memory-zones">
-<h3>Memory zones<a class="headerlink" href="#memory-zones" title="Permalink to this headline">¶</a></h3>
+<h3>Memory zones<a class="headerlink" href="#memory-zones" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-memory-zones simple">
 <li>DMA zone</li>
 <li>DMA32 zone</li>
@@ -177,7 +178,7 @@ page, position int the page cache, etc.</li>
 </ul>
 </div>
 <div class="section" id="non-uniform-memory-access">
-<h3>Non-Uniform Memory Access<a class="headerlink" href="#non-uniform-memory-access" title="Permalink to this headline">¶</a></h3>
+<h3>Non-Uniform Memory Access<a class="headerlink" href="#non-uniform-memory-access" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-non-uniform-memory-access simple">
 <li>Physical memory is split in between multiple nodes, one for each CPU</li>
 <li>There is single physical address space accessible from every node</li>
@@ -186,7 +187,7 @@ page, position int the page cache, etc.</li>
 </ul>
 </div>
 <div class="section" id="page-allocation">
-<h3>Page allocation<a class="headerlink" href="#page-allocation" title="Permalink to this headline">¶</a></h3>
+<h3>Page allocation<a class="headerlink" href="#page-allocation" title="永久链接至标题">¶</a></h3>
 <div class="admonition-page-allocation highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Allocates 2^order contiguous pages and returns a pointer to the</span>
 <span class="cm"> * descriptor for the first page</span>
 <span class="cm"> */</span>
@@ -248,7 +249,7 @@ field to easily check if the &quot;buddy&quot; is free</li>
 </ul>
 </div>
 <div class="section" id="small-allocations">
-<h3>Small allocations<a class="headerlink" href="#small-allocations" title="Permalink to this headline">¶</a></h3>
+<h3>Small allocations<a class="headerlink" href="#small-allocations" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-small-allocations simple">
 <li>Buddy is used to allocate pages</li>
 <li>Many of the kernel subsystems need to allocate buffers smaller
@@ -331,7 +332,7 @@ descriptor)</li>
 </div>
 </div>
 <div class="section" id="virtual-memory-management">
-<h2>Virtual memory management<a class="headerlink" href="#virtual-memory-management" title="Permalink to this headline">¶</a></h2>
+<h2>Virtual memory management<a class="headerlink" href="#virtual-memory-management" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-virtual-memory-management simple">
 <li>Used in both kernel and user space</li>
 <li>Using virtual memory requires:<ul>
@@ -394,7 +395,7 @@ freed area</li>
 </ul>
 </div>
 <div class="section" id="fault-page-handling">
-<h2>Fault page handling<a class="headerlink" href="#fault-page-handling" title="Permalink to this headline">¶</a></h2>
+<h2>Fault page handling<a class="headerlink" href="#fault-page-handling" title="永久链接至标题">¶</a></h2>
 <img alt="../_images/page-fault-handling.png" class="admonition-linux-virtual-memory-management" src="../_images/page-fault-handling.png" />
 </div>
 </div>

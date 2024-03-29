@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>对称多处理 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>对称多处理 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="地址空间" href="address-space.html" />
     <link rel="prev" title="中断" href="interrupts.html" /> 
 </head>
@@ -139,10 +140,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>对称多处理<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>对称多处理<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="smp-slides.html">查看幻灯片</a></p>
 <div class="section" id="section-2">
-<h2>课堂目标：<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>课堂目标：<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <ul class="admonition- simple">
 <li>内核并发</li>
 <li>原子操作</li>
@@ -157,10 +158,10 @@
 </ul>
 </div>
 <div class="section" id="section-3">
-<h2>基本同步<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>基本同步<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>由于 Linux 内核支持对称多处理（SMP），它必须使用一组同步机制来保证结果可预测，并避免竟态条件。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">在本讲座中，我们将交替使用核心、CPU 和处理器这些术语。</p>
 </div>
 <p>竟态条件在以下两个条件同时满足时可能会发生：</p>
@@ -197,7 +198,7 @@
 </ul>
 </div>
 <div class="section" id="linux">
-<h2>Linux 内核并发源<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<h2>Linux 内核并发源<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h2>
 <p>Linux 内核中存在多个并发源，具体多少个取决于内核配置和运行系统的类型：</p>
 <ul class="admonition-linux simple">
 <li><strong>单核系统</strong>, <strong>非抢占内核</strong>：当前进程可以被中断抢占</li>
@@ -205,12 +206,12 @@
 <li><strong>多核系统</strong>：上述情况 + 当前进程可以与在另一个处理器上运行的另一个进程或中断并行运行</li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">我们只讨论内核并发问题，这就是为什么在单核系统上运行的非抢占内核只有中断作为并发源。</p>
 </div>
 </div>
 <div class="section" id="section-4">
-<h2>原子操作<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>原子操作<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <p>在某些情况下，我们可以通过使用硬件提供的原子操作来避免竞态条件。Linux 提供了统一的 API，用来访问原子操作：</p>
 <ul class="admonition- simple">
 <li>基于整数：<ul>
@@ -243,7 +244,7 @@
 <p>尽管它们经常被解释为“轻量级”或“高效”的同步机制（因为它们“不需要自旋或上下文切换”，或者因为它们“在硬件中实现，所以它们肯定更高效”，或者因为它们“只是指令，所以它们的效率应该与其他指令类似”），但从实现细节来看，原子操作实际上资源消耗巨大。</p>
 </div>
 <div class="section" id="section-5">
-<h2>禁用抢占（中断）<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>禁用抢占（中断）<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>在单核系统和非抢占内核中，唯一的并发来源是通过中断抢占当前线程。要想防止并发，只需要禁用中断。</p>
 <p>这可以通过特定于体系结构的指令来实现，但 Linux 提供了与体系结构无关的 API 来禁用和启用中断：</p>
 <div class="admonition-x86 highlight-c"><div class="highlight"><pre><span></span> <span class="cp">#define local_irq_disable() \</span>
@@ -267,7 +268,7 @@
 <p>如果是由于并发问题而希望避免中断的典型情况，建议使用 <code class="xref c c-func docutils literal"><span class="pre">local_irq_save()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_irq_restore()</span></code> 变体。它们会保存和恢复中断状态，因此可以在重叠的临界区中自由调用它们，而无需担心因在临界区内意外启用中断而造成糟糕情况，只要调用是平衡的。</p>
 </div>
 <div class="section" id="section-6">
-<h2>自旋锁<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<h2>自旋锁<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
 <p>自旋锁用于实现对关键区域的串行访问。在多核系统中，可以实现真正的执行并行性，因此自旋锁是必需的。以下是典型的自旋锁实现：</p>
 <div class="admonition-x86 highlight-asm"><div class="highlight"><pre><span></span>  spin_lock:
       lock bts [my_lock], 0
@@ -296,7 +297,7 @@
 <p>由于自旋锁在锁争用期间不断访问内存，高速缓存抖动很常见，这是由高速缓存一致性的实现方式造成的。</p>
 </div>
 <div class="section" id="section-7">
-<h2>多处理器系统中的缓存一致性<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<h2>多处理器系统中的缓存一致性<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
 <p>多处理器系统中的内存层次结构由本地 CPU 缓存（L1 缓存）、共享 CPU 缓存（L2 缓存）和内存组成。为了解释缓存一致性，我们暂且忽略 L2 缓存，只考虑 L1 缓存和主内存。</p>
 <p>在下面的图中，我们展示了具有两个变量 A 和 B 的内存层次结构。两个变量位于不同的缓存行中，缓存和内存是同步的：</p>
 <p class="admonition-">&nbsp;</p>
@@ -330,7 +331,7 @@
 <li>已修改 -&gt; 已失效 ：来自其他核心的写入请求；将该行刷新到内存</li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">MESI 协议最重要的特性是它是一种写失效（write-invalidate）的缓存协议。当对共享位置进行写操作时，所有其他缓存都会失效。</p>
 </div>
 <p>这对于某些访问模式具有重要的性能影响，其中一个模式是争用简单的自旋锁，就像我们上面讨论的那样。</p>
@@ -341,7 +342,7 @@
 <p>另一个问题是，很有可能由第一个 CPU 在临界区访问的数据存储在与锁相同的缓存行中（在获取锁后将数据准备在缓存中是一种常见优化）。这意味着两个自旋核心触发的缓存失效将减慢临界区的执行，从而触发更多的缓存失效操作。</p>
 </div>
 <div class="section" id="section-8">
-<h2>优化的自旋锁<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h2>
+<h2>优化的自旋锁<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h2>
 <p>由于缓存抖动，简单的自旋锁实现可能会出现性能问题，且随着核心数量的增加问题会不断加剧。要避免这个问题，有两种可行的策略：</p>
 <ul class="simple">
 <li>减少写操作的次数，从而减少缓存失效操作的次数</li>
@@ -371,7 +372,7 @@
 <p>因此，如果有大量核心（如 NUMA 系统），队列自旋锁由于其更好的扩展性因此更适合。由于它们具有与 ticket 锁类似的公平性属性，因此在 x86 架构上是首选的实现。</p>
 </div>
 <div class="section" id="section-9">
-<h2>进程和中断上下文同步<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<h2>进程和中断上下文同步<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
 <p>同时从进程和中断上下文访问共享数据是相对常见的场景。在单核系统中，我们可以通过禁用中断来解决这一问题，但在多核系统中，这种方法行不通，因为进程和中断上下文可能在不同的 CPU 核心上运行。</p>
 <p>使用为多处理器系统设计的自旋锁似乎是正确的解决方案，但这样做可能会产生常见的死锁条件，下面的场景详述这一问题：</p>
 <ul class="admonition- simple">
@@ -418,7 +419,7 @@
 </div>
 </div>
 <div class="section" id="mutexes">
-<h2>互斥锁（Mutexes）<a class="headerlink" href="#mutexes" title="Permalink to this headline">¶</a></h2>
+<h2>互斥锁（Mutexes）<a class="headerlink" href="#mutexes" title="永久链接至标题">¶</a></h2>
 <p>互斥锁用于防止其他 CPU 核心的竟态条件，但它们只能在 <strong>进程上下文</strong> 中使用。与自旋锁相反，如果一个线程等待进入临界区，它不会占用 CPU 时间，而是会被添加到一个等待队列中，直到临界区被释放。</p>
 <p>由于互斥锁和自旋锁的使用存在交集，因此在此比较一下它们：</p>
 <ul class="admonition- simple">
@@ -500,7 +501,7 @@
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">由于 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 被缓存对齐，owner 字段的低 7 位可用于各种标志，例如 <code class="xref c c-type docutils literal"><span class="pre">MUTEX_FLAG_WAITERS</span></code>。</p>
 </div>
 <p>否则，我们会选择从列表中选取第一个等待者并唤醒它的慢速路径：</p>
@@ -522,7 +523,7 @@
 </div>
 </div>
 <div class="section" id="cpu">
-<h2>CPU 独占数据<a class="headerlink" href="#cpu" title="Permalink to this headline">¶</a></h2>
+<h2>CPU 独占数据<a class="headerlink" href="#cpu" title="永久链接至标题">¶</a></h2>
 <p>每个 CPU 独占数据通过避免使用共享数据来避免竟态条件。相反，使用一个大小为最大可能的 CPU 核心数的数组，并且每个核心将使用自己的数组条目来读取和写入数据。这种方法当然有优势：</p>
 <ul class="admonition-cpu simple">
 <li>无需同步即可访问数据</li>
@@ -531,7 +532,7 @@
 </ul>
 </div>
 <div class="section" id="section-10">
-<h2>内存顺序和屏障<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h2>
+<h2>内存顺序和屏障<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h2>
 <p>现代处理器和编译器采用乱序执行来提高性能。例如，处理器可以在等待当前指令数据从内存中获取时执行“未来”指令。</p>
 <p>以下是乱序编译器生成的代码示例：</p>
 <table border="1" class="admonition- docutils">
@@ -559,7 +560,7 @@
 </tbody>
 </table>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">当执行乱序指令时，处理器会确保数据依赖关系，即不会执行那些输入依赖于尚未执行的先前指令的输出的指令。</p>
 </div>
 <p>在大多数情况下，乱序执行不是一个问题。然而，在某些情况下（例如，在处理器之间或处理器与硬件之间通过共享内存进行通信），我们必须在没有数据依赖关系的情况下执行一些指令之前执行另一些指令。</p>
@@ -571,7 +572,7 @@
 </ul>
 </div>
 <div class="section" id="read-copy-update-rcu">
-<h2>读-复制-更新（Read Copy Update，RCU）<a class="headerlink" href="#read-copy-update-rcu" title="Permalink to this headline">¶</a></h2>
+<h2>读-复制-更新（Read Copy Update，RCU）<a class="headerlink" href="#read-copy-update-rcu" title="永久链接至标题">¶</a></h2>
 <p>读-复制-更新是一种特殊的同步机制，类似于读写锁，但在某些方面有显著的改进（以及一些限制）：</p>
 <ul class="admonition-rcu simple">
 <li><strong>只读</strong>：同时进行无锁访问和写访问</li>

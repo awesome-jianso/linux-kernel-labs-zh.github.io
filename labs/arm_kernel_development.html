@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARM 内核开发 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>ARM 内核开发 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="内存映射" href="memory_mapping.html" />
     <link rel="prev" title="网络" href="networking.html" /> 
 </head>
@@ -146,9 +147,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="arm">
-<h1>ARM 内核开发<a class="headerlink" href="#arm" title="Permalink to this headline">¶</a></h1>
+<h1>ARM 内核开发<a class="headerlink" href="#arm" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-1">
-<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li>初步了解片上系统（SoC）</li>
 <li>熟悉使用 ARM 作为支持架构的嵌入式世界</li>
@@ -158,7 +159,7 @@
 </ul>
 </div>
 <div class="section" id="section-2">
-<h2>片上系统<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>片上系统<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <p>片上系统 (<strong>SoC</strong>) 是一块集成电路 (<strong>IC</strong>)，整个系统都集成在上面。通常在 SoC 上可以找到的组件，包括中央处理单元 (<strong>CPU</strong>)、内存、输入/输出端口、存储设备，以及更复杂的模块，如音频数字接口、神经处理单元 (<strong>NPU</strong>) 或图形处理单元 (<strong>GPU</strong>)。</p>
 <p>SoC 可用于各种应用领域，最常见的包括：
 - 消费电子产品（电视机、手机、游戏机）
@@ -215,7 +216,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-3">
-<h2>板级支持软件包<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>板级支持软件包<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>板级支持软件包（BSP）是支持演示特定硬件平台的功能的情况下，最小的一组软件包。这包括：</p>
 <blockquote>
 <div><ul class="simple">
@@ -228,7 +229,7 @@
 <p>半导体制造商通常会提供一个评估板和相应的 <strong>BSP</strong>。BSP 通常使用 <a class="reference external" href="https://www.yoctoproject.org/">Yocto</a> 进行打包。</p>
 </div>
 <div class="section" id="section-4">
-<h2>工具链<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>工具链<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <p>由于我们的开发机主要基于 x86 架构，我们需要交叉编译器，这样可以生成针对 ARM 平台的可执行代码。</p>
 <p>我们可以使用 <a class="reference external" href="https://crosstool-ng.github.io/">https://crosstool-ng.github.io/</a> 从头开始构建自己的交叉编译器，或者我们可以安装一个</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf <span class="c1"># 用于 arm32</span>
@@ -243,7 +244,7 @@ $ sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu     <span cla
 </ul>
 </div></blockquote>
 <div class="section" id="arm-linux">
-<h3>编译 ARM 版 Linux 内核<a class="headerlink" href="#arm-linux" title="Permalink to this headline">¶</a></h3>
+<h3>编译 ARM 版 Linux 内核<a class="headerlink" href="#arm-linux" title="永久链接至标题">¶</a></h3>
 <p>为 32 位 ARM 板编译内核：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># 根据你的平台选择 defconfig</span>
 $ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS_COMPILE</span><span class="o">=</span>arm-linux-gnueabihf- make imx_v6_v7_defconfig
@@ -261,7 +262,7 @@ $ <span class="nv">ARCH</span><span class="o">=</span>arm64 <span class="nv">CRO
 </div>
 </div>
 <div class="section" id="linux">
-<h2>Linux 内核镜像<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<h2>Linux 内核镜像<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h2>
 <p>内核镜像二进制文件被命名为 <code class="docutils literal"><span class="pre">vmlinux</span></code>，可以在内核树的根目录下找到。用于引导的压缩镜像可以在以下位置找到：</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">arch/arm/boot/Image</span></code>，适用于 arm32</li>
@@ -276,7 +277,7 @@ $ file vmlinux
 </div>
 </div>
 <div class="section" id="rootfs">
-<h2>Rootfs<a class="headerlink" href="#rootfs" title="Permalink to this headline">¶</a></h2>
+<h2>Rootfs<a class="headerlink" href="#rootfs" title="永久链接至标题">¶</a></h2>
 <p>根文件系统 (<code class="docutils literal"><span class="pre">rootfs</span></code>) 是挂载在文件层次结构顶部 (<code class="docutils literal"><span class="pre">/</span></code>) 的文件系统。它应该至少包含允许系统引导到某个 shell 的关键文件。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@so2$ tree -d -L <span class="m">2</span>
 ├── bin
@@ -306,7 +307,7 @@ $ <span class="nv">ARCH</span><span class="o">=</span>arm make core-image-minima
 </div>
 </div>
 <div class="section" id="section-5">
-<h2>设备树<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>设备树<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>设备树 (<strong>DT</strong>) 是一种用于描述系统中硬件设备的树状结构。树中的每个节点描述一个设备，因此这些节点被称为 <strong>设备节点</strong>。之引入设备树，是为了提供一种发现不可发现硬件的方式（例如，I2C 总线上的设备）。此前，这些信息是存储在 Linux 内核的源代码中的。这意味着每当我们需要修改某个设备的节点时，都需要重新编译内核。现在情况已经改变，因为设备树和内核镜像是独立的二进制文件。</p>
 <p>设备树以设备树源文件 (<em>.dts</em>) 的形式存储，并编译成设备树二进制文件 (<em>.dtb</em>)。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># 编译 dtbs</span>
@@ -356,7 +357,7 @@ $ ls arch/arm64/boot/dts/&lt;vendor&gt;
 </div>
 </div>
 <div class="section" id="qemu">
-<h2>Qemu<a class="headerlink" href="#qemu" title="Permalink to this headline">¶</a></h2>
+<h2>Qemu<a class="headerlink" href="#qemu" title="永久链接至标题">¶</a></h2>
 <p>我们将使用 <code class="docutils literal"><span class="pre">qemu-system-arm</span></code> 启动 32 位 ARM 平台。虽然可以从官方发行版仓库中安装，例如：</p>
 <div class="code bash highlight-none"><div class="highlight"><pre><span></span>sudo apt-get install -y qemu-system-arm
 </pre></div>
@@ -370,9 +371,9 @@ $ ./build/qemu-system-arm
 </div>
 </div>
 <div class="section" id="section-6">
-<h2>练习<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -406,13 +407,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-6">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>以下是针对 <code class="docutils literal"><span class="pre">ARM</span></code> 虚拟机操作的新规则</p>
 <div class="last highlight-shell"><div class="highlight"><pre><span></span><span class="c1"># 模块构建</span>
 tools/labs $ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS_COMPILE</span><span class="o">=</span>arm-linux-gnueabihf- make build
@@ -424,7 +425,7 @@ $ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS
 </div>
 </div>
 <div class="section" id="section-7">
-<h3>0. 简介<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<h3>0. 简介<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
 <p>检查 Linux 内核代码中以下位置，并识别使用 ARM 架构的平台和供应商：</p>
 <blockquote>
 <div><ul class="simple">
@@ -437,12 +438,12 @@ $ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">我们使用了自己编译的 <code class="docutils literal"><span class="pre">arm32</span></code> 版本的 <code class="docutils literal"><span class="pre">Qemu</span></code>。有关详细信息，请参见 <a class="reference internal" href="#qemu">Qemu</a> 部分。</p>
 </div>
 </div>
 <div class="section" id="section-8">
-<h3>1. 启动<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>1. 启动<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>使用 <code class="docutils literal"><span class="pre">qemu</span></code> 启动 <code class="docutils literal"><span class="pre">i.MX6UL</span></code> 平台。为了启动，我们首先需要编译内核。请查看 <a class="reference internal" href="#arm-linux">编译 ARM 版 Linux 内核</a> 部分。</p>
 <p>成功编译将生成以下二进制文件：</p>
 <blockquote>
@@ -458,7 +459,7 @@ $ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last"><code class="docutils literal"><span class="pre">Qemu</span></code> 对 LCDIF 和 ASRC 设备的支持不够完善。请从编译中移除它们。</p>
 </div>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS_COMPILE</span><span class="o">=</span>arm-linux-gnueabihf- make menuconfig
@@ -473,7 +474,7 @@ $ cat /proc/version
 </div>
 </div>
 <div class="section" id="cpu">
-<h3>2. CPU 信息<a class="headerlink" href="#cpu" title="Permalink to this headline">¶</a></h3>
+<h3>2. CPU 信息<a class="headerlink" href="#cpu" title="永久链接至标题">¶</a></h3>
 <p>检查 <code class="docutils literal"><span class="pre">NXP</span> <span class="pre">i.MX6UL</span></code> 开发板的 CPU 配置。从 <code class="docutils literal"><span class="pre">arch/arm/boot/dts/imx6ul-14x14-evk.dts</span></code> 开始。</p>
 <blockquote>
 <div><ul class="simple">
@@ -489,7 +490,7 @@ $ cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq
 </div></blockquote>
 </div>
 <div class="section" id="i-o">
-<h3>3. I/O 内存<a class="headerlink" href="#i-o" title="Permalink to this headline">¶</a></h3>
+<h3>3. I/O 内存<a class="headerlink" href="#i-o" title="永久链接至标题">¶</a></h3>
 <p>检查 <code class="docutils literal"><span class="pre">NXP</span> <span class="pre">i.MX6UL</span></code> 开发板的 I/O 空间配置。从 <code class="docutils literal"><span class="pre">arch/arm/boot/dts/imx6ul-14x14-evk.dts</span></code> 开始，并确定下面提到的每个设备。</p>
 <div class="code bash highlight-none"><div class="highlight"><pre><span></span>$ cat /proc/iomem
   00900000-0091ffff : 900000.sram sram@900000
@@ -508,7 +509,7 @@ $ cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq
 </div></blockquote>
 </div>
 <div class="section" id="hello-world">
-<h3>4. Hello World<a class="headerlink" href="#hello-world" title="Permalink to this headline">¶</a></h3>
+<h3>4. Hello World<a class="headerlink" href="#hello-world" title="永久链接至标题">¶</a></h3>
 <p>实现一个简单的内核模块，在加载和卸载时打印一条消息。编译该模块并加载到 <code class="docutils literal"><span class="pre">i.MX6UL</span></code> 模拟平台上。</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span><span class="c1"># 模块构建</span>
 tools/labs $ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS_COMPILE</span><span class="o">=</span>arm-linux-gnueabihf- make build
@@ -520,7 +521,7 @@ $ <span class="nv">ARCH</span><span class="o">=</span>arm <span class="nv">CROSS
 </div>
 </div>
 <div class="section" id="section-9">
-<h3>5. 简单设备<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<h3>5. 简单设备<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
 <p>为一个简单的平台设备实现一个驱动程序。找到 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>，注意如何声明并注册 <code class="docutils literal"><span class="pre">simple_driver</span></code> 作为平台驱动程序。按照 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code>，在 simple_device_ids 数组中添加 <code class="docutils literal"><span class="pre">so2,simple-device-v1</span></code> 和 <code class="docutils literal"><span class="pre">so2,simple-device-v2</span></code> 兼容字符串。</p>
 <p>在 <code class="docutils literal"><span class="pre">arch/arm/boot/dts/imx6ul.dtsi</span></code> 的 <code class="docutils literal"><span class="pre">soc</span></code> 节点下创建两个设备树节点，分别使用兼容字符串 <code class="docutils literal"><span class="pre">so2,simple-device-v1</span></code> 和 <code class="docutils literal"><span class="pre">so2,simple-device-v2</span></code>。然后观察加载 <code class="docutils literal"><span class="pre">simple_driver</span></code> 模块时的行为。</p>
 </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>块设备驱动程序 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>块设备驱动程序 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="文件系统驱动程序（第一部分）" href="filesystems_part1.html" />
     <link rel="prev" title="延迟工作" href="deferred_work.html" /> 
 </head>
@@ -166,9 +167,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>块设备驱动程序<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>块设备驱动程序<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-2">
-<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li>了解 Linux 中 I/O 子系统的行为</li>
@@ -178,13 +179,13 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-3">
-<h2>概述<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>概述<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>块设备以数据通过固定大小的块来组织为特点，可以进行随机访问。这类设备的例子包括硬盘驱动器、CD-ROM 驱动器、RAM 磁盘等。块设备的速度通常比字符设备的速度快得多，并且它们的性能也很重要。这就是为什么 Linux 内核对这两种类型的设备处理方式不同（它使用一个专门的 API）。</p>
 <p>因此，与字符设备相比，使用块设备更加复杂。字符设备只有当前位置，而块设备必须能够移动到设备上的任何位置，以提供对数据的随机访问。为了简化对块设备的操作，Linux 内核提供了一整个子系统，称为块 I/O（或块层）子系统。</p>
 <p>从内核的角度来看，最小的逻辑寻址单元是块。虽然物理设备可以按扇区级别寻址，但内核使用块执行所有磁盘操作。由于最小的物理寻址单元是扇区，块的大小必须是扇区大小的倍数。此外，块的大小必须是 2 的幂，并且不能超过页面大小。块的大小可能因使用的文件系统而异，最常见的值为 512 B、1 KB 和 4 KB。</p>
 </div>
 <div class="section" id="i-o">
-<h2>注册块 I/O 设备<a class="headerlink" href="#i-o" title="Permalink to this headline">¶</a></h2>
+<h2>注册块 I/O 设备<a class="headerlink" href="#i-o" title="永久链接至标题">¶</a></h2>
 <p>要注册块设备，请使用函数 <code class="xref c c-func docutils literal"><span class="pre">register_blkdev()</span></code>。要注销一个块设备，可以使用函数 <code class="xref c c-func docutils literal"><span class="pre">unregister_blkdev()</span></code>。</p>
 <p>从 Linux 内核的 4.9 版本开始，调用 <code class="xref c c-func docutils literal"><span class="pre">register_blkdev()</span></code> 不再是必须操作。该函数执行的唯一操作是动态分配一个主设备号（如果调用函数时主设备号参数为 0），并在 <code class="file docutils literal"><span class="pre">/proc/devices</span></code> 中创建一个条目。在未来的内核版本中，它可能被移除；然而，大多数驱动程序仍然调用它。</p>
 <p>通常，在模块初始化函数中调用注册函数，在模块退出函数中调用注销函数。典型的场景如下所示：</p>
@@ -214,7 +215,7 @@
 </div>
 </div>
 <div class="section" id="section-4">
-<h2>注册磁盘<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>注册磁盘<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <p>尽管 <code class="xref c c-func docutils literal"><span class="pre">register_blkdev()</span></code> 函数获取了主设备号，但它并没有向系统提供设备（磁盘）。为了创建和使用块设备（磁盘），我们使用在 <code class="file docutils literal"><span class="pre">linux/genhd.h</span></code> 中定义的专门接口。</p>
 <p>在 <code class="file docutils literal"><span class="pre">linux/genhd.h</span></code> 中定义的有用函数是用于注册/分配磁盘、将其添加到系统中以及注销/卸载磁盘的函数。</p>
 <p><code class="xref c c-func docutils literal"><span class="pre">alloc_disk()</span></code> 函数用于分配磁盘，<code class="xref c c-func docutils literal"><span class="pre">del_gendisk()</span></code> 函数用于释放磁盘。使用 <code class="xref c c-func docutils literal"><span class="pre">add_disk()</span></code> 函数将磁盘添加到系统中。</p>
@@ -262,7 +263,7 @@
 <p>在调用 <code class="xref c c-func docutils literal"><span class="pre">del_gendisk()</span></code> 函数后，如果仍然有用户（对设备调用了打开操作，但关联的释放操作尚未被调用），则 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构可能继续存在（并且设备操作仍然可以调用）。一种解决方法是记录设备的用户数，并仅在设备没有剩余用户后调用 <code class="xref c c-func docutils literal"><span class="pre">del_gendisk()</span></code> 函数。</p>
 </div>
 <div class="section" id="struct-gendisk">
-<h2><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构体<a class="headerlink" href="#struct-gendisk" title="Permalink to this headline">¶</a></h2>
+<h2><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构体<a class="headerlink" href="#struct-gendisk" title="永久链接至标题">¶</a></h2>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构体存储关于磁盘的信息。如上所述，这样的结构体是通过 <code class="xref c c-func docutils literal"><span class="pre">alloc_disk()</span></code> 调用获得的，在将其作为参数传入 <code class="xref c c-func docutils literal"><span class="pre">add_disk()</span></code> 函数之前，必须填充其字段。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构体具有以下重要字段：</p>
 <blockquote>
@@ -344,7 +345,7 @@
 <p>要向内核通知设备的扇区大小，必须在分配请求队列后设置请求队列的参数，使用 <code class="xref c c-func docutils literal"><span class="pre">blk_queue_logical_block_size()</span></code> 函数完成设置。内核生成的所有请求都将是该扇区大小的倍数，并相应地对齐。但是，设备和驱动程序之间的通信仍将以 512 字节大小的扇区进行，因此每次都需要进行转换（上述代码中调用 <code class="xref c c-func docutils literal"><span class="pre">set_capacity()</span></code> 函数时就是一个例子）。</p>
 </div>
 <div class="section" id="struct-block-device-operations">
-<h2><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> 结构体<a class="headerlink" href="#struct-block-device-operations" title="Permalink to this headline">¶</a></h2>
+<h2><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> 结构体<a class="headerlink" href="#struct-block-device-operations" title="永久链接至标题">¶</a></h2>
 <p>就像对于字符设备，需要完成 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 中的操作一样，对于块设备，需要完成 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> 中的操作。操作的关联是通过 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">gendisk</span></code> 结构体中的 <code class="xref c c-member docutils literal"><span class="pre">fops</span></code> 字段完成的。</p>
 <p>下面是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> 结构体的一些字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">block_device_operations</span> <span class="p">{</span>
@@ -408,7 +409,7 @@
 <p>请注意，没有读取或写入操作。这些操作是由与磁盘的请求队列相关联的 <code class="xref c c-func docutils literal"><span class="pre">request()</span></code> 函数执行的。</p>
 </div>
 <div class="section" id="section-5">
-<h2>请求队列——多队列块层<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>请求队列——多队列块层<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>块设备的驱动程序使用队列来存储将要处理的块输入/输出请求。请求队列由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request_queue</span></code> 结构体表示。请求队列由一系列请求及其关联的控制信息组成，这些请求通过双向链表链接在一起。请求通过更高层次的内核代码（例如文件系统）添加到队列中。</p>
 <p>块设备驱动程序将每个队列与处理函数关联起来，对于某队列中的每个请求（通过 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 结构体表示），都将调用该队列对应处理函数。</p>
 <p>在早期的 Linux 内核版本中，每个设备驱动程序关联了一个或多个请求队列 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request_queue</span></code>)，任何客户端都可以向其添加请求，并能够对其进行重新排序。这种方法的问题在于每个队列都需要锁，在分布式系统中效率低下。</p>
@@ -421,18 +422,18 @@
 </dd>
 </dl>
 <div class="section" id="section-6">
-<h3>软件分段队列<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
+<h3>软件分段队列<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
 <p>分段队列在将请求发送给块设备驱动程序之前，保存来自客户端的请求。为了避免每个队列都有一把锁，为每个 CPU 或节点分配一个分段队列。一个软件队列只与一个硬件队列关联。</p>
 <p>在这个队列中，根据 I/O 调度程序，请求可以合并或重新排序，以最大化性能。这意味着只有来自相同 CPU 或节点的请求可以进行优化。</p>
 <p>分段队列通常不被块设备驱动程序使用，而只在 I/O 子系统内部使用，以在将请求发送给设备驱动程序之前对其进行优化。</p>
 </div>
 <div class="section" id="section-7">
-<h3>硬件调度队列<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<h3>硬件调度队列<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
 <p>硬件队列 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">blk_mq_hw_ctx</span></code>) 用于将请求从分段队列发送到块设备驱动程序。一旦进入此队列，请求就无法合并或重新排序。</p>
 <p>根据底层硬件的不同，块设备驱动程序可以创建多个硬件队列，以提高并行性和最大化性能。</p>
 </div>
 <div class="section" id="section-8">
-<h3>标签集<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>标签集<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>块设备驱动程序可以在前一个请求完成之前接受另一个请求。因此，上层需要一种方式来知道请求何时完成。为此，在提交时为每个请求添加一个“标签”，并在请求完成后使用完成通知将其发送回来。</p>
 <p>这些标签是标签集 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">blk_mq_tag_set</span></code>) 的一部分，每个设备的标签集都是唯一的。在分配和初始化请求队列之前，会分配和初始化标签集结构，并且还存储一些队列的属性。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">blk_mq_tag_set</span> <span class="p">{</span>
@@ -464,7 +465,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-9">
-<h3>创建和删除请求队列<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<h3>创建和删除请求队列<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
 <p>我们使用 <code class="xref c c-func docutils literal"><span class="pre">blk_mq_init_queue()</span></code> 函数创建请求队列，使用 <code class="xref c c-func docutils literal"><span class="pre">blk_cleanup_queue()</span></code> 函数删除请求队列。第一个函数同时创建硬件队列和软件队列，并初始化它们的结构。</p>
 <p>队列属性，包括硬件队列的数量、容量和请求处理函数，使用上述所述的 <code class="xref c c-type docutils literal"><span class="pre">blk_mq_tag_set</span></code> 结构进行配置。</p>
 <p>以下是使用这些函数的示例：</p>
@@ -548,7 +549,7 @@
 <p>作为请求队列初始化的一部分，你可以配置 <code class="xref c c-member docutils literal"><span class="pre">queuedata</span></code> 字段，该字段相当于其他结构中的 <code class="xref c c-member docutils literal"><span class="pre">private_data</span></code> 字段。</p>
 </div>
 <div class="section" id="section-10">
-<h3>用于处理请求队列的有用函数<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<h3>用于处理请求队列的有用函数<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">blk_mq_ops</span></code> 中的 <code class="docutils literal"><span class="pre">queue_rq</span></code> 函数用于处理对块设备的请求。该函数相当于在字符设备中遇到的读取和写入函数。该函数接收对设备的请求作为参数，并可以使用各种函数来处理这些请求。</p>
 <p>下面描述了在处理程序中用于处理请求的函数：</p>
 <blockquote>
@@ -561,7 +562,7 @@
 </div>
 </div>
 <div class="section" id="section-11">
-<h2>块设备的请求<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h2>
+<h2>块设备的请求<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h2>
 <p>块设备的请求由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 结构描述。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 结构的字段包括：</p>
 <blockquote>
@@ -575,11 +576,11 @@
 </div></blockquote>
 <p>我们将在 <span class="xref std std-ref">bio_structure</span> 部分中对 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构及其相关操作进行更详细的讨论。</p>
 <div class="section" id="section-12">
-<h3>创建请求<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<h3>创建请求<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
 <p>读取/写入请求是由位于内核 I/O 子系统上方的代码层创建的。通常，为块设备创建请求的子系统是文件管理子系统。I/O 子系统充当文件管理子系统和块设备驱动程序之间的接口。I/O 子系统的主要责任是将请求添加到特定块设备的队列中，并根据性能考虑对请求进行排序和合并。</p>
 </div>
 <div class="section" id="section-13">
-<h3>处理请求<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<h3>处理请求<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <p>块设备驱动程序的核心部分是请求处理函数 (<code class="docutils literal"><span class="pre">queue_rq</span></code>)。在前面的示例中，扮演这个角色的函数是 <code class="xref c c-func docutils literal"><span class="pre">my_block_request()</span></code>。如在 <a class="reference internal" href="#section-9">创建和删除请求队列</a> 部分所述，该函数在创建标签集结构时与驱动程序相关联。</p>
 <p>当内核认为驱动程序应该处理 I/O 请求时，将调用该函数。该函数必须开始处理队列中的请求，但不必完成它们，因为请求可能由驱动程序的其他部分完成。</p>
 <p>请求函数在原子上下文中运行，并且必须遵循原子代码的规则（不能调用可能导致睡眠的函数等）。</p>
@@ -622,7 +623,7 @@
 </div>
 </div>
 <div class="section" id="struct-bio">
-<h2><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio" title="Permalink to this headline">¶</a></h2>
+<h2><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio" title="永久链接至标题">¶</a></h2>
 <p>每个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 结构是一个 I/O 块请求，但可能来自于更高级别的多个独立请求的组合。要传输的扇区可以分散在主存中，但它们总是对应于设备上的一组连续扇区。请求被表示为一系列段，每个段对应于内存中的一个缓冲区。内核可以合并引用相邻扇区的请求，但不会将读取请求与写入请求合并到一个单独的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 结构中。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 结构的底层实现为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构组成的链表，同时包含一些信息，这些信息使驱动程序在处理请求时保留其当前位置。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构是块 I/O 请求的某个部分的低级表示。</p>
@@ -642,7 +643,7 @@
 </div>
 <p>反过来，<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构包含 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio_vec</span></code> 结构的 <code class="xref c c-member docutils literal"><span class="pre">bi_io_vec</span></code> 向量。它由要传输的物理内存中的单个页面，页面内的偏移和缓冲区的大小组成。要遍历 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构，需要遍历 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio_vec</span></code> 向量，并从每个物理页面传输数据。为了简化向量遍历，请使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bvec_iter</span></code> 结构。该结构保持有关在遍历过程中使用了多少个缓冲区和扇区的信息。请求类型被编码在 <code class="xref c c-member docutils literal"><span class="pre">bi_opf</span></code> 字段中；要确定请求类型，请使用 <code class="xref c c-func docutils literal"><span class="pre">bio_data_dir()</span></code> 函数。</p>
 <div class="section" id="struct-bio-1">
-<h3>创建 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-1" title="Permalink to this headline">¶</a></h3>
+<h3>创建 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-1" title="永久链接至标题">¶</a></h3>
 <p>可以使用两个函数来创建 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构：</p>
 <blockquote>
 <div><ul class="simple">
@@ -653,17 +654,17 @@
 <p>这两个函数都返回新的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构。</p>
 </div>
 <div class="section" id="struct-bio-2">
-<h3>提交 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-2" title="Permalink to this headline">¶</a></h3>
+<h3>提交 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-2" title="永久链接至标题">¶</a></h3>
 <p>通常，<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构是由内核的更高层级（通常是文件系统）创建的。因此，创建的结构随后会传递给 I/O 子系统，该子系统将多个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构聚合成一个请求。</p>
 <p>要将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构提交给关联的 I/O 设备驱动程序，可以使用 <code class="xref c c-func docutils literal"><span class="pre">submit_bio()</span></code> 函数。该函数接收已初始化的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构作为实参，该结构将被添加到 I/O 设备的请求队列中的一个请求中。从该队列中，可以使用专门的函数由 I/O 设备驱动程序处理该请求。</p>
 </div>
 <div class="section" id="struct-bio-3">
-<span id="bio-completion"></span><h3>等待 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的完成<a class="headerlink" href="#struct-bio-3" title="Permalink to this headline">¶</a></h3>
+<span id="bio-completion"></span><h3>等待 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的完成<a class="headerlink" href="#struct-bio-3" title="永久链接至标题">¶</a></h3>
 <p>将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构提交给驱动程序会将其添加到请求队列中的一个请求中，然后进一步进行处理。因此，当 <code class="xref c c-func docutils literal"><span class="pre">submit_bio()</span></code> 函数返回时，并不能保证结构的处理已经完成。如果希望等待请求的处理完成，可以使用 <code class="xref c c-func docutils literal"><span class="pre">submit_bio_wait()</span></code> 函数。</p>
 <p>要在对 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的处理结束时得到通知（当未使用 <code class="xref c c-func docutils literal"><span class="pre">submit_bio_wait()</span></code> 函数时），应使用结构的 <code class="xref c c-member docutils literal"><span class="pre">bi_end_io</span></code> 字段。该字段指定在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构处理结束时将调用的函数。可以使用结构的 <code class="xref c c-member docutils literal"><span class="pre">bi_private</span></code> 字段将信息传递给该函数。</p>
 </div>
 <div class="section" id="struct-bio-4">
-<h3>初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-4" title="Permalink to this headline">¶</a></h3>
+<h3>初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-4" title="永久链接至标题">¶</a></h3>
 <p>一旦分配了 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构，在传输之前，必须对其进行初始化。</p>
 <p>初始化结构涉及填充其重要字段。如上所述，<code class="xref c c-member docutils literal"><span class="pre">bi_end_io</span></code> 字段用于指定在结构处理完成时调用的函数。<code class="xref c c-member docutils literal"><span class="pre">bi_private</span></code> 字段用于存储可以在 <code class="xref c c-member docutils literal"><span class="pre">bi_end_io</span></code> 指向的函数中访问的有用数据。</p>
 <p><code class="xref c c-member docutils literal"><span class="pre">bi_opf</span></code> 字段指定操作的类型。</p>
@@ -678,12 +679,12 @@
 </div>
 <p>在上面的代码片段中，我们指定了块设备以及发送给块设备的以下内容：<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构、起始扇区、操作 (<code class="xref c c-data docutils literal"><span class="pre">REQ_OP_READ</span></code> 或 <code class="xref c c-data docutils literal"><span class="pre">REQ_OP_WRITE</span></code>) 和内容。<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的内容是由一个物理页面、页面中的偏移量和缓冲区大小描述的缓冲区。可以使用 <code class="xref c c-func docutils literal"><span class="pre">alloc_page()</span></code> 调用来分配页面。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last"><code class="xref c c-func docutils literal"><span class="pre">bio_add_page()</span></code> 调用中的 <code class="xref c c-data docutils literal"><span class="pre">size</span></code> 字段必须是设备扇区大小的倍数。</p>
 </div>
 </div>
 <div class="section" id="struct-bio-5">
-<span id="bio-content"></span><h3>如何使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的内容<a class="headerlink" href="#struct-bio-5" title="Permalink to this headline">¶</a></h3>
+<span id="bio-content"></span><h3>如何使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的内容<a class="headerlink" href="#struct-bio-5" title="永久链接至标题">¶</a></h3>
 <p>要使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的内容，必须将结构的支持页面映射到内核地址空间，从那里可以访问它们。要进行映射/取消映射，可以使用 <code class="xref c c-macro docutils literal"><span class="pre">kmap_atomic</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">kunmap_atomic</span></code> 宏。</p>
 <p>以下是一个典型的使用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span> <span class="nf">my_block_transfer</span><span class="p">(</span><span class="k">struct</span> <span class="n">my_block_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">start</span><span class="p">,</span>
@@ -736,11 +737,11 @@
 </div>
 </div>
 <div class="section" id="struct-bio-6">
-<h3>释放 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-6" title="Permalink to this headline">¶</a></h3>
+<h3>释放 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构<a class="headerlink" href="#struct-bio-6" title="永久链接至标题">¶</a></h3>
 <p>一旦内核子系统使用了 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构，就需要释放对它的引用。这可以通过调用 <code class="xref c c-func docutils literal"><span class="pre">bio_put()</span></code> 函数来实现。</p>
 </div>
 <div class="section" id="struct-bio-7">
-<h3>在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别设置请求队列<a class="headerlink" href="#struct-bio-7" title="Permalink to this headline">¶</a></h3>
+<h3>在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别设置请求队列<a class="headerlink" href="#struct-bio-7" title="永久链接至标题">¶</a></h3>
 <p>我们之前已经介绍了如何指定一个函数来处理发送给驱动程序的请求。该函数接收请求作为实参，并在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 级别进行处理。</p>
 <p>如果要获得更高的灵活性，我们需要指定在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构级别进行处理的函数，而不再使用请求队列，那么我们将需要在与驱动程序关联的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">block_device_operations</span></code> 结构中填充 <code class="docutils literal"><span class="pre">submit_bio</span></code> 字段。</p>
 <p>下面是一个典型的初始化在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构级别执行处理的函数的示例：</p>
@@ -758,7 +759,7 @@
 </div>
 </div>
 <div class="section" id="section-14">
-<h2>进一步阅读<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h2>
+<h2>进一步阅读<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="http://static.lwn.net/images/pdf/LDD3/ch16.pdf">Linux 设备驱动程序第 3 版，第 16 章 块设备驱动程序</a></li>
 <li>Linux 内核开发第 2 版——第 13 章 块 I/O 层</li>
@@ -773,9 +774,9 @@
 </ul>
 </div>
 <div class="section" id="section-15">
-<h2>练习<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -809,13 +810,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-15">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-16">
-<h3>0. 简介<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h3>
+<h3>0. 简介<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h3>
 <p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> 在 Linux 内核中查找以下符号的定义：</p>
 <blockquote>
 <div><ul class="simple">
@@ -829,29 +830,29 @@ tools/labs $ make boot
 </div></blockquote>
 </div>
 <div class="section" id="section-17">
-<h3>1. 块设备<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<h3>1. 块设备<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h3>
 <p>创建一个内核模块，允许你注册或取消注册块设备。从实验骨架的 <code class="file docutils literal"><span class="pre">1-2-3-6-ram-disk/kernel</span></code> 目录中的文件开始。</p>
 <p>按照实验骨架中标记为 <strong>TODO 1</strong> 的注释进行操作。使用现有的宏定义 (<code class="xref c c-macro docutils literal"><span class="pre">MY_BLOCK_MAJOR</span></code>, <code class="xref c c-macro docutils literal"><span class="pre">MY_BLKDEV_NAME</span></code>)。检查注册函数返回的值，在出现错误的情况下返回错误代码。</p>
 <p>编译模块，将其复制到虚拟机并插入内核。验证你的设备是否成功创建在 <code class="file docutils literal"><span class="pre">/proc/devices</span></code> 内。你将看到一个主设备号为 240 的设备。</p>
 <p>卸载内核模块，并检查设备是否已注销。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">查看 <a class="reference internal" href="#i-o">注册块 I/O 设备</a> 部分。</p>
 </div>
 <p>将 <code class="xref c c-macro docutils literal"><span class="pre">MY_BLOCK_MAJOR</span></code> 的值更改为 7。编译模块，将其复制到虚拟机并插入内核。注意到插入失败，因为已经有另一个驱动程序/设备在内核中注册了主设备号 7。</p>
 <p>将 <code class="xref c c-macro docutils literal"><span class="pre">MY_BLOCK_MAJOR</span></code> 宏的值恢复为 240。</p>
 </div>
 <div class="section" id="section-18">
-<h3>2. 磁盘注册<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h3>
+<h3>2. 磁盘注册<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h3>
 <p>修改前面的模块以添加与驱动程序关联的磁盘。分析宏定义、<code class="xref c c-type docutils literal"><span class="pre">my_block_dev</span></code> 结构以及 <code class="file docutils literal"><span class="pre">ram-disk.c</span></code> 文件中的现有函数。</p>
 <p>按照标记为 <strong>TODO 2</strong> 的注释进行操作。使用 <code class="xref c c-func docutils literal"><span class="pre">create_block_device()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">delete_block_device()</span></code> 函数。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">查看 <a class="reference internal" href="#section-4">注册磁盘</a> 和 <a class="reference internal" href="#section-13">处理请求</a> 部分。</p>
 </div>
 <p>填充 <code class="xref c c-func docutils literal"><span class="pre">my_block_request()</span></code> 函数以处理请求，但实际上不处理你的请求：显示“request received”消息以及以下信息：来自当前 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的起始扇区、总大小、数据大小和方向。要验证请求类型，请使用 :c:func:<a href="#system-message-1"><span class="problematic" id="problematic-1">`</span></a>blk_rq_is_passthrough`（该函数在请求由文件系统生成的情况下返回 0）。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">要找到所需的信息，查看 <a class="reference internal" href="#section-11">块设备的请求</a> 部分。</p>
 </div>
 <p>使用 <code class="xref c c-func docutils literal"><span class="pre">blk_mq_end_request()</span></code> 函数来完成请求的处理。</p>
@@ -866,28 +867,28 @@ tools/labs $ make boot
 <p>注意，写入请求之前会有一个读取请求。该请求用于从磁盘中读取块并使用用户提供的数据“更新”其内容，而不会覆盖其他部分。在读取和更新之后，写入操作发生。</p>
 </div>
 <div class="section" id="ram">
-<h3>3. RAM 磁盘<a class="headerlink" href="#ram" title="Permalink to this headline">¶</a></h3>
+<h3>3. RAM 磁盘<a class="headerlink" href="#ram" title="永久链接至标题">¶</a></h3>
 <p>修改前面的模块以创建一个 RAM 磁盘：对设备的请求将导致在一个内存区域中进行读写操作。</p>
 <p>内存区域 <code class="xref c c-data docutils literal"><span class="pre">dev-&gt;data</span></code> 已经在模块的源代码中使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 进行了分配，并使用 <code class="xref c c-func docutils literal"><span class="pre">vfree()</span></code> 进行了释放。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">查看 <a class="reference internal" href="#section-13">处理请求</a> 部分。</p>
 </div>
 <p>按照标记为 <strong>TODO 3</strong> 的注释完成 <code class="xref c c-func docutils literal"><span class="pre">my_block_transfer()</span></code> 函数，将请求信息写入内存区域/从内存区域中读取。该函数将在队列处理函数 <code class="xref c c-func docutils literal"><span class="pre">my_block_request()</span></code> 中为每个请求调用。要写入/读取内存区域，请使用 <code class="xref c c-func docutils literal"><span class="pre">memcpy()</span></code>。要确定写入/读取的信息，请使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">request</span></code> 结构的字段。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">要了解请求数据的大小，请使用 <code class="xref c c-macro docutils literal"><span class="pre">blk_rq_cur_bytes</span></code> 宏。不要使用 <code class="xref c c-macro docutils literal"><span class="pre">blk_rq_bytes</span></code> 宏。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">要找到与请求相关联的缓冲区，请使用 <code class="xref c c-data docutils literal"><span class="pre">bio_data`(:c:data:`rq-&gt;bio</span></code>)。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">有关有用的宏的描述，请参阅 <a class="reference internal" href="#section-11">块设备的请求</a> 部分。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">你可以在 <a class="reference external" href="http://lwn.net/Kernel/LDD3/">Linux 设备驱动程序</a> 的 <a class="reference external" href="https://github.com/martinezjavier/ldd3/blob/master/sbull/sbull.c">块设备驱动程序示例</a> 中找到有用的信息。</p>
 </div>
 <p>为了进行测试，使用测试文件 <code class="file docutils literal"><span class="pre">user/ram-disk-test.c</span></code>。测试程序在 <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> 编译时会自动编译，之后使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 复制到虚拟机，可以在 QEMU 虚拟机上使用以下命令运行：</p>
@@ -898,10 +899,10 @@ tools/labs $ make boot
 <p>由于传输数据缺乏同步（刷新），一些测试可能会失败。</p>
 </div>
 <div class="section" id="section-19">
-<h3>4. 从磁盘读取数据<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h3>
+<h3>4. 从磁盘读取数据<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h3>
 <p>本练习的目的是从内核直接读取 <code class="xref c c-macro docutils literal"><span class="pre">PHYSICAL_DISK_NAME</span></code> 磁盘（<code class="file docutils literal"><span class="pre">/dev/vdb</span></code>）的数据。</p>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>在解决此练习之前，我们需要确保将磁盘添加到虚拟机中。</p>
 <p>检查 <code class="file docutils literal"><span class="pre">qemu/Makefile</span></code> 中的变量 <code class="docutils literal"><span class="pre">QEMU_OPTS</span></code>。应该已经使用 <code class="docutils literal"><span class="pre">-drive</span> <span class="pre">...</span></code> 添加了两个额外的磁盘。</p>
 <p class="last">如果没有，请使用以下命令生成我们将用作磁盘镜像的文件：<strong class="command">dd if=/dev/zero of=qemu/mydisk.img bs=1024 count=1</strong> 并将以下选项添加到 <code class="file docutils literal"><span class="pre">qemu/Makefile`（在</span> <span class="pre">:c:data:`QEMU_OPTS</span></code> 变量之中，root 盘之后）：
@@ -910,17 +911,17 @@ tools/labs $ make boot
 <p>按照目录 <code class="file docutils literal"><span class="pre">4-5-relay/</span></code> 中标记为 <strong>TODO 4</strong> 的注释，实现 <code class="xref c c-func docutils literal"><span class="pre">open_disk()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">close_disk()</span></code> 函数。使用 <code class="xref c c-func docutils literal"><span class="pre">blkdev_get_by_path()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">blkdev_put()</span></code> 函数。设备必须以独占的读写模式打开 (<code class="xref c c-macro docutils literal"><span class="pre">FMODE_READ</span></code> | <code class="xref c c-macro docutils literal"><span class="pre">FMODE_WRITE</span></code> | <code class="xref c c-macro docutils literal"><span class="pre">FMODE_EXCL</span></code>)，并且当前模块必须作为 holder（<code class="xref c c-macro docutils literal"><span class="pre">THIS_MODULE</span></code>）。</p>
 <p>实现 <code class="xref c c-func docutils literal"><span class="pre">send_test_bio()</span></code> 函数。你将需要创建新的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构并填充它，然后提交它并等待它。读取磁盘的第一个扇区。要等待，请调用 <code class="xref c c-func docutils literal"><span class="pre">submit_bio_wait()</span></code> 函数。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>磁盘的第一个扇区是索引为 0 的扇区。这个值必须用于初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">bi_iter.bi_sector</span></code> 字段。</p>
 <p class="last">对于读操作，使用 <code class="xref c c-macro docutils literal"><span class="pre">REQ_OP_READ</span></code> 宏来初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">bi_opf</span></code> 字段。</p>
 </div>
 <p>操作完成后，显示 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构读取的前 3 个字节数据。使用 <code class="docutils literal"><span class="pre">&quot;%</span> <span class="pre">02x&quot;</span></code> 格式作为 <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 的参数来显示数据以及 <code class="xref c c-macro docutils literal"><span class="pre">kmap_atomic</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">kunmap_atomic</span></code> 宏。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">对于 <code class="xref c c-func docutils literal"><span class="pre">kmap_atomic()</span></code> 函数的实参，只需使用代码中分配的页面，即 <code class="xref c c-data docutils literal"><span class="pre">page</span></code> 变量。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">请查看 <a class="reference internal" href="../so2/lab7-block-device-drivers.html#bio-content"><span class="std std-ref">如何使用 struct bio 结构的内容</span></a> 和 <a class="reference internal" href="../so2/lab7-block-device-drivers.html#bio-completion"><span class="std std-ref">等待 struct bio 结构的完成</span></a> 部分。</p>
 </div>
 <p>为了进行测试，使用 <code class="file docutils literal"><span class="pre">test-relay-disk</span></code> 脚本，在运行 <strong class="command">make copy</strong> 时会将其复制到虚拟机中。如果未复制，请确保该脚本可执行：</p>
@@ -935,12 +936,12 @@ tools/labs $ make boot
 <p>脚本会将“abc”写入到 <code class="xref c c-macro docutils literal"><span class="pre">PHYSICAL_DISK_NAME</span></code> 指定的磁盘的开头。运行后，模块将显示 61 62 63（字母“a”、“b”和“c”的十六进制值）。</p>
 </div>
 <div class="section" id="section-20">
-<h3>5. 将数据写入磁盘<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h3>
+<h3>5. 将数据写入磁盘<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h3>
 <p>按照标有 <strong>TODO 5</strong> 的注释，在磁盘上写入消息（<code class="xref c c-macro docutils literal"><span class="pre">BIO_WRITE_MESSAGE</span></code>）。</p>
 <p>函数 <code class="xref c c-func docutils literal"><span class="pre">send_test_bio()</span></code> 接收操作类型（读取或写入）作为实参。在函数 <code class="xref c c-func docutils literal"><span class="pre">relay_init()</span></code> 中调用读取函数，在函数 <code class="xref c c-func docutils literal"><span class="pre">relay_exit()</span></code> 中调用写入函数。建议使用 <code class="xref c c-macro docutils literal"><span class="pre">REQ_OP_READ</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">REQ_OP_WRITE</span></code> 宏。</p>
 <p>在 <code class="xref c c-func docutils literal"><span class="pre">send_test_bio()</span></code> 函数中，如果操作是写入，使用消息 <code class="xref c c-macro docutils literal"><span class="pre">BIO_WRITE_MESSAGE</span></code> 填充与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构相关联的缓冲区。使用 <code class="xref c c-macro docutils literal"><span class="pre">kmap_atomic</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">kunmap_atomic</span></code> 宏来处理与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构相关联的缓冲区。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">需要通过相应地设置 <code class="xref c c-member docutils literal"><span class="pre">bi_opf</span></code> 字段来更新与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构相关联的操作类型。</p>
 </div>
 <p>为了测试，请使用以下命令运行 <code class="file docutils literal"><span class="pre">test-relay-disk</span></code> 脚本：</p>
@@ -950,25 +951,25 @@ tools/labs $ make boot
 <p>该脚本将在标准输出中显示 <code class="docutils literal"><span class="pre">&quot;read</span> <span class="pre">from</span> <span class="pre">/dev/sdb:</span> <span class="pre">64</span> <span class="pre">65</span> <span class="pre">66&quot;</span></code> 消息。</p>
 </div>
 <div class="section" id="struct-bio-8">
-<h3>6. 在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别处理请求队列中的请求<a class="headerlink" href="#struct-bio-8" title="Permalink to this headline">¶</a></h3>
+<h3>6. 在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别处理请求队列中的请求<a class="headerlink" href="#struct-bio-8" title="永久链接至标题">¶</a></h3>
 <p>在练习 3 的实现中，我们只处理了请求的当前 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio_vec</span></code>。我们希望处理来自请求队列中所有 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的所有 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio_vec</span></code> 结构（也称为段）。</p>
 <p>在 ramdisk 的实现（<code class="file docutils literal"><span class="pre">1-2-3-6-ram-disk/</span></code> 目录）中，添加一些支持，使得其可以在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 级别处理请求队列中的请求。按照标有 <strong>TODO 6</strong> 的注释进行操作。</p>
 <p>将 <code class="xref c c-macro docutils literal"><span class="pre">USE_BIO_TRANSFER</span></code> 宏设置为 1。</p>
 <p>实现 <code class="xref c c-func docutils literal"><span class="pre">my_xfer_request()</span></code> 函数。使用 <code class="xref c c-macro docutils literal"><span class="pre">rq_for_each_segment</span></code> 宏遍历请求中每个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 的 <code class="xref c c-type docutils literal"><span class="pre">bio_vec</span></code> 结构。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">请查阅 <a class="reference internal" href="../so2/lab7-block-device-drivers.html#bio-content"><span class="std std-ref">如何使用 struct bio 结构的内容</span></a> 部分中的指示和代码片段。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 的段迭代器获取当前扇区（<code class="xref c c-member docutils literal"><span class="pre">iter.iter.bi_sector</span></code>）。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用请求迭代器获取对当前 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 的引用（<code class="xref c c-member docutils literal"><span class="pre">iter.bio</span></code>）。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-macro docutils literal"><span class="pre">bio_data_dir</span></code> 宏查找读取或写入的方向。</p>
 </div>
 <p>使用 <code class="xref c c-macro docutils literal"><span class="pre">kmap_atomic</span></code> 或 <code class="xref c c-macro docutils literal"><span class="pre">kunmap_atomic</span></code> 宏映射每个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bio</span></code> 结构的页面并访问其关联的缓冲区。为了进行实际的传输，调用前面练习中实现的 <code class="xref c c-func docutils literal"><span class="pre">my_block_transfer()</span></code> 函数。</p>

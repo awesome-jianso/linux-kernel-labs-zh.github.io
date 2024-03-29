@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 0 - Kernel API &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Assignment 0 - Kernel API &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Assignment 1 - Kprobe based tracer" href="assign1-kprobe-based-tracer.html" />
     <link rel="prev" title="Collaboration" href="assign-collaboration.html" /> 
 </head>
@@ -171,12 +172,12 @@
            <div itemprop="articleBody">
              
   <div class="section" id="assignment-0-kernel-api">
-<h1>Assignment 0 - Kernel API<a class="headerlink" href="#assignment-0-kernel-api" title="Permalink to this headline">¶</a></h1>
+<h1>Assignment 0 - Kernel API<a class="headerlink" href="#assignment-0-kernel-api" title="永久链接至标题">¶</a></h1>
 <ul class="simple">
 <li>Deadline: <strong class="command">Sunday, 26 March 2023, 23:00</strong></li>
 </ul>
 <div class="section" id="assignment-s-objectives">
-<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="Permalink to this headline">¶</a></h2>
+<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li>getting familiar with the qemu setup</li>
 <li>loading/unloading kernel modules</li>
@@ -185,7 +186,7 @@
 </ul>
 </div>
 <div class="section" id="statement">
-<h2>Statement<a class="headerlink" href="#statement" title="Permalink to this headline">¶</a></h2>
+<h2>Statement<a class="headerlink" href="#statement" title="永久链接至标题">¶</a></h2>
 <p>Write a kernel module called <cite>list</cite> (the resulting file must be called <cite>list.ko</cite>) which stores data (strings)
 in an internal list.</p>
 <p>It is mandatory to use <a class="reference external" href="https://github.com/torvalds/linux/blob/master/include/linux/list.h">the list API</a>
@@ -209,18 +210,18 @@ You will need to create a list and implement support for <cite>adding</cite> and
 The format contains one element on each line.</p>
 </div>
 <div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="永久链接至标题">¶</a></h2>
 <p>In order to simplify the assignment evaluation process, but also to reduce the mistakes of the submitted assignments,
 the assignment evaluation will be done automatically with the help of a
 <a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/0-list/checker/_checker">test script</a> called <cite>_checker</cite>.
 The test script assumes that the kernel module is called <cite>list.ko</cite>.</p>
 </div>
 <div class="section" id="quickstart">
-<h2>QuickStart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<h2>QuickStart<a class="headerlink" href="#quickstart" title="永久链接至标题">¶</a></h2>
 <p>It is mandatory to start the implementation of the assignment from the code skeleton found in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/src/list.c">list.c</a> file.
 You should follow the instructions in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list">assignment's repo</a>.</p>
 <div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h3>
+<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
 <p>To increase your chances of getting the highest grade, read and follow the Linux kernel
 coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
 <p>Also, use the following static analysis tools to verify the code:</p>
@@ -247,26 +248,26 @@ coding style described in the <a class="reference external" href="https://elixir
 </div>
 </div>
 <div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="Permalink to this headline">¶</a></h3>
+<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
 <p>Information about assigments penalties can be found on the
 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>.</p>
 <p>In exceptional cases (the assigment passes the tests by not complying with the requirements)
 and if the assigment does not pass all the tests, the grade will may decrease more than mentioned above.</p>
 </div>
 <div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="Permalink to this headline">¶</a></h3>
+<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
 <p>The assignment will be graded automatically using the <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> infrastructure.
 The submission will be made on moodle on the <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">course's page</a> to the related assignment.
 You will find the submission details in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master">repo</a>.</p>
 </div>
 </div>
 <div class="section" id="resources">
-<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
 <p>We recommend that you use gitlab to store your homework. Follow the directions in
 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md file</a>.</p>
 </div>
 <div class="section" id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h2>
+<h2>Questions<a class="headerlink" href="#questions" title="永久链接至标题">¶</a></h2>
 <p>For questions about the topic, you can consult the mailing <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">list archives</a>
 or you can write a question on the dedicated Teams channel.</p>
 </div>

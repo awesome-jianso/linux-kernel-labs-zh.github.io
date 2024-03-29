@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>系统调用 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>系统调用 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="进程" href="processes.html" />
     <link rel="prev" title="介绍" href="intro.html" /> 
 </head>
@@ -134,10 +135,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>系统调用<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>系统调用<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="syscalls-slides.html">View slides</a></p>
 <div class="section" id="section-2">
-<h2>课程目标：<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>课程目标：<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-system-calls simple">
 <li>Linux 系统调用实现</li>
 <li>VDSO and 虚拟系统调用</li>
@@ -145,7 +146,7 @@
 </ul>
 </div>
 <div class="section" id="linux">
-<h2>Linux 系统调用实现<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<h2>Linux 系统调用实现<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h2>
 <p>从高层视角来看，系统调用是内核向用户应用程序提供的“服务”，它们类似于库 API，因为它们被描述为具有名称、参数和返回值的函数调用。</p>
 <p class="admonition-system-calls-as-kernel-services">&nbsp;</p>
 <div class="highlight-text"><div class="highlight"><pre><span></span>+-------------+           +-------------+
@@ -172,7 +173,7 @@
 <p>当用户到内核模式的转换发生时，执行流程会被中断，并传递到内核的入口点。这类似于中断和异常的处理方式（实际上，在某些架构上，这种转换正是由异常引起的）。</p>
 <p>系统调用入口点会将寄存器（其中包含来自用户空间的值，包括系统调用标识符和系统调用参数）保存在堆栈上，然后继续执行系统调用分发器（system call dispatcher）。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">在用户模式和内核模式之间的切换过程中，还会将堆栈从用户堆栈切换到内核堆栈。这一点在中断课程中有更详细的解释。</p>
 </div>
 <div class="admonition-example-of-linux-system-call-setup-and-handling highlight-text"><div class="highlight"><pre><span></span>     +-------------+   dup2    +-----------------------------+
@@ -241,7 +242,7 @@
 <li>用户空间应用程序恢复执行</li>
 </ul>
 <div class="section" id="section-3">
-<h3>系统调用表<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h3>
+<h3>系统调用表<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h3>
 <p>系统调用表是系统调用分发器用于将系统调用编号映射到内核函数的数据结构。</p>
 <div class="admonition-system-call-table highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define __SYSCALL_I386(nr, sym, qual) [nr] = sym,</span>
 
@@ -266,7 +267,7 @@
 </div>
 </div>
 <div class="section" id="section-4">
-<h3>系统调用参数处理<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<h3>系统调用参数处理<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
 <p>处理系统调用参数是棘手的。由于这些值是由用户空间设置的，内核不能假定其正确性，因此必须始终进行彻底的验证。</p>
 <p>指针有一些重要的特殊情况需要进行检查：</p>
 <ul class="admonition- simple">
@@ -321,7 +322,7 @@
 </div>
 </div>
 <div class="section" id="vdso">
-<h2>虚拟动态共享对象 (VDSO)<a class="headerlink" href="#vdso" title="Permalink to this headline">¶</a></h2>
+<h2>虚拟动态共享对象 (VDSO)<a class="headerlink" href="#vdso" title="永久链接至标题">¶</a></h2>
 <p>VDSO（Virtual Dynamic Shared Object，虚拟动态共享对象）机制之所以诞生是为了优化系统调用的实现，以一种不需要 libc 跟踪 CPU 功能与内核版本的方式。</p>
 <p>例如，x86 有两种触发系统调用的方式：int 0x80 和 sysenter。后者速度显著更快，因此如果可以的话应使用它。然而，它仅适用于 Pentium II 之后的处理器，并且仅适用于大于 2.6 内核版本的情况。</p>
 <p>使用 VDSO 的话，系统调用接口由内核决定：</p>
@@ -339,7 +340,7 @@
 </ul>
 </div>
 <div class="section" id="section-5">
-<h2>通过系统调用访问用户空间<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>通过系统调用访问用户空间<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>正如我们之前提到的，必须使用特殊的 API（如 <code class="xref c c-func docutils literal"><span class="pre">get_user()</span></code>、<code class="xref c c-func docutils literal"><span class="pre">put_user()</span></code>、<code class="xref c c-func docutils literal"><span class="pre">copy_from_user()</span></code> 以及
 <code class="xref c c-func docutils literal"><span class="pre">copy_to_user()</span></code>）来访问用户空间。这些 API 会检查指针是否位于用户空间，并在指针无效时处理错误。如果指针无效，它们将返回一个非零值。</p>
 <div class="admonition- highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 如果 user_ptr 无效，则返回 -EFAULT */</span>

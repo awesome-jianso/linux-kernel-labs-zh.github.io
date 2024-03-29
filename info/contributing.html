@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>对 Linux 内核实验室项目做贡献 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>对 Linux 内核实验室项目做贡献 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="中文翻译介绍" href="chinese-localization-info.html" />
     <link rel="prev" title="自定义虚拟机配置" href="extra-vm.html" /> 
 </head>
@@ -134,11 +135,11 @@
            <div itemprop="articleBody">
              
   <div class="section" id="linux">
-<h1>对 Linux 内核实验室项目做贡献<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h1>
+<h1>对 Linux 内核实验室项目做贡献<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h1>
 <p><code class="docutils literal"><span class="pre">Linux</span> <span class="pre">内核实验室</span></code> 是一个开放的平台。你可以通过对文档、练习或基础设施的贡献来帮助它变得更好。无论是对错别字的修正还是在文档中添加新的部分，所有的贡献我们都欢迎。</p>
 <p>所有需要进行贡献的信息都可以在 <a class="reference external" href="https://github.com/linux-kernel-labs/linux">linux 内核实验室 Linux 仓库</a> 中找到。如果要改变任何东西，你需要从你自己的 fork 创建一个拉取请求（<code class="docutils literal"><span class="pre">Pull</span> <span class="pre">Request</span></code>，<code class="docutils literal"><span class="pre">PR</span></code>）到这个仓库。PR 将由团队成员进行审核，并在解决任何可能的问题后合并。</p>
 <div class="section" id="section-1">
-<h2>仓库结构<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<h2>仓库结构<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <p><a class="reference external" href="https://github.com/linux-kernel-labs/linux">Linux 内核实验室仓库</a> 是 Linux 内核仓库的一个 fork，增加了以下内容：</p>
 <blockquote>
 <div><ul class="simple">
@@ -152,13 +153,13 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-2">
-<h2>构建文档<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>构建文档<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <p>要构建文档，请导航到 <code class="docutils literal"><span class="pre">tools/labs</span></code> 并运行以下命令：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>make docs
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>该命令会安装所有需要的包。在某些情况下，包的安装或文档的构建可能会因为依赖版本不兼容而失败。</p>
 <p>与其费力去修复依赖，构建文档最简单的方法是使用 <a class="reference external" href="https://www.docker.com/">Docker</a>。 首先，在你的主机上安装 <code class="docutils literal"><span class="pre">docker</span></code> 和 <code class="docutils literal"><span class="pre">docker-compose</span></code>，然后运行：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>make docker-docs
@@ -168,9 +169,9 @@
 </div>
 </div>
 <div class="section" id="section-3">
-<h2>做出贡献<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>做出贡献<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <div class="section" id="fork">
-<h3>Fork 仓库<a class="headerlink" href="#fork" title="Permalink to this headline">¶</a></h3>
+<h3>Fork 仓库<a class="headerlink" href="#fork" title="永久链接至标题">¶</a></h3>
 <ol class="arabic">
 <li><p class="first">如果你还没有做过，请把 <a class="reference external" href="https://github.com/linux-kernel-labs/linux">linux-kernel-labs repo</a> 仓库克隆到本地：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ mkdir -p ~/src
@@ -189,9 +190,9 @@ $ git clone git@github.com:linux-kernel-labs/linux.git ~/src/linux
 <p>现在，你可以用 <code class="docutils literal"><span class="pre">my_fork</span></code> 来代替 <code class="docutils literal"><span class="pre">origin</span></code> 推送到你的分叉（例如 <code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">my_fork</span> <span class="pre">master</span></code>）。</p>
 </div>
 <div class="section" id="section-4">
-<h3>创建拉取请求<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<h3>创建拉取请求<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p class="last">拉取请求必须从它们自己的分支创建，这些分支是从``master``开始的。</p>
 </div>
 <ol class="arabic simple">
@@ -214,7 +215,7 @@ nothing to commit, working directory clean
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>你也可以将最新的 master 推送到你 fork 的仓库:</p>
 <div class="last highlight-bash"><div class="highlight"><pre><span></span>student@eg106:~/src/linux$ git push my_fork master
 </pre></div>
@@ -239,7 +240,7 @@ student@eg106:~/src/linux$ git commit -m <span class="s2">&quot;&lt;commit messa
 </pre></div>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>提交信息必须包含对更改的相关描述以及已更改组件的位置。</p>
 <p>示例:</p>
 <blockquote class="last">
@@ -272,7 +273,7 @@ student@eg106:~/src/linux$ git commit -m <span class="s2">&quot;&lt;commit messa
 </div></blockquote>
 </div>
 <div class="section" id="section-5">
-<h3>修改拉取请求<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
+<h3>修改拉取请求<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
 <p>在收到对你的更改的反馈后，你可能需要更新拉取请求。你应该对同一分支进行新的推送。为此，请按照以下步骤操作：</p>
 <ol class="arabic simple">
 <li>确保你的分支仍然与 <code class="docutils literal"><span class="pre">linux-kernel-labs</span></code> 仓库的 <code class="docutils literal"><span class="pre">master</span></code> 分支同步。</li>
@@ -283,7 +284,7 @@ student@eg106:~/src/linux$ git rebase FETCH_HEAD
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>如果你遇到冲突，这意味着其他人修改了与你相同的文件/行，并且在你打开拉取请求后已经合并了更改。</p>
 <p class="last">在这种情况下，你需要通过手动编辑冲突文件来修复冲突（运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 查看这些文件）。
 修复冲突后，使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span></code> 添加它们，然后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">--continue</span></code>。</p>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>字符设备驱动程序 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>字符设备驱动程序 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="I/O 访问和中断" href="interrupts.html" />
     <link rel="prev" title="内核 API" href="kernel_api.html" /> 
 </head>
@@ -158,9 +159,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>字符设备驱动程序<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>字符设备驱动程序<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-2">
-<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li>理解字符设备驱动程序背后的概念</li>
@@ -170,13 +171,13 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-3">
-<h2>概述<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>概述<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>在 UNIX 系统中，用户通过特殊的设备文件访问硬件设备。这些文件被组织在 /dev 目录下，并且操作系统会将对这些文件的系统调用（如 <code class="docutils literal"><span class="pre">open</span></code>、 <code class="docutils literal"><span class="pre">read</span></code>、  <code class="docutils literal"><span class="pre">write</span></code>、 <code class="docutils literal"><span class="pre">close</span></code>、 <code class="docutils literal"><span class="pre">lseek</span></code>、 <code class="docutils literal"><span class="pre">mmap</span></code> 等），重定向到与物理设备关联的设备驱动程序。设备驱动程序是与硬件设备交互的内核组件（通常是一个模块）。</p>
 <p>在 UNIX 世界中，设备文件和设备驱动程序分为两个类别：字符设备和块设备。这种划分是根据数据传输的速度、容量和数据组织方式进行的。第一类是一些速度较慢的设备，它们仅处理少量数据，并且对数据的访问不需要频繁的搜索查询，例如键盘、鼠标、串口、声卡、游戏手柄等设备。通常情况下，对这些设备（读取、写入）的操作是按字节顺序逐个执行的。第二类包括数据量大、数据以块为单位组织且搜索频繁的设备。这一类别的设备包括硬盘、光驱、RAM 磁盘以及磁带驱动器等。这些设备的读取和写入是以数据块为单位进行的。</p>
 <p>对于这两种类型的设备驱动程序，Linux 内核提供了不同的 API。如果是字符设备，系统调用直接传递给设备驱动程序；而如果是块设备，驱动程序不能直接与系统调用交互。用户空间和块设备驱动程序之间的通信是通过文件管理子系统和块设备子系统进行的。这些子系统的作用是准备设备驱动程序所需的资源（缓冲区），将最近读取的数据保存在缓存缓冲区中，并为了提升性能而对读取和写入操作进行排序。</p>
 </div>
 <div class="section" id="section-4">
-<h2>主设备号和次设备号<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>主设备号和次设备号<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <p>在 UNIX 中，设备通常有一个唯一的、固定的标识符与之关联。这种传统在 Linux 中得以保留，尽管标识符可以动态分配（出于兼容性的原因，大多数驱动程序仍然使用静态标识符）。这个标识符由两部分组成：主设备号（major）和次设备号（minor）。第一部分用于标识设备类型（如 IDE 硬盘、SCSI 硬盘、串口等），而第二部分用于标识设备本身（如第一个硬盘、第二个串口等）。大多数情况下，主设备号用于标识驱动程序，而次设备号用于标识驱动程序所服务的某个物理设备。通常情况下，一个驱动程序会有一个关联的主设备号，并负责处理与该主设备号关联的所有次设备号。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ ls -la /dev/hda? /dev/ttyS?
 brw-rw----  <span class="m">1</span> root disk    <span class="m">3</span>,  <span class="m">1</span> <span class="m">2004</span>-09-18 <span class="m">14</span>:51 /dev/hda1
@@ -198,10 +199,10 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 <p>接下来，我们会把字符设备称为驱动程序。</p>
 </div>
 <div class="section" id="section-5">
-<h2>字符设备的数据结构<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>字符设备的数据结构<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>在内核中，字符设备由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">cdev</span></code> 结构表示，该结构用于在系统中注册字符设备。大多数驱动程序操作都用到了三个重要的结构: <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code>、 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 和 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>。</p>
 <div class="section" id="struct-file-operations">
-<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code><a class="headerlink" href="#struct-file-operations" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code><a class="headerlink" href="#struct-file-operations" title="永久链接至标题">¶</a></h3>
 <p>如上所述，字符设备驱动程序接收用户对设备类型文件的原始系统调用。因此，要想实现字符设备驱动程序，我们就需要实现特定于文件的系统调用，例如 <code class="docutils literal"><span class="pre">open</span></code>、 <code class="docutils literal"><span class="pre">close</span></code>、 <code class="docutils literal"><span class="pre">read</span></code>、 <code class="docutils literal"><span class="pre">write</span></code>、 <code class="docutils literal"><span class="pre">lseek</span></code> 以及 <code class="docutils literal"><span class="pre">mmap</span></code> 等。这些操作在 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构的字段中描述：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
 
@@ -235,7 +236,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 </dl>
 </div>
 <div class="section" id="inode-file">
-<h3><code class="docutils literal"><span class="pre">inode</span></code> 和 <code class="docutils literal"><span class="pre">file</span></code> 结构<a class="headerlink" href="#inode-file" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal"><span class="pre">inode</span></code> 和 <code class="docutils literal"><span class="pre">file</span></code> 结构<a class="headerlink" href="#inode-file" title="永久链接至标题">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">inode</span></code> 代表文件系统视角中的文件。inode 的属性包括文件大小、权限和相关时间。单个 inode 在文件系统中唯一标识一个文件。</p>
 <p><code class="docutils literal"><span class="pre">file</span></code> 结构仍然代表单个文件，但更接近用户的视角。file 结构的属性中，有 inode、文件名、文件打开属性和文件位置等。在给定时间内，所有打开的文件都有一个关联的 <code class="docutils literal"><span class="pre">file</span></code> 结构。</p>
 <p>为了更好的理解 inode 和 file 之间的区别，我们可以使用面向对象编程的类比：如果我们将 inode 视为一个类，那么文件就是对象，即 inode 类的实例。inode 表示文件的静态映像（inode 没有状态），而 file 表示文件的动态映像（file 具有状态）。</p>
@@ -254,7 +255,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 </div>
 </div>
 <div class="section" id="section-6">
-<h2>实现操作<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<h2>实现操作<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
 <p>为了实现设备驱动程序，建议创建一个包含有关设备信息和模块使用的信息的结构体。如果是字符设备驱动程序，则结构体将包含一个指向设备的 cdev 结构体字段。下面的示例使用了名为 my_device_data 的结构体：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/cdev.h&gt;</span><span class="cp"></span>
@@ -288,7 +289,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 <p>名为 <code class="docutils literal"><span class="pre">my_device_data</span></code> 的结构包含与设备相关的数据。<code class="docutils literal"><span class="pre">cdev</span></code> 字段 (<code class="docutils literal"><span class="pre">cdev</span></code> 类型)对应字符设备，用于在系统中记录和识别设备。可以使用 <code class="docutils literal"><span class="pre">inode</span></code> 结构的 <code class="docutils literal"><span class="pre">i_cdev</span></code> 字段（使用 <code class="docutils literal"><span class="pre">container_of</span></code> 宏）找到指向 <code class="docutils literal"><span class="pre">cdev</span></code> 的指针。可以在打开文件时，在 file 结构的 <code class="docutils literal"><span class="pre">private_data</span></code> 字段中存储可用于 <code class="docutils literal"><span class="pre">read</span></code>、 <code class="docutils literal"><span class="pre">write</span></code>、 <code class="docutils literal"><span class="pre">release</span></code> 等函数的信息。</p>
 </div>
 <div class="section" id="section-7">
-<h2>字符设备的注册和注销<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<h2>字符设备的注册和注销<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
 <p>要想注册和注销设备，你需要指定主设备号和次设备号。<code class="docutils literal"><span class="pre">dev_t</span></code> 类型用于保存设备的标识符（包括主设备号和次设备号），其可以通过使用 <cite>MKDEV</cite> 宏来获取。</p>
 <p>要想完成设备标识符的静态分配和释放，可以使用 <code class="docutils literal"><span class="pre">register_chrdev_region</span></code> 和 <code class="docutils literal"><span class="pre">unregister_chrdev_region</span></code> 函数：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
@@ -378,12 +379,12 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last"><code class="docutils literal"><span class="pre">my_fops</span></code> 结构的初始化使用了 C99 标准中的按名称初始化成员的方法（参见指定初始化器和 file_operations 结构）。未在此初始化中显式出现的结构成员将被设置为其类型的默认值。例如，在上述初始化之后，<code class="docutils literal"><span class="pre">my_fops.mmap</span></code> 将为 NULL。</p>
 </div>
 </div>
 <div class="section" id="section-8">
-<span id="access-to-process-address-space"></span><h2>访问进程地址空间<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h2>
+<span id="access-to-process-address-space"></span><h2>访问进程地址空间<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h2>
 <p>设备的驱动程序是应用程序与硬件之间的接口。因此，我们经常需要访问用户空间数据。直接访问用户空间数据是不可行的（通过解引用用户空间指针）。直接访问用户空间指针可能导致不正确的行为（根据体系结构，用户空间指针可能无效或映射到内核空间）、内核 oops（用户态指针可能引用非驻留内存区域）或安全问题。请通过调用下面的宏/函数来正确访问用户空间数据：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/uaccess.h&gt;</span><span class="cp"></span>
 
@@ -415,7 +416,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 </div>
 </div>
 <div class="section" id="section-9">
-<h2>打开和释放<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<h2>打开和释放<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
 <p><code class="docutils literal"><span class="pre">open</span></code> 函数执行设备的初始化。在大多数情况下，这些操作涉及初始化设备并填充特定数据（如果是第一次打开调用）。<a href="#system-message-1"><span class="problematic" id="problematic-1">*</span></a>释放函数*用于释放设备特定资源：在调用全部完成后，解除对特定数据的锁定并关闭设备。</p>
 <p>在大多数情况下，<a href="#system-message-2"><span class="problematic" id="problematic-2">*</span></a>打开函数*的结构如下所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_open</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
@@ -448,7 +449,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 </div>
 </div>
 <div class="section" id="section-10">
-<h2>读取和写入<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h2>
+<h2>读取和写入<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h2>
 <p>用户空间程序调用读取或写入系统调用，会导致设备驱动程序的读和写操作。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="cm">/* 处理错误 */</span>
@@ -527,7 +528,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 <a class="reference internal image-reference" href="../_images/write2.png"><img alt="../_images/write2.png" src="../_images/write2.png" style="width: 49%;" /></a>
 </div>
 <div class="section" id="ioctl-1">
-<span id="ioctl"></span><h2>ioctl<a class="headerlink" href="#ioctl-1" title="Permalink to this headline">¶</a></h2>
+<span id="ioctl"></span><h2>ioctl<a class="headerlink" href="#ioctl-1" title="永久链接至标题">¶</a></h2>
 <p>除了读和写操作之外，驱动程序需要能够执行某些物理设备控制任务。这些操作通过实现一个名为 <code class="docutils literal"><span class="pre">ioctl</span></code> 的函数来完成。最初，ioctl 系统调用使用了 Big Kernel Lock。因此，其无锁版本 <code class="docutils literal"><span class="pre">unlocked_ioctl</span></code> 逐渐替代了该调用。你可以在 LWN 上阅读更多信息：<a class="reference external" href="http://lwn.net/Articles/119652/">http://lwn.net/Articles/119652/</a></p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">long</span> <span class="nf">my_ioctl</span> <span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">arg</span><span class="p">);</span>
 </pre></div>
@@ -578,7 +579,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 </div>
 </div>
 <div class="section" id="section-11">
-<h2>等待队列<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h2>
+<h2>等待队列<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h2>
 <p>许多情况下，线程需要等待某个操作完成。但最好避免忙等待。通过使用等待队列，我们可以阻塞一个线程，直到发生某个事件再激活这个线程。当条件满足时（可能是内核中的其他地方、另一个进程、中断或可延迟工作）我们会唤醒该进程。</p>
 <p>等待队列是一个等待特定事件的进程列表。队列使用 <code class="docutils literal"><span class="pre">wait_queue_head_t</span></code> 类型定义，并可通过以下函数/宏使用：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/wait.h&gt;</span><span class="cp"></span>
@@ -630,9 +631,9 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 </div>
 </div>
 <div class="section" id="section-12">
-<h2>练习<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -666,13 +667,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-12">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-13">
-<h3>0. 简介<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<h3>0. 简介<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> 查找 Linux 内核中以下符号的定义：</p>
 <blockquote>
 <div><ul class="simple">
@@ -684,19 +685,19 @@ tools/labs $ make boot
 </div></blockquote>
 </div>
 <div class="section" id="section-14">
-<h3>1. 注册/注销<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<h3>1. 注册/注销<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
 <p>驱动程序控制一个具有 <code class="docutils literal"><span class="pre">MY_MAJOR</span></code> 主设备号和 <code class="docutils literal"><span class="pre">MY_MINOR</span></code> 次设备号的设备（这些宏定义在 kernel/so2_cdev.c 文件中）。</p>
 <blockquote>
 <div><ol class="arabic">
 <li><p class="first">使用 <strong>mknod</strong> 创建 <strong>/dev/so2_cdev</strong> 字符设备节点。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">阅读实验中的 <a class="reference internal" href="#section-4">主设备号和次设备号</a> 部分。</p>
 </div>
 </li>
 <li><p class="first">在 init 和 exit 模块函数中实现设备的注册和注销，设备名称应为 <code class="docutils literal"><span class="pre">so2_cdev</span></code>。实现 <strong>TODO 1</strong>。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">阅读 <a class="reference internal" href="#section-7">字符设备的注册和注销</a> 部分。</p>
 </div>
 </li>
@@ -710,7 +711,7 @@ tools/labs $ make boot
 </div>
 <p>确定使用主设备号 42 注册的设备类型。请注意，<code class="docutils literal"><span class="pre">/proc/devices</span></code> 仅包含设备类型（主设备号），而不包含实际设备（即次设备号）。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>/dev 中的条目不会通过加载模块来创建。可以通过两种方式创建：</p>
 <ul class="last simple">
 <li>手动使用 <code class="docutils literal"><span class="pre">mknod</span></code> 命令，就像我们上面所做的那样。</li>
@@ -727,16 +728,16 @@ tools/labs $ make boot
 </div></blockquote>
 </div>
 <div class="section" id="section-15">
-<h3>2. 注册一个已注册的主设备号<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<h3>2. 注册一个已注册的主设备号<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>修改 <strong>MY_MAJOR</strong>，使其指向已经使用的主设备号。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">查看 <code class="docutils literal"><span class="pre">/proc/devices</span></code> 来获取一个已分配的主设备号。</p>
 </div>
 <p>参考 <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9/source/include/uapi/asm-generic/errno-base.h">errno-base.h</a> 并找出错误码的含义。恢复模块的初始配置。</p>
 </div>
 <div class="section" id="section-16">
-<h3>3. 打开和关闭<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h3>
+<h3>3. 打开和关闭<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h3>
 <p>运行 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> ，从我们的字符设备中读取数据。由于驱动程序没有实现打开函数，因此读取操作无法正常工作。按照标记为 TODO 2 的注释进行操作并实现以下内容。</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -751,12 +752,12 @@ tools/labs $ make boot
 </ol>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">设备驱动程序操作的原型在 <code class="docutils literal"><span class="pre">file_operations</span></code> 结构体中。请阅读 <a class="reference internal" href="#section-9">打开和释放</a> 部分。</p>
 </div>
 </div>
 <div class="section" id="section-17">
-<h3>4. 访问限制<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<h3>4. 访问限制<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h3>
 <p>使用原子变量限制设备访问，以便一次只能有一个进程打开该设备。其他进程将收到“设备忙”错误 (<code class="docutils literal"><span class="pre">-EBUSY</span></code>)。限制访问将在驱动程序中的打开函数中完成。按照标记为 <strong>TODO 3</strong> 的注释进行操作并实现以下内容。</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -772,12 +773,12 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">atomic_cmpxchg 函数的优点在于它可以在一个原子操作中检查变量的旧值并将其设置为新值。详细了解 <a class="reference external" href="https://www.khronos.org/registry/OpenCL/sdk/1.1/docs/man/xhtml/atomic_cmpxchg.html">atomic_cmpxchg</a>。这里有一个使用示例 <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9/source/lib/dump_stack.c#L24">http://elixir.free-electrons.com/linux/v4.9/source/lib/dump_stack.c#L24</a> 。</p>
 </div>
 </div>
 <div class="section" id="section-18">
-<h3>5. 读操作<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h3>
+<h3>5. 读操作<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h3>
 <p>在驱动程序中实现读取函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">4</span></code> 的注释并实现以下步骤：</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -792,7 +793,7 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 </ol>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">命令 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> 不会结束（使用Ctrl+C）。请阅读 <a href="#system-message-3"><span class="problematic" id="problematic-3">`读和写`_</span></a> 和 <a href="#system-message-4"><span class="problematic" id="problematic-4">`访问进程的地址空间`_</span></a> 部分。如果要显示偏移值，请使用以下形式的构造: <code class="docutils literal"><span class="pre">pr_info(&quot;Offset:</span> <span class="pre">%lld</span> <span class="pre">\n&quot;,</span> <span class="pre">*offset)</span></code>；偏移值的数据类型 <code class="docutils literal"><span class="pre">loff_t</span></code> 是 <code class="docutils literal"><span class="pre">long</span> <span class="pre">long</span> <span class="pre">int</span></code> 的 typedef。</p>
 </div>
 <p><code class="docutils literal"><span class="pre">cat</span></code> 命令一直读取到文件的末尾，文件通过读取返回值为 0 来表示读到末尾了。因此，为了正确实现，你需要更新并使用读函数中接收的偏移参数，并在用户达到缓冲区末尾时返回 0。</p>
@@ -805,16 +806,16 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 </ol>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">通过解引用偏移参数，可以读取并移动在文件中的当前位置。每次成功进行读取后都需要更新其值。</p>
 </div>
 </div>
 <div class="section" id="section-19">
-<h3>6. 写操作<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h3>
+<h3>6. 写操作<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h3>
 <p>添加将消息写入内核缓冲区以替换预定义消息的功能。在驱动程序中实现写函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的注释进行操作。</p>
 <p>此时忽略偏移参数。你可以假设驱动程序缓冲区足够大。你无需检查写函数大小参数的有效性。</p>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>设备驱动程序操作的原型位于 file_operations 结构中。使用以下命令进行测试：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;arpeggio&quot;</span>&gt; /dev/so2_cdev
 cat /dev/so2_cdev
@@ -824,7 +825,7 @@ cat /dev/so2_cdev
 </div>
 </div>
 <div class="section" id="ioctl-2">
-<h3>7. ioctl 操作<a class="headerlink" href="#ioctl-2" title="Permalink to this headline">¶</a></h3>
+<h3>7. ioctl 操作<a class="headerlink" href="#ioctl-2" title="永久链接至标题">¶</a></h3>
 <p>对于这个练习，我们希望在驱动程序中添加 ioctl <code class="docutils literal"><span class="pre">MY_IOCTL_PRINT</span></code> 来显示来自宏 <code class="docutils literal"><span class="pre">IOCTL_MESSAGE</span></code> 的消息。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">6</span></code> 的注释进行操作。</p>
 <p>为此：</p>
 <blockquote>
@@ -835,21 +836,21 @@ cat /dev/so2_cdev
 </ol>
 </div></blockquote>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>宏 <code class="docutils literal"><span class="pre">MY_IOCTL_PRINT</span></code> 在文件 <code class="docutils literal"><span class="pre">include/so2_cdev.h</span></code> 中定义，该文件在内核模块和用户空间程序之间共享。</p>
 <p class="last">请阅读实验中的 <a class="reference internal" href="#ioctl">ioctl</a> 章节。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>用户空间代码在 <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> 时会自动编译，并在 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 时被复制。</p>
 <p class="last">由于我们需要为 32 位的 qemu 机器编译程序，如果你的主机是 64 位的，那么你需要安装 <code class="docutils literal"><span class="pre">gcc-multilib</span></code> 软件包。</p>
 </div>
 </div>
 </div>
 <div class="section" id="section-20">
-<h2>额外练习<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h2>
+<h2>额外练习<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h2>
 <div class="section" id="ioctl-3">
-<h3>带消息的 ioctl<a class="headerlink" href="#ioctl-3" title="Permalink to this headline">¶</a></h3>
+<h3>带消息的 ioctl<a class="headerlink" href="#ioctl-3" title="永久链接至标题">¶</a></h3>
 <p>为驱动程序添加两个 ioctl 操作，用于修改与驱动程序关联的消息。应使用固定长度的缓冲区（BUFFER_SIZE）。</p>
 <ol class="arabic simple">
 <li>在驱动程序的 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数中添加以下操作：<ul>
@@ -860,12 +861,12 @@ cat /dev/so2_cdev
 <li>为进行测试，将所需的命令行参数传递给用户空间程序。</li>
 </ol>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">阅读实验中的 <a class="reference internal" href="#ioctl">ioctl</a> 和 <a class="reference internal" href="#section-8">访问进程地址空间</a> 部分。</p>
 </div>
 </div>
 <div class="section" id="ioctl-4">
-<h3>使用等待队列的 ioctl<a class="headerlink" href="#ioctl-4" title="Permalink to this headline">¶</a></h3>
+<h3>使用等待队列的 ioctl<a class="headerlink" href="#ioctl-4" title="永久链接至标题">¶</a></h3>
 <p>为设备驱动程序添加两个 <code class="docutils literal"><span class="pre">ioctl</span></code> 操作，用于队列处理。</p>
 <ol class="arabic simple">
 <li>在驱动程序的 <code class="docutils literal"><span class="pre">ioctl</span></code> 函数中添加以下操作：<ul>
@@ -880,14 +881,14 @@ cat /dev/so2_cdev
 </ol>
 <p>当进程被添加到队列中时，它将保持阻塞状态；要运行队列命令，请使用 Alt+F2 打开虚拟机中的新控制台；可以使用 Alt+F1 返回到上一个控制台。如果是通过 SSH 连接到虚拟机的，请打开新的控制台。</p>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p class="last">阅读实验中的 <a class="reference internal" href="#ioctl">ioctl</a> 和 <a class="reference internal" href="#section-11">等待队列</a> 部分。</p>
 </div>
 </div>
 <div class="section" id="o-nonblock">
-<h3>O_NONBLOCK 实现<a class="headerlink" href="#o-nonblock" title="Permalink to this headline">¶</a></h3>
+<h3>O_NONBLOCK 实现<a class="headerlink" href="#o-nonblock" title="永久链接至标题">¶</a></h3>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>如果文件使用 <code class="docutils literal"><span class="pre">O_NONBLOCK</span></code> 标志打开，则其操作将是非阻塞的。</p>
 <p>如果在执行读取操作时数据不可用，则会发生以下情况：</p>
 <blockquote class="last">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>基础设施 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>基础设施 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="介绍" href="introduction.html" />
     <link rel="prev" title="Virtualization" href="../lectures/virt.html" /> 
 </head>
@@ -124,7 +125,7 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>基础设施<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>基础设施<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <p>为了帮助学习，我们每个主题都有一个实践练习部分，其中包含详细的、逐步的提示，以解决一个或多个任务。为了便于专注于特定问题，大多数任务将在现有的骨架（skeleton）驱动程序上执行。每个骨架驱动程序都有清晰标记的部分，需要填写之以完成任务。</p>
 <p>骨架驱动程序是从位于 tools/labs/templates 目录中的完整源代码示例生成的。要解决任务，你可以通过在 <em>tools/labs</em> 目录下运行**skels**目标来生成骨架驱动程序。为了保持工作空间的干净，建议一次只为一个实验生成骨架，然后在开始新的实验之前清理工作空间。你可以使用**LABS**变量来选择实验：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
@@ -167,7 +168,7 @@ make<span class="o">[</span><span class="m">1</span><span class="o">]</span>: Le
 </pre></div>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p class="last">如果虚拟机正在运行，<strong>copy</strong> 目标将失败。这是有意为之，以避免破坏文件系统。</p>
 </div>
 </div>

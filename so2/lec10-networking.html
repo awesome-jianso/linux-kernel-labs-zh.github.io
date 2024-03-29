@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SO2 Lecture 10 - Networking &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>SO2 Lecture 10 - Networking &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="SO2 Lecture 11 - Architecture Layer" href="lec11-arch.html" />
     <link rel="prev" title="SO2 Lecture 09 - Kernel debugging" href="lec9-debugging.html" /> 
 </head>
@@ -179,10 +180,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="so2-lecture-10-networking">
-<h1>SO2 Lecture 10 - Networking<a class="headerlink" href="#so2-lecture-10-networking" title="Permalink to this headline">¶</a></h1>
+<h1>SO2 Lecture 10 - Networking<a class="headerlink" href="#so2-lecture-10-networking" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="lec10-networking-slides.html">View slides</a></p>
 <span class="admonition-so2-lecture-10-networking"></span><div class="section" id="lecture-objectives">
-<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="Permalink to this headline">¶</a></h2>
+<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-network-management simple">
 <li>Socket implementation</li>
 <li>Routing implementation</li>
@@ -191,18 +192,18 @@
 </ul>
 </div>
 <div class="section" id="network-management-overview">
-<h2>Network Management Overview<a class="headerlink" href="#network-management-overview" title="Permalink to this headline">¶</a></h2>
+<h2>Network Management Overview<a class="headerlink" href="#network-management-overview" title="永久链接至标题">¶</a></h2>
 <a class="admonition-network-management-overview reference internal image-reference" href="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png"><img alt="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png" class="admonition-network-management-overview" src="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png" style="height: 100%;" /></a>
 </div>
 <div class="section" id="sockets-implementation-overview">
-<h2>Sockets Implementation Overview<a class="headerlink" href="#sockets-implementation-overview" title="Permalink to this headline">¶</a></h2>
+<h2>Sockets Implementation Overview<a class="headerlink" href="#sockets-implementation-overview" title="永久链接至标题">¶</a></h2>
 <a class="admonition-sockets-implementation-overview reference internal image-reference" href="../_images/ditaa-79e3734c36891f6c04d684aa5caa39f76915dbaf.png"><img alt="../_images/ditaa-79e3734c36891f6c04d684aa5caa39f76915dbaf.png" class="admonition-sockets-implementation-overview" src="../_images/ditaa-79e3734c36891f6c04d684aa5caa39f76915dbaf.png" style="height: 100%;" /></a>
 </div>
 <div class="section" id="sockets-families-and-protocols">
-<h2>Sockets Families and Protocols<a class="headerlink" href="#sockets-families-and-protocols" title="Permalink to this headline">¶</a></h2>
+<h2>Sockets Families and Protocols<a class="headerlink" href="#sockets-families-and-protocols" title="永久链接至标题">¶</a></h2>
 <a class="admonition-sockets-families-and-protocols reference internal image-reference" href="../_images/ditaa-bf1244d1a5c3d99bd8d40148d81cb3e5748c0b94.png"><img alt="../_images/ditaa-bf1244d1a5c3d99bd8d40148d81cb3e5748c0b94.png" class="admonition-sockets-families-and-protocols" src="../_images/ditaa-bf1244d1a5c3d99bd8d40148d81cb3e5748c0b94.png" style="height: 100%;" /></a>
 <div class="section" id="example-udp-send">
-<h3>Example: UDP send<a class="headerlink" href="#example-udp-send" title="Permalink to this headline">¶</a></h3>
+<h3>Example: UDP send<a class="headerlink" href="#example-udp-send" title="永久链接至标题">¶</a></h3>
 <div class="admonition-example-udp-send highlight-c"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
 <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">addr</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">s</span><span class="p">;</span>
@@ -217,7 +218,7 @@
 </div>
 </div>
 <div class="section" id="network-processing-phases">
-<h2>Network processing phases<a class="headerlink" href="#network-processing-phases" title="Permalink to this headline">¶</a></h2>
+<h2>Network processing phases<a class="headerlink" href="#network-processing-phases" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-network-processing-phases simple">
 <li>Interrupt handler - device driver fetches data from the RX ring,
 creates a network packet and queues it to the network stack for
@@ -231,10 +232,10 @@ or pushes data to the socket queue</li>
 </ul>
 </div>
 <div class="section" id="packet-routing">
-<h2>Packet Routing<a class="headerlink" href="#packet-routing" title="Permalink to this headline">¶</a></h2>
+<h2>Packet Routing<a class="headerlink" href="#packet-routing" title="永久链接至标题">¶</a></h2>
 <img alt="../_images/ditaa-528948c80a3fd78b89fb6f7bd69503a58b93a4ae.png" class="admonition-packet-routing" src="../_images/ditaa-528948c80a3fd78b89fb6f7bd69503a58b93a4ae.png" />
 <div class="section" id="routing-table-s">
-<h3>Routing Table(s)<a class="headerlink" href="#routing-table-s" title="Permalink to this headline">¶</a></h3>
+<h3>Routing Table(s)<a class="headerlink" href="#routing-table-s" title="永久链接至标题">¶</a></h3>
 <div class="admonition-routing-table highlight-shell"><div class="highlight"><pre><span></span>tavi@desktop-tavi:~/src/linux$ ip route list table main
 default via <span class="m">172</span>.30.240.1 dev eth0
 <span class="m">172</span>.30.240.0/20 dev eth0 proto kernel scope link src <span class="m">172</span>.30.249.241
@@ -256,7 +257,7 @@ tavi@desktop-tavi:~/src/linux$ ip rule list
 </div>
 </div>
 <div class="section" id="routing-policy-database">
-<h3>Routing Policy Database<a class="headerlink" href="#routing-policy-database" title="Permalink to this headline">¶</a></h3>
+<h3>Routing Policy Database<a class="headerlink" href="#routing-policy-database" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-routing-policy-database simple">
 <li>&quot;Regular&quot; routing only uses the destination address</li>
 <li>To increase flexibility a &quot;Routing Policy Database&quot; is used that
@@ -274,7 +275,7 @@ packet, etc.</li>
 </ul>
 </div>
 <div class="section" id="routing-table-processing">
-<h3>Routing table processing<a class="headerlink" href="#routing-table-processing" title="Permalink to this headline">¶</a></h3>
+<h3>Routing table processing<a class="headerlink" href="#routing-table-processing" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-routing-table-processing simple">
 <li>Special table for local addreses -&gt; route packets to sockets
 based on family, type, ports</li>
@@ -287,7 +288,7 @@ interface, link layer next-hop address, network next host address</li>
 </ul>
 </div>
 <div class="section" id="forwarding-information-database">
-<h3>Forwarding Information Database<a class="headerlink" href="#forwarding-information-database" title="Permalink to this headline">¶</a></h3>
+<h3>Forwarding Information Database<a class="headerlink" href="#forwarding-information-database" title="永久链接至标题">¶</a></h3>
 <p class="admonition-forward-information-database-removed-in-3-6">&nbsp;</p>
 <img alt="../_images/fidb-overview1.png" src="../_images/fidb-overview1.png" />
 <img alt="../_images/fidb-details1.png" class="admonition-forward-information-database-removed-in-3-6" src="../_images/fidb-details1.png" />
@@ -300,7 +301,7 @@ interface, link layer next-hop address, network next host address</li>
 </div>
 </div>
 <div class="section" id="netfilter">
-<h2>Netfilter<a class="headerlink" href="#netfilter" title="Permalink to this headline">¶</a></h2>
+<h2>Netfilter<a class="headerlink" href="#netfilter" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-netfilter simple">
 <li>Framework that implements packet filtering and NAT</li>
 <li>It uses hooks inserted in key places in the packet flow:<ul>
@@ -315,7 +316,7 @@ interface, link layer next-hop address, network next host address</li>
 </ul>
 </div>
 <div class="section" id="network-packets-skbs-struct-sk-buff">
-<h2>Network packets / skbs (struct sk_buff)<a class="headerlink" href="#network-packets-skbs-struct-sk-buff" title="Permalink to this headline">¶</a></h2>
+<h2>Network packets / skbs (struct sk_buff)<a class="headerlink" href="#network-packets-skbs-struct-sk-buff" title="永久链接至标题">¶</a></h2>
 <img alt="../_images/skb1.png" class="admonition-network-packets-skbs" src="../_images/skb1.png" />
 <div class="admonition-struct-sk-buff highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
@@ -385,7 +386,7 @@ interface, link layer next-hop address, network next host address</li>
 <a class="reference internal image-reference" href="../_images/ditaa-91073cb05a3f537eb54ab10745c307531e6795a0.png"><img alt="../_images/ditaa-91073cb05a3f537eb54ab10745c307531e6795a0.png" src="../_images/ditaa-91073cb05a3f537eb54ab10745c307531e6795a0.png" style="height: 50%;" /></a>
 </div>
 <div class="section" id="network-device">
-<h2>Network Device<a class="headerlink" href="#network-device" title="Permalink to this headline">¶</a></h2>
+<h2>Network Device<a class="headerlink" href="#network-device" title="永久链接至标题">¶</a></h2>
 <img alt="../_images/net-dev-hw1.png" class="admonition-network-device-interface" src="../_images/net-dev-hw1.png" />
 <ul class="admonition-advanced-features simple">
 <li>Scatter-Gather</li>
@@ -394,7 +395,7 @@ interface, link layer next-hop address, network next host address</li>
 </ul>
 </div>
 <div class="section" id="hardware-and-software-acceleration-techniques">
-<h2>Hardware and Software Acceleration Techniques<a class="headerlink" href="#hardware-and-software-acceleration-techniques" title="Permalink to this headline">¶</a></h2>
+<h2>Hardware and Software Acceleration Techniques<a class="headerlink" href="#hardware-and-software-acceleration-techniques" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-tcp-offload simple">
 <li>Full offload - Implement TCP/IP stack in hardware</li>
 <li>Issues:<ul>

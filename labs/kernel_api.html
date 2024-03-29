@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>内核 API &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>内核 API &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="字符设备驱动程序" href="device_drivers.html" />
     <link rel="prev" title="内核模块" href="kernel_modules.html" /> 
 </head>
@@ -158,9 +159,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="api">
-<h1>内核 API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<h1>内核 API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-1">
-<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li>熟悉基本的 Linux 内核 API</li>
 <li>描述内存分配机制</li>
@@ -168,11 +169,11 @@
 </ul>
 </div>
 <div class="section" id="section-2">
-<h2>概述<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>概述<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <p>本实验旨在帮助你掌握 Linux 内核编程的一些基本概念和函数。你需要注意，内核编程和用户空间编程有很多不同之处。内核是一个独立运行的实体，不能调用用户空间的任何库，包括 libc 在内。所以，你不能使用 printf、malloc、free、open、read、write、memcpy、strcpy 等常见的用户空间函数。简而言之，内核编程需要使用一套全新的、与用户空间 API 没有关联的独立 API，无论是 POSIX 还是 ANSI C 都不适用于内核编程。</p>
 </div>
 <div class="section" id="section-3">
-<h2>访问内存<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>访问内存<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>内存的访问和分配是内核编程中一个重要且不同的方面。内核编程与物理机器紧密相关，因此对内存管理的规则非常重要。首先，它涉及以下几种类型的内存：</p>
 <ul class="simple">
 <li>物理内存</li>
@@ -186,24 +187,24 @@
 <p>内存方面，内核与用户空间的另一个区别是堆栈（stack），内核堆栈的大小是固定且有限的。例如，Linux 的堆栈大小为 4K，而 Windows 的堆栈大小为 12K。因此，我们应该避免在堆栈上分配大型结构或进行递归调用。</p>
 </div>
 <div class="section" id="section-4">
-<h2>执行上下文<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>执行上下文<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <p>我们可以根据内核执行的情况，把上下文分为两种：进程上下文和中断上下文。如果我们是因为系统调用而在内核中运行代码，或者是在内核线程中运行，那么我们就在进程上下文中。如果我们是在响应中断或执行延迟操作的函数时运行，那么我们就在中断上下文中。</p>
 <p>一些内核 API 调用可以阻塞当前进程。常见的例子是使用信号量（semaphore）或等待条件。在这种情况下，进程被置于“等待”状态，而另一个进程在运行。当从中断上下文中调用可能导致当前进程被挂起的函数时，就会出现有趣的情况。在这种情况下，没有当前进程，因此结果是不可预测的。每当操作系统检测到这种情况时，将生成一个错误条件，导致操作系统关闭。</p>
 </div>
 <div class="section" id="section-5">
-<h2>锁定<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>锁定<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>内核编程中最重要的特性之一是并行性（parallelism）。Linux 支持具有多个处理器和内核可抢占性的 SMP 系统。这使得内核编程更加困难，因为对全局变量的访问必须与自旋锁原语（primitives）或阻塞原语同步。虽然建议使用阻塞原语，但在中断上下文中无法使用它们，因此在中断的上下文中唯一的锁定解决方案是自旋锁。</p>
 <p>自旋锁是一种实现互斥的方法。它不会让当前进程进入挂起状态，而是让它一直忙等待（在一个 c:func:<cite>while</cite> 循环中检查锁是否可用）。运行在由自旋锁保护的临界区域的代码不允许挂起当前进程（它必须遵守中断上下文中的执行条件）。此外，除非发生中断，否则 CPU 不会被释放。由于此机制，最好尽可能使持有自旋锁的时长短一些。</p>
 </div>
 <div class="section" id="preemptivity">
-<h2>可抢占性（preemptivity）<a class="headerlink" href="#preemptivity" title="Permalink to this headline">¶</a></h2>
+<h2>可抢占性（preemptivity）<a class="headerlink" href="#preemptivity" title="永久链接至标题">¶</a></h2>
 <p>Linux 使用的是可抢占内核。这里，我们需要明确区分可抢占多任务（preemptive multitasking）和可抢占内核两个概念。可抢占多任务是指，当一个进程在用户空间运行时，一旦其分配的时间片（时间片段）到期，操作系统会强制中断该进程，转而运行另一个进程。而如果一个在内核模式下运行的进程（通常是作为系统调用的结果），可以被中断以便运行另一个进程，那么我们就说这个内核具有可抢占性。</p>
 <p>由于内核的可抢占性，即使在单处理器环境下，当我们需要在可能来自不同进程上下文的两段代码之间共享资源时，我们也必须使用同步原语进行保护。</p>
 </div>
 <div class="section" id="linux-api">
-<h2>Linux 内核 API<a class="headerlink" href="#linux-api" title="Permalink to this headline">¶</a></h2>
+<h2>Linux 内核 API<a class="headerlink" href="#linux-api" title="永久链接至标题">¶</a></h2>
 <div class="section" id="section-6">
-<h3>表示错误的约定<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
+<h3>表示错误的约定<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
 <p>在 Linux 内核编程中，调用函数的返回值被用来表示成功与否，这个约定与 UNIX 编程相同：0 代表成功，非 0 值代表失败。如果失败，返回值应该是负数，如下面的例子所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">alloc_memory</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
@@ -215,11 +216,11 @@
 <p>可在 <code class="file docutils literal"><span class="pre">include/uapi/asm-generic/errno-base.h</span></code> 和 <code class="file docutils literal"><span class="pre">include/uapi/asm-generic/ernno.h</span></code> 中找到错误的详尽列表和摘要解释。</p>
 </div>
 <div class="section" id="section-7">
-<h3>字符串处理<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<h3>字符串处理<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
 <p>在 Linux 中，内核程序员可以使用常见的常规函数来处理字符串，包括：<code class="xref c c-func docutils literal"><span class="pre">strcpy()</span></code> 、 <code class="xref c c-func docutils literal"><span class="pre">strncpy()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strlcpy()</span></code> 、<code class="xref c c-func docutils literal"><span class="pre">strcat()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strncat()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strlcat()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strcmp()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strncmp()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strnicmp()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strchr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strnchr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strrchr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strstr()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">strlen()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">memset()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">memmove()</span></code>、 <code class="xref c c-func docutils literal"><span class="pre">memcmp()</span></code> 等。这些函数在 <code class="file docutils literal"><span class="pre">include/linux/string.h</span></code> 头文件中声明，并在内核的 <code class="file docutils literal"><span class="pre">lib/string.c</span></code> 文件中实现。</p>
 </div>
 <div class="section" id="printk">
-<h3>printk<a class="headerlink" href="#printk" title="Permalink to this headline">¶</a></h3>
+<h3>printk<a class="headerlink" href="#printk" title="永久链接至标题">¶</a></h3>
 <p>在内核中，与 printf 等效的函数是 printk，它在 <code class="file docutils literal"><span class="pre">include/linux/printk.h</span></code> 中定义。<code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 的语法与 <cite>printf</cite> 非常相似。<code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 的第一个参数决定了当前日志所属的日志类别：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define KERN_EMERG   &quot;&lt;0&gt;&quot;  </span><span class="cm">/* 系统不可用 */</span><span class="cp"></span>
 <span class="cp">#define KERN_ALERT   &quot;&lt;1&gt;&quot;  </span><span class="cm">/* 必须立即采取行动 */</span><span class="cp"></span>
@@ -250,7 +251,7 @@
 <p>一个特殊情况是 <code class="xref c c-func docutils literal"><span class="pre">pr_debug()</span></code>，它只在定义了 <cite>DEBUG</cite> 宏或使用动态调试时才会调用 <cite>printk</cite> 函数。</p>
 </div>
 <div class="section" id="section-8">
-<h3>内存分配<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>内存分配<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>在 Linux 内核中，只能分配驻留内存。要想分配驻留内存，可以使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用。下面是一个典型的 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/slab.h&gt;</span><span class="cp"></span>
 
@@ -270,7 +271,7 @@
 <p>与 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 函数相对应的是 <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>，它接收由 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 分配的区域作为参数。该函数不会挂起当前进程，因此可以从任何上下文中调用。</p>
 </div>
 <div class="section" id="section-9">
-<h3>列表<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<h3>列表<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
 <p>由于链表经常被使用，Linux 内核 API 提供了一种统一的方式来定义和使用链表。这涉及在我们希望将其视为链表节点的结构中使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 元素。 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 在 <code class="file docutils literal"><span class="pre">include/linux/list.h</span></code> 中定义，同时还定义了所有其他操作链表的函数。以下代码展示了 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 的定义，以及在 Linux 内核中另一个众所周知的结构中使用该类型的元素的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">list_head</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">next</span><span class="p">,</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
@@ -354,7 +355,7 @@
 <p>在 <code class="file docutils literal"><span class="pre">include/linux/list.h</span></code> 头文件中介绍并且解释了几个内核列表函数和宏定义。</p>
 </div>
 <div class="section" id="section-10">
-<h3>自旋锁<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<h3>自旋锁<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">spinlock_t</span></code> （在 <code class="file docutils literal"><span class="pre">linux/spinlock.h</span></code> 中定义）是在 Linux 中实现自旋锁概念的基本类型。它描述了自旋锁，与自旋锁相关的操作有 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_init()</span></code> 、 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 、 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code>。以下是一个使用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/spinlock.h&gt;</span><span class="cp"></span>
 
@@ -410,7 +411,7 @@
 </div>
 </div>
 <div class="section" id="mutex">
-<h3>互斥锁（Mutex）<a class="headerlink" href="#mutex" title="Permalink to this headline">¶</a></h3>
+<h3>互斥锁（Mutex）<a class="headerlink" href="#mutex" title="永久链接至标题">¶</a></h3>
 <p>互斥锁是一种 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mutex</span></code> 类型的变量（定义在 <code class="file docutils literal"><span class="pre">linux/mutex.h</span></code> 中）。下面列出了用于处理互斥锁的函数和宏：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/mutex.h&gt;</span><span class="cp"></span>
 
@@ -428,7 +429,7 @@
 <p>这些操作与在用户空间中进行的经典互斥锁操作或自旋锁操作类似：在进入临界区之前获取互斥锁，在退出临界区之后释放互斥锁。不同于自旋锁，这些操作只能在进程上下文中使用。</p>
 </div>
 <div class="section" id="section-11">
-<span id="atomic-variables"></span><h3>原子变量<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<span id="atomic-variables"></span><h3>原子变量<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <p>通常，你只需要对简单的变量（如计数器）进行访问同步。为此，可以使用 <code class="xref c c-type docutils literal"><span class="pre">atomic_t</span></code> 类型（定义在 <code class="file docutils literal"><span class="pre">include/linux/atomic.h</span></code> 中），它保存一个整数值。下面是一些可以对 <code class="xref c c-type docutils literal"><span class="pre">atomic_t</span></code> 变量执行的操作。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/atomic.h&gt;</span><span class="cp"></span>
 
@@ -444,7 +445,7 @@
 </pre></div>
 </div>
 <div class="section" id="section-12">
-<h4>原子变量的使用<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h4>
+<h4>原子变量的使用<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h4>
 <p>原子变量的常见使用方式是存储一个操作的状态（例如，一个标志）。因此，我们可以使用原子变量来标记独占操作。例如，我们可以考虑一个原子变量可以具有 LOCKED 和 UNLOCKED 两个值，如果该变量等于 LOCKED，则特定函数应返回 -EBUSY。下面的代码示例展示了这种用法：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define LOCKED 0</span>
 <span class="cp">#define UNLOCKED 1</span>
@@ -530,7 +531,7 @@
 </div>
 </div>
 <div class="section" id="section-13">
-<h3>原子位操作<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<h3>原子位操作<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <p>内核提供了一组函数（在 <code class="file docutils literal"><span class="pre">asm/bitops.h</span></code> 中），可以以原子方式修改或测试位（bit）。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;asm/bitops.h&gt;</span><span class="cp"></span>
 
@@ -546,9 +547,9 @@
 </div>
 </div>
 <div class="section" id="section-14">
-<h2>练习<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -582,13 +583,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-14">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-15">
-<h3>0. 简介<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<h3>0. 简介<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> 在 Linux 内核中查找以下符号的定义：</p>
 <blockquote>
 <div><ul class="simple">
@@ -603,7 +604,7 @@ tools/labs $ make boot
 </div></blockquote>
 </div>
 <div class="section" id="linux">
-<h3>1. Linux 内核中的内存分配<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<h3>1. Linux 内核中的内存分配<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h3>
 <p>生成名为 <strong>1-mem</strong> 的任务骨架，并浏览 <code class="file docutils literal"><span class="pre">mem.c</span></code> 文件的内容。观察使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 函数进行内存分配的情况。</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -613,12 +614,12 @@ tools/labs $ make boot
 </ol>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">请参阅实验中的 <a class="reference internal" href="#section-8">内存分配</a> 部分。</p>
 </div>
 </div>
 <div class="section" id="section-16">
-<h3>2. 在原子上下文中睡眠<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h3>
+<h3>2. 在原子上下文中睡眠<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h3>
 <p>生成名为 <strong>2-sched-spin</strong> 的任务骨架，并浏览 <code class="file docutils literal"><span class="pre">sched-spin.c</span></code> 文件的内容。</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -630,20 +631,20 @@ tools/labs $ make boot
 </div></blockquote>
 <p>现在你应该会遇到一个错误。查看堆栈跟踪。错误的原因是什么？</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">在错误消息中，跟踪包含 <code class="xref c c-macro docutils literal"><span class="pre">BUG</span></code> 的行查看对错误的描述。在原子上下文中不允许睡眠。在这里原子上下文是处于自旋锁进行锁定操作和解锁操作之间的部分。</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last"><code class="xref c c-func docutils literal"><span class="pre">schedule_timeout()</span></code> 函数与 <code class="xref c c-macro docutils literal"><span class="pre">set_current_state</span></code> 宏结合使用，强制当前进程等待了 5 秒钟。</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">请查阅 <a class="reference internal" href="#section-4">执行上下文</a> 、<a class="reference internal" href="#section-5">锁定</a> 和 <a class="reference internal" href="#section-10">自旋锁</a> 部分。</p>
 </div>
 </div>
 <div class="section" id="section-17">
-<h3>3. 使用内核内存<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<h3>3. 使用内核内存<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h3>
 <p>为名为 <strong>3-memory</strong> 的任务生成骨架，并浏览 <code class="file docutils literal"><span class="pre">memory.c</span></code> 文件的内容。请注意带有 <code class="docutils literal"><span class="pre">TODO</span></code> 标记的注释。你需要分配 4 个类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_info</span></code> 的结构体并将其初始化（在 <code class="xref c c-func docutils literal"><span class="pre">memory_init()</span></code> 中），然后打印并释放它们（在 <code class="xref c c-func docutils literal"><span class="pre">memory_exit()</span></code> 中）。</p>
 <blockquote>
 <div><ol class="arabic">
@@ -658,28 +659,28 @@ tools/labs $ make boot
 <li>当前进程的 PID，其可以从 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体中检索到，该结构体由 <code class="xref c c-macro docutils literal"><span class="pre">current</span></code> 宏返回。</li>
 </ul>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">在 <code class="xref c c-type docutils literal"><span class="pre">task_struct</span></code> 中搜索 <code class="xref c c-type docutils literal"><span class="pre">pid</span></code>。</p>
 </div>
 <ul class="simple">
 <li>当前进程的父进程的 PID。</li>
 </ul>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体中搜索相关字段。查找“parent”。</p>
 </div>
 <ul class="simple">
 <li>相对于当前进程，进程列表中的下一个进程的 PID。</li>
 </ul>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> 宏，该宏返回指向下一个进程的指针（即 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体）。</p>
 </div>
 <ul class="simple">
 <li>相对于当前进程，下一个进程的下一个进程的 PID。</li>
 </ul>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">调用 <code class="xref c c-macro docutils literal"><span class="pre">next_task</span></code> 宏 2 次。</p>
 </div>
 </li>
@@ -693,7 +694,7 @@ tools/labs $ make boot
 </ol>
 </div></blockquote>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <ul class="last simple">
 <li>你可以使用 <code class="xref c c-macro docutils literal"><span class="pre">current</span></code> 宏访问当前进程。</li>
 <li>在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体中查找相关字段（<code class="xref c c-member docutils literal"><span class="pre">pid</span></code>、<code class="xref c c-member docutils literal"><span class="pre">parent</span></code>）。</li>
@@ -701,7 +702,7 @@ tools/labs $ make boot
 </ul>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 结构体包含两个字段用于指定任务的父进程：</p>
 <ul class="simple">
 <li><code class="xref c c-member docutils literal"><span class="pre">real_parent</span></code> 指向创建任务的进程，或者如果父进程已完成执行，则指向具有 pid 1（init）的进程。</li>
@@ -710,12 +711,12 @@ tools/labs $ make boot
 <p class="last">通常情况下，这两个字段的值是相同的，但在某些情况下它们可能不同，例如使用 <code class="xref c c-func docutils literal"><span class="pre">ptrace()</span></code> 系统调用时。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">请查阅实验中的 <a class="reference internal" href="#section-8">内存分配</a> 小节。</p>
 </div>
 </div>
 <div class="section" id="section-18">
-<h3>4. 使用内核列表<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h3>
+<h3>4. 使用内核列表<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h3>
 <p>生成名为 <strong>4-list</strong> 的任务骨架。浏览 <code class="file docutils literal"><span class="pre">list.c</span></code> 文件的内容，并注意标有 <code class="docutils literal"><span class="pre">TODO</span></code> 的注释。当前的进程将在列表中添加前面练习中的四个结构体。列表将在加载模块时在 <code class="xref c c-func docutils literal"><span class="pre">task_info_add_for_current()</span></code> 函数中构建。列表将在 <code class="xref c c-func docutils literal"><span class="pre">list_exit()</span></code> 函数和 <code class="xref c c-func docutils literal"><span class="pre">task_info_purge_list()</span></code> 函数中打印和删除。</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -725,12 +726,12 @@ tools/labs $ make boot
 </ol>
 </div></blockquote>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">回顾一下实验中的 <a class="reference internal" href="#section-9">列表</a> 部分。在从列表中删除项目时，你需要使用 <code class="xref c c-macro docutils literal"><span class="pre">list_for_each_safe</span></code> 或 <code class="xref c c-macro docutils literal"><span class="pre">list_for_each_entry_safe</span></code> 宏。</p>
 </div>
 </div>
 <div class="section" id="section-19">
-<h3>5. 使用内核列表进行进程处理<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h3>
+<h3>5. 使用内核列表进行进程处理<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h3>
 <p>生成名为 <strong>5-list-full</strong> 的任务骨架。浏览 <code class="file docutils literal"><span class="pre">list-full.c</span></code> 文件的内容，并注意标有 <code class="docutils literal"><span class="pre">TODO</span></code> 的注释。除了 <code class="file docutils literal"><span class="pre">4-list</span></code> 的功能外，我们还添加了以下内容：</p>
 <blockquote>
 <div><ul>
@@ -758,7 +759,7 @@ tools/labs $ make boot
 </li>
 <li><p class="first">(TODO 2) 更改列表中的一个项目的字段，使其不会过期。它不应满足 <code class="xref c c-func docutils literal"><span class="pre">task_info_remove_expired()</span></code> 中的任何过期条件。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">要想完成 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code>，可以从列表中提取第一个元素（由 <code class="xref c c-member docutils literal"><span class="pre">head.next</span></code> 引用），并将其 <code class="xref c c-member docutils literal"><span class="pre">count</span></code> 字段设置为足够大的值。使用 <code class="xref c c-func docutils literal"><span class="pre">atomic_set()</span></code> 函数。</p>
 </div>
 </li>
@@ -768,7 +769,7 @@ tools/labs $ make boot
 </div></blockquote>
 </div>
 <div class="section" id="section-20">
-<h3>6. 同步列表工作<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h3>
+<h3>6. 同步列表工作<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h3>
 <p>为名为 <strong>6-list-sync</strong> 的任务生成骨架。</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -778,16 +779,16 @@ tools/labs $ make boot
 </ol>
 </div></blockquote>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p class="last">始终锁定数据，而不是代码！</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">请阅读实验的 <a class="reference internal" href="#section-10">自旋锁</a> 小节。</p>
 </div>
 </div>
 <div class="section" id="section-21">
-<h3>7. 在我们的列表模块中测试模块调用<a class="headerlink" href="#section-21" title="Permalink to this headline">¶</a></h3>
+<h3>7. 在我们的列表模块中测试模块调用<a class="headerlink" href="#section-21" title="永久链接至标题">¶</a></h3>
 <p>为名为 <strong>7-list-test</strong> 的任务生成骨架，并浏览 <code class="file docutils literal"><span class="pre">list-test.c</span></code> 文件的内容。我们将使用它作为测试模块。它将调用由 <strong>6-list-sync</strong> 任务导出的函数。在 <code class="file docutils literal"><span class="pre">list-test.c</span></code> 文件中，已经用 <strong>extern</strong> 标记出了导出的函数。</p>
 <p>取消注释 <code class="file docutils literal"><span class="pre">7-list-test.c</span></code> 中的注释代码。查找 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code>。</p>
 <p>要从位于 <code class="file docutils literal"><span class="pre">6-list-sync/</span></code> 目录中的模块导出上述函数，需要执行以下步骤：</p>
