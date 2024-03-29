@@ -87,7 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/networking.html">网络</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/arm_kernel_development.html">ARM 内核开发</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/memory_mapping.html">内存映射</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/device_model.html">Linux Device Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/device_model.html">Linux 设备模型</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/kernel_profiling.html">Kernel Profiling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">有用信息</span></p>
@@ -1810,35 +1810,35 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/device_model.html">Linux Device Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#overview">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/device_model.html">Linux 设备模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#section-1">概述</a></li>
 <li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#sysfs">sysfs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#basic-structures-in-linux-devices">Basic Structures in Linux Devices</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#the-kobject-structure">The kobject structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#buses">Buses</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#devices">Devices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#drivers">Drivers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#classes">Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#hotplug">Hotplug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#linux-1">Linux 设备中的基本结构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#kobject">kobject 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-2">总线</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-3">设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-4">驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-5">类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-6">热插拔</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#plug-and-play">Plug and Play</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#pnp-bus">PNP bus</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#pnp-operations">PNP operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#adding-a-driver">Adding a driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#removing-a-driver">Removing a driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#adding-a-new-device">Adding a new device</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#removing-a-device">Removing a device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#section-7">即插即用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#pnp">PNP 总线</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#pnp-1">PNP 操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-8">添加驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-9">移除驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-10">添加新设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-11">移除设备</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#intro">0. Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#bus-implementation">1. Bus implementation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#add-type-and-version-device-attributes">2. Add type and version device attributes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#add-del-and-add-bus-attributes">3. Add del and add bus attributes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#register-the-bex-misc-driver">4. Register the bex misc driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#register-misc-device-in-the-bex-misc-probe-function">5. Register misc device in the bex_misc probe function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#monitor-uevent-notifications">6. Monitor uevent notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/device_model.html#section-12">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-13">0. 引言</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-14">1. 总线实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#section-15">2. 添加类型和版本设备属性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#del-add">3. 添加 del 和 add 总线属性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#bex">4. 注册 bex 杂项驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#bex-misc-probe">5. 在 bex_misc probe 函数中注册杂项设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/device_model.html#uevent">6. 监视 uevent 通知</a></li>
 </ul>
 </li>
 </ul>

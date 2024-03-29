@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Linux Device Model &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Linux 设备模型 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -88,35 +88,35 @@
 <li class="toctree-l1"><a class="reference internal" href="networking.html">网络</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arm_kernel_development.html">ARM 内核开发</a></li>
 <li class="toctree-l1"><a class="reference internal" href="memory_mapping.html">内存映射</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Linux Device Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Linux 设备模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#section-1">概述</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#sysfs">sysfs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#basic-structures-in-linux-devices">Basic Structures in Linux Devices</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#the-kobject-structure">The kobject structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#buses">Buses</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#devices">Devices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#drivers">Drivers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hotplug">Hotplug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux-1">Linux 设备中的基本结构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kobject">kobject 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">总线</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">热插拔</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#plug-and-play">Plug and Play</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#pnp-bus">PNP bus</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pnp-operations">PNP operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adding-a-driver">Adding a driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#removing-a-driver">Removing a driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adding-a-new-device">Adding a new device</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#removing-a-device">Removing a device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-7">即插即用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pnp">PNP 总线</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pnp-1">PNP 操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-8">添加驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-9">移除驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-10">添加新设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-11">移除设备</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#intro">0. Intro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bus-implementation">1. Bus implementation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-type-and-version-device-attributes">2. Add type and version device attributes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-del-and-add-bus-attributes">3. Add del and add bus attributes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#register-the-bex-misc-driver">4. Register the bex misc driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#register-misc-device-in-the-bex-misc-probe-function">5. Register misc device in the bex_misc probe function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#monitor-uevent-notifications">6. Monitor uevent notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#section-12">练习</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-13">0. 引言</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-14">1. 总线实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-15">2. 添加类型和版本设备属性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#del-add">3. 添加 del 和 add 总线属性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bex">4. 注册 bex 杂项驱动程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bex-misc-probe">5. 在 bex_misc probe 函数中注册杂项设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uevent">6. 监视 uevent 通知</a></li>
 </ul>
 </li>
 </ul>
@@ -145,7 +145,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Linux Device Model</li>
+      <li class="breadcrumb-item active">Linux 设备模型</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/labs/device_model.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -155,105 +155,66 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="linux-device-model">
-<h1>Linux Device Model<a class="headerlink" href="#linux-device-model" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>Plug and Play is a technology that offers support for automatically adding and
-removing devices to the system. This reduces conflicts with the resources they
-use by automatically configuring them at system startup. In order to achieve
-these goals, the following features are required:</p>
+  <div class="section" id="linux">
+<h1>Linux 设备模型<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="section-1">
+<h2>概述<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<p>即插即用（Plug and Play）是一种技术，它支持自动添加和移除设备到系统中。它通过在系统启动时自动配置设备，来减少与这些设备使用的资源相关的冲突。为了实现这些目标，需要具备以下特性：</p>
 <blockquote>
 <div><ul class="simple">
-<li>Automatic detection of adding and removing devices in the system (the device
-and its bus must notify the appropriate driver that a configuration change
-occurred).</li>
-<li>Resource management (addresses, irq lines, DMA channels, memory areas),
-including resource allocation to devices and solving conflicts that may arise.</li>
-<li>Devices must allow for software configuration (device resources - ports,
-interrupts, DMA resources - must allow for driver assignment).</li>
-<li>The drivers required for new devices must be loaded automatically by the
-operating system when needed.</li>
-<li>When the device and its bus allow, the system should be able to add or
-remove the device from the system while it is running, without having to reboot
-the system (hotplug).</li>
+<li>自动检测系统中添加和移除的设备（设备及其总线必须通知相应的驱动程序发生了配置更改）。</li>
+<li>资源管理（地址、中断线、DMA 通道、内存区域），包括为设备分配资源并解决可能出现的冲突。</li>
+<li>设备必须允许进行软件配置（设备资源（端口、中断以及 DMA 资源）必须允许驱动程序进行分配）。</li>
+<li>操作系统在需要时必须自动加载新设备所需的驱动程序。</li>
+<li>如果设备及其总线允许的话，系统应能够在运行时添加或移除设备，而无需重新启动系统（热插拔）。</li>
 </ul>
 </div></blockquote>
-<p>For a system to support plug and play, the BIOS, operating system and the device
-must support this technology. The device must have an ID that will provide to the
-driver for identification, and the operating system must be able to identify
-these configuration changes as they appear.</p>
-<p>Plug and play devices are: PCI devices (network cards), USB (keyboard, mouse,
-printer), etc.</p>
-<p>Prior to version 2.6, the kernel did not have a unified model to get
-information about devices.
-For this reason, a model for Linux devices, Linux Device Model, was developed.</p>
-<p>The primary purpose of this model is to maintain internal data structures that
-reflect the state and structure of the system. Such information includes what
-devices are in the system, how they are in terms of power management, what bus
-they are attached to, what drivers they have, along with the structure of the
-buses, devices, drivers in the system.</p>
-<p>To maintain this information, the kernel uses the following entities:</p>
+<p>要支持即插即用，BIOS、操作系统和设备都必须支持这项技术。设备必须具有提供给驱动程序进行识别的 ID，并且操作系统必须能够在配置更改出现时进行识别。</p>
+<p>即插即用设备包括：PCI 设备（网卡）、USB（键盘、鼠标、打印机）等。</p>
+<p>在 2.6 版本之前，内核没有统一的模型用来获取有关设备的信息。因此，Linux 开发团队开发了 Linux 设备模型，用于 Linux 设备。</p>
+<p>该模型的主要目的是维护反映系统状态和结构的内部数据结构。这些信息包括系统中有哪些设备、它们在电源管理方面的状态如何，连接到哪个总线，有哪些驱动程序，以及系统中总线、设备、驱动程序的结构。</p>
+<p>为了维护这些信息，内核使用以下对象：</p>
 <blockquote>
 <div><ul class="simple">
-<li>device - a physical device that is attached to a bus</li>
-<li>driver - a software entity that can be associated with a device and performs
-operations with it</li>
-<li>bus - a device to which other devices can be attached</li>
-<li>class - a type of device that has a similar behavior; There is a class for
-disks, partitions, serial ports, etc.</li>
-<li>subsystem - a view on the structure of the system; Kernel subsystems
-include devices (hierarchical view of all devices in the system), buses (bus
-view of devices according to how they are attached to buses), classes, etc.</li>
+<li>设备（device）——连接到总线的物理设备</li>
+<li>驱动程序（driver）——可与设备关联并对其执行操作的软件对象</li>
+<li>总线（bus）——可连接其他设备的设备</li>
+<li>类别（class）——具有类似行为的设备类型；存在用于磁盘、分区、串口等的类别。</li>
+<li>子系统（subsystem）——对系统结构的视图；内核子系统包括设备（对系统中所有设备的分层视图）、总线（根据设备连接到总线的方式的总线视图）、类别等。</li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="sysfs">
 <h2>sysfs<a class="headerlink" href="#sysfs" title="Permalink to this headline">¶</a></h2>
-<p>The kernel provides a representation of its model in userspace through the
-sysfs virtual file system. It is usually mounted in the /sys directory and
-contains the following subdirectories:</p>
+<p>内核通过 sysfs 虚拟文件系统在用户空间提供其模型的表示。它通常挂载在 /sys 目录下，包含以下子目录：</p>
 <blockquote>
 <div><ul class="simple">
-<li>block - all block devices available in the system (disks, partitions)</li>
-<li>bus - types of bus to which physical devices are connected (pci, ide, usb)</li>
-<li>class - drivers classes that are available in the system (net, sound, usb)</li>
-<li>devices - the hierarchical structure of devices connected to the system</li>
-<li>firmware - information from system firmware (ACPI)</li>
-<li>fs - information about mounted file systems</li>
-<li>kernel - kernel status information (logged-in users, hotplug)</li>
-<li>module - the list of modules currently loaded</li>
-<li>power - information related to the power management subsystem</li>
+<li>block——系统中所有可用的块设备（磁盘、分区）</li>
+<li>bus——物理设备连接的总线类型（pci、ide、usb）</li>
+<li>class——系统中可用的驱动程序类别（网络、声音、usb）</li>
+<li>devices——连接到系统的设备的层次结构</li>
+<li>firmware——来自系统固件（ACPI）的信息</li>
+<li>fs——挂载的文件系统的信息</li>
+<li>kernel——内核状态信息（已登录用户、热插拔）</li>
+<li>module——当前加载的模块列表</li>
+<li>power——与电源管理子系统相关的信息</li>
 </ul>
 </div></blockquote>
-<p>As you can see, there is a correlation between the kernel data structures
-within the described model and the subdirectories in the sysfs virtual file
-system. Although this likeness may lead to confusion between the two concepts,
-they are different. The kernel device model can work without the sysfs file
-system, but the reciprocal is not true.</p>
-<p>The sysfs information is found in files that contain an attribute. Some
-standard attributes (represented by files or directories with the same name)
-are as follows:</p>
+<p>可以看出，在 sysfs 虚拟文件系统中的子目录与之前所描述的模型中的内核数据结构之间存在关联。尽管这种相似性可能导致你对两个概念产生混淆，但它们是不同的。内核设备模型可以在没有 sysfs 文件系统的情况下工作，但反之则不成立。</p>
+<p>sysfs 信息存储在包含属性的文件中。一些标准属性（由具有相同名称的文件或目录表示）如下：</p>
 <blockquote>
 <div><ul class="simple">
-<li>dev - Major and minor device identifier. It can be used to automatically
-create entries in the /dev directory</li>
-<li>device - a symbolic link to the directory containing devices; It can be
-used to discover the hardware devices that provide a particular service (for
-example, the ethi PCI card)</li>
-<li>driver - a symbolic link to the driver directory (located in
-/sys/bus/*/drivers )</li>
+<li>dev——主设备号和次设备号。可用于自动创建 /dev 目录中的条目。</li>
+<li>device——指向包含设备的目录的符号链接；可用于发现提供特定服务的硬件设备（例如 ethi PCI 卡）。</li>
+<li>driver——指向驱动程序目录的符号链接（位于 /sys/bus/*/drivers 中）。</li>
 </ul>
 </div></blockquote>
-<p>Other attributes are available, depending on the bus and driver used.</p>
+<p>根据使用的总线和驱动程序，还有其他可用的属性。</p>
 <img alt="../_images/ditaa-a5f399cb84561893770eb45ceeb827ce6d4a2336.png" src="../_images/ditaa-a5f399cb84561893770eb45ceeb827ce6d4a2336.png" />
 </div>
-<div class="section" id="basic-structures-in-linux-devices">
-<h2>Basic Structures in Linux Devices<a class="headerlink" href="#basic-structures-in-linux-devices" title="Permalink to this headline">¶</a></h2>
-<p>Linux Device Model provides a number of structures to ensure the interaction
-between a hardware device and a device driver. The whole model is based on
-kobject structure. Hierarchies are built using this structure and the following
-structures are implemented:</p>
+<div class="section" id="linux-1">
+<h2>Linux 设备中的基本结构<a class="headerlink" href="#linux-1" title="Permalink to this headline">¶</a></h2>
+<p>Linux 设备模型提供了一些结构，以确保硬件设备和设备驱动程序之间的交互。整个模型基于 kobject 结构构建层级，实现了以下结构：</p>
 <blockquote>
 <div><ul class="simple">
 <li>struct bus_type</li>
@@ -262,13 +223,10 @@ structures are implemented:</p>
 </ul>
 </div></blockquote>
 <img alt="../_images/ditaa-f7ee56960e76c3e80fcbe59fafa38c3d93eac261.png" src="../_images/ditaa-f7ee56960e76c3e80fcbe59fafa38c3d93eac261.png" />
-<div class="section" id="the-kobject-structure">
-<h3>The kobject structure<a class="headerlink" href="#the-kobject-structure" title="Permalink to this headline">¶</a></h3>
-<p>A kobject structure does not perform a single function. This structure is
-usually integrated into a larger one. A kobject structure actually
-incorporates a set of features that will be offered to a higher abstraction
-object in the Linux Device Model hierarchy.</p>
-<p>For example, the cdev structure has the following definition:</p>
+<div class="section" id="kobject">
+<h3>kobject 结构<a class="headerlink" href="#kobject" title="Permalink to this headline">¶</a></h3>
+<p>kobject 结构本身并不执行单一功能。通常，这个结构被整合到更大的结构中。kobject 结构实际上包含了一组功能，将提供给 Linux 设备模型层次结构中更高级别的抽象对象。</p>
+<p>例如，cdev 结构具有以下定义：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">cdev</span> <span class="p">{</span>
         <span class="k">struct</span> <span class="n">kobject</span> <span class="n">kob</span><span class="p">;</span>
         <span class="k">struct</span> <span class="n">module</span> <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
@@ -279,8 +237,8 @@ object in the Linux Device Model hierarchy.</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Note that this structure includes a <code class="docutils literal"><span class="pre">kobject</span></code> structure field.</p>
-<p>A kobject structure is defined as follows:</p>
+<p>请注意，这个结构包含了一个 <code class="docutils literal"><span class="pre">kobject</span></code> 结构字段。</p>
+<p>kobject 结构定义如下：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">kobject</span> <span class="p">{</span>
         <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">name</span><span class="p">;</span>
         <span class="k">struct</span> <span class="n">list_head</span>        <span class="n">entry</span><span class="p">;</span>
@@ -297,38 +255,16 @@ object in the Linux Device Model hierarchy.</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>As we can see, the kobject structures are in a hierarchy: an object has a
-parent and holds a kset member, which contains objects on the same level.</p>
-<p>Working with the structure involves initializing it with the
-<code class="xref c c-func docutils literal"><span class="pre">kobject_init()</span></code> function.
-Also in the initialization process it is necessary to set the name of the
-<code class="docutils literal"><span class="pre">kobject</span></code> structure, which will appear in sysfs, using the
-<code class="xref c c-func docutils literal"><span class="pre">kobject_set_name()</span></code> function.</p>
-<p>Any operation on a kobject is done by incrementing its internal counter using
-<code class="xref c c-func docutils literal"><span class="pre">kobject_get()</span></code>, or decrementing if it is no longer used using
-<code class="xref c c-func docutils literal"><span class="pre">kobject_put()</span></code>.
-Thus, a kobject object will only be released when its internal counter reaches 0.
-A method of notifying this is needed so that the resources associated with the
-device structure which included the kobject structure are released
-(for example, cdev).
-The method is called <code class="docutils literal"><span class="pre">release</span></code> and is associated with the object via the ktype
-field (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kobj_type</span></code>).</p>
-<p>The kobject structure is the basic structure of the Linux Device Model.
-The structures in the higher levels of the model are <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code>,
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> and <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code>.</p>
+<p>可以看出，kobject 结构是有层次的：每一个对象都有一个父对象，并持有一个 kset 成员，其中包含相同级别的对象。</p>
+<p>要想使用这个结构，你需要使用 <code class="xref c c-func docutils literal"><span class="pre">kobject_init()</span></code> 函数对其进行初始化。在初始化过程中，你需要使用 kobject_set_name 函数设置 <code class="docutils literal"><span class="pre">kobject</span></code> 结构的名称，该名称将显示在 sysfs 中。</p>
+<p>对 kobject 的任何操作都是通过增加其内部计数器来完成的，这些操作使用 <code class="xref c c-func docutils literal"><span class="pre">kobject_get()</span></code> 函数来增加内部计数器，如果不再使用，则应使用 <code class="xref c c-func docutils literal"><span class="pre">kobject_put()</span></code> 函数进行减少。因此，只有当 kobject 对象的内部计数器达到 0 时，它才会被释放。我们需要一种用于通知的方法，以释放与包含 kobject 结构的设备结构（例如 cdev）相关联的资源。该方法是 <code class="docutils literal"><span class="pre">release</span></code>，其通过 ktype 字段 (<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kobj_type</span></code> 类型) 与该对象关联。</p>
+<p>kobject 结构是 Linux 设备模型的基本结构。模型中较高级别的结构包括 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code>。</p>
 </div>
-<div class="section" id="buses">
-<h3>Buses<a class="headerlink" href="#buses" title="Permalink to this headline">¶</a></h3>
-<p>A bus is a communication channel between the processor and an input/output
-device. To ensure that the model is generic, all input/output devices are
-connected to the processor via such a bus (even if it can be a virtual one
-without a physical hardware correspondent).</p>
-<p>When adding a system bus, it will appear in the sysfs file system in
-<code class="docutils literal"><span class="pre">/sys/bus</span></code>.
-As with kobjects, buses can be organized into hierarchies and will be represented
-in sysfs.</p>
-<p>In the Linux Device Model, a bus is represented by the structure
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code>:</p>
+<div class="section" id="section-2">
+<h3>总线<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h3>
+<p>总线是处理器与输入/输出设备之间的通信通道。为了确保模型能够通用，所有输入/输出设备都通过这样的总线连接到处理器（即使它可以是没有物理硬件对应的虚拟总线）。</p>
+<p>在添加系统总线后，它将出现在 sysfs 文件系统的 <code class="docutils literal"><span class="pre">/sys/bus</span></code> 目录中。与 kobjects 一样，总线可以组织成层次结构，并在 sysfs 中表示。</p>
+<p>在 Linux 设备模型中，总线由结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code> 表示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">bus_type</span> <span class="p">{</span>
         <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">name</span><span class="p">;</span>
         <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">dev_name</span><span class="p">;</span>
@@ -346,19 +282,14 @@ in sysfs.</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>It can be noticed that a bus has a name, lists of default attributes, a number
-of specific functions, and the driver's private data.
-The <code class="docutils literal"><span class="pre">uevent</span></code> function (formerly <code class="docutils literal"><span class="pre">hotplug</span></code>) is used with hotplug devices.</p>
-<p>Bus operations are the registration, the implementation of the operations
-described in the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code> structure and the iteration and
-inspection of the devices connected to the bus.</p>
-<p>A bus is registered using <code class="xref c c-func docutils literal"><span class="pre">bus_register()</span></code>, and unregistered using
-<code class="xref c c-func docutils literal"><span class="pre">bus_unregister()</span></code>.</p>
-<p>Implementation example:</p>
+<p>可以注意到，总线具有名称、默认属性列表、一些特定函数和驱动程序的私有数据。 <code class="docutils literal"><span class="pre">uevent</span></code> 函数（以前称为 <code class="docutils literal"><span class="pre">hotplug</span></code>）用于热插拔设备。</p>
+<p>总线操作包括注册、实现在结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code> 中描述的操作，以及迭代和检查连接到总线上的设备。</p>
+<p>我们使用 <code class="xref c c-func docutils literal"><span class="pre">bus_register()</span></code> 函数进行总线注册，并使用 <code class="xref c c-func docutils literal"><span class="pre">bus_unregister()</span></code> 函数取消注册。</p>
+<p>实现示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/device.h&gt;</span><span class="cp"></span>
 <span class="cm">/* mybus.c */</span>
 
-<span class="c1">//bus type</span>
+<span class="c1">// 总线类型</span>
 <span class="k">struct</span> <span class="n">bus_type</span> <span class="n">my_bus_type</span> <span class="o">=</span> <span class="p">{</span>
   <span class="p">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s">&quot;mybus&quot;</span><span class="p">,</span>
   <span class="p">.</span><span class="n">match</span>  <span class="o">=</span> <span class="n">my_match</span><span class="p">,</span>
@@ -384,19 +315,18 @@ inspection of the devices connected to the bus.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The functions that will normally be initialized within a bus_type structure are
-<code class="docutils literal"><span class="pre">match</span></code> and <code class="docutils literal"><span class="pre">uevent</span></code>:</p>
+<p>通常在 bus_type 结构中初始化的函数包括 <code class="docutils literal"><span class="pre">match</span></code> 和 <code class="docutils literal"><span class="pre">uevent</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/device.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/string.h&gt;</span><span class="cp"></span>
 <span class="cm">/* mybus.c */</span>
 
-<span class="c1">// match devices to drivers; just do a simple name test</span>
+<span class="c1">// 将设备与驱动程序进行匹配；只需进行简单的名称测试</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">my_match</span><span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">device_driver</span> <span class="o">*</span><span class="n">driver</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">return</span> <span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="n">dev_name</span><span class="p">(</span><span class="n">dev</span><span class="p">),</span> <span class="n">driver</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">driver</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">));</span>
 <span class="p">}</span>
 
-<span class="c1">// respond to hotplug user events; add environment variable DEV_NAME</span>
+<span class="c1">// 响应热插拔用户事件；添加环境变量 DEV_NAME</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">my_uevent</span><span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">kobj_uevent_env</span> <span class="o">*</span><span class="n">env</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">add_uevent_var</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s">&quot;DEV_NAME=%s&quot;</span><span class="p">,</span> <span class="n">dev_name</span><span class="p">(</span><span class="n">dev</span><span class="p">));</span>
@@ -404,20 +334,9 @@ inspection of the devices connected to the bus.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">match</span></code> function is used when a new device or a new driver is added to the
-bus. Its role is to make a comparison between the device ID and the driver ID.
-The <code class="docutils literal"><span class="pre">uevent</span></code> function is called before generating a hotplug in user-space and
-has the role of adding environment variables.</p>
-<p>Other possible operations on a bus are iterating over the drivers or devices
-attached to it.
-Although we can not directly access them (lists of drivers and devices
-being stored in the private data of the driver, the <code class="docutils literal"><span class="pre">subsys_private</span> <span class="pre">*p</span></code> field),
-these can be iterated using the <code class="xref c c-macro docutils literal"><span class="pre">bus_for_each_dev</span></code> and
-<code class="xref c c-macro docutils literal"><span class="pre">bus_for_each_drv</span></code> macros.</p>
-<p>The Linux Device Model interface allows you to create attributes for the
-associated objects. These attributes will have a corresponding file in the
-bus subdirectory in sysfs. The attributes associated with a bus are
-described by the bus_attribute structure :</p>
+<p><code class="docutils literal"><span class="pre">match</span></code> 函数在向总线添加新设备或新驱动程序时使用。其作用是比较设备 ID 和驱动程序 ID。 <code class="docutils literal"><span class="pre">uevent</span></code> 函数在生成用户空间的热插拔事件之前调用，其作用是添加环境变量。</p>
+<p>总线上的其他操作可能包括遍历附加的驱动程序或设备。虽然我们无法直接访问它们（驱动程序和设备的列表存储在驱动程序的私有数据中，即 <code class="docutils literal"><span class="pre">subsys_private</span> <span class="pre">*p</span></code> 字段），但我们可以使用 <code class="xref c c-macro docutils literal"><span class="pre">bus_for_each_dev</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">bus_for_each_drv</span></code> 宏来对其进行遍历。</p>
+<p>你可以通过 Linux 设备模型接口为关联的对象创建属性。这些属性在 sysfs 中的 bus 子目录中具有相应的文件。与总线相关联的属性由 bus_attribute 结构描述。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">bus_attribute</span> <span class="p">{</span>
          <span class="k">struct</span> <span class="n">attribute</span>        <span class="n">attr</span><span class="p">;</span>
          <span class="kt">ssize_t</span> <span class="p">(</span><span class="o">*</span><span class="n">show</span><span class="p">)(</span><span class="k">struct</span> <span class="n">bus_type</span> <span class="o">*</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">);</span>
@@ -425,35 +344,33 @@ described by the bus_attribute structure :</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Typically, an attribute is defined by the <code class="xref c c-macro docutils literal"><span class="pre">BUS_ATTR</span></code> macro.
-The <code class="xref c c-func docutils literal"><span class="pre">bus_create_file()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">bus_remove_file()</span></code> functions can be
-used to add/delete an attribute within the bus structure.</p>
-<p>An example of defining an attribute for <code class="docutils literal"><span class="pre">my_bus</span></code> is shown below:</p>
+<p>通常，属性由宏 <code class="xref c c-macro docutils literal"><span class="pre">BUS_ATTR</span></code> 定义。我们可以使用函数 <code class="xref c c-func docutils literal"><span class="pre">bus_create_file()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">bus_remove_file()</span></code> 在总线结构中添加/删除属性。</p>
+<p>下面是定义 <code class="docutils literal"><span class="pre">my_bus</span></code> 属性的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* mybus.c */</span>
 
-<span class="cp">#define MY_BUS_DESCR     &quot;SO2 rules forever&quot;</span>
+<span class="cp">#define MY_BUS_DESCR     &quot;SO2 永远统治&quot;</span>
 
-<span class="c1">// export a simple bus attribute</span>
+<span class="c1">// 导出某个简单的总线属性</span>
 <span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">my_show_bus_descr</span><span class="p">(</span><span class="k">struct</span> <span class="n">bus_type</span> <span class="o">*</span><span class="n">bus</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="k">return</span> <span class="n">snprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">PAGE_SIZE</span><span class="p">,</span> <span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">MY_BUS_DESCR</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="cm">/*</span>
-<span class="cm"> * define attribute - attribute name is descr;</span>
-<span class="cm"> * full name is bus_attr_descr;</span>
-<span class="cm"> * sysfs entry should be /sys/bus/mybus/descr</span>
+<span class="cm"> * 定义属性——属性名为 descr；</span>
+<span class="cm"> * 全名为 bus_attr_descr；</span>
+<span class="cm"> * sysfs 条目应为 /sys/bus/mybus/descr</span>
 <span class="cm"> */</span>
 <span class="n">BUS_ATTR</span><span class="p">(</span><span class="n">descr</span><span class="p">,</span> <span class="mo">0444</span><span class="p">,</span> <span class="n">my_show_bus_descr</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
 
-<span class="c1">// specify attribute - in module init function</span>
+<span class="c1">// 在模块初始化函数中指定属性</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="n">__init</span> <span class="nf">my_bus_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
         <span class="c1">//...</span>
         <span class="n">err</span> <span class="o">=</span> <span class="n">bus_create_file</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_bus_type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bus_attr_descr</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
-                <span class="cm">/* handle error */</span>
+                <span class="cm">/* 处理错误 */</span>
         <span class="p">}</span>
         <span class="c1">//...</span>
 <span class="p">}</span>
@@ -466,46 +383,32 @@ used to add/delete an attribute within the bus structure.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The bus is represented by both a <code class="docutils literal"><span class="pre">bus_type</span></code> object and a <code class="docutils literal"><span class="pre">device</span></code> object,
-as we will see later (the bus is also a device).</p>
+<p>总线由 <code class="docutils literal"><span class="pre">bus_type</span></code> 对象和 <code class="docutils literal"><span class="pre">device</span></code> 对象表示，我们稍后将进一步了解（总线也是一种设备）。</p>
 </div>
-<div class="section" id="devices">
-<h3>Devices<a class="headerlink" href="#devices" title="Permalink to this headline">¶</a></h3>
-<p>Any device in the system has a <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> structure associated
-with it.
-Devices are discovered by different kernel methods (hotplug, device drivers,
-system initialization) and are registered in the system. Each device present in
-the kernel has an entry in <code class="docutils literal"><span class="pre">/sys/devices</span></code>.</p>
-<p>At the lowest level, a device in Linux Device Model is represented by a
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> structure:</p>
+<div class="section" id="section-3">
+<h3>设备<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h3>
+<p>系统中的任何设备都与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 结构相关联。设备可以通过多种不同的内核方法（热插拔、设备驱动程序、系统初始化）被发现并注册到系统中。内核中的每个设备在 <code class="docutils literal"><span class="pre">/sys/devices</span></code> 目录下都有一个条目。</p>
+<p>在 Linux 设备模型中，设备在最低级别上由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 结构表示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">device</span> <span class="p">{</span>
         <span class="c1">//...</span>
         <span class="k">struct</span> <span class="n">device</span>           <span class="o">*</span><span class="n">parent</span><span class="p">;</span>
         <span class="k">struct</span> <span class="n">device_private</span>   <span class="o">*</span><span class="n">p</span><span class="p">;</span>
         <span class="k">struct</span> <span class="n">kobject</span>          <span class="n">kobj</span><span class="p">;</span>
 
-        <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">init_name</span><span class="p">;</span> <span class="cm">/* initial name of the device */</span>
+        <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">init_name</span><span class="p">;</span> <span class="cm">/* 设备的初始名称 */</span>
         <span class="c1">//...</span>
-        <span class="k">struct</span> <span class="n">bus_type</span>         <span class="o">*</span><span class="n">bus</span><span class="p">;</span>       <span class="cm">/* type of bus device is on */</span>
-        <span class="k">struct</span> <span class="n">device_driver</span>    <span class="o">*</span><span class="n">driver</span><span class="p">;</span>    <span class="cm">/* which driver has allocated this</span>
-<span class="cm">                                             device */</span>
+        <span class="k">struct</span> <span class="n">bus_type</span>         <span class="o">*</span><span class="n">bus</span><span class="p">;</span>       <span class="cm">/* 设备所在的总线类型 */</span>
+        <span class="k">struct</span> <span class="n">device_driver</span>    <span class="o">*</span><span class="n">driver</span><span class="p">;</span>    <span class="cm">/* 分配该设备的驱动程序 */</span>
         <span class="c1">//...</span>
         <span class="kt">void</span>    <span class="p">(</span><span class="o">*</span><span class="n">release</span><span class="p">)(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Structure fields include the parent device that is usually a controller, the
-associated <code class="docutils literal"><span class="pre">kobject</span></code>, the bus it is connected to, the device driver, and a
-function called when the device counter reaches 0 (<code class="docutils literal"><span class="pre">release</span></code>).</p>
-<p>As usual, we have the registration/unregistration functions
-<code class="xref c c-func docutils literal"><span class="pre">device_register()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">device_unregister()</span></code>.</p>
-<p>To work with attributes, we have structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_attribute</span></code>,
-the macro <code class="xref c c-macro docutils literal"><span class="pre">DEVICE_ATTR</span></code> for definition, and the functions
-<code class="xref c c-func docutils literal"><span class="pre">device_create_file()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">device_remove_file()</span></code> for adding/removing
-the attribute to/from the device.</p>
-<p>One important thing to note is that the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> structure is
-usually not used directly, but it is added to another structure. For example:</p>
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// my device type</span>
+<p>结构字段包括父设备（通常是控制器），相关的 <code class="docutils literal"><span class="pre">kobject</span></code>，设备连接的总线，设备驱动程序以及在设备计数器达到 0 时调用的函数 (<code class="docutils literal"><span class="pre">release</span></code>)。</p>
+<p>像往常一样，我们有注册函数 <code class="xref c c-func docutils literal"><span class="pre">device_register()</span></code> 和取消注册函数 <code class="xref c c-func docutils literal"><span class="pre">device_unregister()</span></code>。</p>
+<p>要处理属性，我们有结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_attribute</span></code> 以及宏 <code class="xref c c-macro docutils literal"><span class="pre">DEVICE_ATTR</span></code> 用于定义属性，还有函数 <code class="xref c c-func docutils literal"><span class="pre">device_create_file()</span></code> 以及 <code class="xref c c-func docutils literal"><span class="pre">device_remove_file()</span></code> 用于将属性添加到设备或从设备中删除属性。</p>
+<p>需要注意的是，我们通常不直接使用结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> ，而是将其添加到另一个结构体中。例如：</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// 我的设备类型</span>
 <span class="k">struct</span> <span class="n">my_device</span> <span class="p">{</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">my_driver</span> <span class="o">*</span><span class="n">driver</span><span class="p">;</span>
@@ -513,28 +416,27 @@ usually not used directly, but it is added to another structure. For example:</p
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Typically, a bus driver will export functions to add or remove such a
-device, as shown below:</p>
+<p>通常，总线驱动程序会导出用于添加或移除此类设备的函数，如下所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* mybus.c */</span>
 
-<span class="cm">/* BUS DEVICE (parent) */</span>
+<span class="cm">/* 总线设备（父设备）*/</span>
 
-<span class="c1">// parent device release</span>
+<span class="c1">// 父设备释放函数</span>
 <span class="k">static</span> <span class="kt">void</span> <span class="nf">my_bus_device_release</span><span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="p">}</span>
 
-<span class="c1">// parent device</span>
+<span class="c1">// 父设备</span>
 <span class="k">static</span> <span class="k">struct</span> <span class="n">device</span> <span class="n">my_bus_device</span> <span class="o">=</span> <span class="p">{</span>
   <span class="p">.</span><span class="n">init_name</span>   <span class="o">=</span> <span class="s">&quot;mybus0&quot;</span><span class="p">,</span>
   <span class="p">.</span><span class="n">release</span>     <span class="o">=</span> <span class="n">my_bus_device_release</span>
 <span class="p">};</span>
 
-<span class="cm">/* DEVICE */</span>
+<span class="cm">/* 设备 */</span>
 
 <span class="cm">/*</span>
-<span class="cm"> * as we are not using the reference count, we use a no-op</span>
-<span class="cm"> * release function</span>
+<span class="cm"> * 由于我们不使用引用计数，我们使用一个无操作的</span>
+<span class="cm"> * 释放函数</span>
 <span class="cm"> */</span>
 <span class="k">static</span> <span class="kt">void</span> <span class="nf">my_dev_release</span><span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
 <span class="p">{</span>
@@ -555,27 +457,20 @@ device, as shown below:</p>
   <span class="n">device_unregister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydev</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="cm">/* export register/unregister device functions */</span>
+<span class="cm">/* 导出注册/注销设备函数 */</span>
 <span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">my_register_device</span><span class="p">);</span>
 <span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">my_unregister_device</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>As seen, the functions <code class="docutils literal"><span class="pre">my_register_device</span></code> and <code class="docutils literal"><span class="pre">my_unregister_device</span></code>, used
-to add/remove a device to/from a bus, are defined in the same file where the
-bus is defined. Device structures are not initialized; they will be initialized
-when the devices are discovered by the system (by hotplug or direct registration
-from driver) and the function <code class="docutils literal"><span class="pre">my_register_device</span></code> will be called to add a
-device to the bus.</p>
-<p>To use the bus defined above in the driver implementation, we must define a
-structure of type <code class="docutils literal"><span class="pre">my_device</span></code>, initialize it and register it using the function
-exported by the bus (<code class="docutils literal"><span class="pre">my_register_device</span></code>).</p>
+<p>如上所示，函数 <code class="docutils literal"><span class="pre">my_register_device</span></code> 和 <code class="docutils literal"><span class="pre">my_unregister_device</span></code> 用于向总线添加/移除设备的操作，这两个函数与总线定义处于同一个文件。这里设备结构体没有被初始化；它们在系统通过热插拔或驱动程序的直接注册发现设备时，将被初始化，之后系统会调用函数 <code class="docutils literal"><span class="pre">my_register_device</span></code> 来将设备添加到总线中。</p>
+<p>要在驱动程序实现中使用上述定义的总线，我们必须定义一个类型为 <code class="docutils literal"><span class="pre">my_device</span></code> 的结构体，对其进行初始化，并使用总线导出的函数 (<code class="docutils literal"><span class="pre">my_register_device</span></code>) 进行注册。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* mydriver.c */</span>
 
 <span class="k">static</span> <span class="k">struct</span> <span class="n">my_device</span> <span class="n">mydev</span><span class="p">;</span>
 <span class="kt">char</span> <span class="n">devname</span><span class="p">[</span><span class="n">NAME_SIZE</span><span class="p">];</span>
 <span class="c1">//...</span>
 
-<span class="c1">//register</span>
+<span class="c1">// 注册设备</span>
 <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
 
 <span class="n">sprintf</span><span class="p">(</span><span class="n">devname</span><span class="p">,</span> <span class="s">&quot;mydev0&quot;</span><span class="p">);</span>
@@ -584,27 +479,21 @@ exported by the bus (<code class="docutils literal"><span class="pre">my_registe
 <span class="n">dev_set_drvdata</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydev</span><span class="p">.</span><span class="n">dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mydev</span><span class="p">);</span>
 <span class="n">err</span> <span class="o">=</span> <span class="n">my_register_device</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydev</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-  <span class="cm">/*handle error */</span>
+  <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 
 <span class="c1">//..</span>
 
-<span class="c1">//unregister</span>
-<span class="n">my_unregister_device</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydev</span><span class="p">);</span>
+<span class="c1">// 注销设备</span>
+<span class="n">my_unregister_device</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydev</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="drivers">
-<h3>Drivers<a class="headerlink" href="#drivers" title="Permalink to this headline">¶</a></h3>
-<p>Linux Device Model is used to allow simple association between system
-devices and drivers. Drivers can export information independent of the physical
-device.</p>
-<p>In sysfs, driver information has no single subdirectory associated; They can be
-found in the directory structure in different places: the loaded module is in
-<code class="docutils literal"><span class="pre">/sys/module</span></code>, in <code class="docutils literal"><span class="pre">/sys/devices</span></code> you can find the driver associated with
-each device, in <code class="docutils literal"><span class="pre">/sys/class</span></code> the drivers belonging to a class, in
-<code class="docutils literal"><span class="pre">/sys/bus</span></code> the drivers associated to each bus.</p>
-<p>A device driver is identified by the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code>:</p>
+<div class="section" id="section-4">
+<h3>驱动程序<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<p>借助 Linux 设备模型，我们可以实现系统设备和驱动程序之间的简单关联。驱动程序可以独立于物理设备导出信息。</p>
+<p>在 sysfs 中，驱动程序信息没有单独的子目录与之关联；它们可以在不同位置的目录结构中找到：加载的模块在 <code class="docutils literal"><span class="pre">/sys/module</span></code> 中，在 <code class="docutils literal"><span class="pre">/sys/devices</span></code> 中可以找到与每个设备关联的驱动程序，在 <code class="docutils literal"><span class="pre">/sys/class</span></code> 中是属于某个类的驱动程序，在 <code class="docutils literal"><span class="pre">/sys/bus</span></code> 中是与每个总线关联的驱动程序。</p>
+<p>系统通过结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> 来区分设备驱动：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">device_driver</span> <span class="p">{</span>
          <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">name</span><span class="p">;</span>
          <span class="k">struct</span> <span class="n">bus_type</span>         <span class="o">*</span><span class="n">bus</span><span class="p">;</span>
@@ -612,7 +501,7 @@ each device, in <code class="docutils literal"><span class="pre">/sys/class</spa
          <span class="k">struct</span> <span class="n">driver_private</span>   <span class="o">*</span><span class="n">p</span><span class="p">;</span>
 
          <span class="k">struct</span> <span class="n">module</span>           <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
-         <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">mod_name</span><span class="p">;</span>     <span class="cm">/* used for built-in modules */</span>
+         <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">mod_name</span><span class="p">;</span>     <span class="cm">/* 用于内置模块 */</span>
 
          <span class="kt">int</span>     <span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)</span>        <span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
          <span class="kt">int</span>     <span class="p">(</span><span class="o">*</span><span class="n">remove</span><span class="p">)</span>       <span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
@@ -622,20 +511,13 @@ each device, in <code class="docutils literal"><span class="pre">/sys/class</spa
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Among the structure fields we find the name of the driver (appears in <code class="docutils literal"><span class="pre">sysfs</span></code>),
-the bus with which the driver works, and functions called at various times in a
-device's operation.</p>
-<p>As before, we have the functions <code class="xref c c-func docutils literal"><span class="pre">driver_register()</span></code> and
-<code class="xref c c-func docutils literal"><span class="pre">driver_unregister()</span></code> to register/unregister a driver.</p>
-<p>To work with attributes, we have the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">driver_attribute</span></code> structure,
-the macro <code class="xref c c-type docutils literal"><span class="pre">DRIVER_ATTR</span></code> for definition, and the functions
-<code class="xref c c-func docutils literal"><span class="pre">driver_create_file()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">driver_remove_file()</span></code> functions for
-adding the attribute to the device.</p>
-<p>As with devices, the structure <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> is usually
-incorporated into another structure specific to a particular bus (PCI, USB, etc.):</p>
+<p>在本结构体字段中，我们可以找到驱动程序的名称（出现在 <code class="docutils literal"><span class="pre">sysfs</span></code> 中），与驱动程序一起工作的总线以及在设备操作的各个时刻调用的函数。</p>
+<p>与之前一样，我们有函数 <code class="xref c c-func docutils literal"><span class="pre">driver_register()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">driver_unregister()</span></code> 来注册/注销驱动程序。</p>
+<p>要处理属性，我们有结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">driver_attribute</span></code> 与宏 <code class="xref c c-type docutils literal"><span class="pre">DRIVER_ATTR</span></code> 用于定义属性，并且有函数 <code class="xref c c-func docutils literal"><span class="pre">driver_create_file()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">driver_remove_file()</span></code> 用于向设备添加属性。</p>
+<p>与设备一样，结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> 通常被纳入到特定总线 (PCI、USB 等) 对应的另一个结构体中：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* mybus.c */</span>
 
-<span class="c1">// my driver type</span>
+<span class="c1">// 我的驱动类型</span>
 <span class="k">struct</span> <span class="n">my_driver</span> <span class="p">{</span>
   <span class="k">struct</span> <span class="n">module</span> <span class="o">*</span><span class="n">module</span><span class="p">;</span>
   <span class="k">struct</span> <span class="n">device_driver</span> <span class="n">driver</span><span class="p">;</span>
@@ -659,20 +541,14 @@ incorporated into another structure specific to a particular bus (PCI, USB, etc.
   <span class="n">driver_unregister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">driver</span><span class="o">-&gt;</span><span class="n">driver</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="cm">/* export register/unregister driver functions */</span>
+<span class="cm">/* 导出注册/取消注册驱动程序函数 */</span>
 <span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">my_register_driver</span><span class="p">);</span>
 <span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">my_unregister_driver</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Driver registration/unregistration operations are exported for use in
-other modules.</p>
-<p>As for devices, the operations for drivers are defined when the bus is
-initialized and they are exported to be used by drivers. When implementing a
-driver that works with devices attached to the bus, we will call the functions
-<code class="docutils literal"><span class="pre">my_register_driver</span></code> and <code class="docutils literal"><span class="pre">my_unregister_driver</span></code> to associate with the bus.</p>
-<p>To use the functions (in the driver implementation), we must declare a structure
-of type <code class="docutils literal"><span class="pre">my_driver</span></code>, initialize it and register using the function exported
-by the bus.</p>
+<p>驱动程序的注册/注销操作被导出以供其他模块使用。</p>
+<p>与设备一样，驱动程序的操作在总线初始化时定义，并导出供驱动程序使用。当实现一个与连接到总线上的设备配合工作的驱动程序时，我们将调用函数 <code class="docutils literal"><span class="pre">my_register_driver</span></code> 和 <code class="docutils literal"><span class="pre">my_unregister_driver</span></code> 来与总线关联。</p>
+<p>要使用这些函数（在驱动程序实现中），我们必须声明一个类型为 <code class="docutils literal"><span class="pre">my_driver</span></code> 的结构体，对其进行初始化，并使用总线导出的函数进行注册。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* mydriver.c */</span>
 
 <span class="k">static</span> <span class="k">struct</span> <span class="n">my_driver</span> <span class="n">mydriver</span> <span class="o">=</span> <span class="p">{</span>
@@ -683,38 +559,26 @@ by the bus.</p>
 <span class="p">};</span>
 <span class="c1">//...</span>
 
-<span class="c1">//register</span>
+<span class="c1">// 注册</span>
 <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
 <span class="n">err</span> <span class="o">=</span> <span class="n">my_register_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydriver</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-  <span class="cm">/*handle error */</span>
+  <span class="cm">/* 处理错误 */</span>
 <span class="p">}</span>
 <span class="c1">//..</span>
 
-<span class="c1">//unregister</span>
+<span class="c1">// 取消注册</span>
 <span class="n">my_unregister_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydriver</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
-<p>A class is a high-level view of the Linux Device Model, which abstracts
-implementation details. For example, there are drivers for SCSI and ATA
-drivers, but all belong to the class of disks. Classes provide a grouping of
-devices based on functionality, not how they are connected or how they work.
-Classes have a correspondent in <code class="docutils literal"><span class="pre">/sys/classes</span></code>.</p>
-<p>There are two main structures that describe the classes: <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code>
-and <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code>.
-The class structure describes a generic class, while the structure
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> describes a class associated with a device.
-There are functions for initializing/deinitiating and adding attributes for each
-of these, described in <code class="docutils literal"><span class="pre">include/linux/device.h</span></code>.</p>
-<p>The advantage of using classes is that the <code class="docutils literal"><span class="pre">udev</span></code> program in userspace, which we
-will discuss later, allows the automatic creation of devices in the <code class="docutils literal"><span class="pre">/dev</span></code>
-directory based on class information.</p>
-<p>For this reason, we will continue to present a small set of functions that work
-with classes to simplify the use of the plug and play mechanism.</p>
-<p>A generic class is described by structure class structure:</p>
+<div class="section" id="section-5">
+<h3>类<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
+<p>类是 Linux 设备模型的高层次视图，它抽象了实现细节。例如，SCSI 和 ATA 驱动程序虽然有所不同，但都属于磁盘类。类根据功能对设备进行分组，而不考虑它们的连接方式或工作原理。类在 <code class="docutils literal"><span class="pre">/sys/classes</span></code> 中有对应的表示。</p>
+<p>主要有两个结构用来描述类，分别是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code>。<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code> 结构描述了通用类，而结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 则描述了与设备有关联的类。对于每种结构体，都有用于初始化/反初始化和添加属性的函数，这些函数在 <code class="docutils literal"><span class="pre">include/linux/device.h</span></code> 中有描述。</p>
+<p>使用类的优势在于，我们可以借助用户空间中的 <code class="docutils literal"><span class="pre">udev</span></code> 程序（我们稍后将讨论），根据类信息自动在 <code class="docutils literal"><span class="pre">/dev</span></code> 目录中创建设备。</p>
+<p>因此，我们将继续介绍一小组函数，这些函数与类一起使用以简化即插即用机制。</p>
+<p>通用类由结构体 class 描述：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">class</span> <span class="p">{</span>
          <span class="k">const</span> <span class="kt">char</span>              <span class="o">*</span><span class="n">name</span><span class="p">;</span>
          <span class="k">struct</span> <span class="n">module</span>           <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
@@ -733,8 +597,7 @@ with classes to simplify the use of the plug and play mechanism.</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The <code class="xref c c-func docutils literal"><span class="pre">class_register()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">class_unregister()</span></code> functions can be
-used for initialization/deinitialization.</p>
+<p>你可以使用 <code class="xref c c-func docutils literal"><span class="pre">class_register()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">class_unregister()</span></code> 函数对类进行初始化/反初始化。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">class</span> <span class="n">my_class</span> <span class="o">=</span> <span class="p">{</span>
         <span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;myclass&quot;</span><span class="p">,</span>
 <span class="p">};</span>
@@ -745,7 +608,7 @@ used for initialization/deinitialization.</p>
         <span class="c1">//...</span>
         <span class="n">err</span> <span class="o">=</span> <span class="n">class_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_class</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-                <span class="cm">/* handle error */</span>
+                <span class="cm">/* 处理错误 */</span>
         <span class="p">}</span>
         <span class="c1">//...</span>
 <span class="p">}</span>
@@ -758,134 +621,67 @@ used for initialization/deinitialization.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>A class associated with a device is described by the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code>
-structure.
-The <code class="xref c c-func docutils literal"><span class="pre">device_create()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">device_destroy()</span></code> functions can be used
-for initialization/deinitialization.
-The <code class="xref c c-func docutils literal"><span class="pre">device_create()</span></code> function initializes the <code class="docutils literal"><span class="pre">device</span></code> structure,
-and assigns the generic <code class="docutils literal"><span class="pre">class</span></code> structure and the device received as a
-parameter to it;
-In addition, it will create an attribute of the class, <code class="docutils literal"><span class="pre">dev</span></code>, which contains
-the minor and major of the device (<code class="docutils literal"><span class="pre">minor:major</span></code>).
-Thus, udev utility in usermode can read the necessary data from this attribute
-file to create a node in the <code class="docutils literal"><span class="pre">/dev</span></code> directory by calling <code class="docutils literal"><span class="pre">makenod</span></code>.</p>
-<p>An example of initialization:</p>
+<p>与设备关联的类由结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 描述。函数 <code class="xref c c-func docutils literal"><span class="pre">device_create()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">device_destroy()</span></code> 负责初始化/反初始化。函数 <code class="xref c c-func docutils literal"><span class="pre">device_create()</span></code> 初始化 <code class="docutils literal"><span class="pre">device</span></code> 结构体，并将通用的 <code class="docutils literal"><span class="pre">class</span></code> 结构体和作为参数接收到的设备分配给它；此外，它还将创建类的属性 <code class="docutils literal"><span class="pre">dev</span></code>，其中包含设备的次设备号和主设备号 (<code class="docutils literal"><span class="pre">minor:major</span></code>)。因此，用户态的 udev 实用程序可以从该属性文件中读取所需的数据，通过调用 <code class="docutils literal"><span class="pre">mknod</span></code> 在 <code class="docutils literal"><span class="pre">/dev</span></code> 目录中创建一个节点。</p>
+<p>以下是初始化的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">device</span><span class="o">*</span> <span class="n">my_classdev</span><span class="p">;</span>
 <span class="k">struct</span> <span class="n">cdev</span> <span class="n">cdev</span><span class="p">;</span>
 <span class="k">struct</span> <span class="n">device</span> <span class="n">dev</span><span class="p">;</span>
 
-<span class="c1">//init class for device cdev.dev</span>
+<span class="c1">// 为设备 cdev.dev 初始化类</span>
 <span class="n">my_classdev</span> <span class="o">=</span> <span class="n">device_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_class</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">cdev</span><span class="p">.</span><span class="n">dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev</span><span class="p">,</span> <span class="s">&quot;myclass0&quot;</span><span class="p">);</span>
 
-<span class="c1">//destroy class for device cdev.dev</span>
+<span class="c1">// 销毁设备 cdev.dev 的类</span>
 <span class="n">device_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_class</span><span class="p">,</span> <span class="n">cdev</span><span class="p">.</span><span class="n">dev</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>When a new device is discovered, a class and a node will be assigned to it and
-a node will be created in the <code class="docutils literal"><span class="pre">/dev</span></code> directory.
-For the example above, the node <code class="docutils literal"><span class="pre">/dev/myclass0</span></code> will be generated.</p>
+<p>当发现新设备时，将为其分配一个类和节点，并在 <code class="docutils literal"><span class="pre">/dev</span></code> 目录中创建一个节点。对于上面的示例，将生成节点 <code class="docutils literal"><span class="pre">/dev/myclass0</span></code>。</p>
 </div>
-<div class="section" id="hotplug">
-<h3>Hotplug<a class="headerlink" href="#hotplug" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal"><span class="pre">Hotplug</span></code> describes the mechanism for adding or removing a device from the
-system while it is running without having to reboot the system.</p>
-<p>A hotplug event is a notification from the kernel to the user-space when something
-changes in the system configuration. These events are generated when creating
-or removing a kobject from the kernel. Since these objects are the basis of the
-Linux Device Model, being included in all structures (<code class="docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code>,
-<code class="docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code>, etc.), a hotplug event
-will be generated when any of these structures is created or removed (<code class="docutils literal"><span class="pre">uevent</span></code>).</p>
-<p>When a device is discovered in the system, an event is generated.  Depending on
-the point where it resides in Linux Device Model, the functions corresponding
-to the event will be called (usually, the <code class="docutils literal"><span class="pre">uevent</span></code> function associated to the
-bus or the class). Using these functions, the driver has the ability to set
-system variables for the user-space.
-The generated event then reaches the user-space. Here is the <code class="docutils literal"><span class="pre">udev</span></code>
-utility that captures these events. There are configuration files for this
-utility in the <code class="docutils literal"><span class="pre">/etc/udev/</span></code> directory. Different rules can be specified to
-capture only certain events and perform certain actions, depending on the
-system variables set in the kernel or in <code class="docutils literal"><span class="pre">uevent</span></code> functions.</p>
-<p>An important consequence is that in this way the plug and play mechanism can be
-achieved; with the help of <code class="docutils literal"><span class="pre">udev</span></code> and the classes (described above), entries
-in the <code class="docutils literal"><span class="pre">/dev/</span></code> directories can be automatically created for devices, and using
-<code class="docutils literal"><span class="pre">udev</span></code> drivers can be automatically loaded for a device.</p>
-<p>Rules for <code class="docutils literal"><span class="pre">udev</span></code> are located <code class="docutils literal"><span class="pre">/etc/udev/rules.d</span></code>.
-Any file that ends with <code class="docutils literal"><span class="pre">.rules</span></code> in this directory will be parsed when an
-event occurs. For more details on how to write rules in these files see
-<a class="reference external" href="http://www.reactivated.net/writing_udev_rules.html">Writing udev rules</a>.
-For testing, there are utilities such as <code class="docutils literal"><span class="pre">udevmonitor</span></code>, <code class="docutils literal"><span class="pre">udevinfo</span></code> and
-<code class="docutils literal"><span class="pre">udevtest</span></code>.</p>
-<p>For a quick example, consider the situation where we want to automatically load
-a driver for a device when an event occurs. We can create a new file
-/etc/udev/rules.d/myrules.rules, we will have the following line:</p>
+<div class="section" id="section-6">
+<h3>热插拔<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">热插拔</span></code> 描述了在系统运行时添加或移除设备而无需重新启动系统的机制。</p>
+<p>热插拔事件是内核向用户空间发送的通知，用于指示系统配置发生了变化。这些事件在从内核创建或删除 kobject 时生成。由于这些对象是 Linux 设备模型的基础，包含在所有结构体中 (<code class="docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> 以及 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code> 等)，当创建或删除任何这些结构体时，都会生成热插拔事件 (<code class="docutils literal"><span class="pre">uevent</span></code>)。</p>
+<p>当在系统中发现设备时，将生成事件。根据设备在 Linux 设备模型中所处的位置，将调用相应的事件函数（通常是与总线或类关联的 <code class="docutils literal"><span class="pre">uevent</span></code> 函数）。借助这些函数，驱动程序可以为用户空间设置系统变量。生成的事件然后到达用户空间。在这里 <code class="docutils literal"><span class="pre">udev</span></code> 程序会捕获这些事件。在 <code class="docutils literal"><span class="pre">/etc/udev/</span></code> 目录中有针对该程序的配置文件。可以指定不同的规则来捕获特定事件并执行特定操作，这取决于内核或 <code class="docutils literal"><span class="pre">uevent</span></code> 函数中设置的系统变量。</p>
+<p>通过这种方式，我们可以实现即插即用的机制。借助于 <code class="docutils literal"><span class="pre">udev</span></code> 和上述的类，可以自动为设备在 <code class="docutils literal"><span class="pre">/dev/</span></code> 目录中创建条目，并且使用 <code class="docutils literal"><span class="pre">udev</span></code> 可以自动为设备加载驱动程序。</p>
+<p>关于 <code class="docutils literal"><span class="pre">udev</span></code> 的规则位于 <code class="docutils literal"><span class="pre">/etc/udev/rules.d</span></code> 目录下。当事件发生时，该目录中以 <code class="docutils literal"><span class="pre">.rules</span></code> 结尾的任何文件都将被解析。有关如何在这些文件中编写规则的详细信息，请参阅 <a class="reference external" href="http://www.reactivated.net/writing_udev_rules.html">编写 udev 规则</a>。用于测试的程序包括 <code class="docutils literal"><span class="pre">udevmonitor</span></code>, <code class="docutils literal"><span class="pre">udevinfo</span></code> 和 <code class="docutils literal"><span class="pre">udevtest</span></code>。</p>
+<p>举个简单示例，假设我们希望在事件发生时自动加载设备的驱动程序。我们可以创建名为 <code class="docutils literal"><span class="pre">/etc/udev/rules.d/myrules.rules</span></code> 的新文件，其中包含以下内容：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">SUBSYSTEM</span><span class="o">==</span><span class="s2">&quot;pnp&quot;</span>, ATTRS<span class="o">{</span>id<span class="o">}==</span><span class="s2">&quot;PNP0400&quot;</span>, <span class="nv">RUN</span><span class="o">+=</span><span class="s2">&quot;/sbin/insmod /root/mydriver.ko&quot;</span>
 </pre></div>
 </div>
-<p>This will choose from the events generated only those belonging to the <code class="docutils literal"><span class="pre">pnp</span></code>
-subsystem (connected to <code class="docutils literal"><span class="pre">PNP</span></code> bus) and having an id attribute with the value
-<code class="docutils literal"><span class="pre">PNP0400</span></code>.</p>
-<p>When this rule will be found, the command specified under <code class="docutils literal"><span class="pre">RUN</span></code> will be
-executed to insert the appropriate driver in the kernel.</p>
+<p>这将仅选择属于 <code class="docutils literal"><span class="pre">pnp</span></code> 子系统（连接到 <code class="docutils literal"><span class="pre">PNP</span></code> 总线）且具有值为 <code class="docutils literal"><span class="pre">PNP0400</span></code> 的 id 属性的生成事件。</p>
+<p>当找到这个规则时，将执行在 <code class="docutils literal"><span class="pre">RUN</span></code> 下指定的命令，将适当的驱动程序插入内核中。</p>
 </div>
 </div>
-<div class="section" id="plug-and-play">
-<h2>Plug and Play<a class="headerlink" href="#plug-and-play" title="Permalink to this headline">¶</a></h2>
-<p>As noted above, in Linux Device Model all devices are connected by a bus, even if
-it has a corresponding physical hardware or it is virtual.</p>
-<p>The kernel already has implemented most buses using a <code class="docutils literal"><span class="pre">bus_type</span></code> structure
-and functions to register/unregister drivers and devices.
-To implement a driver, we must first determine the bus to which the supported
-devices are connected and use the structures and functions exported by this bus.
-The main buses are <code class="docutils literal"><span class="pre">PCI</span></code>, <code class="docutils literal"><span class="pre">USB</span></code>, <code class="docutils literal"><span class="pre">PNP</span></code>, <code class="docutils literal"><span class="pre">IDE</span></code>, <code class="docutils literal"><span class="pre">SCSI</span></code>, <code class="docutils literal"><span class="pre">platform</span></code>,
-<code class="docutils literal"><span class="pre">ACPI</span></code>, etc.</p>
-<div class="section" id="pnp-bus">
-<h3>PNP bus<a class="headerlink" href="#pnp-bus" title="Permalink to this headline">¶</a></h3>
-<p>The plug and play mechanism provides a means of detecting and setting the resources
-for legacy driver that may not be configured or otherwise. All plug and play
-drivers, protocols, services are based on Plug and Play level. It is responsible
-for the exchange of information between drivers and protocols. The following
-protocols are available:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">PNPBIOS</span></code> - used for systems such as serial and parallel ports</li>
-<li><code class="docutils literal"><span class="pre">ISAPNP</span></code> - offers support for the ISA bus</li>
-<li><code class="docutils literal"><span class="pre">ACPI</span></code> - offering, among other things, information about system-level devices</li>
+<div class="section" id="section-7">
+<h2>即插即用<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<p>如上所述，在 Linux 设备模型中，所有设备都通过总线连接，不管总线具有相应的物理硬件或者仅仅是虚拟设备。</p>
+<p>内核已经使用 <code class="docutils literal"><span class="pre">bus_type</span></code> 结构和用于注册/取消注册驱动程序与设备的函数实现了大多数总线。要实现一个驱动程序，我们必须首先确定其所支持的设备连接的总线，并使用该总线导出的结构和函数。主要的总线包括 <code class="docutils literal"><span class="pre">PCI</span></code>, <code class="docutils literal"><span class="pre">USB</span></code>, <code class="docutils literal"><span class="pre">PNP</span></code>, <code class="docutils literal"><span class="pre">IDE</span></code>, <code class="docutils literal"><span class="pre">SCSI</span></code>, <code class="docutils literal"><span class="pre">platform</span></code> 以及 <code class="docutils literal"><span class="pre">ACPI</span></code> 等等。</p>
+<div class="section" id="pnp">
+<h3>PNP 总线<a class="headerlink" href="#pnp" title="Permalink to this headline">¶</a></h3>
+<p>即插即用机制提供了一种检测和设置未配置的传统驱动程序之类的资源的手段。所有的即插即用驱动程序、协议和服务都基于即插即用级别。它负责在驱动程序和协议之间进行信息交换。以下协议可用：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">PNPBIOS</span></code> ——用于串行和并行端口等系统</li>
+<li><code class="docutils literal"><span class="pre">ISAPNP</span></code> ——提供对 ISA 总线的支持</li>
+<li><code class="docutils literal"><span class="pre">ACPI</span></code> ——提供了关于系统级设备的信息等</li>
 </ul>
-</div></blockquote>
-<p>The kernel contains a bus, called <code class="docutils literal"><span class="pre">pnp_bus</span></code>, that is used for connecting by
-many drivers.
-The implementation and working with the bus follow the Linux Device Model and
-is very similar to what we discussed above.</p>
-<p>The main functions and structures exported by the bus, which can be used by
-drivers, are:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">pnp_driver</span></code> - driver type associated to the bus</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">pnp_register_driver()</span></code> - function used to register a PNP driver in the system</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">pnp_unregister_driver()</span></code> - function used to unregister a PNP driver from the system</li>
+<p>内核包含一个名为 <code class="docutils literal"><span class="pre">pnp_bus</span></code> 的总线，用于连接许多驱动程序。该总线的实现和工作遵循 Linux 设备模型，与我们上面讨论的内容非常相似。</p>
+<p>由该总线导出的可以供驱动程序使用的函数和结构，主要包括：</p>
+<ul class="simple">
+<li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">pnp_driver</span></code>——与总线关联的驱动程序类型</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">pnp_register_driver()</span></code>——用于在系统中注册 PNP 驱动程序的函数</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">pnp_unregister_driver()</span></code>——用于从系统中取消注册 PNP 驱动程序的函数</li>
 </ul>
-</div></blockquote>
-<p>As noted in previous sections, the bus has a function called <code class="docutils literal"><span class="pre">match</span></code> used to
-associate the devices with the appropriate drivers.
-For example, when discovering a new device, a driver which meets the condition
-given by the <code class="docutils literal"><span class="pre">match</span></code> function regarding to the new device. Usually, this
-condition is a comparation of IDs (driver id and device id).
-A common approach is using a static table in each driver, which holds information
-about the devices supported by the driver, which will be used by the bus
-when verifying the condition. For example, for a parallel port device we have
-the table <code class="docutils literal"><span class="pre">parport_pc_pnp_tbl</span></code>:</p>
+<p>前面的小节中我们提到，总线具有一个名为 <code class="docutils literal"><span class="pre">match</span></code> 的函数，用于将设备与适当的驱动程序关联起来。例如，当发现新设备时，符合 <code class="docutils literal"><span class="pre">match</span></code> 函数所给条件的驱动程序会与新设备相关。通常，这个条件是对 ID（驱动程序 ID 和设备 ID）进行比较。常见的方法是在每个驱动程序中使用一个静态表，该表包含驱动程序支持的设备的信息，总线在验证时将使用该表。例如，对于并行端口设备，我们有表格 <code class="docutils literal"><span class="pre">parport_pc_pnp_tbl</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_device_id</span> <span class="n">parport_pc_pnp_tbl</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
-         <span class="cm">/* Standard LPT Printer Port */</span>
+         <span class="cm">/* 标准 LPT 打印机端口 */</span>
          <span class="p">{.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&quot;PNP0400&quot;</span><span class="p">,</span> <span class="p">.</span><span class="n">driver_data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">},</span>
-         <span class="cm">/* ECP Printer Port */</span>
+         <span class="cm">/* ECP 打印机端口 */</span>
          <span class="p">{.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&quot;PNP0401&quot;</span><span class="p">,</span> <span class="p">.</span><span class="n">driver_data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">},</span>
 <span class="p">};</span>
 
 <span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">pnp</span><span class="p">,</span> <span class="n">parport_pc_pnp_tbl</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Each driver declares and initializes a structure <code class="docutils literal"><span class="pre">pnp_driver</span></code>, such as
-<code class="docutils literal"><span class="pre">parport_pc_pnp_driver</span></code>:</p>
+<p>每个驱动程序声明并初始化一个 <code class="docutils literal"><span class="pre">pnp_driver</span></code> 结构，例如 <code class="docutils literal"><span class="pre">parport_pc_pnp_driver</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">parport_pc_pnp_probe</span><span class="p">(</span><span class="k">struct</span> <span class="n">pnp_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_id</span> <span class="o">*</span><span class="n">card_id</span><span class="p">,</span>
                                                      <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_id</span> <span class="o">*</span><span class="n">dev_id</span><span class="p">);</span>
 <span class="k">static</span> <span class="kt">void</span> <span class="nf">parport_pc_pnp_remove</span><span class="p">(</span><span class="k">struct</span> <span class="n">pnp_dev</span><span class="o">*</span> <span class="n">dev</span><span class="p">);</span>
@@ -898,16 +694,12 @@ the table <code class="docutils literal"><span class="pre">parport_pc_pnp_tbl</s
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>We can notice that the structure has as fields a pointer to the table declared
-above and two functions, which are called when a new device is detected and when
-it is removed from the system.
-As all the structures presented above, the driver must be registered to the
-system:</p>
+<p>我们可以注意到，该结构的字段包括对上述表格的指针和两个函数，系统在检测到新设备以及在设备从系统中移除时调用这些函数。与上面介绍的所有结构一样，驱动程序必须向系统注册：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="n">__init</span> <span class="nf">parport_pc_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="n">err</span> <span class="o">=</span> <span class="n">pnp_register_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">parport_pc_pnp_driver</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-                <span class="cm">/* handle error */</span>
+                <span class="cm">/* 处理错误 */</span>
         <span class="p">}</span>
 <span class="p">}</span>
 
@@ -918,28 +710,15 @@ system:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="pnp-operations">
-<h3>PNP operations<a class="headerlink" href="#pnp-operations" title="Permalink to this headline">¶</a></h3>
-<p>So far we have discussed the Linux Device Model and its API. To
-implement a plug and play driver, we must respect the Linux Device Model model.</p>
-<p>Most often, adding a bus in the kernel is not necessary, as most of the existing
-buses are already implemented (PCI, USB, etc.). Thus, we must first identify the
-bus to which the device is attached.
-In the examples below, we will consider that this bus is bus PNP and we will
-use the structures and functions described above.</p>
+<div class="section" id="pnp-1">
+<h3>PNP 操作<a class="headerlink" href="#pnp-1" title="Permalink to this headline">¶</a></h3>
+<p>到目前为止，我们已经讨论了 Linux 设备模型及其 API。要实现即插即用驱动程序，我们必须遵循 Linux 设备模型。</p>
+<p>通常情况下，我们不需要在内核中添加新的总线，因为大多数现有的总线已经实现了（如 PCI、USB 等）。因此，我们首先必须确定设备连接的总线。在下面的示例中，我们将假设该总线为 PNP 总线，并使用上述描述的结构和函数。</p>
 <img alt="../_images/ditaa-4e1f9758808dba9e61bc0e48faf4365d377f9d32.png" src="../_images/ditaa-4e1f9758808dba9e61bc0e48faf4365d377f9d32.png" />
 </div>
-<div class="section" id="adding-a-driver">
-<h3>Adding a driver<a class="headerlink" href="#adding-a-driver" title="Permalink to this headline">¶</a></h3>
-<p>In addition to the usual operations, a driver must follow the Linux Device Model.
-Thus, it will be registered in the system using the functions provided by
-the bus for this purpose.
-Usually, the bus provides a particular driver structure containing a
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> structure, that the driver must initialize and
-register using a function <code class="docutils literal"><span class="pre">*_register_driver</span></code>.
-For example, for the <code class="docutils literal"><span class="pre">PNP</span></code> bus, the driver must declare and initialize a
-structure of type <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">pnp_driver</span></code> and register it using
-<code class="docutils literal"><span class="pre">pnp_register_drvier</span></code>:</p>
+<div class="section" id="section-8">
+<h3>添加驱动程序<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<p>除了常规操作外，驱动程序必须遵循 Linux 设备模型。因此，它将使用总线提供的函数在系统中注册。通常，总线提供一个特定的驱动程序结构，其中包含 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> 结构，驱动程序必须初始化并使用 <code class="docutils literal"><span class="pre">*_register_driver</span></code> 函数进行注册。例如，对于 <code class="docutils literal"><span class="pre">PNP</span></code> 总线，驱动程序必须声明并初始化一个类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">pnp_driver</span></code> 的结构，并使用 <code class="docutils literal"><span class="pre">pnp_register_driver</span></code> 进行注册：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">pnp_driver</span> <span class="n">my_pnp_driver</span> <span class="o">=</span> <span class="p">{</span>
          <span class="p">.</span><span class="n">name</span>           <span class="o">=</span> <span class="s">&quot;mydriver&quot;</span><span class="p">,</span>
          <span class="p">.</span><span class="n">id_table</span>       <span class="o">=</span> <span class="n">my_pnp_tbl</span><span class="p">,</span>
@@ -953,25 +732,12 @@ structure of type <code class="xref c c-type docutils literal"><span class="pre"
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Unlike legacy drivers, plug and play drivers don't register devices at
-initialization in the init function (<code class="docutils literal"><span class="pre">my_init</span></code> in the example above) using
-<code class="xref c c-func docutils literal"><span class="pre">register_device()</span></code>.</p>
-<p>As described above, each bus has a <cite>match</cite> function which is called when a new
-device is detected in the system to determine the associated driver.
-Thus, there must be a way for each driver to export information about the
-devices it supports, to allow this check to pass and have its functions further
-called.
-In the examples presented in this lab, the match function does a simple
-comparison between the device name and the driver name. Most drivers use a table
-containing information devices and store a pointer to this table in the
-driver structure.
-For example, a driver associated to a <code class="docutils literal"><span class="pre">PNP</span></code> bus defines a table of type
-<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">pnp_device_id</span></code> and initializes the field <code class="docutils literal"><span class="pre">id_table</span></code> from the
-structure <code class="docutils literal"><span class="pre">pnp_driver</span> <span class="pre">my_pnp_driver</span></code> with a pointer to it:</p>
+<p>与传统驱动程序不同，即插即用驱动程序不会在初始化函数（上面示例中的 <code class="docutils literal"><span class="pre">my_init</span></code>）中使用 <code class="xref c c-func docutils literal"><span class="pre">register_device()</span></code> 注册设备。</p>
+<p>如上所述，每个总线都有一个 <cite>match</cite> 函数，当系统检测到新设备时会调用该函数，以确定关联的驱动程序。因此，每个驱动程序需要能够导出其支持的设备的信息，以允许此检查通过并进一步调用其函数。在本实验中介绍的示例中，匹配函数执行设备名称和驱动程序名称之间的简单比较。大多数驱动程序使用包含设备信息的表，并将指向该表的指针存储在驱动程序结构中。例如，与 <code class="docutils literal"><span class="pre">PNP</span></code> 总线关联的驱动程序定义了类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">pnp_device_id</span></code> 的表，并使用指向它的指针初始化结构体 <code class="docutils literal"><span class="pre">pnp_driver</span> <span class="pre">my_pnp_driver</span></code> 中的字段 <code class="docutils literal"><span class="pre">id_table</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_device_id</span> <span class="n">my_pnp_tbl</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
-         <span class="cm">/* Standard LPT Printer Port */</span>
+         <span class="cm">/* 标准 LPT 打印机端口 */</span>
          <span class="p">{.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&quot;PNP0400&quot;</span><span class="p">,</span> <span class="p">.</span><span class="n">driver_data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">},</span>
-         <span class="cm">/* ECP Printer Port */</span>
+         <span class="cm">/* ECP 打印机端口 */</span>
          <span class="p">{.</span><span class="n">id</span> <span class="o">=</span> <span class="s">&quot;PNP0401&quot;</span><span class="p">,</span> <span class="p">.</span><span class="n">driver_data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">},</span>
          <span class="p">{</span> <span class="p">}</span>
 <span class="p">};</span>
@@ -985,20 +751,11 @@ structure <code class="docutils literal"><span class="pre">pnp_driver</span> <sp
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>In the example above, the driver supports multiple parallel port devices,
-defined in the table <code class="docutils literal"><span class="pre">my_pnp_tbl</span></code>.  This information is used by the bus in
-the <code class="docutils literal"><span class="pre">match_device</span></code> function.
-When adding a driver, the bus driver will be associated to it and new entires
-in <code class="docutils literal"><span class="pre">sysfs</span></code> will be created based on the driver name.
-Then the bus <code class="docutils literal"><span class="pre">match</span></code> function will be called for every supported device,
-to associate the driver with any connected device that it supports.</p>
+<p>在上面的示例中，驱动程序支持多个并行端口设备，这些设备在表格 <code class="docutils literal"><span class="pre">my_pnp_tbl</span></code> 中定义。总线在 <code class="docutils literal"><span class="pre">match_device</span></code> 函数中使用此信息。在添加驱动程序时，总线驱动程序将与其关联，并根据驱动程序名称在 <code class="docutils literal"><span class="pre">sysfs</span></code> 中创建新条目。然后，总线的 <code class="docutils literal"><span class="pre">match</span></code> 函数将针对每个支持的设备调用，以将驱动程序与其支持的任何连接设备关联起来。</p>
 </div>
-<div class="section" id="removing-a-driver">
-<h3>Removing a driver<a class="headerlink" href="#removing-a-driver" title="Permalink to this headline">¶</a></h3>
-<p>To remove a driver from the kernel, in addition to operations required for a
-legacy driver, we must unregister the <code class="docutils literal"><span class="pre">device_driver</span></code> structure.
-For a driver associated with the <code class="docutils literal"><span class="pre">PNP</span></code> bus, we must unregister the <code class="docutils literal"><span class="pre">pnp_driver</span></code>
-structure using the <code class="xref c c-func docutils literal"><span class="pre">pnp_unregister_driver()</span></code> function:</p>
+<div class="section" id="section-9">
+<h3>移除驱动程序<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<p>要从内核中移除驱动程序，除了传统驱动程序所需的操作外，我们还必须取消注册 <code class="docutils literal"><span class="pre">device_driver</span></code> 结构。对于与 <code class="docutils literal"><span class="pre">PNP</span></code> 总线关联的驱动程序，我们必须使用 <code class="xref c c-func docutils literal"><span class="pre">pnp_unregister_driver()</span></code> 函数取消注册 <code class="docutils literal"><span class="pre">pnp_driver</span></code> 结构：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">pnp_driver</span> <span class="n">my_pnp_driver</span><span class="p">;</span>
 
 <span class="k">static</span> <span class="kt">void</span> <span class="n">__exit</span> <span class="nf">my_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
@@ -1007,22 +764,16 @@ structure using the <code class="xref c c-func docutils literal"><span class="pr
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Unlike legacy drivers, plug and play drivers don't unregister devices in the
-module unload function (<code class="docutils literal"><span class="pre">my_exit</span></code>). When a driver is removed, all the
-references to it will be removed for all the devices it supports, and entries
-from <code class="docutils literal"><span class="pre">sysfs</span></code> will also be removed.</p>
+<p>与传统驱动程序不同，即插即用驱动程序不会在模块卸载函数 (<code class="docutils literal"><span class="pre">my_exit</span></code>) 中取消注册设备。当驱动程序被移除时，所有它支持的设备对它的引用将被删除，并且 <code class="docutils literal"><span class="pre">sysfs</span></code> 中的条目也将被删除。</p>
 </div>
-<div class="section" id="adding-a-new-device">
-<h3>Adding a new device<a class="headerlink" href="#adding-a-new-device" title="Permalink to this headline">¶</a></h3>
-<p>As we saw above, plug and play drivers do not register devices at initialization.
-This operation will take place in the <code class="docutils literal"><span class="pre">probe</span></code> function, which is called when
-a new device is detected. A device attached to the <code class="docutils literal"><span class="pre">PNP</span></code> bus will be added to
-the system by the function <code class="docutils literal"><span class="pre">probe</span></code> from the <code class="docutils literal"><span class="pre">pnp_driver</span></code> structure:</p>
+<div class="section" id="section-10">
+<h3>添加新设备<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<p>如上所述，即插即用驱动程序在初始化时不会注册设备。这个操作将在检测到新设备时调用的 <code class="docutils literal"><span class="pre">probe</span></code> 函数中进行。连接到 <code class="docutils literal"><span class="pre">PNP</span></code> 总线的设备将通过 <code class="docutils literal"><span class="pre">pnp_driver</span></code> 结构的 <code class="docutils literal"><span class="pre">probe</span></code> 函数添加到系统中：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_pnp_probe</span><span class="p">(</span><span class="k">struct</span> <span class="n">pnp_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_id</span> <span class="o">*</span><span class="n">card_id</span><span class="p">,</span>
                                              <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_id</span> <span class="o">*</span><span class="n">dev_id</span><span class="p">)</span> <span class="p">{</span>
         <span class="kt">int</span> <span class="n">err</span><span class="p">,</span> <span class="n">iobase</span><span class="p">,</span> <span class="n">nr_ports</span><span class="p">,</span> <span class="n">irq</span><span class="p">;</span>
 
-        <span class="c1">//get irq &amp; ports</span>
+        <span class="c1">//获取中断和端口</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">pnp_irq_valid</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
                 <span class="n">irq</span> <span class="o">=</span> <span class="n">pnp_irq</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">pnp_port_valid</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
@@ -1031,7 +782,7 @@ the system by the function <code class="docutils literal"><span class="pre">prob
                 <span class="k">return</span> <span class="o">-</span><span class="n">ENODEV</span><span class="p">;</span>
         <span class="n">nr_ports</span> <span class="o">=</span> <span class="n">pnp_port_len</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 
-        <span class="cm">/* register device dev */</span>
+        <span class="cm">/* 注册设备 dev */</span>
 <span class="p">}</span>
 
 <span class="k">static</span> <span class="k">struct</span> <span class="n">pnp_driver</span> <span class="n">my_pnp_driver</span> <span class="o">=</span> <span class="p">{</span>
@@ -1041,27 +792,13 @@ the system by the function <code class="docutils literal"><span class="pre">prob
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Upon detection of a device in the kernel (at boot or by the insertion of the
-device through <code class="docutils literal"><span class="pre">hotplug</span></code>), an interrupt is generated and reaches the bus
-driver.
-The device is registered using the function <code class="xref c c-func docutils literal"><span class="pre">device_register()</span></code> and it is
-attached to the bus. A call to the user space will also be generated, and the
-event can be treated by <code class="docutils literal"><span class="pre">udev</span></code>. Then, the list of drivers associated with the
-bus is iterated and the <code class="docutils literal"><span class="pre">match</span></code> function is called for each of them.
-The <code class="docutils literal"><span class="pre">match</span></code> function tries to find a driver for the new device. After a
-suitable driver is found for the device, the <code class="docutils literal"><span class="pre">probe</span></code> function of the driver
-is called. If the function ends successfully, the device is added to the driver's
-list of devices and new entries are created in <code class="docutils literal"><span class="pre">sysfs</span></code> based on the device name.</p>
+<p>在内核中检测到设备（在引导时或通过“热插拔”插入设备）时，系统会生成中断并传递给总线驱动程序。使用函数 <code class="xref c c-func docutils literal"><span class="pre">device_register()</span></code> 注册设备，并将其连接到总线。然后还会生成对用户空间的调用，事件可以由 <code class="docutils literal"><span class="pre">udev</span></code> 处理。然后, <code class="docutils literal"><span class="pre">udev</span></code> 将迭代与总线关联的驱动程序列表，并对每个驱动程序调用 <code class="docutils literal"><span class="pre">match</span></code> 函数。 <code class="docutils literal"><span class="pre">match</span></code> 函数尝试为新设备找到驱动程序。找到合适的驱动程序后，将调用驱动程序的 <code class="docutils literal"><span class="pre">probe</span></code> 函数。如果函数成功结束，设备将添加到驱动程序的设备列表中，并根据设备名称在 <code class="docutils literal"><span class="pre">sysfs</span></code> 中创建新条目。</p>
 </div>
-<div class="section" id="removing-a-device">
-<h3>Removing a device<a class="headerlink" href="#removing-a-device" title="Permalink to this headline">¶</a></h3>
-<p>As we saw above, the plug and play drivers don't unregister devices when the
-driver is unloaded. This operation is done in the <code class="docutils literal"><span class="pre">remove</span></code> function, which
-is called when a device is removed from the system.
-In case of a device attached to the <code class="docutils literal"><span class="pre">PNP</span></code> bus, the unregister will be done
-in the <code class="docutils literal"><span class="pre">remove</span></code> function specified in the <code class="docutils literal"><span class="pre">pnp_driver</span></code> structure:</p>
+<div class="section" id="section-11">
+<h3>移除设备<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<p>如上所述，即插即用驱动程序在卸载驱动程序时不会取消注册设备。这个操作是在从系统中移除设备时调用的 <code class="docutils literal"><span class="pre">remove</span></code> 函数中完成的。对于连接到 <code class="docutils literal"><span class="pre">PNP</span></code> 总线的设备，取消注册将在 <code class="docutils literal"><span class="pre">pnp_driver</span></code> 结构中指定的 <code class="docutils literal"><span class="pre">remove</span></code> 函数中进行：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span> <span class="nf">my_pnp_remove</span><span class="p">(</span><span class="k">struct</span> <span class="n">pnp_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span> <span class="p">{</span>
-         <span class="cm">/* unregister device dev */</span>
+         <span class="cm">/* 取消注册设备 dev */</span>
 <span class="p">}</span>
 
 <span class="k">static</span> <span class="k">struct</span> <span class="n">pnp_driver</span> <span class="n">my_pnp_driver</span> <span class="o">=</span> <span class="p">{</span>
@@ -1070,13 +807,11 @@ in the <code class="docutils literal"><span class="pre">remove</span></code> fun
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>As seen in the example above, when the removal of a device is detected, the
-<code class="docutils literal"><span class="pre">my_pnp_remove</span></code> function is called. A user-space call is also generated, which
-can be detected by <code class="docutils literal"><span class="pre">udev</span></code>, and entries are removed from <code class="docutils literal"><span class="pre">sysfs</span></code>.</p>
+<p>如上例所示，当检测到设备被移除时，将调用 <code class="docutils literal"><span class="pre">my_pnp_remove</span></code> 函数。还会生成对用户空间的调用，可以被 <code class="docutils literal"><span class="pre">udev</span></code> 检测到，并且会从 <code class="docutils literal"><span class="pre">sysfs</span></code> 中删除条目。</p>
 </div>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="section-12">
+<h2>练习<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -1088,7 +823,7 @@ can be detected by <code class="docutils literal"><span class="pre">udev</span><
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 device_model。请参阅任务名称的练习。</p>
+<p>当前实验名称为 设备模型。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -1107,9 +842,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/device_model/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/设备模型/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-12">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -1117,49 +852,41 @@ tools/labs $ make boot
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
-<div class="section" id="intro">
-<h3>0. Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h3>
-<p>Find the definitions of the following symbols in the Linux kernel:</p>
+<div class="section" id="section-13">
+<h3>0. 引言<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<p>在 Linux 内核中找到以下符号的定义：</p>
 <blockquote>
 <div><ul class="simple">
-<li>functions <code class="docutils literal"><span class="pre">dev_name</span></code>, <code class="docutils literal"><span class="pre">dev_set_name</span></code>.</li>
-<li>functions <code class="docutils literal"><span class="pre">pnp_device_probe</span></code>, <code class="docutils literal"><span class="pre">pnp_bus_match</span></code>, <code class="docutils literal"><span class="pre">pnp_register_driver</span></code>
-and the <code class="docutils literal"><span class="pre">pnp_bus_type</span></code> variable.</li>
+<li>函数 <code class="docutils literal"><span class="pre">dev_name</span></code>, <code class="docutils literal"><span class="pre">dev_set_name</span></code>。</li>
+<li>函数 <code class="docutils literal"><span class="pre">pnp_device_probe</span></code>, <code class="docutils literal"><span class="pre">pnp_bus_match</span></code>, <code class="docutils literal"><span class="pre">pnp_register_driver</span></code> 以及变量 <code class="docutils literal"><span class="pre">pnp_bus_type</span></code>。</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="bus-implementation">
-<h3>1. Bus implementation<a class="headerlink" href="#bus-implementation" title="Permalink to this headline">¶</a></h3>
-<p>Analyze the contents of the <code class="docutils literal"><span class="pre">bex.c</span></code>, a module that implements a bus
-driver. Follow the comments marked with <strong>TODO 1</strong> and implement the missing
-functionality: register the bus driver and add a new device named <code class="docutils literal"><span class="pre">root</span></code>
-with type <code class="docutils literal"><span class="pre">none</span></code> and version 1.</p>
+<div class="section" id="section-14">
+<h3>1. 总线实现<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<p>分析 <code class="docutils literal"><span class="pre">bex.c</span></code> 的内容，这是一个实现总线驱动程序的模块。按照标记为 <strong>TODO 1</strong> 的注释，实现缺失的功能：注册总线驱动程序，并添加一个名为 <code class="docutils literal"><span class="pre">root</span></code>、类型为 <code class="docutils literal"><span class="pre">none</span></code>、版本为 1 的新设备。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">See <code class="xref c c-func docutils literal"><span class="pre">bex_add_dev()</span></code>.</p>
+<p class="last">参考 <code class="xref c c-func docutils literal"><span class="pre">bex_add_dev()</span></code>。</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">The register and unregister must be done using <code class="xref c c-func docutils literal"><span class="pre">bus_register()</span></code>
-and <code class="xref c c-func docutils literal"><span class="pre">bus_unregister()</span></code>.</p>
+<p class="last">注册和取消注册必须使用 <code class="xref c c-func docutils literal"><span class="pre">bus_register()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">bus_unregister()</span></code> 完成。</p>
 </div>
-<p>Load the module and verify that the bus is visible in <code class="docutils literal"><span class="pre">/sys/bus</span></code>. Verify
-that the device is visible in <code class="docutils literal"><span class="pre">/sys/bus/bex/devices</span></code>.</p>
-<p>Remove the module and notice that the <code class="docutils literal"><span class="pre">sysfs</span></code> entries are removed.</p>
+<p>加载该模块，并验证总线是否在 <code class="docutils literal"><span class="pre">/sys/bus</span></code> 中可见。验证设备是否在 <code class="docutils literal"><span class="pre">/sys/bus/bex/devices</span></code> 中可见。</p>
+<p>卸载该模块，并注意到 <code class="docutils literal"><span class="pre">sysfs</span></code> 条目已被删除。</p>
 </div>
-<div class="section" id="add-type-and-version-device-attributes">
-<h3>2. Add type and version device attributes<a class="headerlink" href="#add-type-and-version-device-attributes" title="Permalink to this headline">¶</a></h3>
-<p>Add two read-only device attributes, <code class="docutils literal"><span class="pre">type</span></code> and <code class="docutils literal"><span class="pre">version</span></code>. Follow the
-<strong>TODO 2</strong> markings.</p>
+<div class="section" id="section-15">
+<h3>2. 添加类型和版本设备属性<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<p>添加两个只读设备属性, <code class="docutils literal"><span class="pre">type</span></code> 和 <code class="docutils literal"><span class="pre">version</span></code>。按照 <strong>TODO 2</strong> 的标记进行操作。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>You will need to add the two attributes in the structure
-<code class="docutils literal"><span class="pre">bex_dev_attrs</span></code>, as follows:</p>
+<p>你需要在 <code class="docutils literal"><span class="pre">bex_dev_attrs</span></code> 结构中添加这两个属性，如下所示：</p>
 <p class="last"><code class="docutils literal"><span class="pre">&amp;dev_attr_&lt;insert-attribute-type-here&gt;.attr,</span></code></p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>A possible implementation for the show function is the following:</p>
+<p>展示函数的一个可能实现如下所示：</p>
 <div class="last highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">ssize_t</span>
 <span class="nf">type_show</span><span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">device_attribute</span> <span class="o">*</span><span class="n">attr</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
 <span class="p">{</span>
@@ -1171,22 +898,16 @@ that the device is visible in <code class="docutils literal"><span class="pre">/
 </pre></div>
 </div>
 </div>
-<p>Observe that two new attributes are visible in
-/sys/bus/bex/devices/root. Check the contents of these attributes.</p>
+<p>观察在 /sys/bus/bex/devices/root 中出现了两个新属性。检查这些属性的内容。</p>
 </div>
-<div class="section" id="add-del-and-add-bus-attributes">
-<h3>3. Add del and add bus attributes<a class="headerlink" href="#add-del-and-add-bus-attributes" title="Permalink to this headline">¶</a></h3>
-<p>Add two write-only bus attributes, <code class="docutils literal"><span class="pre">del</span></code> and <code class="docutils literal"><span class="pre">add</span></code>. del expects the name
-of a device to delete, while add expects the name, type and version to
-create a new device. Follow the <strong>TODO 3</strong> markings and review
-<a class="reference internal" href="#buses">Buses</a>.</p>
+<div class="section" id="del-add">
+<h3>3. 添加 del 和 add 总线属性<a class="headerlink" href="#del-add" title="Permalink to this headline">¶</a></h3>
+<p>添加两个只写总线属性, <code class="docutils literal"><span class="pre">del</span></code> 和 <code class="docutils literal"><span class="pre">add</span></code>。 <code class="docutils literal"><span class="pre">del</span></code> 期望删除设备的名称，而 <code class="docutils literal"><span class="pre">add</span></code> 期望提供名称、类型和版本来创建一个新设备。按照 <strong>TODO 3</strong> 的标记进行操作，并查阅 <a href="#system-message-1"><span class="problematic" id="problematic-1">`Buses`_</span></a>。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">sscanf()</span></code> to parse the input from sysfs and
-<code class="xref c c-func docutils literal"><span class="pre">bex_del_dev()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">bex_add_dev()</span></code> to delete
-and create a new device.</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">sscanf()</span></code> 解析来自 sysfs 的输入，并使用 <code class="xref c c-func docutils literal"><span class="pre">bex_del_dev()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">bex_add_dev()</span></code> 删除和创建新设备。</p>
 </div>
-<p>An example for the store function is the following:</p>
+<p>下面是 store 函数的示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">add_store</span><span class="p">(</span><span class="k">struct</span> <span class="n">bus_type</span> <span class="o">*</span><span class="n">bt</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
@@ -1203,69 +924,52 @@ and create a new device.</p>
 </div>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">The store functions should return <code class="docutils literal"><span class="pre">0</span></code> if
-<code class="docutils literal"><span class="pre">bex_add_dev</span></code>/<code class="docutils literal"><span class="pre">bex_del_dev</span></code> fail and <code class="docutils literal"><span class="pre">count</span></code> otherwise.</p>
+<p class="last">如果 <code class="docutils literal"><span class="pre">bex_add_dev</span></code>/<code class="docutils literal"><span class="pre">bex_del_dev</span></code> 失败，store 函数应返回 <code class="docutils literal"><span class="pre">0</span></code>，否则返回 <code class="docutils literal"><span class="pre">count</span></code>。</p>
 </div>
-<p>Create a new device and observe that is visible in
-<code class="docutils literal"><span class="pre">/sys/bus/devices</span></code>. Delete it and observe it disapears from <code class="docutils literal"><span class="pre">sysfs</span></code>.</p>
+<p>创建一个新设备，并观察它在 <code class="docutils literal"><span class="pre">/sys/bus/devices</span></code> 中可见。然后删除它，并观察它从 <code class="docutils literal"><span class="pre">sysfs</span></code> 中消失。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p>Use echo to write into the bus attributes:</p>
+<p>使用 echo 命令将内容写入总线属性：</p>
 <div class="last highlight-shell"><div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;name type 1&quot;</span> &gt; /sys/bus/bex/add
 $ <span class="nb">echo</span> <span class="s2">&quot;name&quot;</span> &gt; /sys/bus/bex/del
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="register-the-bex-misc-driver">
-<h3>4. Register the bex misc driver<a class="headerlink" href="#register-the-bex-misc-driver" title="Permalink to this headline">¶</a></h3>
-<p>Modify <strong>bex-misc.c</strong> so that it registers the driver with the bex
-bus. Insert the <code class="docutils literal"><span class="pre">bmx_misc.ko</span></code> module and create a new bex device from
-sysfs with the name &quot;test&quot;, type &quot;misc&quot;, version 2. Follow the <strong>TODO
-4</strong> markings.</p>
-<p>Observe that the driver is visible in <code class="docutils literal"><span class="pre">/sys/bus/bex/drivers</span></code>.</p>
-<p>Why isn't the probe function called?</p>
+<div class="section" id="bex">
+<h3>4. 注册 bex 杂项驱动程序<a class="headerlink" href="#bex" title="Permalink to this headline">¶</a></h3>
+<p>修改 <strong>bex-misc.c</strong>，使其在 bex 总线上注册驱动程序。插入 <code class="docutils literal"><span class="pre">bmx_misc.ko</span></code> 模块，并从 sysfs 创建一个名为“test”、类型为“misc”、版本为 2 的新 bex 设备。按照 <strong>TODO 4</strong> 的标记进行操作。</p>
+<p>观察驱动程序在 <code class="docutils literal"><span class="pre">/sys/bus/bex/drivers</span></code> 中可见。</p>
+<p>为什么没有调用 probe 函数？</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Notice that the bus match function in <strong>bex.c</strong> is not
-implemented.</p>
+<p class="last">注意到 <strong>bex.c</strong> 中的总线匹配函数未实现。</p>
 </div>
-<p>Implement the bus matching function in <strong>bex.c</strong>. Follow the <strong>TODO 5</strong>
-markings. Try again to create a new bex device and observe that this
-time the <code class="docutils literal"><span class="pre">probe</span></code> function from the <code class="docutils literal"><span class="pre">bex_misc</span></code> driver is called.</p>
+<p>在 <strong>bex.c</strong> 中实现总线匹配函数。按照 <strong>TODO 5</strong> 的标记进行操作。再次尝试创建一个新的 bex 设备，并观察这次 <code class="docutils literal"><span class="pre">bex_misc</span></code> 驱动程序的 <code class="docutils literal"><span class="pre">probe</span></code> 函数被调用。</p>
 </div>
-<div class="section" id="register-misc-device-in-the-bex-misc-probe-function">
-<h3>5. Register misc device in the bex_misc probe function<a class="headerlink" href="#register-misc-device-in-the-bex-misc-probe-function" title="Permalink to this headline">¶</a></h3>
-<p>Modify <strong>bex_misc.c</strong> to refuse probing if <code class="docutils literal"><span class="pre">version</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. Also, register the
-defined misc device in <code class="docutils literal"><span class="pre">bex_misc_probe</span></code> and deregister it in
-<code class="docutils literal"><span class="pre">bex_misc_remove</span></code>. Follow the <strong>TODO 6</strong> markings.</p>
+<div class="section" id="bex-misc-probe">
+<h3>5. 在 bex_misc probe 函数中注册杂项设备<a class="headerlink" href="#bex-misc-probe" title="Permalink to this headline">¶</a></h3>
+<p>修改 <strong>bex_misc.c</strong>，如果 <code class="docutils literal"><span class="pre">version</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>，则拒绝探测。此外，在 <code class="docutils literal"><span class="pre">bex_misc_probe</span></code> 中注册定义的杂项设备，并在 <code class="docutils literal"><span class="pre">bex_misc_remove</span></code> 中取消注册。按照 <strong>TODO 6</strong> 的标记进行操作。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">Use <code class="xref c c-func docutils literal"><span class="pre">misc_register()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">misc_deregister()</span></code>.</p>
+<p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">misc_register()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">misc_deregister()</span></code>。</p>
 </div>
-<p>Create a new device with the name &quot;test&quot;, type &quot;misc&quot; and version 2
-and observe that the probe fails. Create a new device with the name
-&quot;test2&quot;, type &quot;misc&quot; and version 1 and observe that the probe is
-successful.</p>
-<p>Inspect <code class="docutils literal"><span class="pre">/sys/bus/bex/devices/test2</span></code> and observe that we have a new
-entry. Identify the major and minor for the misc device, create a
-character device file and try to read and write from the misc device
-buffer.</p>
+<p>创建一个名称为“test”、类型为“misc”、版本为 2 的新设备，并观察探测失败。创建一个名称为“test2”、类型为“misc”、版本为 1 的新设备，并观察探测成功。</p>
+<p>检查 <code class="docutils literal"><span class="pre">/sys/bus/bex/devices/test2</span></code>，观察到我们有了一个新条目。确定杂项设备的主设备号和次设备号，创建一个字符设备文件，并尝试从杂项设备缓冲区中读取和写入数据。</p>
 <div class="admonition hint">
 <p class="first admonition-title">Hint</p>
-<p class="last">The major and minor should be visible in the dev attribute
-of the misc device</p>
+<p class="last">主设备号和次设备号应该在杂项设备的 dev 属性中可见。</p>
 </div>
 </div>
-<div class="section" id="monitor-uevent-notifications">
-<h3>6. Monitor uevent notifications<a class="headerlink" href="#monitor-uevent-notifications" title="Permalink to this headline">¶</a></h3>
-<p>Use the <code class="docutils literal"><span class="pre">udevadm</span> <span class="pre">monitor</span></code> command and observe what happens when:</p>
+<div class="section" id="uevent">
+<h3>6. 监视 uevent 通知<a class="headerlink" href="#uevent" title="Permalink to this headline">¶</a></h3>
+<p>使用命令 <code class="docutils literal"><span class="pre">udevadm</span> <span class="pre">monitor</span></code>，观察以下情况发生时会发生什么：</p>
 <ul class="simple">
-<li>the <code class="docutils literal"><span class="pre">bex.ko</span></code> and <code class="docutils literal"><span class="pre">bex_misc.ko</span></code> modules are inserted</li>
-<li>a new device with the type &quot;type&quot; is created</li>
-<li>a new device with the type &quot;misc&quot; and version 2 is created</li>
-<li>a new device with the type &quot;misc&quot; and version 1 is created</li>
-<li>all of the above are removed</li>
+<li>插入 <code class="docutils literal"><span class="pre">bex.ko</span></code> 和 <code class="docutils literal"><span class="pre">bex_misc.ko</span></code> 模块</li>
+<li>创建一个类型为“type”的新设备</li>
+<li>创建一个类型为“misc”、版本为 2 的新设备</li>
+<li>创建一个类型为“misc”、版本为 1 的新设备</li>
+<li>移除上述所有设备</li>
 </ul>
 </div>
 </div>
