@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>文件系统驱动程序（第一部分） &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>文件系统驱动程序（第一部分） &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh_CN',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,10 +26,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
-        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="文件系统驱动程序（第二部分）" href="filesystems_part2.html" />
     <link rel="prev" title="块设备驱动程序" href="block_device_drivers.html" /> 
 </head>
@@ -175,9 +174,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>文件系统驱动程序（第一部分）<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
+<h1>文件系统驱动程序（第一部分）<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="section-2">
-<h2>实验目标<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li>了解 Linux 中虚拟文件系统（VFS）的知识，理解有关“inode”、“dentry”、“文件”、“超级块”和数据块的概念。</li>
@@ -187,7 +186,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="vfs">
-<h2>虚拟文件系统（VFS）<a class="headerlink" href="#vfs" title="永久链接至标题">¶</a></h2>
+<h2>虚拟文件系统（VFS）<a class="headerlink" href="#vfs" title="Permalink to this headline">¶</a></h2>
 <p>虚拟文件系统（也称为 VFS）是内核的组件，处理所有与文件和文件系统相关的系统调用。VFS 是用户与特定文件系统之间的通用接口。这种抽象简化了文件系统的实现，并使得多个文件系统更容易集成。这样，通过使用 VFS 提供的 API 来实现文件系统，通用硬件以及 I/O 子系统的通信部分由 VFS 处理。</p>
 <p>从功能的角度来看，文件系统可以分为以下几类：</p>
 <blockquote>
@@ -201,11 +200,11 @@
 <p>VFS 的基本思想是提供可以表示任何文件系统文件的单一文件模型。文件系统驱动程序需要遵守公共的基准。这样，内核可以创建包含整个系统的单一目录结构。其中一个文件系统将作为根文件系统，其他文件系统将挂载在其各个目录下。</p>
 </div>
 <div class="section" id="section-3">
-<h2>常见的文件系统模型<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<h2>常见的文件系统模型<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
 <p>常见的文件系统模型（任何实现的文件系统都需要符合该模型）包括几种明确定义的实体: <code class="xref c c-type docutils literal"><span class="pre">superblock</span></code>, <code class="xref c c-type docutils literal"><span class="pre">inode</span></code>, <code class="xref c c-type docutils literal"><span class="pre">file</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code>。这些实体是文件系统的元数据（包含有关数据或其他元数据的信息）。</p>
 <p>模型实体间通过某些 VFS 子系统或内核子系统进行交互：dentry cache（目录项缓存）、inode cache（索引节点缓存）和 buffer cache（缓冲区缓存）。每个实体都被视为对象：它具有关联的数据结构和指向方法表的指针。通过替换关联的方法来为每个组件引入特定的行为。</p>
 <div class="section" id="section-4">
-<h3>超级块<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
+<h3>超级块<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
 <p>超级块存储了挂载文件系统所需的信息：</p>
 <blockquote>
 <div><ul class="simple">
@@ -217,7 +216,7 @@
 </ul>
 </div></blockquote>
 <div class="section" id="section-5">
-<h4>本地化：<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h4>
+<h4>本地化：<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h4>
 <blockquote>
 <div><ul class="simple">
 <li>对于磁盘文件系统，超级块在磁盘的第一个块中有对应项（文件系统控制块）。</li>
@@ -227,7 +226,7 @@
 </div>
 </div>
 <div class="section" id="inode">
-<h3>inode<a class="headerlink" href="#inode" title="永久链接至标题">¶</a></h3>
+<h3>inode<a class="headerlink" href="#inode" title="Permalink to this headline">¶</a></h3>
 <p>inode（索引节点）保存了有关文件的信息。注意这里的文件指的是泛指意义上的文件，常规文件、目录、特殊文件（管道、fifo）、块设备、字符设备、链接或可以抽象为文件的任何内容都包括在内。</p>
 <p>inode 存储了以下信息：</p>
 <blockquote>
@@ -240,11 +239,11 @@
 </ul>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">通常，inode 不包含文件名。文件名由 <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code> 实体存储。这样，一个 inode 可以有多个名称（硬链接）。</p>
 </div>
 <div class="section" id="section-6">
-<h4>本地化：<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h4>
+<h4>本地化：<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h4>
 <p>与 superblock 类似，<code class="xref c c-type docutils literal"><span class="pre">inode</span></code> 也有磁盘对应项。磁盘上的 inodes 通常分组存储在一个专用区域（inode 区域）中，与数据块区域分开；在某些文件系统中，与 inodes 等效的内容分散在文件系统结构中（FAT）；作为 VFS 实体，inode 由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构表示，并由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> 结构定义与之相关的操作。</p>
 <p>通常，每个 inode 都通过编号进行标识。在 Linux 上, <code class="docutils literal"><span class="pre">ls</span></code> 命令的 <code class="docutils literal"><span class="pre">-i</span></code> 实参显示与每个文件关联的 inode 编号：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">razvan@valhalla:~/school/so2/wiki$</span> ls -i
@@ -255,7 +254,7 @@
 </div>
 </div>
 <div class="section" id="file">
-<h3>file<a class="headerlink" href="#file" title="永久链接至标题">¶</a></h3>
+<h3>file<a class="headerlink" href="#file" title="Permalink to this headline">¶</a></h3>
 <p>file 是文件系统模型中距离用户最近的组件。该结构体仅作为 VFS（虚拟文件系统）在内存中的实体存在，没有在磁盘上的物理对应物。</p>
 <p>inode 抽象了磁盘上的文件，而 file 结构抽象了打开的文件。从进程的角度来看，file 实体抽象了文件。然而，从文件系统实现的角度来看，inode 才是抽象文件的那个实体。</p>
 <p>file 结构维护了以下信息：</p>
@@ -267,7 +266,7 @@
 </ul>
 </div></blockquote>
 <div class="section" id="section-7">
-<h4>本地化：<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h4>
+<h4>本地化：<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h4>
 <blockquote>
 <div><ul class="simple">
 <li>与之关联的 VFS 实体是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 结构，与之相关的操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构表示。</li>
@@ -276,7 +275,7 @@
 </div>
 </div>
 <div class="section" id="section-8">
-<h3>目录项<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<h3>目录项<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
 <p>目录项（dentry）将 inode 与文件名关联起来。</p>
 <p>通常，dentry 结构包含两个字段：</p>
 <blockquote>
@@ -295,7 +294,7 @@
 </div>
 </div>
 <div class="section" id="section-9">
-<h2>注册和注销文件系统<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
+<h2>注册和注销文件系统<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
 <p>在当前版本中，Linux 内核支持约 50 种文件系统，包括：</p>
 <blockquote>
 <div><ul class="simple">
@@ -365,7 +364,7 @@
 </pre></div>
 </div>
 <div class="section" id="mount-kill-sb">
-<span id="functionsmountkillsbsection"></span><h3>mount 和 kill_sb 函数<a class="headerlink" href="#mount-kill-sb" title="永久链接至标题">¶</a></h3>
+<span id="functionsmountkillsbsection"></span><h3>mount 和 kill_sb 函数<a class="headerlink" href="#mount-kill-sb" title="Permalink to this headline">¶</a></h3>
 <p>在挂载文件系统时，内核调用了在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> 结构中定义的 mount 函数。该函数进行一系列的初始化操作，并返回表示挂载点目录的 dentry（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> 结构）。通常，<code class="xref c c-func docutils literal"><span class="pre">mount()</span></code> 是一个简单的函数，该函数调用以下函数之一：</p>
 <blockquote>
 <div><ul class="simple">
@@ -403,7 +402,7 @@
 </div>
 </div>
 <div class="section" id="vfs-1">
-<h2>VFS 中的超级块<a class="headerlink" href="#vfs-1" title="永久链接至标题">¶</a></h2>
+<h2>VFS 中的超级块<a class="headerlink" href="#vfs-1" title="Permalink to this headline">¶</a></h2>
 <p>超级块既作为物理实体（磁盘上的实体）存在，也作为 VFS 实体（在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构中）存在。超级块仅包含元信息，并用于从磁盘中读取和写入元数据（如 inode、目录项）。超级块（以及隐式的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构）将包含有关所使用的块设备、inode 列表、文件系统根目录的 inode 指针以及超级块操作的指针的信息。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构的部分定义如下：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">super_block</span> <span class="p">{</span>
@@ -440,7 +439,7 @@
 </dl>
 <p>此外，一个通用指针 (<code class="docutils literal"><span class="pre">void</span> <span class="pre">*</span></code>) 用于存储文件系统的私有数据。超级块可以被视为一个抽象对象，在具体实现时，会向其中添加自己的数据。</p>
 <div class="section" id="section-10">
-<span id="superblocksection"></span><h3>超级块操作<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
+<span id="superblocksection"></span><h3>超级块操作<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
 <p>超级块操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构描述：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">super_operations</span> <span class="p">{</span>
        <span class="c1">//...</span>
@@ -465,7 +464,7 @@
 </div>
 </div>
 <div class="section" id="fill-super">
-<span id="fillsupersection"></span><h2><code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> 函数<a class="headerlink" href="#fill-super" title="永久链接至标题">¶</a></h2>
+<span id="fillsupersection"></span><h2><code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> 函数<a class="headerlink" href="#fill-super" title="Permalink to this headline">¶</a></h2>
 <p>如前所述, <code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code> 函数用于超级块初始化的最后一段。此初始化包括填充 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 结构字段和根目录 inode 的初始化。</p>
 <p>一个实现示例是 <code class="xref c c-func docutils literal"><span class="pre">ramfs_fill_super()</span></code> 函数，它用于初始化超级块中的其余字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/pagemap.h&gt;</span><span class="cp"></span>
@@ -517,7 +516,7 @@
 <p>VFS 函数通常以超级块、索引节点和/或包含指向超级块的指针的目录项作为实参，以便能够轻松访问这些私有数据。</p>
 </div>
 <div class="section" id="section-11">
-<span id="buffercachesection"></span><h2>缓冲区缓存<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h2>
+<span id="buffercachesection"></span><h2>缓冲区缓存<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h2>
 <p>缓冲区缓存是处理块设备读写缓存的内核子系统。缓冲区缓存使用的基本实体是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> 结构。该结构中最重要的字段包括：</p>
 <blockquote>
 <div><ul class="simple">
@@ -540,7 +539,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-12">
-<h2>函数和有用的宏<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h2>
+<h2>函数和有用的宏<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h2>
 <p>超级块通常包含以位图（位向量）形式表示的占用块的映射（由索引节点、目录条目、数据占用）。为了处理这种映射，建议使用以下功能：</p>
 <blockquote>
 <div><ul class="simple">
@@ -559,7 +558,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-13">
-<h2>进一步阅读<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h2>
+<h2>进一步阅读<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Robert Love——Linux 内核开发，第二版——第 12 章 虚拟文件系统</li>
 <li>《深入理解 Linux 内核》，第 3 版——第 12 章 虚拟文件系统</li>
@@ -575,9 +574,9 @@
 </ol>
 </div>
 <div class="section" id="section-14">
-<h2>练习<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">重要</p>
+<p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -611,21 +610,21 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-14">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">警告</p>
+<p class="first admonition-title">Warning</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="myfs">
-<h3>myfs<a class="headerlink" href="#myfs" title="永久链接至标题">¶</a></h3>
+<h3>myfs<a class="headerlink" href="#myfs" title="Permalink to this headline">¶</a></h3>
 <p>首先，我们计划熟悉 Linux 内核和虚拟文件系统（VFS）组件所提供的接口。为此，我们将使用一个简单的虚拟文件系统（即没有物理磁盘支持）。该文件系统名为 <code class="docutils literal"><span class="pre">myfs</span></code>。</p>
 <p>我们将在实验框架的 <code class="docutils literal"><span class="pre">myfs/</span></code> 子目录中进行操作。我们将在此实验中实现超级块操作，下一个实验将继续进行索引节点操作。</p>
 <div class="section" id="myfs-1">
-<h4>1. 注册和注销 myfs 文件系统<a class="headerlink" href="#myfs-1" title="永久链接至标题">¶</a></h4>
+<h4>1. 注册和注销 myfs 文件系统<a class="headerlink" href="#myfs-1" title="Permalink to this headline">¶</a></h4>
 <p>处理文件系统的第一步是注册和注销它。我们要为 <code class="docutils literal"><span class="pre">myfs.c</span></code> 中描述的文件系统执行此操作。查看文件内容并按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的指示进行操作。</p>
 <p>在 <span class="xref std std-ref">RegisterUnregisterSection</span> 部分描述了需要执行的步骤。使用字符串 <code class="docutils literal"><span class="pre">&quot;myfs&quot;</span></code> 作为文件系统名称。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>在文件系统结构中，使用代码框架中的 <code class="docutils literal"><span class="pre">myfs_mount</span></code> 函数填充超级块（在挂载时完成）。在 <code class="docutils literal"><span class="pre">myfs_mount</span></code> 中调用专用于没有磁盘支持的文件系统的函数。作为特定挂载函数的参数，使用代码框架中定义的 <code class="docutils literal"><span class="pre">fill_super</span></code> 类型的函数。你可以查看 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#functionsmountkillsbsection"><span class="std std-ref">mount 和 kill_sb 函数</span></a> 部分。</p>
 <p class="last">要销毁超级块（在卸载时完成），请使用 <code class="docutils literal"><span class="pre">kill_litter_super</span></code>，这也是特定于没有磁盘支持的文件系统的函数。该函数已经实现，你需要在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> 结构中填充它。</p>
 </div>
@@ -640,33 +639,33 @@ tools/labs $ make boot
 </div>
 <p>我们得到的错误消息显示我们还没有实现在超级块上的操作。我们将需要实现超级块上的操作并初始化根索引节点。我们将在后续步骤中完成这些操作。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">发送给 <code class="docutils literal"><span class="pre">mount</span></code> 命令的 <code class="docutils literal"><span class="pre">none</span></code> 实参表示我们没有要挂载的设备，因为文件系统是虚拟的。类似地，这也是 Linux 系统上挂载 <code class="docutils literal"><span class="pre">procfs</span></code> 或 <code class="docutils literal"><span class="pre">sysfs</span></code> 文件系统的方式。</p>
 </div>
 </div>
 <div class="section" id="myfs-2">
-<h4>2. 完成 myfs 的超级块<a class="headerlink" href="#myfs-2" title="永久链接至标题">¶</a></h4>
+<h4>2. 完成 myfs 的超级块<a class="headerlink" href="#myfs-2" title="Permalink to this headline">¶</a></h4>
 <p>为了能够挂载文件系统，我们需要填充其超级块的字段，即类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 的通用 VFS 结构。我们将在 <code class="xref c c-func docutils literal"><span class="pre">myfs_fill_super()</span></code> 函数内填充该结构；超级块由作为函数实参传递的变量 <code class="docutils literal"><span class="pre">sb</span></code> 表示。请按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的提示进行操作。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>要填充 <code class="docutils literal"><span class="pre">myfs_fill_super</span></code> 函数，你可以从 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#fillsupersection"><span class="std std-ref">fill_super() 函数</span></a> 部分中的示例开始。</p>
 <p class="last">对于超级块结构字段，请尽可能使用代码框架中定义的宏。</p>
 </div>
 <p>超级块结构中的 <code class="docutils literal"><span class="pre">s_op</span></code> 字段必须初始化为超级块操作结构（类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code>）。你需要定义这样的结构。</p>
 <p>有关定义 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构和填充超级块的信息，请参阅 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#superblocksection"><span class="std std-ref">超级块操作</span></a> 部分。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构的 <code class="docutils literal"><span class="pre">drop_inode</span></code> 和 <code class="docutils literal"><span class="pre">statfs</span></code> 字段。</p>
 </div>
 <p>尽管此时超级块将被正确初始化，但挂载操作仍将失败。为了成功完成挂载操作，还需要初始化根索引节点，这将在下一个练习中进行操作。</p>
 </div>
 <div class="section" id="myfs-3">
-<h4>3. 初始化 myfs 根索引节点<a class="headerlink" href="#myfs-3" title="永久链接至标题">¶</a></h4>
+<h4>3. 初始化 myfs 根索引节点<a class="headerlink" href="#myfs-3" title="Permalink to this headline">¶</a></h4>
 <p>根索引节点是文件系统根目录（即 <code class="docutils literal"><span class="pre">/</span></code>）的索引节点。初始化是在文件系统挂载时完成的。在挂载时调用的 <code class="docutils literal"><span class="pre">myfs_fill_super</span></code> 函数会调用 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数来创建并初始化索引节点。通常，所有索引节点都是由此函数创建和初始化；但是，在本练习中，我们只创建根索引节点。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">inode</span></code> 在 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数内进行分配（调用 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 函数，将返回的结果分配给局部变量 <code class="docutils literal"><span class="pre">inode</span></code>）。</p>
 <p>为了成功完成文件系统的挂载，你需要填充 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数。按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code> 的指示进行操作。可以参考 <a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/fs/ramfs/inode.c#L63">ramfs_get_inode</a> 函数。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>要初始化 <code class="docutils literal"><span class="pre">uid</span></code>, <code class="docutils literal"><span class="pre">gid</span></code> 和 <code class="docutils literal"><span class="pre">mode</span></code>，可以使用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_owner()</span></code> 函数，就像在 <code class="xref c c-func docutils literal"><span class="pre">ramfs_get_inode()</span></code> 中那样。调用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_owner()</span></code> 时，应将 <code class="docutils literal"><span class="pre">NULL</span></code> 作为第二个参数，因为创建的索引节点没有父目录。</p>
 <p>将 VFS 索引节点的 <code class="docutils literal"><span class="pre">i_atime</span></code>, <code class="docutils literal"><span class="pre">i_ctime</span></code> 和 <code class="docutils literal"><span class="pre">i_mtime</span></code> 初始化为 <code class="xref c c-func docutils literal"><span class="pre">current_time()</span></code> 函数返回的值。</p>
 <p>你需要为目录类型的索引节点初始化操作。执行以下步骤：</p>
@@ -684,11 +683,11 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="myfs-4">
-<h4>4. 测试 myfs 的挂载和卸载<a class="headerlink" href="#myfs-4" title="永久链接至标题">¶</a></h4>
+<h4>4. 测试 myfs 的挂载和卸载<a class="headerlink" href="#myfs-4" title="Permalink to this headline">¶</a></h4>
 <p>现在我们可以挂载文件系统了。按照上述步骤编译内核模块，将其复制到虚拟机中，启动虚拟机，然后插入内核模块，创建挂载点 <code class="docutils literal"><span class="pre">/mnt/myfs/</span></code>，并挂载文件系统。我们可以通过检查 <code class="docutils literal"><span class="pre">/proc/mounts</span></code> 文件来验证文件系统是否已挂载。</p>
 <p><a href="#system-message-1"><span class="problematic" id="problematic-1">``</span></a>/mnt/myfs``目录的索引节点号是多少？为什么？</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>要显示目录的索引节点号，请使用以下命令：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ls -di /path/to/directory</span>
 </pre></div>
@@ -711,7 +710,7 @@ tools/labs $ make boot
 </div>
 <p>同时卸载对应的内核模块。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>要测试整个功能，你可以使用 <code class="docutils literal"><span class="pre">test-myfs.sh</span></code> 脚本：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./test-myfs.sh</span>
 </pre></div>
@@ -722,21 +721,21 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">显示的文件系统统计信息很简单，因为这些信息是由 simple_statfs 函数提供的。</p>
 </div>
 </div>
 </div>
 <div class="section" id="minfs">
-<h3>minfs<a class="headerlink" href="#minfs" title="永久链接至标题">¶</a></h3>
+<h3>minfs<a class="headerlink" href="#minfs" title="Permalink to this headline">¶</a></h3>
 <p>接下来，我们将实现一个非常简单的文件系统，名为 <code class="docutils literal"><span class="pre">minfs</span></code>，这个文件系统支持磁盘。我们将使用虚拟机中的一个磁盘，格式化并挂载 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统。</p>
 <p>为此，我们需要从实验框架中访问 <code class="docutils literal"><span class="pre">minfs/kernel</span></code> 目录，并处理 <code class="docutils literal"><span class="pre">minfs.c</span></code> 中的代码。与 <code class="docutils literal"><span class="pre">myfs</span></code> 类似，我们不会实现与索引节点相关的操作，只限于处理超级块和挂载。其他操作将在下一个实验中实现。</p>
 <p>请按照下面的图表来理解 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统中各个结构的作用。</p>
 <img alt="../_images/minfs.png" src="../_images/minfs.png" />
 <div class="section" id="minfs-1">
-<h4>1. 注册和注销 minfs 文件系统<a class="headerlink" href="#minfs-1" title="永久链接至标题">¶</a></h4>
+<h4>1. 注册和注销 minfs 文件系统<a class="headerlink" href="#minfs-1" title="Permalink to this headline">¶</a></h4>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>在解决本练习之前，我们需要在虚拟机中添加一个磁盘。你可以使用以下命令生成一个文件作为磁盘镜像：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">dd if=/dev/zero of=mydisk.img bs=1M count=100</span>
 </pre></div>
@@ -745,7 +744,7 @@ tools/labs $ make boot
 </div>
 <p>要注册和注销文件系统，你需要在 <code class="docutils literal"><span class="pre">minfs.c</span></code> 中填写 <code class="docutils literal"><span class="pre">minfs_fs_type</span></code> 和 <code class="docutils literal"><span class="pre">minfs_mount</span></code> 函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的指引进行操作。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>在文件系统结构中，对于挂载，请使用代码框架中的 <code class="docutils literal"><span class="pre">minfs_mount</span></code> 函数。在此函数中，调用带有磁盘支持的文件系统挂载函数（请参见 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#functionsmountkillsbsection"><span class="std std-ref">mount 和 kill_sb 函数</span></a> 部分。使用 <code class="xref c c-func docutils literal"><span class="pre">mount_bdev()</span></code>）。选择最合适的函数来销毁超级块（在卸载时完成）；请记住这是带有磁盘支持的文件系统。使用 <code class="xref c c-func docutils literal"><span class="pre">kill_block_super()</span></code> 函数。</p>
 <p>使用适当的值初始化 <code class="xref c c-type docutils literal"><span class="pre">minfs_fs_type</span></code> 结构的 <code class="docutils literal"><span class="pre">fs_flags</span></code> 字段，以适应带有磁盘支持的文件系统。请参阅 <span class="xref std std-ref">RegisterUnregisterSection</span> 部分。</p>
 <p class="last">填充超级块的函数是 <code class="docutils literal"><span class="pre">minfs_fill_super</span></code>。</p>
@@ -771,10 +770,10 @@ tools/labs $ make boot
 <p>操作失败，因为根索引节点未初始化。</p>
 </div>
 <div class="section" id="minfs-2">
-<h4>2. 完善 minfs 超级块<a class="headerlink" href="#minfs-2" title="永久链接至标题">¶</a></h4>
+<h4>2. 完善 minfs 超级块<a class="headerlink" href="#minfs-2" title="Permalink to this headline">¶</a></h4>
 <p>为了能够挂载文件系统，你需要在 <code class="docutils literal"><span class="pre">minfs_fill_super</span></code> 函数中填充超级块（即类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_block</span></code> 的结构体），超级块对应该函数的 <code class="docutils literal"><span class="pre">s</span></code> 实参。操作超级块的结构已经定义好了: <code class="docutils literal"><span class="pre">minfs_ops</span></code>。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的指引操作。你还可以参考 <a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/fs/minix/inode.c#L153">minix_fill_super</a> 函数的实现。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>一些结构可以在头文件 <code class="docutils literal"><span class="pre">minfs.h</span></code> 中找到。</p>
 <p>有关使用缓冲区的信息，请参阅 <a class="reference internal" href="../so2/lab8-filesystems-part1.html#buffercachesection"><span class="std std-ref">缓冲区缓存</span></a> 部分。</p>
 <p>读取磁盘上的第一个块（索引为 0 的块）。要读取块，请使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 函数。将读取的数据（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> 结构中的 <code class="docutils literal"><span class="pre">b_data</span></code> 字段）转换为存储磁盘上的 <code class="docutils literal"><span class="pre">minfs</span></code> 超级块的信息的结构体：在源代码文件中定义的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_super_block</span></code>。</p>
@@ -784,30 +783,30 @@ tools/labs $ make boot
 <p>执行上一个练习中的命令来验证实现。</p>
 </div>
 <div class="section" id="minfs-3">
-<h4>3. 创建和销毁 minfs 索引节点<a class="headerlink" href="#minfs-3" title="永久链接至标题">¶</a></h4>
+<h4>3. 创建和销毁 minfs 索引节点<a class="headerlink" href="#minfs-3" title="Permalink to this headline">¶</a></h4>
 <p>挂载操作中，我们需要初始化根索引节点，并且为了获得根索引节点，我们需要实现与索引节点相关的函数。也就是说，你需要实现 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code> 的指示进行操作。你可以将 <code class="xref c c-func docutils literal"><span class="pre">minix_alloc_inode`()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_destroy_inode()</span></code> 函数作为参考。</p>
 <p>为了实现，请查看 <code class="docutils literal"><span class="pre">minfs.h</span></code> 头文件中的宏和结构。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>要想实现在 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 中的内存分配/释放，建议使用 <code class="xref c c-func docutils literal"><span class="pre">kzalloc()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">kfree()</span></code>。</p>
 <p>在 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 中，分配类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的结构体，但只返回类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 的结构体，即返回 <code class="docutils literal"><span class="pre">vfs_inode</span></code> 字段对应的结构体。</p>
 <p>在 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 函数中，调用 <code class="xref c c-func docutils literal"><span class="pre">inode_init_once()</span></code> 来初始化索引节点。</p>
 <p class="last">在 <code class="docutils literal"><span class="pre">destroy_inode</span></code> 函数中，你可以使用 <code class="docutils literal"><span class="pre">container_of</span></code> 宏访问 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 结构体。</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">在本练习中，你已经实现了 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数，但尚未调用它们。实现的正确性将在下一个练习的最后进行检查。</p>
 </div>
 </div>
 <div class="section" id="minfs-4">
-<h4>4. 初始化 minfs 根索引节点<a class="headerlink" href="#minfs-4" title="永久链接至标题">¶</a></h4>
+<h4>4. 初始化 minfs 根索引节点<a class="headerlink" href="#minfs-4" title="Permalink to this headline">¶</a></h4>
 <p>为了挂载文件系统，需要初始化根索引节点。为此，你需要完成 <code class="docutils literal"><span class="pre">minfs_ops</span></code> 结构体，包括 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数，并填充 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数。</p>
 <p><code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数用于分配 VFS 索引节点（即 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>），并用磁盘中的 minfs 索引节点特定信息（即 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>）来填充它。</p>
 <p>按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">4</span></code> 的指示进行操作。在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构体的 <code class="docutils literal"><span class="pre">alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">destroy_inode</span></code> 字段中填写在上一步中实现的函数。</p>
 <p>根索引节点的信息存储在磁盘上的第二个块中（索引为 1 的索引节点）。使 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 从磁盘中读取根 minfs 索引节点（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>）并填充 VFS 索引节点（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>）。</p>
 <p>在 <code class="docutils literal"><span class="pre">minfs_fill_super</span></code> 函数中，用 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数调用替换 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 的调用。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>要实现 <code class="docutils literal"><span class="pre">minfs_iget</span></code> 函数，请参考 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.15/source/fs/minix/inode.c#L460">V1_minix_iget</a> 的实现。要读取块，请使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 函数。将读取的数据（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">buffer_head</span></code> 结构中的 <code class="docutils literal"><span class="pre">b_data</span></code> 字段）强制转换为磁盘上的 minfs 索引节点（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code>）。</p>
 <p>使用从磁盘读取的 minfs 索引节点结构中的值填充 VFS 索引节点中的 <code class="docutils literal"><span class="pre">i_uid</span></code>, <code class="docutils literal"><span class="pre">i_gid</span></code>, <code class="docutils literal"><span class="pre">i_mode</span></code> 以及 <code class="docutils literal"><span class="pre">i_size</span></code> 字段。要初始化 <code class="docutils literal"><span class="pre">i_uid</span></code> 和 <code class="docutils literal"><span class="pre">i_gid</span></code> 字段，请使用函数 <code class="xref c c-func docutils literal"><span class="pre">i_uid_write()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">i_gid_write()</span></code>。</p>
 <p>将 VFS 索引节点的 <code class="docutils literal"><span class="pre">i_atime</span></code>, <code class="docutils literal"><span class="pre">i_ctime</span></code> 和 <code class="docutils literal"><span class="pre">i_mtime</span></code> 字段初始化为 <code class="xref c c-func docutils literal"><span class="pre">current_time()</span></code> 函数的返回值。</p>
@@ -826,7 +825,7 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="minfs-5">
-<h4>5. minfs 挂载和卸载的测试<a class="headerlink" href="#minfs-5" title="永久链接至标题">¶</a></h4>
+<h4>5. minfs 挂载和卸载的测试<a class="headerlink" href="#minfs-5" title="Permalink to this headline">¶</a></h4>
 <p>现在我们可以挂载文件系统了。按照上述步骤编译内核模块，将其复制到虚拟机中，启动虚拟机，然后插入内核模块，创建挂载点 <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code> 并挂载文件系统。我们通过查看 <code class="docutils literal"><span class="pre">/proc/mounts</span></code> 文件来验证文件系统是否已挂载。</p>
 <p>通过列出挂载点内容 <code class="docutils literal"><span class="pre">/mnt/minfs/</span></code> 来检查是否一切正常：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ls /mnt/minfs/
@@ -834,7 +833,7 @@ tools/labs $ make boot
 </div>
 <p>挂载和验证完成后，卸载文件系统并从内核中卸载模块。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>或者，你可以使用 <code class="docutils literal"><span class="pre">test-minfs.sh</span></code> 脚本来完整测试功能：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./test-minfs.sh
 </pre></div>

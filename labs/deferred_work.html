@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>延迟工作 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>延迟工作 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh_CN',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,10 +26,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
-        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="块设备驱动程序" href="block_device_drivers.html" />
     <link rel="prev" title="I/O 访问和中断" href="interrupts.html" /> 
 </head>
@@ -149,9 +148,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>延迟工作<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
+<h1>延迟工作<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="section-2">
-<h2>实验目标<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>理解延迟工作（即在稍后时间执行的代码）</li>
 <li>实现使用延迟工作的常见任务</li>
@@ -160,7 +159,7 @@
 <p>关键词：softirq、tasklet、struct tasklet_struct、下半部处理程序、jiffies、HZ、timer、struct timer_list、spin_lock_bh、spin_unlock_bh、workqueue、struct work_struct、内核线程、events/x</p>
 </div>
 <div class="section" id="section-3">
-<h2>背景信息<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<h2>背景信息<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
 <p>延迟工作是一类内核功能，允许我们安排代码在稍后的时间执行。这些安排的代码可以在进程上下文或中断上下文中运行，具体取决于延迟工作的类型。延迟工作用于补充中断处理程序的功能，因为中断具有重要的要求和限制：</p>
 <ul class="simple">
 <li>中断处理程序的执行时间必须尽可能短</li>
@@ -177,13 +176,13 @@
 <li><strong>屏蔽</strong> 或 <strong>取消</strong>。禁用处理程序的执行。此操作可以是同步的（可保证在取消完成后不再运行处理程序）或异步的。</li>
 </ol>
 <div class="admonition attention">
-<p class="first admonition-title">注意</p>
+<p class="first admonition-title">Attention</p>
 <p class="last">在进行延迟工作的清理工作（例如释放与延迟工作相关的结构或从内核中删除模块及其处理程序代码），始终使用同步类型的延迟工作取消。</p>
 </div>
 <p>主要的延迟工作类型包括内核线程和软中断（softirq）。工作队列是在内核线程之上实现的，而 tasklet 和定时器是在软中断之上实现的。下半部（bottom-half）处理程序是 Linux 中最早的延迟工作实现，但后来被软中断所取代。这就是某些函数名称中含有 <em>bh</em> 的原因（译注：bh 即 bottom-half 的首字母缩写）。</p>
 </div>
 <div class="section" id="softirqs">
-<h2>软中断（Softirqs）<a class="headerlink" href="#softirqs" title="永久链接至标题">¶</a></h2>
+<h2>软中断（Softirqs）<a class="headerlink" href="#softirqs" title="Permalink to this headline">¶</a></h2>
 <p>设备驱动程序不能使用软中断，软中断专门为各种内核子系统保留。因此，在编译时定义的软中断的数量是固定的。针对当前内核版本，定义了以下类型：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="p">{</span>
     <span class="n">HI_SOFTIRQ</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -220,7 +219,7 @@
 <p><em>HI_SOFTIRQ</em> 类型的软中断优先级最高，其次是其他定义的软中断。<em>RCU_SOFTIRQ</em> 具有最低优先级。</p>
 <p>软中断在中断上下文中运行，这意味着它们不能调用阻塞函数。如果软中断处理程序需要调用此类函数，可以调度工作队列来执行这些阻塞调用。</p>
 <div class="section" id="tasklet">
-<h3>tasklet<a class="headerlink" href="#tasklet" title="永久链接至标题">¶</a></h3>
+<h3>tasklet<a class="headerlink" href="#tasklet" title="Permalink to this headline">¶</a></h3>
 <p>与软中断类似，任务（tasklet）是一种在中断上下文中运行的延迟工作。任务（tasklet）与软中断之间的主要区别在于，任务（tasklet）可以动态分配，并且因此可以被设备驱动程序使用。任务（tasklet）由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">tasklet</span></code> 表示，与许多其他内核结构一样，需要在使用之前进行初始化。预初始化的任务（tasklet）可以以如下方式定义：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">handler</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">data</span><span class="p">);</span>
 
@@ -253,7 +252,7 @@
 <p>请记住，由于任务（tasklet）是在软中断的基础上执行的，因此不能在处理程序函数中使用阻塞调用。</p>
 </div>
 <div class="section" id="timer">
-<h3>定时器（Timer）<a class="headerlink" href="#timer" title="永久链接至标题">¶</a></h3>
+<h3>定时器（Timer）<a class="headerlink" href="#timer" title="Permalink to this headline">¶</a></h3>
 <p>定时器是一种特殊类型的延迟工作。它们由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">timer_list</span></code> 定义，并在中断上下文中运行，是基于软中断实现的。</p>
 <p>要使用定时器，首先必须调用 <code class="xref c c-func docutils literal"><span class="pre">timer_setup()</span></code> 函数进行初始化：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/sched.h&gt;</span><span class="cp"></span>
@@ -309,7 +308,7 @@
 </div>
 </div>
 <div class="section" id="locking">
-<h3>锁定（Locking）<a class="headerlink" href="#locking" title="永久链接至标题">¶</a></h3>
+<h3>锁定（Locking）<a class="headerlink" href="#locking" title="Permalink to this headline">¶</a></h3>
 <p>为了在运行在进程上下文（A）的代码和运行在软中断上下文（B）的代码之间进行同步，我们需要使用特殊的锁原语。我们必须在（A）中使用自旋锁操作，并禁用底半部处理程序，在（B）中只使用基本的自旋锁操作。使用自旋锁可以确保在禁用软中断后，多个 CPU 之间不会发生竞争，而禁用软中断可以确保在已经获取自旋锁的 CPU 上调度软中断时不会发生死锁。</p>
 <p>我们可以使用 <code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> 来禁用和启用软中断处理程序（并且由于定时器和任务（tasklet）在软中断之上运行，还包括它们）：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">local_bh_disable</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
@@ -326,7 +325,7 @@
 </pre></div>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">注意</p>
+<p class="first admonition-title">Attention</p>
 <p class="last">上述调用只会在本地处理器上禁用软中断，通常不安全，必须与自旋锁配合使用。</p>
 </div>
 <p>大多数情况下，设备驱动程序将使用用于同步的特殊版本的自旋锁调用，如 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh()</span></code>：</p>
@@ -337,7 +336,7 @@
 </div>
 </div>
 <div class="section" id="section-4">
-<h2>工作队列<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
+<h2>工作队列<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
 <p>工作队列（workqueue）用于在进程上下文中调度要执行的操作。它们所处理的基本单元称为工作项（work）。有两种类型的工作项：</p>
 <ul class="simple">
 <li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code> ——它安排一个任务在稍后的时间运行</li>
@@ -385,7 +384,7 @@
 </div>
 <p>这些调用只会停止工作项的后续执行。如果在调用时工作项已经在运行，它将继续运行。无论如何，当这些调用返回时，可以确保该任务不再运行。</p>
 <div class="admonition attention">
-<p class="first admonition-title">注意</p>
+<p class="first admonition-title">Attention</p>
 <p class="last">尽管这些函数也有非同步版本（例如 <code class="xref c c-func docutils literal"><span class="pre">cancel_work()</span></code>），但在执行清理工作时不要使用它们，否则可能会出现竞态条件。</p>
 </div>
 <p>我们可以通过调用 <code class="xref c c-func docutils literal"><span class="pre">flush_scheduled_work()</span></code> 来等待工作队列完成所有工作项的运行：</p>
@@ -482,7 +481,7 @@ PID TTY TIME CMD
 <p>使用这些函数计划的工作项将在一个名为 <em>my_workqueue</em> 的新内核线程的上下文中运行，该名称是传递给 <code class="xref c c-func docutils literal"><span class="pre">create_singlethread_workqueue()</span></code> 函数的参数。</p>
 </div>
 <div class="section" id="section-5">
-<h2>内核线程<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
+<h2>内核线程<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
 <p>内核线程之所以出现，是为了在进程上下文中运行内核代码。内核线程是工作队列机制的基础。实质上，内核线程是一种只在内核态下运行，并且没有用户地址空间或其他用户属性的线程。</p>
 <p>要创建内核线程，请使用函数 <code class="xref c c-func docutils literal"><span class="pre">kthread_create()</span></code>：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/kthread.h&gt;</span><span class="cp"></span>
@@ -585,7 +584,7 @@ PID TTY TIME CMD
 </div>
 </div>
 <div class="section" id="section-6">
-<h2>进一步阅读<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
+<h2>进一步阅读<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch07.pdf">Linux 设备驱动程序（第 3 版），第 7 章：时间、延迟和延迟工作</a></li>
 <li><a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x1211.html">调度任务</a></li>
@@ -596,9 +595,9 @@ PID TTY TIME CMD
 </ul>
 </div>
 <div class="section" id="section-7">
-<h2>练习<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">重要</p>
+<p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -632,13 +631,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-7">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">警告</p>
+<p class="first admonition-title">Warning</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-8">
-<h3>0. 简介<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<h3>0. 简介<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
 <p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a>，找到以下符号的定义：</p>
 <ul class="simple">
 <li><code class="xref c c-macro docutils literal"><span class="pre">jiffies</span></code></li>
@@ -647,21 +646,21 @@ tools/labs $ make boot
 </ul>
 </div>
 <div class="section" id="section-9">
-<h3>1. 定时器<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<h3>1. 定时器<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
 <p>我们将创建一个简单的内核模块，在模块的内核加载后的第 <em>TIMER_TIMEOUT</em> 秒显示一条消息。</p>
 <p>生成名为 <strong>1-2-timer</strong> 的任务骨架，并按照标有 <strong>TODO 1</strong> 的部分来完成任务。</p>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">使用 <cite>pr_info(...)</cite>。消息将显示在控制台上，并且还可以使用 dmesg 查看。在调度定时器时，我们需要使用系统的（未来）绝对时间并且以滴答数表示。系统的当前时间（以滴答数表示）由 <code class="xref c c-type docutils literal"><span class="pre">jiffies</span></code> 给出。因此，我们需要将 <code class="docutils literal"><span class="pre">jiffies</span> <span class="pre">+</span> <span class="pre">TIMER_TIMEOUT</span> <span class="pre">*</span> <span class="pre">HZ</span></code> 作为绝对时间传递给定时器。</p>
 </div>
 <p>有关更多信息，请查阅 <a class="reference internal" href="#timer">定时器（Timer）</a> 部分。</p>
 </div>
 <div class="section" id="section-10">
-<h3>2. 周期性定时器<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
+<h3>2. 周期性定时器<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
 <p>修改前面的模块，使消息每隔 TIMER_TIMEOUT 秒显示一次。按照骨架中标有 <strong>TODO 2</strong> 的部分进行修改。</p>
 </div>
 <div class="section" id="ioctl">
-<h3>3. 使用 ioctl 控制定时器<a class="headerlink" href="#ioctl" title="永久链接至标题">¶</a></h3>
+<h3>3. 使用 ioctl 控制定时器<a class="headerlink" href="#ioctl" title="Permalink to this headline">¶</a></h3>
 <p>我们计划在从用户空间接收到 ioctl 调用后的第 N 秒显示有关当前进程的信息。N 作为 ioctl 参数传递。</p>
 <p>生成名为 <strong>3-4-5-deferred</strong> 的任务骨架，并按照骨架中标有 <strong>TODO 1</strong> 的部分进行修改。</p>
 <p>你需要实现以下 ioctl 操作。</p>
@@ -671,24 +670,24 @@ tools/labs $ make boot
 <li>MY_IOCTL_TIMER_CANCEL：停用定时器。</li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">请查阅 <a class="reference internal" href="../so2/lab3-device-drivers.html#ioctl"><span class="std std-ref">ioctl</span></a> 了解如何访问 ioctl 参数。</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">请查阅 <a class="reference internal" href="#timer">定时器（Timer）</a> 部分，了解如何启用/禁用定时器。在定时器处理程序中，显示当前进程标识符（PID）和进程执行镜像名称。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">你可以使用当前进程的 <em>pid</em> 和 <em>comm</em> 字段来查找当前进程标识符。有关详细信息，请查阅 <span class="xref std std-ref">proc-info</span>。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">要从用户空间使用设备驱动程序，你必须使用 mknod 程序创建设备字符文件 <em>/dev/deferred</em>。或者，你可以运行 <em>3-4-5-deferred/kernel/makenode</em> 脚本来执行此操作。</p>
 </div>
 <p>通过调用用户空间的 ioctl 操作来启用和禁用定时器。使用 <em>3-4-5-deferred/user/test</em> 程序来测试定时器的计划和取消。该程序在命令行上接收 ioctl 类型操作及其参数（如果有）。</p>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p>运行测试可执行文件时不带参数，以观察它接受的命令行选项。</p>
 <p>要在 3 秒后启用定时器，请使用：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="p">.</span><span class="o">/</span><span class="n">test</span> <span class="n">s</span> <span class="mi">3</span>
@@ -702,31 +701,31 @@ tools/labs $ make boot
 <p>注意，定时器运行所基于的当前进程每次都是 PID 为 0 的 <em>swapper/0</em>。这个进程是空闲进程，当没有其他任务可运行时，它会一直运行。由于虚拟机非常轻量级且没有太多操作，大部分时间都会看到这个进程。</p>
 </div>
 <div class="section" id="section-11">
-<h3>4. 阻塞操作<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
+<h3>4. 阻塞操作<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
 <p>接下来，我们将尝试在定时器例程中执行阻塞操作，以查看会发生什么情况。为此，我们尝试在定时器处理例程中调用一个名为 alloc_io() 的模拟阻塞操作的函数。</p>
 <p>修改模块，使得当接收到 <em>MY_IOCTL_TIMER_ALLOC</em> 命令时，定时器处理程序将调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。按照骨架中标有 <strong>TODO 2</strong> 的部分进行修改。</p>
 <p>使用相同的定时器。为了区分定时器处理程序中的功能，可以在设备结构中使用一个标志。使用代码骨架中定义的 <em>TIMER_TYPE_ALLOC</em> 和 <em>TIMER_TYPE_SET</em> 宏。对于初始化，请使用 TIMER_TYPE_NONE。</p>
 <p>运行测试程序以验证任务 3 的功能。再次运行测试程序以调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">该驱动程序会导致错误，因为在原子上下文（定时器处理程序运行在中断上下文中）中调用了阻塞函数。</p>
 </div>
 </div>
 <div class="section" id="section-12">
-<h3>5. 工作队列<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
+<h3>5. 工作队列<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
 <p>我们将修改模块，以解决上一个任务中观察到的错误。</p>
 <p>为此，让我们使用工作队列调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。从定时器处理程序中安排一个工作项。在工作项处理程序中（在进程上下文中运行），调用 <code class="xref c c-func docutils literal"><span class="pre">alloc_io()</span></code>。按照骨架中标有 <strong>TODO 3</strong> 的部分进行修改，并在需要时查阅 <a class="reference internal" href="#section-4">工作队列</a> 部分。</p>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">在设备结构中添加一个类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">work_struct</span></code> 的新字段。初始化此字段。使用 <code class="xref c c-func docutils literal"><span class="pre">schedule_work()</span></code> 从定时器处理程序中调度工作项。从 ioctl 后的 N 秒开始调度定时器处理程序。</p>
 </div>
 </div>
 <div class="section" id="section-13">
-<h3>6. 内核线程<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
+<h3>6. 内核线程<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
 <p>实现一个简单的模块，创建一个显示当前进程标识符的内核线程。</p>
 <p>生成名为 <strong>6-kthread</strong> 的任务骨架，并按照骨架中标有 <strong>TODO</strong> 的部分进行修改。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>创建和运行线程有两种选择：</p>
 <ul class="simple">
 <li>使用 <code class="xref c c-func docutils literal"><span class="pre">kthread_run()</span></code> 创建并运行线程</li>
@@ -735,7 +734,7 @@ tools/labs $ make boot
 <p class="last">如果需要，请查阅 <a class="reference internal" href="#section-5">内核线程</a> 部分。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">注意</p>
+<p class="first admonition-title">Attention</p>
 <p>将线程终止与模块卸载进行同步：</p>
 <ul class="last simple">
 <li>线程应在模块卸载时结束</li>
@@ -743,43 +742,43 @@ tools/labs $ make boot
 </ul>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p>为了同步，使用两个等待队列和两个标志。</p>
 <p>请查阅 <span class="xref std std-ref">waiting-queues</span> 了解如何使用等待队列。</p>
 <p class="last">使用原子变量作为标志。请查阅 <a class="reference internal" href="../so2/lab2-kernel-api.html#atomic-variables"><span class="std std-ref">原子变量</span></a>。</p>
 </div>
 </div>
 <div class="section" id="section-14">
-<h3>7. 定时器和进程之间共享的缓冲区<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
+<h3>7. 定时器和进程之间共享的缓冲区<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
 <p>该任务的目的是在延迟操作（定时器）和进程上下文之间进行同步。设置一个周期性定时器，监视进程列表。如果其中一个进程终止，将打印一条消息。可以动态添加进程到列表中。请使用 <em>3-4-5-deferred/kernel/</em> 骨架作为基础，并按照标有 <strong>TODO 4</strong> 的部分完成任务。</p>
 <p>当接收到 <em>MY_IOCTL_TIMER_MON</em> 命令时，检查给定的进程是否存在，如果存在，则将其添加到监视的进程列表中，并在设置了类型后启用定时器。</p>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">get_proc()</span></code> 检查 pid，找到关联的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>，并分配一个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mon_proc</span></code> 项目，可以将其添加到列表中。请注意，该函数还会增加任务的引用计数，以便在任务终止时不会释放其内存。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">注意</p>
+<p class="first admonition-title">Attention</p>
 <p class="last">使用自旋锁保护对列表的访问。请注意，由于我们与定时器处理程序共享数据，因此除了获取锁之外，还需要禁用底半部处理程序。请查阅 <a href="#system-message-1"><span class="problematic" id="problematic-1">`锁定`_</span></a> 部分。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">每秒钟从定时器中收集信息。使用现有的定时器，并通过 TIMER_TYPE_ACCT 添加新的行为。要设置标志，请使用测试程序的 <em>t</em> 参数。</p>
 </div>
 <p>在定时器处理程序中，遍历监视的进程列表，并检查它们是否已终止。如果是，则打印进程名称和 PID，然后从列表中删除该进程，递减任务使用计数器，以便可以释放其内存，最后释放 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mon_proc</span></code> 结构。</p>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">struct</span> <span class="pre">task_struct()</span></code> 的 <em>state</em> 字段。如果任务的状态为 <em>TASK_DEAD</em>，则表示任务已终止。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">put_task_struct()</span></code> 递减任务使用计数器。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">注意</p>
+<p class="first admonition-title">Attention</p>
 <p class="last">确保使用自旋锁保护列表访问。简单的变体就足够了。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">注意</p>
+<p class="first admonition-title">Attention</p>
 <p class="last">确保使用安全迭代器遍历列表，因为我们可能需要从列表中删除项目。</p>
 </div>
 <p>在检查完列表后，重新启用定时器。</p>

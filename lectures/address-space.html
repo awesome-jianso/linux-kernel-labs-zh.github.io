@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>地址空间 &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>地址空间 &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh_CN',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,10 +26,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
-        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Memory Management" href="memory-management.html" />
     <link rel="prev" title="对称多处理" href="smp.html" /> 
 </head>
@@ -148,10 +147,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>地址空间<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
+<h1>地址空间<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="address-space-slides.html">查看幻灯片</a></p>
 <div class="section" id="section-2">
-<h2>课程目标：<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<h2>课程目标：<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
 <ul class="admonition- simple">
 <li>x86 MMU<ul>
 <li>分段</li>
@@ -168,7 +167,7 @@
 </ul>
 </div>
 <div class="section" id="x86-mmu">
-<h2>x86 MMU<a class="headerlink" href="#x86-mmu" title="永久链接至标题">¶</a></h2>
+<h2>x86 MMU<a class="headerlink" href="#x86-mmu" title="Permalink to this headline">¶</a></h2>
 <p>x86 内存管理单元（MMU）包括分段单元和分页单元。分段单元可用于定义由逻辑（虚拟）起始地址、基本线性（映射）地址和大小定义的逻辑内存段。段也可以根据访问类型（读取、执行、写入）或特权级别（例如，我们可以定义一些只能由内核访问的段）来限制访问。</p>
 <p>当 CPU 进行内存访问时，它将使用分段单元根据段描述符中的信息将逻辑地址转换为线性地址。</p>
 <p>如果启用了分页，线性地址将使用页表中的信息进一步转换为物理地址。</p>
@@ -176,7 +175,7 @@
 <p class="admonition-x86-mmu">&nbsp;</p>
 <img alt="../_images/ditaa-f3703e3f627a948c59f6f960518d5f68eb7becec.png" src="../_images/ditaa-f3703e3f627a948c59f6f960518d5f68eb7becec.png" />
 <div class="section" id="section-3">
-<h3>选择器<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h3>
+<h3>选择器<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h3>
 <p>程序可以使用多个段（segment），为了确定使用哪个段，使用了特殊寄存器（称为选择器）。常用的基本选择器有 CS——“代码选择器”，DS——“数据选择器”和 SS——“堆栈选择器”。</p>
 <p>指令获取默认使用 CS，而数据访问默认使用 DS，除非使用了堆栈（例如，通过 pop 和 push 指令进行数据访问），这种情况下默认使用 SS。</p>
 <p>选择器有三个主要字段：索引，表索引（TI）和运行特权级别（RPL）：</p>
@@ -184,13 +183,13 @@
 <img alt="../_images/ditaa-d6845a04f0ec792beec598d2a9f4c5b92c65529e.png" src="../_images/ditaa-d6845a04f0ec792beec598d2a9f4c5b92c65529e.png" />
 <p>索引用于确定应使用描述符表的哪个条目。 <cite>TI</cite> 用于选择全局描述符表（GDT）或局部描述符表（LDT）。这些表实际上是从特殊寄存器 <a href="#system-message-1"><span class="problematic" id="problematic-1">`</span></a>GDTR`（用于 GDT）和 <a href="#system-message-2"><span class="problematic" id="problematic-2">`</span></a>LDTR`（用于 LDT）指定的位置开始的数组。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">LDT 设计用于允许应用程序可以定义它们自己的特定段。尽管不是很多应用程序使用此功能，但 Linux（和 Windows）提供了系统调用，允许应用程序创建自己的段。</p>
 </div>
 <p><cite>RPL</cite> 仅用于 CS，并表示当前特权级别。有 4 个特权级别，最高级别为 0（通常由内核使用），最低级别为 3（通常由用户应用程序使用）。</p>
 </div>
 <div class="section" id="section-4">
-<h3>段描述符<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
+<h3>段描述符<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
 <p>CPU 使用选择器的 <cite>index</cite> 字段来访问一个 8 字节的描述符：</p>
 <p class="admonition-">&nbsp;</p>
 <img alt="../_images/ditaa-5cd4a8fa1ad97cff4bb1f64da13ce9ebfcfc4562.png" src="../_images/ditaa-5cd4a8fa1ad97cff4bb1f64da13ce9ebfcfc4562.png" />
@@ -205,7 +204,7 @@
 <p>一些描述符字段你应该比较熟悉。这是因为它们与我们之前讨论的中断描述符有一些相似之处。</p>
 </div>
 <div class="section" id="linux">
-<h3>Linux 中的分段<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h3>
+<h3>Linux 中的分段<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
 <p>在 Linux 中，段不用于定义堆栈、代码或数据。这些将使用分页单元进行设置，因为它允许更好的粒度，并且更重要的是，它允许 Linux 使用通用的方法，使得其在其他（不支持分段）的体系架构上也能工作。</p>
 <p>然而，由于分段单元无法禁用，Linux 必须创建 4 个通用的 0-4GB 段，分别用于内核代码、内核数据、用户代码和用户数据。</p>
 <p>除此之外，Linux 还使用段与 <cite>set_thread_area</cite> 系统调用一起来实现线程本地存储（TLS）。</p>
@@ -312,11 +311,11 @@
 </div>
 </div>
 <div class="section" id="section-5">
-<h3>检查选择器和段<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
+<h3>检查选择器和段<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
 <p class="admonition-">&nbsp;</p>
 <asciinema-player src="../_images/selectors-and-segments.cast"></asciinema-player></div>
 <div class="section" id="x86">
-<h3>x86 分页<a class="headerlink" href="#x86" title="永久链接至标题">¶</a></h3>
+<h3>x86 分页<a class="headerlink" href="#x86" title="Permalink to this headline">¶</a></h3>
 <p>x86 分页单元支持两种类型的分页：常规分页和扩展分页。</p>
 <p>常规分页有 2 级，并且固定的页面大小为 4KB。线性地址被分割为三个字段：</p>
 <ul class="simple">
@@ -334,7 +333,7 @@
 <img alt="../_images/ditaa-709c2e7a68bfcdcfe9c1938d6ef2a0c9b5627931.png" class="admonition-" src="../_images/ditaa-709c2e7a68bfcdcfe9c1938d6ef2a0c9b5627931.png" />
 </div>
 <div class="section" id="section-6">
-<h3>页表<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
+<h3>页表<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
 <p>我们可以混合使用常规分页和扩展分页，目录页有一个位来指定是使用扩展分页还是常规分页。特殊的 CR3 寄存器指向页目录的基址，而页目录项指向页表的基址。</p>
 <p>页目录和页表都有 1024 个条目，每个条目占用 4 字节。</p>
 <p>所有表都存储在内存中，页表地址是物理地址。</p>
@@ -351,7 +350,7 @@
 </ul>
 </div>
 <div class="section" id="linux-1">
-<h3>Linux 分页<a class="headerlink" href="#linux-1" title="永久链接至标题">¶</a></h3>
+<h3>Linux 分页<a class="headerlink" href="#linux-1" title="Permalink to this headline">¶</a></h3>
 <p>Linux 分页使用 4 个级别以支持 64 位架构。下图显示了如何使用多个虚拟地址块来索引页表并计算物理地址。</p>
 <img alt="../_images/ditaa-5e4d73e3fcb24db9d1f8c16daddf98694c063fe6.png" class="admonition-linux" src="../_images/ditaa-5e4d73e3fcb24db9d1f8c16daddf98694c063fe6.png" />
 <p>Linux 具有用于创建和遍历页表的通用 API。借助于此我们可以实现使用相同的通用代码来创建和修改内核和进程的地址空间，该代码依赖于宏和函数，将这些通用操作转换为在不同体系结构上运行的代码。</p>
@@ -386,7 +385,7 @@
 </div>
 </div>
 <div class="section" id="tlb">
-<h3>转译后备缓冲区（TLB）<a class="headerlink" href="#tlb" title="永久链接至标题">¶</a></h3>
+<h3>转译后备缓冲区（TLB）<a class="headerlink" href="#tlb" title="Permalink to this headline">¶</a></h3>
 <p>在使用虚拟内存时，由于表页组织的原因，我们可能需要额外进行 1 次（x86 扩展分页）、2 次（x86 常规分页）或 3 次（x86 64 位）内存访问。</p>
 <p>一个称为转译后备缓冲区（TLB）的特殊缓存用于加速从虚拟地址到物理地址的转换。</p>
 <p>TLB 具有以下特性：</p>
@@ -416,9 +415,9 @@ invlpg %(eax)
 </div>
 </div>
 <div class="section" id="linux-2">
-<h2>Linux 地址空间<a class="headerlink" href="#linux-2" title="永久链接至标题">¶</a></h2>
+<h2>Linux 地址空间<a class="headerlink" href="#linux-2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="section-7">
-<h3>32 位系统的地址空间选项<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<h3>32 位系统的地址空间选项<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
 <p>实现内核和用户空间有两个主要选项：为每个空间提供专用地址空间，或者分割一个共享的地址空间。</p>
 <p class="admonition-">&nbsp;</p>
 <img alt="../_images/ditaa-4e8b5b1d7c8bd252282e6e72f5fd44a839e028ca.png" src="../_images/ditaa-4e8b5b1d7c8bd252282e6e72f5fd44a839e028ca.png" />
@@ -439,7 +438,7 @@ invlpg %(eax)
 <img alt="../_images/ditaa-3985c420def8f30934a72ea8c738a00ed629c298.png" src="../_images/ditaa-3985c420def8f30934a72ea8c738a00ed629c298.png" />
 </div>
 <div class="section" id="section-8">
-<h3>线性映射<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<h3>线性映射<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
 <p>线性映射是一种特定的虚拟页面到物理页面的映射方式，其中虚拟页面 V、V + 1、...、V + n 被映射到物理页面 P、P + 1、...、P + n。</p>
 <p>为了理解线性映射的必要性，我们应该看一下涉及同时使用虚拟地址和物理地址的页面的常见内核操作，如 I/O 传输：</p>
 <ul class="admonition-i-o simple">
@@ -455,7 +454,7 @@ invlpg %(eax)
 </ul>
 </div>
 <div class="section" id="section-9">
-<h3>高内存<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<h3>高内存<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
 <p>虚拟地址空间中的“高内存”部分用于创建任意映射（与低内存中的线性映射相对）。在 32 位系统中，高内存区域绝对是必需的，以便访问低内存以外的物理内存。然而，高内存在 64 位系统上也被使用，但主要用于允许内核空间中的任意映射。</p>
 <p class="admonition-">&nbsp;</p>
 <img alt="../_images/ditaa-bb8455a43088bf800eece11869f6ff857574605d.png" src="../_images/ditaa-bb8455a43088bf800eece11869f6ff857574605d.png" />
@@ -478,7 +477,7 @@ invlpg %(eax)
 <p><code class="xref c c-func docutils literal"><span class="pre">ioremap()</span></code> 用于将内核地址空间映射到设备内存或设备寄存器。它将连续的物理内存范围映射到高内存，并禁用页面缓存。</p>
 </div>
 <div class="section" id="section-10">
-<h3>固定映射的线性地址<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
+<h3>固定映射的线性地址<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
 <p>固定映射的线性地址是一类特殊的单页面映射，用于访问常用外设（如 APIC 或 IO APIC）的寄存器。</p>
 <p>典型的外设 I/O 访问方式是使用基址（内核虚拟地址空间中映射外设寄存器的位置）+ 不同寄存器的偏移量。</p>
 <p>为了优化访问速度，基址在编译时被预留（例如，0xFFFFF000）。由于基址是常量，形如 <cite>base + register offset</cite> 的寄存器访问也是常量，因此编译器会避免生成额外的指令。</p>
@@ -563,7 +562,7 @@ invlpg %(eax)
 </div>
 </div>
 <div class="section" id="section-11">
-<h3>临时映射<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
+<h3>临时映射<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
 <p>临时映射可用于在内核空间中快速映射单个物理页面。它可以在中断上下文中使用，但是原子 kmap 部分在 <code class="xref c c-func docutils literal"><span class="pre">kmap_atomic()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">kunmap_atomic()</span></code> 之间定义，不能被抢占。这就是为什么它们被称为临时映射，因为它们只能短暂使用。</p>
 <span class="admonition-"></span><p>临时映射非常快速，因为不需要锁定或搜索，并且不需要完全无效化 TLB，只需无效化特定的虚拟页。</p>
 <p>以下是一些展示临时映射实现的代码片段：</p>
@@ -600,7 +599,7 @@ invlpg %(eax)
 <p>请注意，这里使用了固定映射的线性地址和类似堆栈的方法：每个 CPU 都有 KM_TYPE_NR 个保留条目，按照先入先出的顺序使用。这允许同时使用多个临时映射，例如在进程上下文中使用一个，在中断处理程序中使用一个，以及在任务队列或软中断中使用几个。</p>
 <span class="admonition-"></span></div>
 <div class="section" id="section-12">
-<h3>永久映射<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
+<h3>永久映射<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
 <p>永久映射允许用户在长时间（未定义的）期间保持映射，这意味着在映射之后和释放之前可以进行上下文切换。</p>
 <p>然而，这种灵活性是有代价的。需要执行搜索操作来找到一个空闲条目，并且它们不能在中断上下文中使用——尝试找到一个空闲的虚拟地址页面的操作可能会阻塞。永久映射的可用数量是有限的（通常保留一页用于永久映射）。</p>
 <span class="admonition-"></span></div>

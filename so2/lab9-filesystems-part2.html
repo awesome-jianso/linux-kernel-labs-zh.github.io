@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SO2 Lab 09 - File system drivers (Part 2) &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>SO2 Lab 09 - File system drivers (Part 2) &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh_CN',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,10 +26,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
-        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="SO2 Lab 10 - Networking" href="lab10-networking.html" />
     <link rel="prev" title="SO2 Lab 08 - File system drivers (Part 1)" href="lab8-filesystems-part1.html" /> 
 </head>
@@ -195,9 +194,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="so2-lab-09-file-system-drivers-part-2">
-<h1>SO2 Lab 09 - File system drivers (Part 2)<a class="headerlink" href="#so2-lab-09-file-system-drivers-part-2" title="永久链接至标题">¶</a></h1>
+<h1>SO2 Lab 09 - File system drivers (Part 2)<a class="headerlink" href="#so2-lab-09-file-system-drivers-part-2" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="section-1">
-<h2>实验目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li>提高对 inode、file 和 dentry 的了解。</li>
@@ -207,12 +206,12 @@
 </div></blockquote>
 </div>
 <div class="section" id="inode">
-<h2>Inode<a class="headerlink" href="#inode" title="永久链接至标题">¶</a></h2>
+<h2>Inode<a class="headerlink" href="#inode" title="Permalink to this headline">¶</a></h2>
 <p>inode 是 UNIX 文件系统的重要组成部分，同时也是 VFS 的重要组成部分。inode 是元数据（它包含信息的信息）。inode 是磁盘上文件的唯一标识，并保存文件的信息（uid、gid、访问权限、访问时间以及指向数据块的指针等）。重要的一点是，inode 不保存文件名信息（文件名由相关的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> 结构保存）。</p>
 <p>inode 用于引用磁盘上的文件。要引用打开的文件（与进程内的文件描述符相关联），需要使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 结构。一个 inode 可以关联任意数量的（零个或多个） <code class="docutils literal"><span class="pre">file</span></code> 结构（多个进程可以打开同一个文件，或者一个进程可以多次打开同一个文件）。</p>
 <p>inode 既存在于 VFS 中（内存中），也存在于磁盘中（对于 UNIX、HFS 以及 NTFS 等）。VFS 中的 inode 由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构表示。和 VFS 中的其他结构一样, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 是通用结构，涵盖了所有支持的文件类型的选项，甚至包括那些没有关联磁盘实体的文件类型（比如 FAT 文件系统）。</p>
 <div class="section" id="inode-1">
-<h3>inode 结构<a class="headerlink" href="#inode-1" title="永久链接至标题">¶</a></h3>
+<h3>inode 结构<a class="headerlink" href="#inode-1" title="Permalink to this headline">¶</a></h3>
 <p>inode 结构在所有文件系统中都是相同的。一般情况下，文件系统还有私有信息，这些信息通过结构的 <code class="docutils literal"><span class="pre">i_private</span></code> 字段引用。按照惯例，保存特定信息的结构被称为 <code class="docutils literal"><span class="pre">&lt;fsname&gt;_inode_info</span></code>，其中 <code class="docutils literal"><span class="pre">fsname</span></code> 表示文件系统名称。例如，minix 和 ext4 文件系统将特定信息保存在 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">minix_inode_info</span></code> 或 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">ext4_inode_info</span></code> 结构中。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 的一些重要字段包括：</p>
 <blockquote>
@@ -237,7 +236,7 @@
 </li>
 <li><p class="first"><code class="xref c c-func docutils literal"><span class="pre">insert_inode_hash()</span></code>：将 inode 添加到 inode 哈希表中；这个调用的一个有趣的效果是，如果 inode 被标记为脏，它将被写入磁盘；</p>
 <div class="admonition warning">
-<p class="first admonition-title">警告</p>
+<p class="first admonition-title">Warning</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 创建的 inode 不在哈希表中，除非你有充分的理由，否则你必须将其加入哈希表；</p>
 </div>
 </li>
@@ -255,9 +254,9 @@
 </div></blockquote>
 </div>
 <div class="section" id="inode-2">
-<h3>Inode 操作<a class="headerlink" href="#inode-2" title="永久链接至标题">¶</a></h3>
+<h3>Inode 操作<a class="headerlink" href="#inode-2" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="inode-3">
-<h4>获取 inode<a class="headerlink" href="#inode-3" title="永久链接至标题">¶</a></h4>
+<h4>获取 inode<a class="headerlink" href="#inode-3" title="Permalink to this headline">¶</a></h4>
 <p>获取 inode（在 VFS 中的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code>）是主要的 inode 操作之一。在 Linux 内核版本 <code class="docutils literal"><span class="pre">2.6.24</span></code> 之前，开发者定义了 <code class="docutils literal"><span class="pre">read_inode</span></code> 函数。从版本 <code class="docutils literal"><span class="pre">2.6.25</span></code> 开始，开发者必须定义 <code class="docutils literal"><span class="pre">&lt;fsname&gt;_iget</span></code> 函数，其中 <code class="docutils literal"><span class="pre">&lt;fsname&gt;</span></code> 是文件系统的名称。这个函数负责查找 VFS 中的 inode，如果存在则获取该 inode，否则创建一个新的 inode，并用磁盘中的信息填充它。</p>
 <p>一般情况下，这个函数会调用 <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> 从 VFS 中获取 inode 结构。如果 inode 是新创建的，则需要从磁盘中读取 inode（使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code>），并填充有用的信息。</p>
 <p>一个示例函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_iget()</span></code>：</p>
@@ -294,7 +293,7 @@
 <p>minix_iget 函数使用 <code class="xref c c-func docutils literal"><span class="pre">iget_locked()</span></code> 函数获取 VFS inode。如果该 inode 已经存在（非新建，即 <code class="docutils literal"><span class="pre">I_NEW</span></code> 标志未设置），则函数返回。否则，函数调用 <code class="xref c c-func docutils literal"><span class="pre">V1_minix_iget()</span></code> 函数，该函数将使用 <code class="xref c c-func docutils literal"><span class="pre">minix_V1_raw_inode()</span></code> 从磁盘读取 inode，然后使用读取的信息完成 VFS inode 的初始化。</p>
 </div>
 <div class="section" id="section-2">
-<h4>超级块操作<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h4>
+<h4>超级块操作<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h4>
 <p>许多超级块使用的超级块操作（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">super_operations</span></code> 结构的组成部分）在处理 inode 时使用。下面描述了这些操作：</p>
 <blockquote>
 <div><ul class="simple">
@@ -319,7 +318,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="inode-operations">
-<h4>inode_operations<a class="headerlink" href="#inode-operations" title="永久链接至标题">¶</a></h4>
+<h4>inode_operations<a class="headerlink" href="#inode-operations" title="Permalink to this headline">¶</a></h4>
 <p>索引节点操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> 结构描述。</p>
 <p>索引节点分为多种类型：文件、目录、特殊文件（管道、FIFO）、块设备、字符设备以及链接等。因此，每种类型的索引节点需要实现的操作都不同。下面详细介绍了对 <a class="reference internal" href="#fileinodes"><span class="std std-ref">文件类型的索引节点</span></a> 和 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录类型的索引节点</span></a> 的操作。</p>
 <p>对索引节点的操作通过 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构中的 <code class="docutils literal"><span class="pre">i_op</span></code> 字段进行初始化和访问。</p>
@@ -327,16 +326,16 @@
 </div>
 </div>
 <div class="section" id="file">
-<h2>file 结构<a class="headerlink" href="#file" title="永久链接至标题">¶</a></h2>
+<h2>file 结构<a class="headerlink" href="#file" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal"><span class="pre">file</span></code> 结构对应于由进程打开的文件，仅存在于内存中，并与索引节点关联。它是最接近用户空间的 VFS 实体；结构字段包含用户空间文件的熟悉信息（访问模式、文件位置等），与之相关的操作由已知的系统调用 (<code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code> 等)执行。</p>
 <p>文件操作由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构描述。</p>
 <p>文件系统的文件操作使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode</span></code> 结构中的 <code class="docutils literal"><span class="pre">i_fop</span></code> 字段进行初始化。在打开文件时，VFS 使用 <code class="docutils literal"><span class="pre">inode-&gt;i_fop</span></code> 的地址初始化 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code> 结构的 <code class="docutils literal"><span class="pre">f_op</span></code> 字段，因此后续的系统调用使用存储在 <code class="docutils literal"><span class="pre">file-&gt;f_op</span></code> 中的值。</p>
 </div>
 <div class="section" id="section-3">
-<span id="fileinodes"></span><h2>常规文件索引节点<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<span id="fileinodes"></span><h2>常规文件索引节点<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
 <p>要使用索引节点，必须填充索引节点结构的 <code class="docutils literal"><span class="pre">i_op</span></code> 和 <code class="docutils literal"><span class="pre">i_fop</span></code> 字段。索引节点的类型决定了它需要实现的操作。</p>
 <div class="section" id="section-4">
-<span id="fileoperations"></span><h3>常规文件索引节点操作<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
+<span id="fileoperations"></span><h3>常规文件索引节点操作<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">minix</span></code> 文件系统为索引节点操作定义了 <code class="docutils literal"><span class="pre">minix_file_inode_operations</span></code> 结构，而对于文件操作，则定义了 <code class="docutils literal"><span class="pre">minix_file_operations</span></code> 结构：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="k">struct</span> <span class="n">file_operations</span> <span class="n">minix_file_operations</span> <span class="o">=</span> <span class="p">{</span>
          <span class="p">.</span><span class="n">llseek</span>         <span class="o">=</span> <span class="n">generic_file_llseek</span><span class="p">,</span>
@@ -400,7 +399,7 @@
 <p>在 <code class="docutils literal"><span class="pre">minix</span></code> 文件系统中，有一个实现截断操作的示例是 <code class="xref c c-func docutils literal"><span class="pre">minix_truncate()</span></code> 函数。</p>
 </div>
 <div class="section" id="section-5">
-<span id="addressspaceoperations"></span><h3>地址空间操作<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
+<span id="addressspaceoperations"></span><h3>地址空间操作<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
 <p>进程的地址空间与文件之间有着密切的联系：程序的执行几乎完全是通过将文件映射到进程的地址空间中进行的。由于这种方法非常有效且相当通用，因此也可以用于常规的系统调用，如 <code class="docutils literal"><span class="pre">read</span></code> 和 <code class="docutils literal"><span class="pre">write</span></code>。</p>
 <p>描述地址空间的结构是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space</span></code>，与之相关的操作由结构 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code> 描述。要初始化地址空间操作，请填充文件类型索引节点的 <code class="docutils literal"><span class="pre">inode-&gt;i_mapping-&gt;a_ops</span></code>。</p>
 <p>一个示例是 minix 文件系统中的 <code class="docutils literal"><span class="pre">minix_aops</span></code> 结构：</p>
@@ -464,7 +463,7 @@
 </div>
 </div>
 <div class="section" id="dentry">
-<h2>Dentry 结构体<a class="headerlink" href="#dentry" title="永久链接至标题">¶</a></h2>
+<h2>Dentry 结构体<a class="headerlink" href="#dentry" title="Permalink to this headline">¶</a></h2>
 <p>目录操作使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">dentry</span></code> 结构体。它的主要任务是在索引节点和文件名之间建立链接。该结构体的重要字段如下所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">dentry</span> <span class="p">{</span>
         <span class="c1">//...</span>
@@ -492,7 +491,7 @@
 </ul>
 </div></blockquote>
 <div class="section" id="dentry-1">
-<h3>Dentry 操作<a class="headerlink" href="#dentry-1" title="永久链接至标题">¶</a></h3>
+<h3>Dentry 操作<a class="headerlink" href="#dentry-1" title="Permalink to this headline">¶</a></h3>
 <p>应用于 dentry 的最常见操作包括：</p>
 <blockquote>
 <div><ul class="simple">
@@ -502,13 +501,13 @@
 </ul>
 </div></blockquote>
 <div class="admonition warning">
-<p class="first admonition-title">警告</p>
+<p class="first admonition-title">Warning</p>
 <p class="last"><code class="docutils literal"><span class="pre">d_instantiate</span></code> 必须用于实现创建调用 (<code class="docutils literal"><span class="pre">mkdir</span></code>, <code class="docutils literal"><span class="pre">mknod</span></code>, <code class="docutils literal"><span class="pre">rename</span></code> 以及  <code class="docutils literal"><span class="pre">symlink</span></code>)，而不是 <code class="docutils literal"><span class="pre">d_add</span></code>。</p>
 </div>
 </div>
 </div>
 <div class="section" id="section-6">
-<span id="directoryinodes"></span><h2>目录索引节点操作<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
+<span id="directoryinodes"></span><h2>目录索引节点操作<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
 <p>目录类型的索引节点相关的操作比文件类型的索引节点操作复杂得多。开发人员必须定义索引节点的操作和文件的操作。在 <code class="docutils literal"><span class="pre">minix</span></code> 中，这些操作定义在 <code class="xref c c-type docutils literal"><span class="pre">minix_dir_inode_operations</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">minix_dir_operations</span></code> 中：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">inode_operations</span> <span class="n">minix_dir_inode_operations</span> <span class="o">=</span> <span class="p">{</span>
       <span class="p">.</span><span class="n">create</span> <span class="o">=</span> <span class="n">minix_create</span><span class="p">,</span>
@@ -541,7 +540,7 @@
 <p>我们唯一已经实现的函数是 <code class="xref c c-func docutils literal"><span class="pre">generic_read_dir()</span></code>。</p>
 <p>实现目录索引节点操作的函数如下所述。</p>
 <div class="section" id="section-7">
-<h3>创建索引节点<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<h3>创建索引节点<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
 <p>索引节点创建函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">create</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_create()</span></code>。此函数由 <code class="docutils literal"><span class="pre">open</span></code> 和 <code class="docutils literal"><span class="pre">creat</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -553,7 +552,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-8">
-<h3>创建目录<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<h3>创建目录<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
 <p>目录创建函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">mkdir</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_mkdir()</span></code>。此函数由 <code class="docutils literal"><span class="pre">mkdir</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -564,7 +563,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-9">
-<h3>创建链接<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<h3>创建链接<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
 <p>链接创建函数（硬链接）由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">link</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_link()</span></code>。此函数由 <code class="docutils literal"><span class="pre">link</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ul class="simple">
@@ -575,11 +574,11 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-10">
-<h3>创建符号链接<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
+<h3>创建符号链接<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
 <p>符号链接创建函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">symlink</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_symlink()</span></code>。要执行的操作与 <code class="docutils literal"><span class="pre">minix_link</span></code> 类似，区别在于创建了一个符号链接。</p>
 </div>
 <div class="section" id="section-11">
-<h3>删除链接<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
+<h3>删除链接<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
 <p>链接删除函数（硬链接）由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">unlink</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_unlink()</span></code>。此函数由 <code class="docutils literal"><span class="pre">unlink</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -589,7 +588,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-12">
-<h3>删除目录<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
+<h3>删除目录<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
 <p>目录删除函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">rmdir</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="xref c c-func docutils literal"><span class="pre">minix_rmdir()</span></code>。此函数由 <code class="docutils literal"><span class="pre">rmdir</span></code> 系统调用调用。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -600,7 +599,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-13">
-<h3>在目录中搜索索引节点<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
+<h3>在目录中搜索索引节点<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
 <p>在目录中搜索条目并提取索引节点的函数由 <code class="docutils literal"><span class="pre">inode_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">lookup</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="docutils literal"><span class="pre">minix_lookup</span></code>。当需要有关与目录中条目关联的索引节点的信息时，会间接调用此函数。该函数执行以下操作：</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -611,7 +610,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-14">
-<h3>遍历目录中的条目<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
+<h3>遍历目录中的条目<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
 <p>在目录中遍历条目（列出目录内容）的函数由 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 结构体中的 <code class="docutils literal"><span class="pre">iterate</span></code> 字段指示。在 minix 的例子中，该函数是 <code class="docutils literal"><span class="pre">minix_readdir</span></code>。此函数由 <code class="docutils literal"><span class="pre">readdir</span></code> 系统调用调用。</p>
 <p>该函数返回目录中的所有条目，或者当为其分配的缓冲区不可用时，仅返回部分条目。此函数的调用可能返回：</p>
 <blockquote>
@@ -654,7 +653,7 @@
 </div>
 </div>
 <div class="section" id="section-15">
-<span id="bitmapoperations"></span><h2>位图操作<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h2>
+<span id="bitmapoperations"></span><h2>位图操作<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h2>
 <p>在处理文件系统时，管理信息（哪个块是空闲的或忙碌的，哪个索引节点是空闲的或忙碌的）使用位图存储。为此，我们经常需要使用位操作。这些操作包括：</p>
 <blockquote>
 <div><ul class="simple">
@@ -705,7 +704,7 @@
 </div>
 </div>
 <div class="section" id="section-16">
-<h2>进一步阅读<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h2>
+<h2>进一步阅读<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Robert Love《Linux 内核开发》，第二版——第 12 章 虚拟文件系统</li>
 <li>了解 Linux 内核，第 3 版——第 12 章 虚拟文件系统</li>
@@ -721,9 +720,9 @@
 </ol>
 </div>
 <div class="section" id="section-17">
-<h2>练习<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">重要</p>
+<p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -757,13 +756,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-17">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">警告</p>
+<p class="first admonition-title">Warning</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="admonition important">
-<p class="first admonition-title">重要</p>
+<p class="first admonition-title">Important</p>
 <p>在本实验中，我们将继续实现之前实验中的文件系统。为此，我们将使用以下命令生成实验的框架：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">TODO=5 LABS=filesystems make skels</span>
 </pre></div>
@@ -771,12 +770,12 @@ tools/labs $ make boot
 <p class="last">之后，我们将从 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 开始实现。</p>
 </div>
 <div class="section" id="myfs">
-<h3>myfs<a class="headerlink" href="#myfs" title="永久链接至标题">¶</a></h3>
+<h3>myfs<a class="headerlink" href="#myfs" title="Permalink to this headline">¶</a></h3>
 <p>在下面的练习中，我们将使用 <code class="docutils literal"><span class="pre">myfs</span></code> 文件系统，这是我们在上一个实验中开始实现的。我们之前挂载了文件系统，现在我们将继续进行常规文件和目录的操作。在完成这些练习之后，我们将能够创建、修改和删除常规目录和文件。</p>
 <p>我们将主要使用 <code class="docutils literal"><span class="pre">inode</span></code> 和 <code class="docutils literal"><span class="pre">dentry</span></code> VFS 结构。 <code class="docutils literal"><span class="pre">inode</span></code> 结构定义了文件（可以是任何类型：常规文件、目录、链接），而 <code class="docutils literal"><span class="pre">dentry</span></code> 结构定义了名称，即目录中的条目。</p>
 <p>为此，我们将访问实验框架中的 <code class="docutils literal"><span class="pre">myfs</span></code> 目录。之前生成的框架包含了上一个实验的解决方案；我们将从这里开始。与前一个实验一样，我们将使用 <code class="docutils literal"><span class="pre">ramfs</span></code> 文件系统作为起点。</p>
 <div class="section" id="section-18">
-<h4>1. 目录操作<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h4>
+<h4>1. 目录操作<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h4>
 <p>首先，我们将实现用于处理目录的操作。创建文件或删除文件的操作也是目录操作；这些操作会导致添加或删除目录条目 (<em>dentry</em>)。</p>
 <p>到本练习结束时，我们将能够在文件系统中创建和删除条目。我们还不能读取和写入常规文件；我们将在下一个练习中进行常规文件的读取和写入。</p>
 <p>按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的指示进行操作，这将指导你完成所需的步骤。</p>
@@ -794,13 +793,13 @@ tools/labs $ make boot
 </div></blockquote>
 <p>为此，请在标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的位置的代码中定义 <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code> 结构。首先，只需定义 <code class="docutils literal"><span class="pre">myfs_dir_inode_operations</span></code> 结构；你将在下一个练习中定义 <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>, <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code> 和 <code class="docutils literal"><span class="pre">myfs_aops</span></code> 结构。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
 <p class="last">作为参考，你可以查看 <code class="docutils literal"><span class="pre">ramfs_dir_inode_operations</span></code> 结构。</p>
 </div>
 <p>在 <code class="docutils literal"><span class="pre">myfs_mkdir</span></code>, <code class="docutils literal"><span class="pre">myfs_mknod</span></code> 和 <code class="docutils literal"><span class="pre">myfs_create</span></code> 中实现 <code class="docutils literal"><span class="pre">mkdir</span></code>, <code class="docutils literal"><span class="pre">mknod</span></code> 和 <code class="docutils literal"><span class="pre">create</span></code> 操作。这些操作将允许你在文件系统中创建目录和文件。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>我们建议使用 <code class="docutils literal"><span class="pre">mknod</span></code> 函数使代码模块化，你也可以在下一个练习中使用它。对于 inode 的读取和分配，请使用已经实现的 <code class="docutils literal"><span class="pre">myfs_get_inode</span></code> 函数。</p>
 <p>请按规范，按照文件系统 <code class="docutils literal"><span class="pre">ramfs</span></code> 中已实现的下列函数操作：</p>
 <blockquote>
@@ -818,15 +817,15 @@ tools/labs $ make boot
 </ul>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p><code class="docutils literal"><span class="pre">i_op</span></code> 是指向类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code> 的结构体指针，其中包含与 inode 相关的操作，对于目录来说，包括创建新条目、列出条目以及删除条目等。</p>
 <p class="last"><code class="docutils literal"><span class="pre">i_fop</span></code> 是指向类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 的结构体指针，其中包含和与 inode 关联的 <code class="docutils literal"><span class="pre">file</span></code> 结构有关的操作，例如 <code class="docutils literal"><span class="pre">read</span></code>, <code class="docutils literal"><span class="pre">write</span></code> 和 <code class="docutils literal"><span class="pre">lseek</span></code>。</p>
 </div>
 <div class="section" id="section-19">
-<h5>测试<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h5>
+<h5>测试<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h5>
 <p>完成模块后，我们可以测试文件和目录的创建。为此，我们编译内核模块（使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code>），并将生成的文件 (<code class="docutils literal"><span class="pre">myfs.ko</span></code>) 和测试脚本 (<code class="docutils literal"><span class="pre">test-myfs-{1,2}.sh</span></code>) 复制到虚拟机目录中（使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code>）。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>只有当测试脚本可执行时，它们才会被 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 复制到虚拟机中：</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">student@workstation:~/linux/tools/labs$</span> chmod +x skels/filesystems/myfs/test-myfs-*.sh
 </pre></div>
@@ -861,12 +860,12 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="section-20">
-<h4>2. 文件操作<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h4>
+<h4>2. 文件操作<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h4>
 <p>我们想要实现用于处理文件的操作，这些操作用于访问文件的内容：读取、写入以及截断等。为此，你需要指定在结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">inode_operations</span></code>、<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code> 中描述的操作。</p>
 <p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span></code> 6 的指示进行操作，这将引导你完成所需的步骤。</p>
 <p>首先定义 <code class="docutils literal"><span class="pre">myfs_file_inode_operations</span></code> 和 <code class="docutils literal"><span class="pre">myfs_file_operations</span></code>。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>请阅读 <a class="reference internal" href="#fileoperations"><span class="std std-ref">常规文件索引节点操作</span></a> 部分。</p>
 <p>使用 VFS 提供的通用函数。</p>
 <p class="last"><code class="docutils literal"><span class="pre">ramfs</span></code> 文件系统是一个实现示例。请参考 <code class="docutils literal"><span class="pre">ramfs_file_inode_operations</span></code> 和 <code class="docutils literal"><span class="pre">ramfs_file_operations</span></code> 的实现。</p>
@@ -880,7 +879,7 @@ tools/labs $ make boot
 </div></blockquote>
 <p>接下来定义 <code class="docutils literal"><span class="pre">myfs_aops</span></code> 结构体。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>请阅读 <a class="reference internal" href="#addressspaceoperations"><span class="std std-ref">地址空间操作</span></a> 部分。</p>
 <p>使用 VFS 提供的通用函数。</p>
 <p><code class="docutils literal"><span class="pre">ramfs</span></code> 文件系统是一个实现示例: <code class="docutils literal"><span class="pre">ramfs_aops</span></code> 结构体。</p>
@@ -888,7 +887,7 @@ tools/labs $ make boot
 </div>
 <p>将 inode 结构体的 <code class="docutils literal"><span class="pre">i_mapping-&gt;a_ops</span></code> 字段初始化为 <code class="docutils literal"><span class="pre">myfs_aops</span></code>。</p>
 <div class="section" id="section-21">
-<h5>测试<a class="headerlink" href="#section-21" title="永久链接至标题">¶</a></h5>
+<h5>测试<a class="headerlink" href="#section-21" title="Permalink to this headline">¶</a></h5>
 <p>为了测试，我们使用前面练习中描述的步骤。除了那些步骤之外，我们现在可以使用类似以下的命令来读取、写入和修改文件：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> <span class="nb">echo</span> <span class="s2">&quot;chocolate&quot;</span> &gt; /mnt/myfs/peanuts.txt
 <span class="gp">#</span> cat /mnt/myfs/peanuts.txt
@@ -903,7 +902,7 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="minfs">
-<h3>minfs<a class="headerlink" href="#minfs" title="永久链接至标题">¶</a></h3>
+<h3>minfs<a class="headerlink" href="#minfs" title="Permalink to this headline">¶</a></h3>
 <p>在下面的练习中，我们将使用在上一个实验中开始开发的 minfs 文件系统。这是带有磁盘支持的文件系统。我们之前在挂载文件系统后止住脚步，现在我们将继续进行常规文件和目录的操作。在完成这些练习后，我们将能够在文件系统中创建和删除条目。</p>
 <p>我们将主要使用 <code class="xref c c-type docutils literal"><span class="pre">inode</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">dentry</span></code> VFS 结构。inode 结构定义了文件（可以是任何类型：常规文件、目录、链接），而 dentry 结构定义了名称，即目录条目。</p>
 <p>为此，我们将访问实验框架中的 <code class="docutils literal"><span class="pre">minfs/kernel</span></code> 目录。生成的实验框架包含了上一个实验的最终结果；我们将从这里开始。与上一个实验一样，我们将 <code class="docutils literal"><span class="pre">minix</span></code> 文件系统作为起点。</p>
@@ -916,42 +915,42 @@ tools/labs $ make boot
 <img alt="../_images/minfs_arch1.png" src="../_images/minfs_arch1.png" />
 <p>如图所示, <code class="docutils literal"><span class="pre">minfs</span></code> 是极简的文件系统。 <code class="docutils literal"><span class="pre">minfs</span></code> 包含最多 32 个 inode，每个 inode 有一个数据块（文件大小限制为块大小）。超级块包含 32 位的位图 (<code class="docutils literal"><span class="pre">imap</span></code>)，每位表示一个 inode 的使用情况。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">在开始工作之前，请仔细阅读 <code class="docutils literal"><span class="pre">minfs/kernel/minfs.h</span></code> 头文件。此文件包含了这些练习中将使用的结构体和宏。这些结构体和宏定义了上面图表中描述的文件系统。</p>
 </div>
 <div class="section" id="section-22">
-<h4>1. 迭代操作<a class="headerlink" href="#section-22" title="永久链接至标题">¶</a></h4>
+<h4>1. 迭代操作<a class="headerlink" href="#section-22" title="Permalink to this headline">¶</a></h4>
 <p>首先，我们希望能够列出根目录的内容。为此，我们必须能够读取根目录中的条目，这意味着要实现 <code class="docutils literal"><span class="pre">iterate</span></code> 操作。 <code class="docutils literal"><span class="pre">iterate</span></code> 操作是 <code class="docutils literal"><span class="pre">minfs_dir_operations</span></code> 结构体（类型为 <code class="docutils literal"><span class="pre">file_operations</span></code>）中的一个字段，由函数 <code class="docutils literal"><span class="pre">minfs_readdir</span></code> 实现。我们需要实现这个函数。</p>
 <p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">5</span></code> 的位置进行操作，这将引导你完成所需的步骤。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
 <p>作为起点，请参考 <code class="xref c c-func docutils literal"><span class="pre">minix_readdir()</span></code> 函数。该函数相当复杂，但它可以帮助你了解需要执行的步骤。</p>
 <p class="last">接下来，在 <code class="docutils literal"><span class="pre">minfs.c</span></code> 和 <code class="docutils literal"><span class="pre">minfs.h</span></code> 中，查看结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode</span></code> 和 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的定义。你将在 <code class="docutils literal"><span class="pre">minfs_readdir</span></code> 实现中使用它们。</p>
 </div>
 <p>获取与目录关联的 inode 和结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>。结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 可以帮助我们查找目录的数据块。从这个结构体中，你可以获取 <code class="docutils literal"><span class="pre">data_block</span></code> 字段，表示磁盘上的数据块索引。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p class="last">要获取结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>，请使用 <code class="xref c c-func docutils literal"><span class="pre">list_entry()</span></code> 或 <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>。</p>
 </div>
 <p>使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 读取目录的数据块。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>目录的数据块由与目录对应的结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的 <code class="docutils literal"><span class="pre">data_block</span></code> 字段指示。</p>
 <p class="last">块中的数据由 <code class="docutils literal"><span class="pre">buffer_head</span></code> 结构体的 <code class="docutils literal"><span class="pre">b_data</span></code> 字段引用（通常的代码将是 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code>）。该块（作为目录的数据块）包含一个数组，该数组具有最多 <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> 个条目，类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> (<code class="docutils literal"><span class="pre">minfs</span></code> 特定的目录条目)。可以通过强制转换为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span> <span class="pre">*</span></code> 来处理块中的数据。</p>
 </div>
 <p>在数据块中迭代所有条目，并在 <code class="docutils literal"><span class="pre">for</span></code> 循环中填充用户空间缓冲区。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>对于每个索引，通过在 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> 字段上进行指针运算，获取相应的 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 条目。请忽略 <code class="docutils literal"><span class="pre">ino</span></code> 字段等于 0 的目录条目。这样的目录条目是目录条目列表中的空槽。</p>
 <p>对于每个有效的条目，都用适当参数调用了 <code class="xref c c-func docutils literal"><span class="pre">dir_emit()</span></code>。这个调用将把 dentry 发送给调用者（然后发送到用户空间）。</p>
 <p class="last">在 <code class="xref c c-func docutils literal"><span class="pre">qnx6_readdir()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_readdir()</span></code> 中查看调用示例。</p>
 </div>
 <div class="section" id="section-23">
-<h5>测试<a class="headerlink" href="#section-23" title="永久链接至标题">¶</a></h5>
+<h5>测试<a class="headerlink" href="#section-23" title="Permalink to this headline">¶</a></h5>
 <p>完成模块后，我们可以测试列出根目录内容的功能。为此，我们编译内核模块 (<code class="docutils literal"><span class="pre">make</span> <span class="pre">build</span></code>)，将结果与测试脚本 (<code class="docutils literal"><span class="pre">minfs/user/test-minfs-{0,1}.sh</span></code>) 和格式化工具 (<code class="docutils literal"><span class="pre">minfs/user/mkfs.minfs</span></code>) 一起复制到虚拟机中（使用 <code class="docutils literal"><span class="pre">make</span> <span class="pre">copy</span></code> 命令），然后启动虚拟机。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>只有当测试脚本具有可执行权限时，它们才会被复制到虚拟机中：</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">student@eg106:~/src/linux/tools/labs$</span> chmod +x skels/filesystems/minfs/user/test-minfs*.sh
 </pre></div>
@@ -977,17 +976,17 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="section-24">
-<h4>2. 查找操作<a class="headerlink" href="#section-24" title="永久链接至标题">¶</a></h4>
+<h4>2. 查找操作<a class="headerlink" href="#section-24" title="Permalink to this headline">¶</a></h4>
 <p>为了正确列出目录的内容，我们需要实现搜索功能，即 <code class="docutils literal"><span class="pre">lookup</span></code> 操作。 <code class="docutils literal"><span class="pre">lookup</span></code> 操作是 <code class="docutils literal"><span class="pre">minfs_dir_inode_operations</span></code> 结构体（类型为 <code class="docutils literal"><span class="pre">inode_operations</span></code>）中的字段，由 <code class="docutils literal"><span class="pre">minfs_lookup</span></code> 函数实现。我们需要实现函数 <code class="docutils literal"><span class="pre">minfs_lookup</span></code>。实际上，我们需要实现 <code class="docutils literal"><span class="pre">minfs_lookup</span></code> 函数调用的 <code class="docutils literal"><span class="pre">minfs_find_entry</span></code> 函数。</p>
 <p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">6</span></code> 的位置提示的步骤进行操作。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
 <p class="last">作为起点，请阅读函数 <code class="xref c c-func docutils literal"><span class="pre">qnx6_find_entry()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_find_entry()</span></code>。</p>
 </div>
 <p>在 <code class="docutils literal"><span class="pre">minfs_find_entry</span></code> 函数中，迭代包含目标 dentry 的目录： <code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code>。迭代意味着遍历目录数据块（类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>）中的条目，并定位（如果存在）所请求的条目。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>从与目录对应的类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的结构体中，找出数据块索引并读取它 (<code class="docutils literal"><span class="pre">sb_read</span></code>)。你需要使用 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> 访问块内容。目录数据块包含一个条目数组，该数组最多包含 <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> 个类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的条目。使用指针运算从数据块 (<code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code>) 中获取类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的条目。</p>
 <p>检查目录中是否存在指定名称（存储在局部变量 <code class="docutils literal"><span class="pre">name</span></code> 中）的条目（数据块中存在一个名称等于给定名称的条目）。使用 <code class="xref c c-func docutils literal"><span class="pre">strcmp()</span></code> 进行验证。</p>
 <p>忽略 <code class="docutils literal"><span class="pre">ino</span></code> 字段等于 <code class="docutils literal"><span class="pre">0</span></code> 的目录条目。这些目录条目是目录条目列表中的空槽。</p>
@@ -995,7 +994,7 @@ tools/labs $ make boot
 </div>
 <p>在 <code class="docutils literal"><span class="pre">minfs_lookup</span></code> 函数中注释掉 <code class="docutils literal"><span class="pre">simple_lookup</span></code> 调用，以调用 <code class="docutils literal"><span class="pre">minfs_readdir</span></code> 的实现。</p>
 <div class="section" id="section-25">
-<h5>测试<a class="headerlink" href="#section-25" title="永久链接至标题">¶</a></h5>
+<h5>测试<a class="headerlink" href="#section-25" title="Permalink to this headline">¶</a></h5>
 <p>为了进行测试，我们使用前面练习中描述的步骤。列出目录（根目录）的长文件列表 (<code class="docutils literal"><span class="pre">ls</span> <span class="pre">-l</span></code>) 将显示权限和其他文件特定信息：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ls -l /mnt/minfs
 </pre></div>
@@ -1007,7 +1006,7 @@ tools/labs $ make boot
 </div>
 <p>如果实现正确，运行上面的脚本时将不会显示任何错误消息。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>在使用以下命令挂载文件系统后：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mount -t minfs /dev/vdb /mnt/minfs
 </pre></div>
@@ -1021,29 +1020,29 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="section-26">
-<h4>3. 创建操作<a class="headerlink" href="#section-26" title="永久链接至标题">¶</a></h4>
+<h4>3. 创建操作<a class="headerlink" href="#section-26" title="Permalink to this headline">¶</a></h4>
 <p>为了能够在目录中创建文件，我们必须实现 <code class="docutils literal"><span class="pre">create</span></code> 操作。 <code class="docutils literal"><span class="pre">create</span></code> 操作是 <code class="docutils literal"><span class="pre">minfs_dir_inode_operations</span></code> 结构体（类型为 <code class="docutils literal"><span class="pre">inode_operations</span></code>）中的字段，由 <code class="docutils literal"><span class="pre">minfs_create</span></code> 函数实现。我们需要实现这个函数。实际上，我们将实现 <a href="#system-message-2"><span class="problematic" id="problematic-2">``</span></a>minfs_new_inode``（创建和初始化 inode）和 <a href="#system-message-3"><span class="problematic" id="problematic-3">``</span></a>minfs_add_link``（为创建的 inode 添加一个链接、名称或 <em>dentry</em>）函数。</p>
 <p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">7</span></code> 的指示进行操作。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>请阅读 <a class="reference internal" href="#directoryinodes"><span class="std std-ref">目录索引节点操作</span></a> 部分。</p>
 <p class="last">查看 <code class="docutils literal"><span class="pre">minfs_create</span></code> 函数的代码和 <code class="docutils literal"><span class="pre">minfs_new_inode</span></code>, <code class="docutils literal"><span class="pre">minfs_add_link</span></code> 函数的骨架。</p>
 </div>
 <p>实现函数 <code class="docutils literal"><span class="pre">minfs_new_inode</span></code>。在这个函数中，你将使用 <code class="xref c c-func docutils literal"><span class="pre">new_inode()</span></code> 函数创建并初始化 inode。初始化是使用磁盘上的数据完成的。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>以函数 <code class="xref c c-func docutils literal"><span class="pre">minix_new_inode()</span></code> 为模型。在 imap (<code class="docutils literal"><span class="pre">sbi-&gt;imap</span></code>) 中找到第一个空闲的 inode。使用位操作 (<code class="docutils literal"><span class="pre">find_first_zero_bit</span></code> 和 <code class="docutils literal"><span class="pre">set_bit</span></code>)。请阅读 <a class="reference internal" href="#bitmapoperations"><span class="std std-ref">位图操作</span></a> 部分。</p>
 <p>将超级块的缓冲区 (<code class="docutils literal"><span class="pre">sbi-&gt;sbh</span></code>) 标记为脏。</p>
 <p class="last">你必须像 <code class="docutils literal"><span class="pre">myfs</span></code> 文件系统中做的那样初始化常规字段。在调用 <code class="docutils literal"><span class="pre">inode_init_owner</span></code> 时，将 <code class="docutils literal"><span class="pre">i_mode</span></code> 字段初始化为 <code class="docutils literal"><span class="pre">0</span></code>。稍后在调用者中进行初始化。</p>
 </div>
 <p>实现函数 <code class="docutils literal"><span class="pre">minfs_add_link</span></code>。该函数将新的 dentry (<code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code>) 添加到父目录数据块 (<code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code>) 中。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p class="last">以函数 <code class="docutils literal"><span class="pre">minix_add_link</span></code> 为模型。</p>
 </div>
 <p>在 <code class="docutils literal"><span class="pre">minfs_add_link</span></code> 中，我们希望找到 dentry 的第一个空闲位置。为此，你需要迭代目录数据块，并找到第一个空闲条目。空闲的 dentry 的 <code class="docutils literal"><span class="pre">ino</span></code> 字段等于 <code class="docutils literal"><span class="pre">0</span></code>。</p>
 <div class="admonition tip">
-<p class="first admonition-title">小技巧</p>
+<p class="first admonition-title">Tip</p>
 <p>为了处理目录，获取与父目录对应的类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 的 inode（即 <strong>dir</strong> inode）。不要使用变量 <code class="docutils literal"><span class="pre">inode</span></code> 来获取 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code>；该 inode 属于文件，而不是你想要向其中添加链接/目录项的父目录。要获取 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 结构体，请使用 <code class="xref c c-func docutils literal"><span class="pre">container_of()</span></code>。</p>
 <p>结构体 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_inode_info</span></code> 对于查找目录数据块（由 <code class="docutils literal"><span class="pre">dentry-&gt;d_parent-&gt;d_inode</span></code> 指示的块，即 <code class="docutils literal"><span class="pre">dir</span></code> 变量）非常有用。从这个结构体中获取 <code class="docutils literal"><span class="pre">data_block</span></code> 字段，表示磁盘上的数据块的索引。该块包含目录中的条目。使用 <code class="xref c c-func docutils literal"><span class="pre">sb_bread()</span></code> 读取块，然后使用 <code class="docutils literal"><span class="pre">bh-&gt;b_data</span></code> 引用数据。该块最多包含 <code class="docutils literal"><span class="pre">MINFS_NUM_ENTRIES</span></code> 个类型为 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">minfs_dir_entry</span></code> 的条目。</p>
 <p>如果所有条目都被占用，则返回 <code class="docutils literal"><span class="pre">-ENOSPC</span></code>。</p>
@@ -1058,7 +1057,7 @@ tools/labs $ make boot
 <p class="last">然后将缓冲区标记为脏。</p>
 </div>
 <div class="section" id="section-27">
-<h5>测试<a class="headerlink" href="#section-27" title="永久链接至标题">¶</a></h5>
+<h5>测试<a class="headerlink" href="#section-27" title="Permalink to this headline">¶</a></h5>
 <p>为了进行测试，我们使用前面练习中描述的步骤。现在我们可以在文件系统中创建文件：</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> touch /mnt/minfs/peanuts.txt
 </pre></div>
@@ -1069,7 +1068,7 @@ tools/labs $ make boot
 </div>
 <p>如果实现正确，运行上面的脚本时将不会显示任何错误消息。</p>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">目前的 <code class="docutils literal"><span class="pre">minfs</span></code> 文件系统的实现还不完整。要完善实现，还需要添加删除文件的功能、创建和删除目录的功能、重命名条目的功能以及修改文件内容的功能。</p>
 </div>
 </div>

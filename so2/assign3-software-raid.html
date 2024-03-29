@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 3 - Software RAID &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Assignment 3 - Software RAID &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh_CN',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,10 +26,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
-        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Assignment 4 - SO2 Transport Protocol" href="assign4-transport-protocol.html" />
     <link rel="prev" title="Assignment 2 - Driver UART" href="assign2-driver-uart.html" /> 
 </head>
@@ -176,7 +175,7 @@
            <div itemprop="articleBody">
              
   <div class="section" id="assignment-3-software-raid">
-<h1>Assignment 3 - Software RAID<a class="headerlink" href="#assignment-3-software-raid" title="永久链接至标题">¶</a></h1>
+<h1>Assignment 3 - Software RAID<a class="headerlink" href="#assignment-3-software-raid" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li>Deadline: <strong class="command">Monday, 15 May 2023, 23:00</strong></li>
 <li>This assignment can be made in teams (max 2). Only one of them must submit the assignment, and the names of the student should be listed in a README file.</li>
@@ -184,7 +183,7 @@
 <p>Implementing a software RAID module that uses a logical block device that will read and write data from two physical devices,
 ensuring the consistency and synchronization of data from the two physical devices. The type of RAID implemented will be similar to a <cite>RAID 1</cite>.</p>
 <div class="section" id="assignment-s-objectives">
-<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="永久链接至标题">¶</a></h2>
+<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>in-depth understanding of how the I/O subsystem works.</li>
 <li>acquire advanced skills working with <cite>bio</cite> structures.</li>
@@ -193,7 +192,7 @@ ensuring the consistency and synchronization of data from the two physical devic
 </ul>
 </div>
 <div class="section" id="statement">
-<h2>Statement<a class="headerlink" href="#statement" title="永久链接至标题">¶</a></h2>
+<h2>Statement<a class="headerlink" href="#statement" title="Permalink to this headline">¶</a></h2>
 <p>Write a kernel module that implements the RAID software functionality. <a class="reference external" href="https://en.wikipedia.org/wiki/RAID#Software-based_RAID">Software RAID</a> provides an abstraction between
 the logical device and the physical devices. The implementation will use <a class="reference external" href="https://en.wikipedia.org/wiki/RAID#Standard_levels">RAID scheme 1</a>.</p>
 <p>The virtual machine has two hard disks that will represent the physical devices: <cite>/dev/vdb</cite> and <cite>/dev/vdc</cite>. The operating system
@@ -206,7 +205,7 @@ on the second partition will be read; at the same time the sector of the first p
 a reading of a corrupt sector on the second partition. If a sector has incorrect CRC values on both partitions, an appropriate error
 code will be returned.</p>
 <div class="section" id="important-to-know">
-<h3>Important to know<a class="headerlink" href="#important-to-know" title="永久链接至标题">¶</a></h3>
+<h3>Important to know<a class="headerlink" href="#important-to-know" title="Permalink to this headline">¶</a></h3>
 <p>To ensure error recovery, a CRC code is associated with each sector. CRC codes are stored by LOGICAL_DISK_SIZE byte of the partition
 (macro defined in the assignment <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/src/ssr.h">header</a>). The disk structure will have the following layout:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">+-----------+-----------+-----------+     +---+---+---+</span>
@@ -219,7 +218,7 @@ code will be returned.</p>
 </div>
 </div>
 <div class="section" id="implementation-details">
-<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="永久链接至标题">¶</a></h2>
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>the kernel module will be named <code class="docutils literal"><span class="pre">ssr.ko</span></code></li>
 <li>the logical device will be accessed as a block device with the major <code class="docutils literal"><span class="pre">SSR_MAJOR</span></code> and minor <code class="docutils literal"><span class="pre">SSR_FIRST_MINOR</span></code> under the name <code class="docutils literal"><span class="pre">/dev/ssr</span></code> (via the macro <code class="docutils literal"><span class="pre">LOGICAL_DISK_NAME</span></code>)</li>
@@ -245,7 +244,7 @@ if you need to send requests for CRCs in sectors 0, 1, ..., 7, use a single bio,
 </ul>
 </div>
 <div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="永久链接至标题">¶</a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <p>In order to simplify the assignment evaluation process, but also to reduce the mistakes of the submitted assignments,
 the assignment evaluation will be done automatically with the help of a
 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/checker/3-raid-checker/_checker">test script</a> called <cite>_checker</cite>.
@@ -263,14 +262,14 @@ virtual machine using the commands:</p>
 </div>
 </div>
 <div class="section" id="quickstart">
-<h2>QuickStart<a class="headerlink" href="#quickstart" title="永久链接至标题">¶</a></h2>
+<h2>QuickStart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
 <p>It is mandatory to start the implementation of the assignment from the code skeleton found in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/tree/master/src">src</a> directory.
 There is only one header in the skeleton called <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/src/ssr.h">ssr.h</a>.
 You will provide the rest of the implementation. You can add as many <cite>*.c`</cite> sources and additional <cite>*.h`</cite> headers.
 You should also provide a Kbuild file that will compile the kernel module called <cite>ssr.ko</cite>.
 Follow the instructions in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid">assignment's repo</a>.</p>
 <div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
+<h3>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h3>
 <p>To increase your chances of getting the highest grade, read and follow the Linux kernel
 coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
 <p>Also, use the following static analysis tools to verify the code:</p>
@@ -297,21 +296,21 @@ coding style described in the <a class="reference external" href="https://elixir
 </div>
 </div>
 <div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
+<h3>Penalties<a class="headerlink" href="#penalties" title="Permalink to this headline">¶</a></h3>
 <p>Information about assigments penalties can be found on the
 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>.</p>
 <p>In exceptional cases (the assigment passes the tests by not complying with the requirements)
 and if the assigment does not pass all the tests, the grade will may decrease more than mentioned above.</p>
 </div>
 <div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
+<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="Permalink to this headline">¶</a></h3>
 <p>The assignment will be graded automatically using the <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> infrastructure.
 The submission will be made on moodle on the <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">course's page</a> to the related assignment.
 You will find the submission details in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid">repo</a>.</p>
 </div>
 </div>
 <div class="section" id="resources">
-<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>implementation of the <a class="reference external" href="https://elixir.bootlin.com/linux/v5.10/source/drivers/md">RAID</a> software in the Linux kernel</li>
 </ul>
@@ -319,7 +318,7 @@ You will find the submission details in the <a class="reference external" href="
 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/README.md">README</a>.</p>
 </div>
 <div class="section" id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="永久链接至标题">¶</a></h2>
+<h2>Questions<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h2>
 <p>For questions about the topic, you can consult the mailing <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">list archives</a>
 or you can write a question on the dedicated Teams channel.</p>
 <p>Before you ask a question, make sure that:</p>

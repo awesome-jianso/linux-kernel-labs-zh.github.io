@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SO2 Lab 12 - Kernel Profiling &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>SO2 Lab 12 - Kernel Profiling &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh_CN',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,10 +26,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
-        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Collaboration" href="assign-collaboration.html" />
     <link rel="prev" title="SO2 Lab 11 - Kernel Development on ARM" href="lab11-arm-kernel-development.html" /> 
 </head>
@@ -180,9 +179,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="so2-lab-12-kernel-profiling">
-<h1>SO2 Lab 12 - Kernel Profiling<a class="headerlink" href="#so2-lab-12-kernel-profiling" title="永久链接至标题">¶</a></h1>
+<h1>SO2 Lab 12 - Kernel Profiling<a class="headerlink" href="#so2-lab-12-kernel-profiling" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="lab-objectives">
-<h2>Lab Objectives<a class="headerlink" href="#lab-objectives" title="永久链接至标题">¶</a></h2>
+<h2>Lab Objectives<a class="headerlink" href="#lab-objectives" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li>Familiarize yourself with the basics of Linux kernel profiling</li>
@@ -192,7 +191,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="永久链接至标题">¶</a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Up until now we have studied how the different components of the Linux kernel
 work, and how to write drivers that interface with them in order to provide
 support for devices or protocols. This has helped us understand how the Linux
@@ -209,13 +208,13 @@ debugging software issues, and we will approach some tools that give us insight
 from the kernel on the way our application runs.</p>
 </div>
 <div class="section" id="profiling-tools">
-<h2>Profiling Tools<a class="headerlink" href="#profiling-tools" title="永久链接至标题">¶</a></h2>
+<h2>Profiling Tools<a class="headerlink" href="#profiling-tools" title="Permalink to this headline">¶</a></h2>
 <p>The main tool that we will focus our attention on is <code class="docutils literal"><span class="pre">perf</span></code>, which offers
 support for tracing applications, and also inspecting general aspects of the
 system. We will also be using debugging tools that most people have used in
 their day to day life, such as <code class="docutils literal"><span class="pre">htop</span></code>, <code class="docutils literal"><span class="pre">ps</span></code>, <code class="docutils literal"><span class="pre">lsof</span></code> and others.</p>
 <div class="section" id="perf">
-<h3>perf<a class="headerlink" href="#perf" title="永久链接至标题">¶</a></h3>
+<h3>perf<a class="headerlink" href="#perf" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">perf</span></code> is a tool that instruments the CPU using
 tracepoints, kprobes and uprobes. This tool allows us to take a look at what
 functions are being called at a given point. This allows us to take a peak at
@@ -287,7 +286,7 @@ the intricacies of the command. An example of this is the <code class="docutils 
 which displays what I/O transfers are taking place.</p>
 </div>
 <div class="section" id="ps">
-<h3>ps<a class="headerlink" href="#ps" title="永久链接至标题">¶</a></h3>
+<h3>ps<a class="headerlink" href="#ps" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">ps</span></code> is the Linux tool that allows us to monitor the processes that are
 running at a given time on the machine, including the kernel threads. This is a
 simple and easy to use way of checking at a glance what processes are running on
@@ -315,7 +314,7 @@ process, <code class="docutils literal"><span class="pre">S</span></code> meanin
 running.</p>
 </div>
 <div class="section" id="time">
-<h3>time<a class="headerlink" href="#time" title="永久链接至标题">¶</a></h3>
+<h3>time<a class="headerlink" href="#time" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">time</span></code> command allows us to inspect the amount of time spent by a
 process in I/O, running the application code, or running code in kernel space.
 This can be useful in order to find out whether an application's issue comes
@@ -346,7 +345,7 @@ in which case the sum might be higher, or the application sleeps, in which case
 the sum is lower.</p>
 </div>
 <div class="section" id="top">
-<h3>top<a class="headerlink" href="#top" title="永久链接至标题">¶</a></h3>
+<h3>top<a class="headerlink" href="#top" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">top</span></code> is an application that is found on most systems which lists in real time
 the applications that are running on the system. <code class="docutils literal"><span class="pre">top</span></code> runs interactively, and
 it auto-refreshes its output, as opposed to <code class="docutils literal"><span class="pre">ps</span></code>. We use this tool when we
@@ -354,7 +353,7 @@ want a high level of continuous monitoring.</p>
 </div>
 </div>
 <div class="section" id="profiling-methodology">
-<h2>Profiling Methodology<a class="headerlink" href="#profiling-methodology" title="永久链接至标题">¶</a></h2>
+<h2>Profiling Methodology<a class="headerlink" href="#profiling-methodology" title="Permalink to this headline">¶</a></h2>
 <p>When doing profiling, our goal is to identify the cause of a problem. Usually
 this problem is observed by someone when their application doesn't work as
 expected. When we say that an application did not work as expected, this can
@@ -366,9 +365,9 @@ behaviour of the application we're trying to debug, and to make sure that it is
 now not running in the expected parameters.</p>
 </div>
 <div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="永久链接至标题">¶</a></h2>
+<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">重要</p>
+<p class="first admonition-title">Important</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -402,13 +401,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">警告</p>
+<p class="first admonition-title">Warning</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">This session will require us to use the <code class="docutils literal"><span class="pre">perf</span></code> tracing tool. When running
 natively on our systems, we have to install the
 <code class="docutils literal"><span class="pre">linux-tools-&lt;version&gt;-generic</span></code> package using a package manager in order
@@ -418,12 +417,12 @@ the <code class="docutils literal"><span class="pre">skels/kernel_profiling</spa
 permissions.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">警告</p>
+<p class="first admonition-title">Warning</p>
 <p class="last">When running <code class="docutils literal"><span class="pre">perf</span></code>, make sure that you're running the downloaded version,
 not the version in the <code class="docutils literal"><span class="pre">PATH</span></code> variable.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">When going through this session's exercises, we will have to run command in
 parallel. In order to do this, we will have to connect to the virtual machine
 using SSH. We recommend using the <code class="docutils literal"><span class="pre">core-image-sato-sdk-qemu</span></code> image, since it
@@ -432,13 +431,13 @@ has the tools that we need. To run the virtual machine using the
 <code class="docutils literal"><span class="pre">qemu/Makefile</span></code> file.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">If you wish to run the <code class="docutils literal"><span class="pre">perf-tools</span></code> based scripts that we have included in
 the repository, such as <code class="docutils literal"><span class="pre">iosnoop.sh</span></code>, you will have to grant it execution
 privilleges, in order to be copied to the virtual machine file system.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p>In order to improve the course of SO2, its components and the way it is
 conducted, your opinions are very useful to us. Please fill the feedback form
 on <a class="reference external" href="https://curs.upb.ro/2022/mod/feedbackadm/view.php?id=15292">curs.upb.ro platform</a>.</p>
@@ -460,7 +459,7 @@ in the coming years.</p>
 </div>
 </div>
 <div class="section" id="demo-profiling-i-o-problems">
-<h2>0. Demo: Profiling I/O Problems<a class="headerlink" href="#demo-profiling-i-o-problems" title="永久链接至标题">¶</a></h2>
+<h2>0. Demo: Profiling I/O Problems<a class="headerlink" href="#demo-profiling-i-o-problems" title="Permalink to this headline">¶</a></h2>
 <p>When working with I/O, we have to keep in mind that it is one of the slowest
 systems in the operating system, compared to memory, which is an order of
 magnitude faster, and scheduling, which deals with what is currently running on
@@ -545,7 +544,7 @@ that the first block <code class="docutils literal"><span class="pre">4800512</s
 since it is reading one megabyte fer request. This constant looping adds the
 load to the system that we're experiencing.</p>
 <div class="section" id="investigating-reduced-responsiveness">
-<h3>1. Investigating Reduced Responsiveness<a class="headerlink" href="#investigating-reduced-responsiveness" title="永久链接至标题">¶</a></h3>
+<h3>1. Investigating Reduced Responsiveness<a class="headerlink" href="#investigating-reduced-responsiveness" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">io.ko</span></code> module, located in the <code class="docutils literal"><span class="pre">kernel_profiling/1-io</span></code> directory,
 decreases the system's responsiveness when inserted. We see that the command
 line stutters when typing commands, but when running top, we see that the
@@ -554,14 +553,14 @@ resources.</p>
 <p>Find out what the <code class="docutils literal"><span class="pre">io.ko</span></code> module is doing and why is it leading to the
 stuttering effect that we experience.</p>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">Trace all the functions being called and check where the CPU is
 spending most of its time. In order to do this, you can run either <code class="docutils literal"><span class="pre">perf</span>
 <span class="pre">record</span></code> and <code class="docutils literal"><span class="pre">perf</span> <span class="pre">report</span></code> to view the output, or <code class="docutils literal"><span class="pre">perf</span> <span class="pre">top</span></code>.</p>
 </div>
 </div>
 <div class="section" id="launching-new-threads">
-<h3>2. Launching New Threads<a class="headerlink" href="#launching-new-threads" title="永久链接至标题">¶</a></h3>
+<h3>2. Launching New Threads<a class="headerlink" href="#launching-new-threads" title="Permalink to this headline">¶</a></h3>
 <p>We want to run the same function in a loop 100 times in parallel. We have
 implemented two solutions inside the <code class="docutils literal"><span class="pre">scheduling</span></code> binary file, located in the
 <code class="docutils literal"><span class="pre">kernel_profiling/2-scheduling</span></code> directory.</p>
@@ -571,7 +570,7 @@ either with the first parameter <code class="docutils literal"><span class="pre"
 <p>Find out which solution is better, and why.</p>
 </div>
 <div class="section" id="tuning-cp">
-<h3>3. Tuning <code class="docutils literal"><span class="pre">cp</span></code><a class="headerlink" href="#tuning-cp" title="永久链接至标题">¶</a></h3>
+<h3>3. Tuning <code class="docutils literal"><span class="pre">cp</span></code><a class="headerlink" href="#tuning-cp" title="Permalink to this headline">¶</a></h3>
 <p>Our goal is to write a copy of the <code class="docutils literal"><span class="pre">cp</span></code> tool integrated in Linux, which has
 been implemented by the <code class="docutils literal"><span class="pre">memory</span></code> binary, in the <code class="docutils literal"><span class="pre">kernel_profiling/3-memory</span></code>
 directory. It implements two approaches that we can take for the copy operation:</p>
@@ -591,7 +590,7 @@ will use the 1024 block size.</p>
 parameter and see which value gives you the best copies. Why?</p>
 </div>
 <div class="section" id="i-o-latency">
-<h3>4. I/O Latency<a class="headerlink" href="#i-o-latency" title="永久链接至标题">¶</a></h3>
+<h3>4. I/O Latency<a class="headerlink" href="#i-o-latency" title="Permalink to this headline">¶</a></h3>
 <p>We have written a module that reads the content of a disk. Insert the <code class="docutils literal"><span class="pre">bio.ko</span></code>
 module, located in the <code class="docutils literal"><span class="pre">4-bio</span></code> module, we see a large spike in the system's
 load, as can be seen in the <code class="docutils literal"><span class="pre">top</span></code> command, but we see that the system is still
@@ -599,16 +598,16 @@ responsive.</p>
 <p>Investigate what is causing the increased load to the system. Is it an I/O issue,
 or is it a scheduling issue?</p>
 <div class="admonition hint">
-<p class="first admonition-title">提示</p>
+<p class="first admonition-title">Hint</p>
 <p class="last">Try to trace the I/O operations using <code class="docutils literal"><span class="pre">perf</span></code>, or use the
 <code class="docutils literal"><span class="pre">iosnoop.sh</span></code> script in order to inspect what I/O is happening at a
 certain point.</p>
 </div>
 </div>
 <div class="section" id="bad-elf">
-<h3>5. Bad ELF<a class="headerlink" href="#bad-elf" title="永久链接至标题">¶</a></h3>
+<h3>5. Bad ELF<a class="headerlink" href="#bad-elf" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">This is a bonus exercise that has been tested on a native Linux system.
 It may run under the QEMU virtual machine, but the behavior was weird in our testing.
 We recommend you used a native (or VirtualBox or VMware) Linux system.</p>

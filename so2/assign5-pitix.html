@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 5 - PITIX Filesystem &mdash; Linux 系统内核  文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Assignment 5 - PITIX Filesystem &mdash; Linux 系统内核  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh_CN',
+              LANGUAGE:'zh-CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,10 +26,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
-        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="索引" href="../genindex.html" />
-    <link rel="search" title="搜索" href="../search.html" /> 
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -123,10 +122,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="assignment-5-pitix-filesystem">
-<h1>Assignment 5 - PITIX Filesystem<a class="headerlink" href="#assignment-5-pitix-filesystem" title="永久链接至标题">¶</a></h1>
+<h1>Assignment 5 - PITIX Filesystem<a class="headerlink" href="#assignment-5-pitix-filesystem" title="Permalink to this headline">¶</a></h1>
 <p>Deadline: <strong class="command">Tuesday, 24 May 2022, 23:00</strong></p>
 <div class="section" id="statement">
-<h2>Statement<a class="headerlink" href="#statement" title="永久链接至标题">¶</a></h2>
+<h2>Statement<a class="headerlink" href="#statement" title="Permalink to this headline">¶</a></h2>
 <p>Write a kernel module to implement the <strong>PITIX</strong> file system, version 2.
 This file system will only support files and directories.
 Support operations for hard or symbolic links will not be implemented.
@@ -235,9 +234,9 @@ The first block, the one with index <code class="docutils literal"><span class="
 <p>The kernel module will be named <code class="docutils literal"><span class="pre">pitix.ko</span></code>.</p>
 </div>
 <div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="永久链接至标题">¶</a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">注解</p>
+<p class="first admonition-title">Note</p>
 <p class="last">Enable <code class="docutils literal"><span class="pre">Loop</span> <span class="pre">Devices</span></code> support using <code class="docutils literal"><span class="pre">make</span> <span class="pre">menuconfig</span></code>. <code class="docutils literal"><span class="pre">Device</span> <span class="pre">drivers</span> <span class="pre">-&gt;</span> <span class="pre">Block</span> <span class="pre">devices</span> <span class="pre">-&gt;</span> <span class="pre">Loopback</span> <span class="pre">device</span> <span class="pre">support</span></code></p>
 </div>
 <p>In order to simplify the assignment evaluation process, but also to reduce the mistakes of the submitted assignments, the assignment evaluation will be done automatically with with the help of public tests that are in the new infrastructure.</p>
@@ -253,7 +252,7 @@ The first block, the one with index <code class="docutils literal"><span class="
 </div>
 <p>Instructions for using the test suite can be found in the <code class="docutils literal"><span class="pre">README</span></code> file.</p>
 <div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
+<h3>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h3>
 <p>To increase your chances of getting the highest grade, read and follow the Linux kernel coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
 <p>Also, use the following static analysis tools to verify the code:</p>
 <ul class="simple">
@@ -279,7 +278,7 @@ The first block, the one with index <code class="docutils literal"><span class="
 </div>
 </div>
 <div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
+<h3>Penalties<a class="headerlink" href="#penalties" title="Permalink to this headline">¶</a></h3>
 <p>As a more difficult assignment, it is worth 2 points.</p>
 <p>Information about assigments penalties can be found on the
 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>.</p>
@@ -287,14 +286,14 @@ The first block, the one with index <code class="docutils literal"><span class="
 and if the assigment does not pass all the tests, the grade will may decrease more than mentioned above.</p>
 </div>
 <div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
+<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="Permalink to this headline">¶</a></h3>
 <p>The assignment archive will be submitted to vmchecker, according to the rules on the
 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/reguli-notare#reguli_de_trimitere_a_temelor">rules page</a>.</p>
 <p>In the vmchecker interface choose the <code class="docutils literal"><span class="pre">Google</span> <span class="pre">Challenge</span> <span class="pre">-</span> <span class="pre">Sistem</span> <span class="pre">de</span> <span class="pre">fișiere</span></code> option for this assignment.</p>
 </div>
 </div>
 <div class="section" id="resources">
-<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/5-pitix/pitix.h">assignment header</a></li>
 <li><a class="reference external" href="https://linux-kernel-labs.github.io/refs/heads/master/so2/lab8-filesystems-part1.html">Lab 08: File system drivers (Part 1)</a></li>
@@ -311,7 +310,7 @@ Follow the tips from the <a class="reference external" href="https://github.com/
 on the dedicated <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/folosire-gitlab">Wiki page</a>.</p>
 </div>
 <div class="section" id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="永久链接至标题">¶</a></h2>
+<h2>Questions<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h2>
 <p>For questions about the assigment, you can consult the mailing <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">list archives</a>
 or send an e-mail (you must be <a class="reference external" href="http://cursuri.cs.pub.ro/cgi-bin/mailman/listinfo/so2">registered</a>).
 Please follow and follow <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/resurse/lista-discutii#mailing-list-guidelines">the tips for use of the list</a>.</p>
