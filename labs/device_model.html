@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Kernel Profiling" href="kernel_profiling.html" />
     <link rel="prev" title="内存映射" href="memory_mapping.html" /> 
 </head>
@@ -156,9 +157,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="linux">
-<h1>Linux 设备模型<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h1>
+<h1>Linux 设备模型<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-1">
-<h2>概述<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<h2>概述<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <p>即插即用（Plug and Play）是一种技术，它支持自动添加和移除设备到系统中。它通过在系统启动时自动配置设备，来减少与这些设备使用的资源相关的冲突。为了实现这些目标，需要具备以下特性：</p>
 <blockquote>
 <div><ul class="simple">
@@ -185,7 +186,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="sysfs">
-<h2>sysfs<a class="headerlink" href="#sysfs" title="Permalink to this headline">¶</a></h2>
+<h2>sysfs<a class="headerlink" href="#sysfs" title="永久链接至标题">¶</a></h2>
 <p>内核通过 sysfs 虚拟文件系统在用户空间提供其模型的表示。它通常挂载在 /sys 目录下，包含以下子目录：</p>
 <blockquote>
 <div><ul class="simple">
@@ -213,7 +214,7 @@
 <img alt="../_images/ditaa-a5f399cb84561893770eb45ceeb827ce6d4a2336.png" src="../_images/ditaa-a5f399cb84561893770eb45ceeb827ce6d4a2336.png" />
 </div>
 <div class="section" id="linux-1">
-<h2>Linux 设备中的基本结构<a class="headerlink" href="#linux-1" title="Permalink to this headline">¶</a></h2>
+<h2>Linux 设备中的基本结构<a class="headerlink" href="#linux-1" title="永久链接至标题">¶</a></h2>
 <p>Linux 设备模型提供了一些结构，以确保硬件设备和设备驱动程序之间的交互。整个模型基于 kobject 结构构建层级，实现了以下结构：</p>
 <blockquote>
 <div><ul class="simple">
@@ -224,7 +225,7 @@
 </div></blockquote>
 <img alt="../_images/ditaa-f7ee56960e76c3e80fcbe59fafa38c3d93eac261.png" src="../_images/ditaa-f7ee56960e76c3e80fcbe59fafa38c3d93eac261.png" />
 <div class="section" id="kobject">
-<h3>kobject 结构<a class="headerlink" href="#kobject" title="Permalink to this headline">¶</a></h3>
+<h3>kobject 结构<a class="headerlink" href="#kobject" title="永久链接至标题">¶</a></h3>
 <p>kobject 结构本身并不执行单一功能。通常，这个结构被整合到更大的结构中。kobject 结构实际上包含了一组功能，将提供给 Linux 设备模型层次结构中更高级别的抽象对象。</p>
 <p>例如，cdev 结构具有以下定义：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">cdev</span> <span class="p">{</span>
@@ -261,7 +262,7 @@
 <p>kobject 结构是 Linux 设备模型的基本结构。模型中较高级别的结构包括 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code>。</p>
 </div>
 <div class="section" id="section-2">
-<h3>总线<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h3>
+<h3>总线<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h3>
 <p>总线是处理器与输入/输出设备之间的通信通道。为了确保模型能够通用，所有输入/输出设备都通过这样的总线连接到处理器（即使它可以是没有物理硬件对应的虚拟总线）。</p>
 <p>在添加系统总线后，它将出现在 sysfs 文件系统的 <code class="docutils literal"><span class="pre">/sys/bus</span></code> 目录中。与 kobjects 一样，总线可以组织成层次结构，并在 sysfs 中表示。</p>
 <p>在 Linux 设备模型中，总线由结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code> 表示：</p>
@@ -386,7 +387,7 @@
 <p>总线由 <code class="docutils literal"><span class="pre">bus_type</span></code> 对象和 <code class="docutils literal"><span class="pre">device</span></code> 对象表示，我们稍后将进一步了解（总线也是一种设备）。</p>
 </div>
 <div class="section" id="section-3">
-<h3>设备<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h3>
+<h3>设备<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h3>
 <p>系统中的任何设备都与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 结构相关联。设备可以通过多种不同的内核方法（热插拔、设备驱动程序、系统初始化）被发现并注册到系统中。内核中的每个设备在 <code class="docutils literal"><span class="pre">/sys/devices</span></code> 目录下都有一个条目。</p>
 <p>在 Linux 设备模型中，设备在最低级别上由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 结构表示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">device</span> <span class="p">{</span>
@@ -490,7 +491,7 @@
 </div>
 </div>
 <div class="section" id="section-4">
-<h3>驱动程序<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<h3>驱动程序<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
 <p>借助 Linux 设备模型，我们可以实现系统设备和驱动程序之间的简单关联。驱动程序可以独立于物理设备导出信息。</p>
 <p>在 sysfs 中，驱动程序信息没有单独的子目录与之关联；它们可以在不同位置的目录结构中找到：加载的模块在 <code class="docutils literal"><span class="pre">/sys/module</span></code> 中，在 <code class="docutils literal"><span class="pre">/sys/devices</span></code> 中可以找到与每个设备关联的驱动程序，在 <code class="docutils literal"><span class="pre">/sys/class</span></code> 中是属于某个类的驱动程序，在 <code class="docutils literal"><span class="pre">/sys/bus</span></code> 中是与每个总线关联的驱动程序。</p>
 <p>系统通过结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> 来区分设备驱动：</p>
@@ -573,7 +574,7 @@
 </div>
 </div>
 <div class="section" id="section-5">
-<h3>类<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
+<h3>类<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
 <p>类是 Linux 设备模型的高层次视图，它抽象了实现细节。例如，SCSI 和 ATA 驱动程序虽然有所不同，但都属于磁盘类。类根据功能对设备进行分组，而不考虑它们的连接方式或工作原理。类在 <code class="docutils literal"><span class="pre">/sys/classes</span></code> 中有对应的表示。</p>
 <p>主要有两个结构用来描述类，分别是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code>。<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code> 结构描述了通用类，而结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code> 则描述了与设备有关联的类。对于每种结构体，都有用于初始化/反初始化和添加属性的函数，这些函数在 <code class="docutils literal"><span class="pre">include/linux/device.h</span></code> 中有描述。</p>
 <p>使用类的优势在于，我们可以借助用户空间中的 <code class="docutils literal"><span class="pre">udev</span></code> 程序（我们稍后将讨论），根据类信息自动在 <code class="docutils literal"><span class="pre">/dev</span></code> 目录中创建设备。</p>
@@ -637,7 +638,7 @@
 <p>当发现新设备时，将为其分配一个类和节点，并在 <code class="docutils literal"><span class="pre">/dev</span></code> 目录中创建一个节点。对于上面的示例，将生成节点 <code class="docutils literal"><span class="pre">/dev/myclass0</span></code>。</p>
 </div>
 <div class="section" id="section-6">
-<h3>热插拔<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
+<h3>热插拔<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">热插拔</span></code> 描述了在系统运行时添加或移除设备而无需重新启动系统的机制。</p>
 <p>热插拔事件是内核向用户空间发送的通知，用于指示系统配置发生了变化。这些事件在从内核创建或删除 kobject 时生成。由于这些对象是 Linux 设备模型的基础，包含在所有结构体中 (<code class="docutils literal"><span class="pre">struct</span> <span class="pre">bus_type</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">device</span></code>, <code class="docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> 以及 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">class</span></code> 等)，当创建或删除任何这些结构体时，都会生成热插拔事件 (<code class="docutils literal"><span class="pre">uevent</span></code>)。</p>
 <p>当在系统中发现设备时，将生成事件。根据设备在 Linux 设备模型中所处的位置，将调用相应的事件函数（通常是与总线或类关联的 <code class="docutils literal"><span class="pre">uevent</span></code> 函数）。借助这些函数，驱动程序可以为用户空间设置系统变量。生成的事件然后到达用户空间。在这里 <code class="docutils literal"><span class="pre">udev</span></code> 程序会捕获这些事件。在 <code class="docutils literal"><span class="pre">/etc/udev/</span></code> 目录中有针对该程序的配置文件。可以指定不同的规则来捕获特定事件并执行特定操作，这取决于内核或 <code class="docutils literal"><span class="pre">uevent</span></code> 函数中设置的系统变量。</p>
@@ -652,11 +653,11 @@
 </div>
 </div>
 <div class="section" id="section-7">
-<h2>即插即用<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<h2>即插即用<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
 <p>如上所述，在 Linux 设备模型中，所有设备都通过总线连接，不管总线具有相应的物理硬件或者仅仅是虚拟设备。</p>
 <p>内核已经使用 <code class="docutils literal"><span class="pre">bus_type</span></code> 结构和用于注册/取消注册驱动程序与设备的函数实现了大多数总线。要实现一个驱动程序，我们必须首先确定其所支持的设备连接的总线，并使用该总线导出的结构和函数。主要的总线包括 <code class="docutils literal"><span class="pre">PCI</span></code>, <code class="docutils literal"><span class="pre">USB</span></code>, <code class="docutils literal"><span class="pre">PNP</span></code>, <code class="docutils literal"><span class="pre">IDE</span></code>, <code class="docutils literal"><span class="pre">SCSI</span></code>, <code class="docutils literal"><span class="pre">platform</span></code> 以及 <code class="docutils literal"><span class="pre">ACPI</span></code> 等等。</p>
 <div class="section" id="pnp">
-<h3>PNP 总线<a class="headerlink" href="#pnp" title="Permalink to this headline">¶</a></h3>
+<h3>PNP 总线<a class="headerlink" href="#pnp" title="永久链接至标题">¶</a></h3>
 <p>即插即用机制提供了一种检测和设置未配置的传统驱动程序之类的资源的手段。所有的即插即用驱动程序、协议和服务都基于即插即用级别。它负责在驱动程序和协议之间进行信息交换。以下协议可用：</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">PNPBIOS</span></code> ——用于串行和并行端口等系统</li>
@@ -711,13 +712,13 @@
 </div>
 </div>
 <div class="section" id="pnp-1">
-<h3>PNP 操作<a class="headerlink" href="#pnp-1" title="Permalink to this headline">¶</a></h3>
+<h3>PNP 操作<a class="headerlink" href="#pnp-1" title="永久链接至标题">¶</a></h3>
 <p>到目前为止，我们已经讨论了 Linux 设备模型及其 API。要实现即插即用驱动程序，我们必须遵循 Linux 设备模型。</p>
 <p>通常情况下，我们不需要在内核中添加新的总线，因为大多数现有的总线已经实现了（如 PCI、USB 等）。因此，我们首先必须确定设备连接的总线。在下面的示例中，我们将假设该总线为 PNP 总线，并使用上述描述的结构和函数。</p>
 <img alt="../_images/ditaa-4e1f9758808dba9e61bc0e48faf4365d377f9d32.png" src="../_images/ditaa-4e1f9758808dba9e61bc0e48faf4365d377f9d32.png" />
 </div>
 <div class="section" id="section-8">
-<h3>添加驱动程序<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>添加驱动程序<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>除了常规操作外，驱动程序必须遵循 Linux 设备模型。因此，它将使用总线提供的函数在系统中注册。通常，总线提供一个特定的驱动程序结构，其中包含 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">device_driver</span></code> 结构，驱动程序必须初始化并使用 <code class="docutils literal"><span class="pre">*_register_driver</span></code> 函数进行注册。例如，对于 <code class="docutils literal"><span class="pre">PNP</span></code> 总线，驱动程序必须声明并初始化一个类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">pnp_driver</span></code> 的结构，并使用 <code class="docutils literal"><span class="pre">pnp_register_driver</span></code> 进行注册：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">pnp_driver</span> <span class="n">my_pnp_driver</span> <span class="o">=</span> <span class="p">{</span>
          <span class="p">.</span><span class="n">name</span>           <span class="o">=</span> <span class="s">&quot;mydriver&quot;</span><span class="p">,</span>
@@ -754,7 +755,7 @@
 <p>在上面的示例中，驱动程序支持多个并行端口设备，这些设备在表格 <code class="docutils literal"><span class="pre">my_pnp_tbl</span></code> 中定义。总线在 <code class="docutils literal"><span class="pre">match_device</span></code> 函数中使用此信息。在添加驱动程序时，总线驱动程序将与其关联，并根据驱动程序名称在 <code class="docutils literal"><span class="pre">sysfs</span></code> 中创建新条目。然后，总线的 <code class="docutils literal"><span class="pre">match</span></code> 函数将针对每个支持的设备调用，以将驱动程序与其支持的任何连接设备关联起来。</p>
 </div>
 <div class="section" id="section-9">
-<h3>移除驱动程序<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<h3>移除驱动程序<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
 <p>要从内核中移除驱动程序，除了传统驱动程序所需的操作外，我们还必须取消注册 <code class="docutils literal"><span class="pre">device_driver</span></code> 结构。对于与 <code class="docutils literal"><span class="pre">PNP</span></code> 总线关联的驱动程序，我们必须使用 <code class="xref c c-func docutils literal"><span class="pre">pnp_unregister_driver()</span></code> 函数取消注册 <code class="docutils literal"><span class="pre">pnp_driver</span></code> 结构：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">pnp_driver</span> <span class="n">my_pnp_driver</span><span class="p">;</span>
 
@@ -767,7 +768,7 @@
 <p>与传统驱动程序不同，即插即用驱动程序不会在模块卸载函数 (<code class="docutils literal"><span class="pre">my_exit</span></code>) 中取消注册设备。当驱动程序被移除时，所有它支持的设备对它的引用将被删除，并且 <code class="docutils literal"><span class="pre">sysfs</span></code> 中的条目也将被删除。</p>
 </div>
 <div class="section" id="section-10">
-<h3>添加新设备<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<h3>添加新设备<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <p>如上所述，即插即用驱动程序在初始化时不会注册设备。这个操作将在检测到新设备时调用的 <code class="docutils literal"><span class="pre">probe</span></code> 函数中进行。连接到 <code class="docutils literal"><span class="pre">PNP</span></code> 总线的设备将通过 <code class="docutils literal"><span class="pre">pnp_driver</span></code> 结构的 <code class="docutils literal"><span class="pre">probe</span></code> 函数添加到系统中：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_pnp_probe</span><span class="p">(</span><span class="k">struct</span> <span class="n">pnp_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_id</span> <span class="o">*</span><span class="n">card_id</span><span class="p">,</span>
                                              <span class="k">const</span> <span class="k">struct</span> <span class="n">pnp_id</span> <span class="o">*</span><span class="n">dev_id</span><span class="p">)</span> <span class="p">{</span>
@@ -795,7 +796,7 @@
 <p>在内核中检测到设备（在引导时或通过“热插拔”插入设备）时，系统会生成中断并传递给总线驱动程序。使用函数 <code class="xref c c-func docutils literal"><span class="pre">device_register()</span></code> 注册设备，并将其连接到总线。然后还会生成对用户空间的调用，事件可以由 <code class="docutils literal"><span class="pre">udev</span></code> 处理。然后, <code class="docutils literal"><span class="pre">udev</span></code> 将迭代与总线关联的驱动程序列表，并对每个驱动程序调用 <code class="docutils literal"><span class="pre">match</span></code> 函数。 <code class="docutils literal"><span class="pre">match</span></code> 函数尝试为新设备找到驱动程序。找到合适的驱动程序后，将调用驱动程序的 <code class="docutils literal"><span class="pre">probe</span></code> 函数。如果函数成功结束，设备将添加到驱动程序的设备列表中，并根据设备名称在 <code class="docutils literal"><span class="pre">sysfs</span></code> 中创建新条目。</p>
 </div>
 <div class="section" id="section-11">
-<h3>移除设备<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<h3>移除设备<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <p>如上所述，即插即用驱动程序在卸载驱动程序时不会取消注册设备。这个操作是在从系统中移除设备时调用的 <code class="docutils literal"><span class="pre">remove</span></code> 函数中完成的。对于连接到 <code class="docutils literal"><span class="pre">PNP</span></code> 总线的设备，取消注册将在 <code class="docutils literal"><span class="pre">pnp_driver</span></code> 结构中指定的 <code class="docutils literal"><span class="pre">remove</span></code> 函数中进行：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span> <span class="nf">my_pnp_remove</span><span class="p">(</span><span class="k">struct</span> <span class="n">pnp_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span> <span class="p">{</span>
          <span class="cm">/* 取消注册设备 dev */</span>
@@ -811,9 +812,9 @@
 </div>
 </div>
 <div class="section" id="section-12">
-<h2>练习<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -847,13 +848,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-12">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-13">
-<h3>0. 引言<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<h3>0. 引言<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <p>在 Linux 内核中找到以下符号的定义：</p>
 <blockquote>
 <div><ul class="simple">
@@ -863,29 +864,29 @@ tools/labs $ make boot
 </div></blockquote>
 </div>
 <div class="section" id="section-14">
-<h3>1. 总线实现<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<h3>1. 总线实现<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
 <p>分析 <code class="docutils literal"><span class="pre">bex.c</span></code> 的内容，这是一个实现总线驱动程序的模块。按照标记为 <strong>TODO 1</strong> 的注释，实现缺失的功能：注册总线驱动程序，并添加一个名为 <code class="docutils literal"><span class="pre">root</span></code>、类型为 <code class="docutils literal"><span class="pre">none</span></code>、版本为 1 的新设备。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">参考 <code class="xref c c-func docutils literal"><span class="pre">bex_add_dev()</span></code>。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">注册和取消注册必须使用 <code class="xref c c-func docutils literal"><span class="pre">bus_register()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">bus_unregister()</span></code> 完成。</p>
 </div>
 <p>加载该模块，并验证总线是否在 <code class="docutils literal"><span class="pre">/sys/bus</span></code> 中可见。验证设备是否在 <code class="docutils literal"><span class="pre">/sys/bus/bex/devices</span></code> 中可见。</p>
 <p>卸载该模块，并注意到 <code class="docutils literal"><span class="pre">sysfs</span></code> 条目已被删除。</p>
 </div>
 <div class="section" id="section-15">
-<h3>2. 添加类型和版本设备属性<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<h3>2. 添加类型和版本设备属性<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>添加两个只读设备属性, <code class="docutils literal"><span class="pre">type</span></code> 和 <code class="docutils literal"><span class="pre">version</span></code>。按照 <strong>TODO 2</strong> 的标记进行操作。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>你需要在 <code class="docutils literal"><span class="pre">bex_dev_attrs</span></code> 结构中添加这两个属性，如下所示：</p>
 <p class="last"><code class="docutils literal"><span class="pre">&amp;dev_attr_&lt;insert-attribute-type-here&gt;.attr,</span></code></p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>展示函数的一个可能实现如下所示：</p>
 <div class="last highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">ssize_t</span>
 <span class="nf">type_show</span><span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">device_attribute</span> <span class="o">*</span><span class="n">attr</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
@@ -901,10 +902,10 @@ tools/labs $ make boot
 <p>观察在 /sys/bus/bex/devices/root 中出现了两个新属性。检查这些属性的内容。</p>
 </div>
 <div class="section" id="del-add">
-<h3>3. 添加 del 和 add 总线属性<a class="headerlink" href="#del-add" title="Permalink to this headline">¶</a></h3>
+<h3>3. 添加 del 和 add 总线属性<a class="headerlink" href="#del-add" title="永久链接至标题">¶</a></h3>
 <p>添加两个只写总线属性, <code class="docutils literal"><span class="pre">del</span></code> 和 <code class="docutils literal"><span class="pre">add</span></code>。 <code class="docutils literal"><span class="pre">del</span></code> 期望删除设备的名称，而 <code class="docutils literal"><span class="pre">add</span></code> 期望提供名称、类型和版本来创建一个新设备。按照 <strong>TODO 3</strong> 的标记进行操作，并查阅 <a href="#system-message-1"><span class="problematic" id="problematic-1">`Buses`_</span></a>。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">sscanf()</span></code> 解析来自 sysfs 的输入，并使用 <code class="xref c c-func docutils literal"><span class="pre">bex_del_dev()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">bex_add_dev()</span></code> 删除和创建新设备。</p>
 </div>
 <p>下面是 store 函数的示例：</p>
@@ -923,12 +924,12 @@ tools/labs $ make boot
 </pre></div>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">如果 <code class="docutils literal"><span class="pre">bex_add_dev</span></code>/<code class="docutils literal"><span class="pre">bex_del_dev</span></code> 失败，store 函数应返回 <code class="docutils literal"><span class="pre">0</span></code>，否则返回 <code class="docutils literal"><span class="pre">count</span></code>。</p>
 </div>
 <p>创建一个新设备，并观察它在 <code class="docutils literal"><span class="pre">/sys/bus/devices</span></code> 中可见。然后删除它，并观察它从 <code class="docutils literal"><span class="pre">sysfs</span></code> 中消失。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>使用 echo 命令将内容写入总线属性：</p>
 <div class="last highlight-shell"><div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;name type 1&quot;</span> &gt; /sys/bus/bex/add
 $ <span class="nb">echo</span> <span class="s2">&quot;name&quot;</span> &gt; /sys/bus/bex/del
@@ -937,32 +938,32 @@ $ <span class="nb">echo</span> <span class="s2">&quot;name&quot;</span> &gt; /sy
 </div>
 </div>
 <div class="section" id="bex">
-<h3>4. 注册 bex 杂项驱动程序<a class="headerlink" href="#bex" title="Permalink to this headline">¶</a></h3>
+<h3>4. 注册 bex 杂项驱动程序<a class="headerlink" href="#bex" title="永久链接至标题">¶</a></h3>
 <p>修改 <strong>bex-misc.c</strong>，使其在 bex 总线上注册驱动程序。插入 <code class="docutils literal"><span class="pre">bmx_misc.ko</span></code> 模块，并从 sysfs 创建一个名为“test”、类型为“misc”、版本为 2 的新 bex 设备。按照 <strong>TODO 4</strong> 的标记进行操作。</p>
 <p>观察驱动程序在 <code class="docutils literal"><span class="pre">/sys/bus/bex/drivers</span></code> 中可见。</p>
 <p>为什么没有调用 probe 函数？</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">注意到 <strong>bex.c</strong> 中的总线匹配函数未实现。</p>
 </div>
 <p>在 <strong>bex.c</strong> 中实现总线匹配函数。按照 <strong>TODO 5</strong> 的标记进行操作。再次尝试创建一个新的 bex 设备，并观察这次 <code class="docutils literal"><span class="pre">bex_misc</span></code> 驱动程序的 <code class="docutils literal"><span class="pre">probe</span></code> 函数被调用。</p>
 </div>
 <div class="section" id="bex-misc-probe">
-<h3>5. 在 bex_misc probe 函数中注册杂项设备<a class="headerlink" href="#bex-misc-probe" title="Permalink to this headline">¶</a></h3>
+<h3>5. 在 bex_misc probe 函数中注册杂项设备<a class="headerlink" href="#bex-misc-probe" title="永久链接至标题">¶</a></h3>
 <p>修改 <strong>bex_misc.c</strong>，如果 <code class="docutils literal"><span class="pre">version</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>，则拒绝探测。此外，在 <code class="docutils literal"><span class="pre">bex_misc_probe</span></code> 中注册定义的杂项设备，并在 <code class="docutils literal"><span class="pre">bex_misc_remove</span></code> 中取消注册。按照 <strong>TODO 6</strong> 的标记进行操作。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">misc_register()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">misc_deregister()</span></code>。</p>
 </div>
 <p>创建一个名称为“test”、类型为“misc”、版本为 2 的新设备，并观察探测失败。创建一个名称为“test2”、类型为“misc”、版本为 1 的新设备，并观察探测成功。</p>
 <p>检查 <code class="docutils literal"><span class="pre">/sys/bus/bex/devices/test2</span></code>，观察到我们有了一个新条目。确定杂项设备的主设备号和次设备号，创建一个字符设备文件，并尝试从杂项设备缓冲区中读取和写入数据。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">主设备号和次设备号应该在杂项设备的 dev 属性中可见。</p>
 </div>
 </div>
 <div class="section" id="uevent">
-<h3>6. 监视 uevent 通知<a class="headerlink" href="#uevent" title="Permalink to this headline">¶</a></h3>
+<h3>6. 监视 uevent 通知<a class="headerlink" href="#uevent" title="永久链接至标题">¶</a></h3>
 <p>使用命令 <code class="docutils literal"><span class="pre">udevadm</span> <span class="pre">monitor</span></code>，观察以下情况发生时会发生什么：</p>
 <ul class="simple">
 <li>插入 <code class="docutils literal"><span class="pre">bex.ko</span></code> 和 <code class="docutils literal"><span class="pre">bex_misc.ko</span></code> 模块</li>

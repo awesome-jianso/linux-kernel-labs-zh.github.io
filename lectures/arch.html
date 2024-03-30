@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Virtualization" href="virt.html" />
     <link rel="prev" title="Network Management" href="networking.html" /> 
 </head>
@@ -141,20 +142,20 @@
            <div itemprop="articleBody">
              
   <div class="section" id="architecture-layer">
-<h1>Architecture Layer<a class="headerlink" href="#architecture-layer" title="Permalink to this headline">¶</a></h1>
+<h1>Architecture Layer<a class="headerlink" href="#architecture-layer" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="arch-slides.html">View slides</a></p>
 <div class="section" id="lecture-objectives">
-<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="Permalink to this headline">¶</a></h2>
+<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-introduction simple">
 <li>Overview of the arch layer</li>
 <li>Overview of the boot process</li>
 </ul>
 </div>
 <div class="section" id="overview-of-the-arch-layer">
-<h2>Overview of the arch layer<a class="headerlink" href="#overview-of-the-arch-layer" title="Permalink to this headline">¶</a></h2>
+<h2>Overview of the arch layer<a class="headerlink" href="#overview-of-the-arch-layer" title="永久链接至标题">¶</a></h2>
 <a class="admonition-overview-of-the-arch-layer reference internal image-reference" href="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png"><img alt="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png" class="admonition-overview-of-the-arch-layer" src="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png" style="height: 100%;" /></a>
 <div class="section" id="boot-strap">
-<h3>Boot strap<a class="headerlink" href="#boot-strap" title="Permalink to this headline">¶</a></h3>
+<h3>Boot strap<a class="headerlink" href="#boot-strap" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-bootstrap simple">
 <li>The first kernel code that runs</li>
 <li>Typically runs with the MMU disabled</li>
@@ -162,7 +163,7 @@
 </ul>
 </div>
 <div class="section" id="boot-strap-1">
-<h3>Boot strap<a class="headerlink" href="#boot-strap-1" title="Permalink to this headline">¶</a></h3>
+<h3>Boot strap<a class="headerlink" href="#boot-strap-1" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-bootstrap simple">
 <li>The first kernel code that runs</li>
 <li>Typically runs with the MMU disabled</li>
@@ -172,7 +173,7 @@
 </ul>
 </div>
 <div class="section" id="memory-setup">
-<h3>Memory setup<a class="headerlink" href="#memory-setup" title="Permalink to this headline">¶</a></h3>
+<h3>Memory setup<a class="headerlink" href="#memory-setup" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-memory-setup simple">
 <li>Determine available memory and setup the boot memory allocator</li>
 <li>Manages memory regions before the page allocator is setup</li>
@@ -185,7 +186,7 @@
 </ul>
 </div>
 <div class="section" id="mmu-management">
-<h3>MMU management<a class="headerlink" href="#mmu-management" title="Permalink to this headline">¶</a></h3>
+<h3>MMU management<a class="headerlink" href="#mmu-management" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-mmu-management simple">
 <li>Implements the generic page table manipulation APIs: types,
 accessors, flags</li>
@@ -193,7 +194,7 @@ accessors, flags</li>
 </ul>
 </div>
 <div class="section" id="thread-management">
-<h3>Thread Management<a class="headerlink" href="#thread-management" title="Permalink to this headline">¶</a></h3>
+<h3>Thread Management<a class="headerlink" href="#thread-management" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-thread-management simple">
 <li>Defines the thread type (struct thread_info) and implements
 functions for allocating threads (if needed)</li>
@@ -201,7 +202,7 @@ functions for allocating threads (if needed)</li>
 </ul>
 </div>
 <div class="section" id="time-management">
-<h3>Time Management<a class="headerlink" href="#time-management" title="Permalink to this headline">¶</a></h3>
+<h3>Time Management<a class="headerlink" href="#time-management" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-timer-management simple">
 <li>Setup the timer tick and provide a time source</li>
 <li>Mostly transitioned to platform drivers<ul>
@@ -212,7 +213,7 @@ functions for allocating threads (if needed)</li>
 </ul>
 </div>
 <div class="section" id="irqs-and-exception-management">
-<h3>IRQs and exception management<a class="headerlink" href="#irqs-and-exception-management" title="Permalink to this headline">¶</a></h3>
+<h3>IRQs and exception management<a class="headerlink" href="#irqs-and-exception-management" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-irqs-and-exception-management simple">
 <li>Define interrupt and exception handlers / entry points</li>
 <li>Setup priorities</li>
@@ -220,14 +221,14 @@ functions for allocating threads (if needed)</li>
 </ul>
 </div>
 <div class="section" id="system-calls">
-<h3>System calls<a class="headerlink" href="#system-calls" title="Permalink to this headline">¶</a></h3>
+<h3>System calls<a class="headerlink" href="#system-calls" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-system-calls simple">
 <li>Define system call entry point(s)</li>
 <li>Implement user-space access primitives (e.g. copy_to_user)</li>
 </ul>
 </div>
 <div class="section" id="platform-drivers">
-<h3>Platform Drivers<a class="headerlink" href="#platform-drivers" title="Permalink to this headline">¶</a></h3>
+<h3>Platform Drivers<a class="headerlink" href="#platform-drivers" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-platform-drivers simple">
 <li>Platform and architecture specific drivers</li>
 <li>Bindings to platform device enumeration methods (e.g. device tree
@@ -235,7 +236,7 @@ or ACPI)</li>
 </ul>
 </div>
 <div class="section" id="machine-specific-code">
-<h3>Machine specific code<a class="headerlink" href="#machine-specific-code" title="Permalink to this headline">¶</a></h3>
+<h3>Machine specific code<a class="headerlink" href="#machine-specific-code" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-machine-specific-code simple">
 <li>Some architectures use a &quot;machine&quot; / &quot;platform&quot; abstraction</li>
 <li>Typical for architecture used in embedded systems with a lot of
@@ -244,7 +245,7 @@ variety (e.g. ARM, powerPC)</li>
 </div>
 </div>
 <div class="section" id="overview-of-the-boot-process">
-<h2>Overview of the boot process<a class="headerlink" href="#overview-of-the-boot-process" title="Permalink to this headline">¶</a></h2>
+<h2>Overview of the boot process<a class="headerlink" href="#overview-of-the-boot-process" title="永久链接至标题">¶</a></h2>
 <asciinema-player src="../_images/boot.cast"></asciinema-player></div>
 </div>
 

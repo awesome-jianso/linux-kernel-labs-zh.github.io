@@ -17,7 +17,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -28,9 +28,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Linux 设备模型" href="device_model.html" />
     <link rel="prev" title="ARM 内核开发" href="arm_kernel_development.html" /> 
 </head>
@@ -145,9 +146,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>内存映射<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>内存映射<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-2">
-<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li>理解地址空间映射机制</li>
 <li>了解与内存管理相关的重要结构</li>
@@ -165,7 +166,7 @@
 </ul>
 </div>
 <div class="section" id="section-3">
-<h2>概述<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>概述<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>在 Linux 内核中，我们可以将内核地址空间映射到用户地址空间。这样可以消除将用户空间信息复制到内核空间或相反操作的开销。这可以通过设备驱动程序和用户空间设备接口 (<code class="file docutils literal"><span class="pre">/dev</span></code>) 来实现。</p>
 <p>我们可以通过在设备驱动程序的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 中实现 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 操作，并在用户空间中通过 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 系统调用来使用此功能。</p>
 <p>虚拟内存管理的基本单位是页面。页面的大小通常为 4K，但在某些平台上可以达到 64K。虚拟内存技术会使用两种类型的地址：虚拟地址和物理地址。所有 CPU 访问（包括来自内核空间的访问）访问的都是虚拟地址，然后由 MMU 将虚拟地址转换为物理地址，转换过程依靠页表来完成。</p>
@@ -177,10 +178,10 @@
 <a class="reference internal image-reference" href="../_images/kernel-virtmem-map.png"><img alt="../_images/kernel-virtmem-map.png" src="../_images/kernel-virtmem-map.png" style="width: 49%;" /></a>
 </div>
 <div class="section" id="section-4">
-<h2>用于内存映射的结构<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>用于内存映射的结构<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <p>在讨论设备上的内存映射机制之前，我们将介绍 Linux 内存管理子系统使用的一些基本结构。其中一些基本结构包括：<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code>, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 以及 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code>。</p>
 <div class="section" id="struct-page">
-<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code><a class="headerlink" href="#struct-page" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code><a class="headerlink" href="#struct-page" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> 用于嵌入系统中所有物理页面的信息。内核为系统中的每个页面，都配有一个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">page</span></code> 结构。</p>
 <p>有许多函数与此结构交互：</p>
 <ul class="simple">
@@ -192,7 +193,7 @@
 </ul>
 </div>
 <div class="section" id="struct-vm-area-struct">
-<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code><a class="headerlink" href="#struct-vm-area-struct" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code><a class="headerlink" href="#struct-vm-area-struct" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 保存连续虚拟内存区域的信息。可以通过检查进程的 <em>maps</em> 属性（通过 procfs）来查看进程的内存区域：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>root@qemux86:~# cat /proc/1/maps
 <span class="c1">#地址             权限  偏移     设备  inode      路径</span>
@@ -225,12 +226,12 @@ bfa15000-bfa36000 rw-p <span class="m">00000000</span> <span class="m">00</span>
 </ul>
 </div>
 <div class="section" id="struct-mm-struct">
-<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code><a class="headerlink" href="#struct-mm-struct" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code><a class="headerlink" href="#struct-mm-struct" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> 包含与进程关联的所有内存区域。<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">mm</span></code> 字段是一个指针，指向当前进程的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code>。</p>
 </div>
 </div>
 <div class="section" id="section-5">
-<h2>设备驱动程序的内存映射<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>设备驱动程序的内存映射<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>内存映射是 Unix 系统中最有趣的功能之一。从驱动程序的角度来看，内存映射机制允许直接访问用户空间设备的内存。</p>
 <p>要将 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 操作分配给驱动程序，必须实现设备驱动程序的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file_operations</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">mmap</span></code> 字段。如果这样做了，用户空间进程可以对与设备关联的文件描述符使用 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 系统调用。</p>
 <p>mmap 系统调用有以下参数：</p>
@@ -288,7 +289,7 @@ bfa15000-bfa36000 rw-p <span class="m">00000000</span> <span class="m">00</span>
 </pre></div>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p class="last">请注意，使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 分配的内存在物理上不连续，因此如果我们想要映射使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 分配的范围，我们必须逐个映射每个页面，并计算每个页面的物理地址。</p>
 </div>
 <p>由于这些页面被映射到的是用户空间，它们可能会被交换出去。为了避免这种情况，我们必须在页面上设置 PG_reserved 位。我们可以使用 <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 来启用它，也可以使用 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 来重置它（在释放内存之前必须执行此操作）：</p>
@@ -319,7 +320,7 @@ bfa15000-bfa36000 rw-p <span class="m">00000000</span> <span class="m">00</span>
 </div>
 </div>
 <div class="section" id="section-6">
-<h2>进一步阅读<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<h2>进一步阅读<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch15.pdf">Linux 设备驱动程序第 3 版——第 15 章 内存映射和 DMA</a></li>
 <li><a class="reference external" href="http://www.xml.com/ldd/chapter/book/ch13.html">Linux 设备驱动程序 mmap 骨架</a></li>
@@ -329,9 +330,9 @@ bfa15000-bfa36000 rw-p <span class="m">00000000</span> <span class="m">00</span>
 </ul>
 </div>
 <div class="section" id="section-7">
-<h2>练习<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -365,31 +366,31 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-7">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-8">
-<h3>1. 将连续的物理内存映射到用户空间<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>1. 将连续的物理内存映射到用户空间<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>实现一个设备驱动程序，将连续的物理内存（例如通过 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 获得的内存）映射到用户空间。</p>
 <p>查看 <a class="reference internal" href="#section-5">设备驱动程序的内存映射</a> 部分，生成名为 <strong>kmmap</strong> 的任务的框架，并填写标有 <strong>TODO 1</strong> 的区域。</p>
 <p>在模块初始化函数中，首先使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 分配一个 NPAGES+2 个页面的内存区域，并找到该区域中对齐到页边界的第一个地址。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>一个页面的大小为 <em>PAGE_SIZE</em>。</p>
 <p>将分配的区域存储在 <em>kmalloc_ptr</em> 中，将对齐的地址存储在 <em>kmalloc_area</em> 中：</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">PAGE_ALIGN()</span></code> 函数来确定 <em>kmalloc_area</em>。</p>
 </div>
 <p>使用 <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 将每个页面的 PG_reserved 位设置为启用状态。在释放内存之前，使用 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 清除该位。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">virt_to_page()</span></code> 将虚拟页转换为物理页, <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 所需的是物理页面。</p>
 </div>
 <p>为了验证目的（使用下面的测试），在每个页面的前 4 个字节中填入以下值：0xaa、0xbb、0xcc 以及 0xdd。</p>
 <p>实现 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 驱动程序函数。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>要想映射，使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>。<code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 的第三个参数是页帧号（PFN）。</p>
 <p>要从虚拟内核地址转换为物理地址，请使用 <code class="xref c c-func docutils literal"><span class="pre">virt_to_phys()</span></code>。</p>
 <p class="last">要将物理地址转换为其 PFN，请将地址右移 PAGE_SHIFT 位。</p>
@@ -401,27 +402,27 @@ tools/labs $ make boot
 <p>如果一切顺利，测试将显示“matched”消息。</p>
 </div>
 <div class="section" id="section-9">
-<h3>2. 将非连续的物理内存映射到用户空间<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<h3>2. 将非连续的物理内存映射到用户空间<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
 <p>实现一个设备驱动程序，将非连续的物理内存（例如通过 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 获得的内存）映射到用户空间。</p>
 <p>查看 <a class="reference internal" href="#section-5">设备驱动程序的内存映射</a> 部分，生成名为 <strong>vmmap</strong> 的任务的框架，并填写标有 <strong>TODO 1</strong> 的区域。</p>
 <p>使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 分配一个 NPAGES 大小的内存区域。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">一个页面的大小为 <em>PAGE_SIZE</em>。将分配的区域存储在 <em>vmalloc_area</em> 中。由 <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 分配的内存是按页对齐的。</p>
 </div>
 <p>使用 <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 将每个页面的 PG_reserved 位设置为启用状态。在释放内存之前，使用 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 清除该位。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc_to_page()</span></code> 将虚拟页转换为物理页，以供 <code class="xref c c-func docutils literal"><span class="pre">SetPageReserved()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">ClearPageReserved()</span></code> 函数使用。</p>
 </div>
 <p>为了验证目的（使用下面的测试），在每个页面的前 4 个字节中填入以下值：0xaa、0xbb、0xcc 以及 0xdd。</p>
 <p>实现 mmap 驱动程序函数。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">要将虚拟 vmalloc 地址转换为物理地址，使用 <code class="xref c c-func docutils literal"><span class="pre">vmalloc_to_pfn()</span></code> 直接返回 PFN。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>vmalloc 页面不是物理连续的，因此需要为每个页面单独使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>。</p>
 <p>遍历所有虚拟页面，并对于每个页面:
 * 确定物理地址
@@ -435,11 +436,11 @@ tools/labs $ make boot
 <p>如果一切顺利，测试将显示“matched”消息。</p>
 </div>
 <div class="section" id="section-10">
-<h3>3. 在映射内存中进行读写操作<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<h3>3. 在映射内存中进行读写操作<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <p>修改之前的模块之一，以允许在设备上进行读写操作。这是一个教学练习，可以看到相同的空间既可以使用 <code class="xref c c-func docutils literal"><span class="pre">mmap()</span></code> 调用，也可以使用 <code class="xref c c-func docutils literal"><span class="pre">read()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">write()</span></code> 调用。</p>
 <p>填写标有 <strong>TODO 2</strong> 的区域。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">读/写操作的偏移参数可以忽略，因为测试程序中的所有读/写操作偏移都是 0。</p>
 </div>
 <p>用于测试的方法是，加载内核模块并运行：</p>
@@ -448,17 +449,17 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="procfs">
-<h3>4. 在 procfs 中显示内存映射<a class="headerlink" href="#procfs" title="Permalink to this headline">¶</a></h3>
+<h3>4. 在 procfs 中显示内存映射<a class="headerlink" href="#procfs" title="永久链接至标题">¶</a></h3>
 <p>使用之前的模块之一，在其中创建一个 procfs 文件，显示调用进程映射的总内存。</p>
 <p>填写标有 <strong>TODO 3</strong> 的区域。</p>
 <p>在 procfs 中创建一个新条目 (<code class="xref c c-macro docutils literal"><span class="pre">PROC_ENTRY_NAME</span></code>, 在 <code class="file docutils literal"><span class="pre">mmap-test.h</span></code> 中定义)，该条目将显示调用 <code class="xref c c-func docutils literal"><span class="pre">read()</span></code> 的进程映射的总内存。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">proc_create()</span></code>。mode 参数使用 0，parent 参数使用 NULL。使用 <code class="xref c c-func docutils literal"><span class="pre">my_proc_file_ops()</span></code> 进行操作。</p>
 </div>
 <p>在模块退出函数中，使用 <code class="xref c c-func docutils literal"><span class="pre">remove_proc_entry()</span></code> 删除 <code class="xref c c-macro docutils literal"><span class="pre">PROC_ENTRY_NAME</span></code> 条目。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>可以在此 <a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x861.html">示例</a> 中找到 (复杂的) <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">seq_file</span></code> 接口的使用和说明。</p>
 <p class="last">对于这个练习，只需使用 <a class="reference external" href="http://lwn.net/Articles/22355/">这里</a> 描述的接口的简单用法即可。请查看那里描述的“extra-simple” API。</p>
 </div>
@@ -466,13 +467,13 @@ tools/labs $ make boot
 <ul>
 <li><p class="first">使用 <code class="xref c c-func docutils literal"><span class="pre">get_task_mm()</span></code> 函数获取当前进程的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> 结构。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">当前进程可以通过类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct*</span></code> 的 <em>current</em> 变量获得。</p>
 </div>
 </li>
 <li><p class="first">遍历与进程关联的整个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 列表。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用变量 <code class="xref c c-data docutils literal"><span class="pre">vma_iterator</span></code>，从 <code class="xref c c-data docutils literal"><span class="pre">mm-&gt;mmap</span></code> 开始。使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 的 <code class="xref c c-member docutils literal"><span class="pre">vm_next</span></code> 字段在内存区域列表中导航。直到达到 <code class="xref c c-macro docutils literal"><span class="pre">NULL</span></code> 时停止。</p>
 </div>
 </li>
@@ -487,7 +488,7 @@ tools/labs $ make boot
 </ul>
 <p>在 <code class="xref c c-func docutils literal"><span class="pre">my_seq_open()</span></code> 中，使用 <code class="xref c c-func docutils literal"><span class="pre">single_open()</span></code> 注册显示函数 (<code class="xref c c-func docutils literal"><span class="pre">my_seq_show()</span></code>)。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last"><code class="xref c c-func docutils literal"><span class="pre">single_open()</span></code> 可以使用 NULL 作为其第三个参数。</p>
 </div>
 <p>测试的方法是，加载内核模块并运行：</p>
@@ -495,7 +496,7 @@ tools/labs $ make boot
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">测试会等待一段时间（其中包含一个 sleep 指令）。只要测试在等待，就可以在另一个控制台中使用 :pmap 命令查看测试的映射，并将其与测试结果进行比较。</p>
 </div>
 </div>

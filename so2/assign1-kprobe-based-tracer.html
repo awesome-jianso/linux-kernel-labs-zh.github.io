@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Assignment 2 - Driver UART" href="assign2-driver-uart.html" />
     <link rel="prev" title="Assignment 0 - Kernel API" href="assign0-kernel-api.html" /> 
 </head>
@@ -174,12 +175,12 @@
            <div itemprop="articleBody">
              
   <div class="section" id="assignment-1-kprobe-based-tracer">
-<h1>Assignment 1 - Kprobe based tracer<a class="headerlink" href="#assignment-1-kprobe-based-tracer" title="Permalink to this headline">¶</a></h1>
+<h1>Assignment 1 - Kprobe based tracer<a class="headerlink" href="#assignment-1-kprobe-based-tracer" title="永久链接至标题">¶</a></h1>
 <ul class="simple">
 <li>Deadline: <strong class="command">Monday, 10 April 2023, 23:00</strong></li>
 </ul>
 <div class="section" id="assignment-s-objectives">
-<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="Permalink to this headline">¶</a></h2>
+<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li>gaining knowledge related to the instrumentation of functions in the Linux kernel (<code class="docutils literal"><span class="pre">kretprobes</span></code> mechanism)</li>
 <li>gaining knowledge regarding the <code class="docutils literal"><span class="pre">/proc</span></code> file system from the Linux kernel</li>
@@ -187,7 +188,7 @@
 </ul>
 </div>
 <div class="section" id="statement">
-<h2>Statement<a class="headerlink" href="#statement" title="Permalink to this headline">¶</a></h2>
+<h2>Statement<a class="headerlink" href="#statement" title="永久链接至标题">¶</a></h2>
 <p>Build a kernel operations surveillant.</p>
 <p>With this surveillant, we aim to intercept:</p>
 <ul class="simple">
@@ -201,7 +202,7 @@ For the <code class="docutils literal"><span class="pre">kmalloc</span></code> a
 shown.</p>
 <p>The surveillant will be implemented as a kernel module with the name <code class="docutils literal"><span class="pre">tracer.ko</span></code>.</p>
 <div class="section" id="implementation-details">
-<h3>Implementation details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h3>
+<h3>Implementation details<a class="headerlink" href="#implementation-details" title="永久链接至标题">¶</a></h3>
 <p>The interception will be done by recording a sample (<code class="docutils literal"><span class="pre">kretprobe</span></code>) for each of the above functions. The
 surveillant will retain a list/hashtable with the monitored processes and will account for
 the above information for these processes.</p>
@@ -265,21 +266,21 @@ displaying the contents of the entry is:</p>
 </div>
 </div>
 <div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="永久链接至标题">¶</a></h2>
 <p>In order to simplify the assignment evaluation process, but also to reduce the mistakes of the submitted assignments,
 the assignment evaluation will be done automatically with the help of a
 <a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/1-tracer/checker/_checker">test script</a> called <cite>_checker</cite>.
 The test script assumes that the kernel module is called <cite>tracer.ko</cite>.</p>
 </div>
 <div class="section" id="quickstart">
-<h2>QuickStart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<h2>QuickStart<a class="headerlink" href="#quickstart" title="永久链接至标题">¶</a></h2>
 <p>It is mandatory to start the implementation of the assignment from the code skeleton found in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer/-/tree/master/src">src</a> directory.
 There is only one header in the skeleton called <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer/-/blob/master/src/tracer.h">tracer.h</a>.
 You will provide the rest of the implementation. You can add as many <cite>*.c`</cite> sources and additional <cite>*.h`</cite> headers.
 You should also provide a Kbuild file that will compile the kernel module called <cite>tracer.ko</cite>.
 Follow the instructions in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer">assignment's repo</a>.</p>
 <div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h3>
+<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
 <p>To increase your chances of getting the highest grade, read and follow the Linux kernel
 coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
 <p>Also, use the following static analysis tools to verify the code:</p>
@@ -306,7 +307,7 @@ coding style described in the <a class="reference external" href="https://elixir
 </div>
 </div>
 <div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="Permalink to this headline">¶</a></h3>
+<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
 <p>Information about assigments penalties can be found on the
 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>. In addition, the following
 elements will be taken into account:</p>
@@ -318,14 +319,14 @@ elements will be taken into account:</p>
 and if the assigment does not pass all the tests, the grade may decrease more than mentioned above.</p>
 </div>
 <div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="Permalink to this headline">¶</a></h3>
+<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
 <p>The assignment will be graded automatically using the <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> infrastructure.
 The submission will be made on moodle on the <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">course's page</a> to the related assignment.
 You will find the submission details in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer">repo</a>.</p>
 </div>
 </div>
 <div class="section" id="resources">
-<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="https://www.kernel.org/doc/Documentation/kprobes.txt">Documentation/kprobes.txt</a> - description of the <code class="docutils literal"><span class="pre">kprobes</span></code> subsystem from Linux kernel sources.</li>
 <li><a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/samples/kprobes">samples/kprobes/</a> - some examples of using <code class="docutils literal"><span class="pre">kprobes</span></code> from Linux kernel sources.</li>
@@ -334,7 +335,7 @@ You will find the submission details in the <a class="reference external" href="
 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer/-/blob/master/README.md">README</a>.</p>
 </div>
 <div class="section" id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h2>
+<h2>Questions<a class="headerlink" href="#questions" title="永久链接至标题">¶</a></h2>
 <p>For questions about the topic, you can consult the mailing <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">list archives</a>
 or you can write a question on the dedicated Teams channel.</p>
 </div>

@@ -17,7 +17,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -28,9 +28,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="SO2 Lab 05 - Deferred work" href="lab5-deferred-work.html" />
     <link rel="prev" title="SO2 Lab 03 - Character device drivers" href="lab3-device-drivers.html" /> 
 </head>
@@ -198,9 +199,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="so2-lab-04-i-o-access-and-interrupts">
-<h1>SO2 Lab 04 - I/O access and Interrupts<a class="headerlink" href="#so2-lab-04-i-o-access-and-interrupts" title="Permalink to this headline">¶</a></h1>
+<h1>SO2 Lab 04 - I/O access and Interrupts<a class="headerlink" href="#so2-lab-04-i-o-access-and-interrupts" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-1">
-<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li>与外围设备进行通信</li>
 <li>实现中断处理程序</li>
@@ -209,7 +210,7 @@
 <p>关键词：IRQ，I/O 端口，I/O 地址，基地址，UART，request_region，release_region，inb，outb</p>
 </div>
 <div class="section" id="section-2">
-<h2>背景信息<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>背景信息<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <p>外围设备通过写入和读取其寄存器来进行控制。通常，设备具有多个寄存器，这些寄存器可以在内存地址空间或 I/O 地址空间的连续地址中访问。连接到 I/O 总线的每个设备都有一组 I/O 地址，称为 I/O 端口。I/O 端口可以映射到物理内存地址，以便处理器可以通过直接与内存交互的指令与设备进行通信。为了简化，我们将直接使用 I/O 端口（而不映射到物理内存地址）与物理设备进行通信。</p>
 <p>每个设备的 I/O 端口是由一组专用寄存器构成的，以提供统一的编程接口。因此，大多数设备都具有以下类型的寄存器：</p>
 <ul class="simple">
@@ -231,10 +232,10 @@
 </ol>
 </div>
 <div class="section" id="section-3">
-<h2>访问硬件<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>访问硬件<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>在 Linux 中，I/O 端口的访问在所有体系结构上都有实现，并且有几个可以使用的 API。</p>
 <div class="section" id="i-o">
-<h3>请求访问 I/O 端口<a class="headerlink" href="#i-o" title="Permalink to this headline">¶</a></h3>
+<h3>请求访问 I/O 端口<a class="headerlink" href="#i-o" title="永久链接至标题">¶</a></h3>
 <p>在访问 I/O 端口之前，我们首先必须请求访问权限，这是为了确保只同时有一个用户使用。为了做到这一点，我们必须使用 <code class="xref c c-func docutils literal"><span class="pre">request_region()</span></code> 函数：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/ioport.h&gt;</span><span class="cp"></span>
 
@@ -287,7 +288,7 @@
 </div>
 </div>
 <div class="section" id="i-o-1">
-<h3>访问 I/O 端口<a class="headerlink" href="#i-o-1" title="Permalink to this headline">¶</a></h3>
+<h3>访问 I/O 端口<a class="headerlink" href="#i-o-1" title="永久链接至标题">¶</a></h3>
 <p>在驱动程序获取所需的 I/O 端口范围之后，可以对这些端口进行读取或写入操作。由于物理端口根据位数（8 位、16 位或 32 位）进行区分，因此根据其大小有不同的端口访问函数。在 asm/io.h 中定义了以下端口访问函数：</p>
 <ul class="simple">
 <li><em>unsigned inb(int port)</em>，从端口读取一个字节（8 位）</li>
@@ -310,7 +311,7 @@
 </div>
 </div>
 <div class="section" id="i-o-2">
-<h3>5. 从用户空间访问 I/O 端口<a class="headerlink" href="#i-o-2" title="Permalink to this headline">¶</a></h3>
+<h3>5. 从用户空间访问 I/O 端口<a class="headerlink" href="#i-o-2" title="永久链接至标题">¶</a></h3>
 <p>虽然上述描述的函数是为设备驱动程序定义的，但也可以通过包含 &lt;sys/io.h&gt; 头文件在用户空间中使用。为了使用它们，首先必须调用 ioperm 或 iopl 以获得执行端口操作的权限。ioperm 函数获取单个端口的权限，而 iopl 获取整个 I/O 地址空间的权限。要使用这些功能，用户必须具有 root 权限。</p>
 <p>以下是在用户空间中使用的代码，用于获取串口的前 3 个端口的权限，然后释放它们：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;sys/io.h&gt;</span><span class="cp"></span>
@@ -329,9 +330,9 @@
 </div>
 </div>
 <div class="section" id="section-4">
-<h2>中断处理<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>中断处理<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <div class="section" id="section-5">
-<h3>请求中断<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
+<h3>请求中断<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
 <p>与其他资源一样，驱动程序在使用中断线之前必须获得对其的访问权限，并在执行结束时释放它。</p>
 <p>在 Linux 中，使用 <code class="xref c c-func docutils literal"><span class="pre">request_irq()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">free_irq()</span></code> 函数来请求和释放中断：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/interrupt.h&gt;</span><span class="cp"></span>
@@ -386,7 +387,7 @@
 </div>
 <p>如你所见，串口 COM1 的中断号是 4，在共享模式（IRQF_SHARED）下使用。</p>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p class="last">在请求共享中断（IRQF_SHARED）时，<em>dev_id</em> 参数不能为空。</p>
 </div>
 <p>要释放与串口关联的中断，需要执行以下操作：</p>
@@ -409,7 +410,7 @@
 </ol>
 </div>
 <div class="section" id="section-6">
-<h3>中断处理程序的实现<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
+<h3>中断处理程序的实现<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
 <p>让我们来看一下中断处理程序函数的签名：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">irqreturn_t</span> <span class="p">(</span><span class="o">*</span><span class="n">handler</span><span class="p">)(</span><span class="kt">int</span> <span class="n">irq_no</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">dev_id</span><span class="p">);</span>
 </pre></div>
@@ -433,7 +434,7 @@
 <p>通常，在中断处理程序中首先执行的操作，是确定中断是否由驱动程序所控制的设备触发的。这通常通过从设备的寄存器中读取信息来判断设备是否触发中断。其次，需要重置物理设备上的中断挂起位（interrupt pending bit），因为大多数设备在该位重置之前不会再触发中断（例如，对于 8250 串口，必须清除 IIR 寄存器中的第 0 位）。</p>
 </div>
 <div class="section" id="section-7">
-<h3>锁定<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<h3>锁定<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
 <p>因为中断处理程序在中断上下文中运行，所以可以执行的操作很有限：无法访问用户空间内存，不能调用阻塞函数。此外，使用自旋锁进行同步是很棘手的事，如果某个进程获取了自旋锁，之后被运行处理程序中断，则可能导致死锁。</p>
 <p>然而，设备驱动程序在某些情况下必须使用中断进行同步，例如当数据在中断处理程序和进程上下文或底半部处理程序之间共享时。在这些情况下，需要同时禁用中断和使用自旋锁。</p>
 <p>有两种禁用中断的方法：在处理器级别禁用所有中断，或在设备或中断控制器级别禁用特定中断。处理器禁用更快，因此更受推荐。为此，有一些锁定函数可以在同时获取和释放自旋锁的同时禁用和启用中断: <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_irqrestore()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irq()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_irq()</span></code>：</p>
@@ -505,12 +506,12 @@
 <p>上面的 <em>my_access</em> 函数在进程上下文中运行。为了同步对共享数据的访问，我们禁用中断并使用自旋锁 <em>lock</em>，即 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_irqrestore()</span></code> 函数。</p>
 <p>在中断处理例程中，我们使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> 函数来访问共享资源。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last"><code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_irqrestore()</span></code> 的 <em>flags</em> 参数是一个值而不是指针，但请记住 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 函数会更改标志的值，因为这实际上是一个宏。</p>
 </div>
 </div>
 <div class="section" id="section-8">
-<h3>中断统计<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>中断统计<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>关于系统中断的信息和统计数据可以在 <em>/proc/interrupts</em> 或 <em>/proc/stat</em> 中找到。只有具有关联中断处理程序的系统中断才会显示在 <em>/proc/interrupts</em> 中：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span><span class="c1"># cat /proc/interrupts</span>
                 CPU0
@@ -544,23 +545,23 @@ intr <span class="m">7765626</span> <span class="m">7754228</span> <span class="
 </div>
 </div>
 <div class="section" id="section-9">
-<h2>进一步阅读<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<h2>进一步阅读<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
 <div class="section" id="section-10">
-<h3>串口<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<h3>串口<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <ul class="simple">
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Serial_port">串口</a></li>
 <li><a class="reference external" href="http://www.beyondlogic.org/serial/serial.htm">串口/RS232 端口接口</a></li>
 </ul>
 </div>
 <div class="section" id="section-11">
-<h3>并行端口<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<h3>并行端口<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <ul class="simple">
 <li><a class="reference external" href="http://www.beyondlogic.org/spp/parallel.htm">标准并行端口接口</a></li>
 <li><a class="reference external" href="http://www.lvr.com/parport.htm">并行端口中心</a></li>
 </ul>
 </div>
 <div class="section" id="section-12">
-<h3>键盘控制器<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<h3>键盘控制器<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
 <ul class="simple">
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Intel_8042">Intel 8042</a></li>
 <li>drivers/input/serio/i8042.c</li>
@@ -568,7 +569,7 @@ intr <span class="m">7765626</span> <span class="m">7754228</span> <span class="
 </ul>
 </div>
 <div class="section" id="linux">
-<h3>Linux设备驱动程序<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<h3>Linux设备驱动程序<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h3>
 <ul class="simple">
 <li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch09.pdf">Linux 设备驱动程序，第 3 版，第 9 章——与硬件通信</a></li>
 <li><a class="reference external" href="http://lwn.net/images/pdf/LDD3/ch10.pdf">Linux 设备驱动程序，第 3 版，第 10 章——中断处理</a></li>
@@ -577,9 +578,9 @@ intr <span class="m">7765626</span> <span class="m">7754228</span> <span class="
 </div>
 </div>
 <div class="section" id="section-13">
-<h2>练习<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -613,13 +614,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-13">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-14">
-<h3>0. 简介<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<h3>0. 简介<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
 <p>使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a>，在 Linux 内核中查找以下符号的定义：</p>
 <ul class="simple">
 <li><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">resource</span></code></li>
@@ -634,16 +635,16 @@ tools/labs $ make boot
 </ul>
 </div>
 <div class="section" id="section-15">
-<h3>键盘驱动程序<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<h3>键盘驱动程序<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>下一个练习的目标是创建一个使用键盘 IRQ 的驱动程序，检查传入的按键代码并将其存储在缓冲区中。通过字符设备驱动程序，用户空间可以访问该缓冲区。</p>
 </div>
 <div class="section" id="i-o-3">
-<h3>1. 请求 I/O 端口<a class="headerlink" href="#i-o-3" title="Permalink to this headline">¶</a></h3>
+<h3>1. 请求 I/O 端口<a class="headerlink" href="#i-o-3" title="永久链接至标题">¶</a></h3>
 <p>首先，我们的目标是在 I/O 空间中为硬件设备分配内存。我们看到，我们无法为键盘分配空间，因为指定的区域已经被分配。然后，我们将为未使用的端口分配 I/O 空间。</p>
 <p><em>kbd.c</em> 文件中包含了键盘驱动程序的框架。浏览源代码并检查 <code class="xref c c-func docutils literal"><span class="pre">kbd_init()</span></code> 函数。注意我们需要的 I/O 端口是 I8042_STATUS_REG 和 I8042_DATA_REG。</p>
 <p>按照骨架中标有 <strong>TODO 1</strong> 的部分进行操作。在 <code class="xref c c-func docutils literal"><span class="pre">kbd_init()</span></code> 函数中请求 I/O 端口，并确保检查错误并在出现错误时进行适当的清理。在请求时，使用 <code class="docutils literal"><span class="pre">MODULE_NAME</span></code> 宏设置调用者的 ID 字符串（<code class="docutils literal"><span class="pre">name</span></code>）设置为该宏的值。此外，在 <code class="xref c c-func docutils literal"><span class="pre">kbd_exit()</span></code> 函数中添加代码以释放 I/O 端口。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">在继续之前，你可以回顾一下 <a class="reference internal" href="#i-o">请求访问 I/O 端口</a> 部分。</p>
 </div>
 <p>现在构建模块并将其复制到虚拟机镜像中：</p>
@@ -692,29 +693,29 @@ root@qemux86:~#
 </div>
 </div>
 <div class="section" id="section-16">
-<h3>2. 中断处理例程<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h3>
+<h3>2. 中断处理例程<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h3>
 <p>对于这个任务，我们将实现并注册一个键盘中断的中断处理例程。在继续之前，你可以先回顾一下 <a class="reference internal" href="#section-5">请求中断</a> 一节。</p>
 <p>请按照骨架中标有 <strong>TODO 2</strong> 的部分进行操作。</p>
 <p>首先，定义一个名为 <code class="xref c c-func docutils literal"><span class="pre">kbd_interrupt_handler()</span></code> 的空中断处理例程。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">由于我们已经有一个使用该中断的驱动程序，我们应该将中断报告为未处理（即返回 <code class="xref c c-type docutils literal"><span class="pre">IRQ_NONE</span></code>），以便原始驱动程序仍有机会进行处理。</p>
 </div>
 <p>然后，使用 <code class="xref c c-type docutils literal"><span class="pre">request_irq</span></code> 注册中断处理例程。中断号由 <cite>I8042_KBD_IRQ</cite> 宏定义。中断处理例程必须使用 <code class="xref c c-type docutils literal"><span class="pre">IRQF_SHARED</span></code> 进行请求，以与键盘驱动程序（i8042）共享中断线。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>对于共享中断, <em>dev_id</em> 不能为 NULL。请使用 <code class="docutils literal"><span class="pre">&amp;devs[0]</span></code>，即 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kbd</span></code> 的指针。此结构包含了设备管理所需的所有信息。为了在 <em>/proc/interrupts</em> 中看到该中断，请不要使用 NULL 作为 <em>dev_name</em> 。你可以使用 MODULE_NAME 宏。</p>
 <p class="last">如果中断请求失败，请确保通过跳转到正确的标签（label）来进行适当的清理，即释放 I/O 端口并注销字符设备驱动程序。</p>
 </div>
 <p>编译、复制并加载模块到内核中。通过查看 <em>/proc/interrupts</em>，检查中断线是否已注册。从源代码中确定 IRQ 号码（参见 <cite>I8042_KBD_IRQ</cite>）并验证该中断线上有两个注册的驱动程序（这表示我们有一个共享中断线）：i8042 初始驱动程序和我们的驱动程序。</p>
 <p>在例程内部打印一条消息，以确保它被调用。将模块编译并重新加载到内核中。使用 <strong class="command">dmesg</strong> 检查在虚拟机上按键时是否调用了中断处理例程。还要注意，当使用串口时不会触发键盘中断。</p>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p class="last">要访问虚拟机上的键盘，请使用“QEMU_DISPLAY=gtk make boot”启动。</p>
 </div>
 </div>
 <div class="section" id="ascii">
-<h3>3. 将 ASCII 键存储到缓冲区<a class="headerlink" href="#ascii" title="Permalink to this headline">¶</a></h3>
+<h3>3. 将 ASCII 键存储到缓冲区<a class="headerlink" href="#ascii" title="永久链接至标题">¶</a></h3>
 <p>接下来，我们希望收集按键的输入到缓冲区里，并将其内容发送到用户空间。为此，我们将在中断处理中添加以下内容：</p>
 <ul class="simple">
 <li>捕获按下的键（只捕获按下的键，忽略释放的键）</li>
@@ -723,10 +724,10 @@ root@qemux86:~#
 </ul>
 <p>请按照骨架中标记为 <strong>TODO 3</strong> 的部分进行操作。</p>
 <div class="section" id="section-17">
-<h4>读取数据寄存器<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h4>
+<h4>读取数据寄存器<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h4>
 <p>首先，填写 <code class="xref c c-func docutils literal"><span class="pre">i8042_read_data()</span></code> 函数，以读取键盘控制器的 <code class="docutils literal"><span class="pre">I8042_DATA_REG</span></code> 寄存器。该函数只需要返回寄存器的值。寄存器的值也称为扫描码（scancode），它在每次按键时生成。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">inb()</span></code> 读取 <code class="docutils literal"><span class="pre">I8042_DATA_REG</span></code> 寄存器，并将值存储在局部变量 <code class="xref c c-type docutils literal"><span class="pre">val</span></code> 中。请参阅 <a class="reference internal" href="#i-o-1">访问 I/O 端口</a> 部分。</p>
 </div>
 <p>在 <code class="xref c c-func docutils literal"><span class="pre">kbd_interrupt_handler()</span></code> 中调用 <code class="xref c c-func docutils literal"><span class="pre">i8042_read_data()</span></code> 并打印读取的值。</p>
@@ -739,10 +740,10 @@ root@qemux86:~#
 <p>请注意，扫描码（读取的寄存器的值）不是按下键的 ASCII 字符。我们需要理解扫描码。</p>
 </div>
 <div class="section" id="section-18">
-<h4>解释扫描码<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h4>
+<h4>解释扫描码<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h4>
 <p>请注意，寄存器值是扫描码，而不是按下的字符的 ASCII 值。还要注意，中断在按键按下和释放时都会发送。我们只需要在按键按下时获取扫描码，然后解码 ASCII 字符。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>要检查扫描码，可以使用 showkey 命令（showkey -s）。</p>
 <p>命令将在按下键后显示 10 秒钟的键扫描码，然后停止。如果按下并释放一个键，你将获得两个扫描码：一个对应按下的键，一个对应释放的键。例如：</p>
 <ul class="last">
@@ -810,11 +811,11 @@ root@qemux86:~#
 </div>
 <p>在中断处理程序中，先检查扫描码以确定按键是按下还是释放，然后确定相应的 ASCII 字符。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">要检查按下/释放，请使用 <code class="xref c c-func docutils literal"><span class="pre">is_key_press()</span></code> 函数。使用 <code class="xref c c-func docutils literal"><span class="pre">get_ascii()</span></code> 函数获取相应的 ASCII 码。这两个函数都以扫描码作为参数。</p>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>要显示接收到的信息，请使用以下格式。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">pr_info</span><span class="p">(</span><span class="s">&quot;IRQ %d: scancode=0x%x (%u) pressed=%d ch=%c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
         <span class="n">irq_no</span><span class="p">,</span> <span class="n">scancode</span><span class="p">,</span> <span class="n">scancode</span><span class="p">,</span> <span class="n">pressed</span><span class="p">,</span> <span class="n">ch</span><span class="p">);</span>
@@ -824,11 +825,11 @@ root@qemux86:~#
 </div>
 </div>
 <div class="section" id="section-19">
-<h4>将字符存储到缓冲区<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h4>
+<h4>将字符存储到缓冲区<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h4>
 <p>我们希望将按下的字符（而不是其他键）收集到一个循环缓冲区（circular buffer）中，以便可以从用户空间中使用。</p>
 <p>更新中断处理程序，将按下的 ASCII 字符添加到设备缓冲区的末尾。如果缓冲区已满，则将丢弃该字符。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p>设备缓冲区是设备的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kbd</span></code> 中的字段 <code class="xref c c-type docutils literal"><span class="pre">buf</span></code>。要从中断处理程序中获取设备数据，请使用以下结构：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">kbd</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">kbd</span> <span class="o">*</span><span class="p">)</span> <span class="n">dev_id</span><span class="p">;</span>
 </pre></div>
@@ -836,7 +837,7 @@ root@qemux86:~#
 <p class="last">缓冲区的大小位于 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kbd</span></code> 的字段 <code class="xref c c-type docutils literal"><span class="pre">count</span></code> 中。<code class="xref c c-type docutils literal"><span class="pre">put_idx</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">get_idx</span></code> 字段指定下一个写入和读取的索引。查看 <code class="xref c c-func docutils literal"><span class="pre">put_char()</span></code> 函数的实现，了解数据是如何添加到循环缓冲区中的。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>使用自旋锁对缓冲区和辅助索引进行同步访问。在设备结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kbd</span></code> 中定义自旋锁，并在 <code class="xref c c-func docutils literal"><span class="pre">kbd_init()</span></code> 中进行初始化。</p>
 <p>使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> 函数来保护中断处理程序中的缓冲区。</p>
 <p class="last">请参阅 <a class="reference internal" href="#section-7">锁定</a> 小节。</p>
@@ -844,22 +845,22 @@ root@qemux86:~#
 </div>
 </div>
 <div class="section" id="section-20">
-<h3>4. 读取缓冲区<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h3>
+<h3>4. 读取缓冲区<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h3>
 <p>为了访问键盘记录器的数据，我们需要将其发送到用户空间。我们将使用 <em>/dev/kbd</em> 字符设备来实现这一点。当从该设备读取数据时，我们将从内核空间的缓冲区中获取按键数据。</p>
 <p>在这一步中，请按照 <code class="xref c c-func docutils literal"><span class="pre">kbd_read()</span></code> 函数中标有 <strong>TODO 4</strong> 的部分进行操作。</p>
 <p><code class="xref c c-func docutils literal"><span class="pre">get_char()</span></code> 的实现类似于 <code class="xref c c-func docutils literal"><span class="pre">put_char()</span></code> 。在实现循环缓冲区时要小心。</p>
 <p>在 <code class="xref c c-func docutils literal"><span class="pre">kbd_read()</span></code> 函数中，将数据从缓冲区复制到用户空间缓冲区。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="xref c c-func docutils literal"><span class="pre">get_char()</span></code> 从缓冲区中读取一个字符，并使用 <code class="xref c c-func docutils literal"><span class="pre">put_user()</span></code> 将其存储到用户缓冲区中。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>在读取函数中，使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_irqrestore()</span></code> 进行加锁。</p>
 <p class="last">请参阅 <a class="reference internal" href="#section-7">锁定</a> 部分。</p>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>我们不能在持有锁的情况下使用 <code class="xref c c-func docutils literal"><span class="pre">put_user()</span></code> 或 <code class="xref c c-func docutils literal"><span class="pre">copy_to_user()</span></code>，因为在原子上下文中不允许访问用户空间。</p>
 <p class="last">有关更多信息，请阅读前面实验中的 <span class="xref std std-ref">访问进程地址空间</span>。</p>
 </div>
@@ -873,11 +874,11 @@ root@qemux86:~#
 </div>
 </div>
 <div class="section" id="section-21">
-<h3>5. 重置缓冲区<a class="headerlink" href="#section-21" title="Permalink to this headline">¶</a></h3>
+<h3>5. 重置缓冲区<a class="headerlink" href="#section-21" title="永久链接至标题">¶</a></h3>
 <p>如果对设备进行写操作，则重置缓冲区。在这一步中，请按照骨架中标有 <strong>TODO 5</strong> 的部分进行操作。</p>
 <p>实现 <code class="xref c c-func docutils literal"><span class="pre">reset_buffer()</span></code> 并将写操作添加到 <em>kbd_fops</em> 中。</p>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>在写函数中，当重置缓冲区时，请使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_irqrestore()</span></code> 进行加锁。</p>
 <p class="last">请参阅 <a class="reference internal" href="#section-7">锁定</a> 部分。</p>
 </div>
@@ -893,12 +894,12 @@ root@qemux86:~#
 </div>
 </div>
 <div class="section" id="section-22">
-<h2>额外练习<a class="headerlink" href="#section-22" title="Permalink to this headline">¶</a></h2>
+<h2>额外练习<a class="headerlink" href="#section-22" title="永久链接至标题">¶</a></h2>
 <div class="section" id="kfifo">
-<h3>1. kfifo<a class="headerlink" href="#kfifo" title="Permalink to this headline">¶</a></h3>
+<h3>1. kfifo<a class="headerlink" href="#kfifo" title="永久链接至标题">¶</a></h3>
 <p>使用 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.15/source/include/linux/kfifo.h">kfifo API</a> 实现一个键盘记录器。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">参考内核代码中的 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.15/source/samples/kfifo">API 调用示例</a>。例如，文件 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.15/source/samples/kfifo/bytestream-example.c">bytestream-examples.c</a>。</p>
 </div>
 </div>

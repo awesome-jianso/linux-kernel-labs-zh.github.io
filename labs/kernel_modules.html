@@ -16,7 +16,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -27,9 +27,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="内核 API" href="kernel_api.html" />
     <link rel="prev" title="介绍" href="introduction.html" /> 
 </head>
@@ -165,9 +166,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>内核模块<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>内核模块<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-2">
-<h2>实验目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li>创建简单的模块</li>
 <li>描述内核模块编译的过程</li>
@@ -176,12 +177,12 @@
 </ul>
 </div>
 <div class="section" id="section-3">
-<h2>内核模块概述<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>内核模块概述<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>虽然单体内核比微内核更快，但缺乏模块化和可扩展性。在现代单体内核中，这个问题已经通过使用内核模块来解决。内核模块（或可加载内核模式）是一个包含代码的目标文件（object file），它可以在运行时扩展内核的功能（根据需要加载）；当不需要内核模块时，可以卸载它。大多数设备驱动程序以内核模块的形式使用。</p>
 <p>为了开发 Linux 设备驱动程序，建议下载内核源代码，配置和编译它们，然后将编译后的版本安装在测试/开发工具机上。</p>
 </div>
 <div class="section" id="section-4">
-<h2>内核模块示例<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<h2>内核模块示例<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
 <p>以下是一个非常简单的内核模块示例。当加载到内核中时，它会生成消息 <code class="code docutils literal"><span class="pre">&quot;Hi&quot;</span></code>。当卸载内核模块时，将生成消息 <code class="code docutils literal"><span class="pre">&quot;Bye&quot;</span></code>。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/kernel.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/init.h&gt;</span><span class="cp"></span>
@@ -218,7 +219,7 @@ Bye
 </div>
 </div>
 <div class="section" id="section-5">
-<h2>编译内核模块<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<h2>编译内核模块<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <p>编译内核模块与编译用户程序不同。首先，需要使用另外的头文件。此外，模块不应链接到库。最重要的是，模块必须使用与加载模块的内核相同的选项进行编译。出于这些原因，有一种标准的编译方法（kbuild）。该方法需要使用两个文件： <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件和 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件。</p>
 <p>以下是 <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件的示例：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">KDIR</span> <span class="o">=</span> /lib/modules/<span class="sb">`</span>uname -r<span class="sb">`</span>/build
@@ -238,7 +239,7 @@ obj-m        <span class="o">=</span> modul.o
 </div>
 <p>正如你所见，在示例中调用 <strong class="command">make</strong> 命令对 <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件进行编译将导致在内核源代码目录（<code class="docutils literal"><span class="pre">/lib/modules/`uname</span> <span class="pre">-r`/build</span></code>）中调用 <strong class="command">make</strong> 并引用当前目录（<code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">`pwd</span></code>）。该过程最终会读取当前目录中的 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件，并按照该文件中的指示编译模块。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>对于实验，我们将根据虚拟机的规格配置不同的 <strong class="command">KDIR</strong>：</p>
 <div class="last highlight-bash"><div class="highlight"><pre><span></span><span class="nv">KDIR</span> <span class="o">=</span> /home/student/src/linux
 <span class="o">[</span>...<span class="o">]</span>
@@ -270,13 +271,13 @@ supermodule-y <span class="o">=</span> module-a.o module-b.o
 </ul>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">这些后缀使得可以通过运行 <strong class="command">make menuconfig</strong> 命令或直接编辑 <code class="file docutils literal"><span class="pre">.config</span></code> 文件来轻松配置内核。该文件设置了一系列变量，用于确定在构建时向内核添加哪些特性。例如，使用 <strong class="command">make menuconfig</strong> 命令添加 BTRFS 支持时，在 <code class="file docutils literal"><span class="pre">.config</span></code> 文件中添加行 <code class="code docutils literal"><span class="pre">CONFIG_BTRFS_FS</span> <span class="pre">=</span> <span class="pre">y</span></code>。BTRFS kbuild 包含了一行 <code class="docutils literal"><span class="pre">obj-$(CONFIG_BTRFS_FS):=</span> <span class="pre">btrfs.o</span></code>，它会转变成 <code class="docutils literal"><span class="pre">obj-y:=</span> <span class="pre">btrfs.o</span></code>。这将编译 <code class="file docutils literal"><span class="pre">btrfs.o</span></code> 对象，并将其链接到内核。如果没有设置变量，该行会转变成 <code class="docutils literal"><span class="pre">obj:=btrfs.o</span></code>，然后被忽略，进而内核构建时不会包含 BTRFS 支持。</p>
 </div>
 <p>要了解更多详细信息，请参阅内核源代码中的 <code class="file docutils literal"><span class="pre">Documentation/kbuild/makefiles.txt</span></code> 和 <code class="file docutils literal"><span class="pre">Documentation/kbuild/modules.txt</span></code> 文件。</p>
 </div>
 <div class="section" id="section-6">
-<h2>加载/卸载内核模块<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<h2>加载/卸载内核模块<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
 <p>要加载内核模块，请使用 <strong class="command">insmod</strong> 程序。该程序接收用于编译和链接模块的 <code class="file docutils literal"><span class="pre">*.ko</span></code> 文件的路径作为参数。要从内核中卸载模块请使用 <strong class="command">rmmod</strong> 命令，该命令接收模块名称作为参数。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ insmod module.ko
 $ rmmod module.ko
@@ -318,7 +319,7 @@ Bye
 <p>可以使用 <strong class="command">lsmod</strong> 命令或查看 <code class="file docutils literal"><span class="pre">/proc/modules</span></code> 、 <code class="file docutils literal"><span class="pre">/sys/module</span></code> 目录来获取有关加载到内核中的模块的信息。</p>
 </div>
 <div class="section" id="section-7">
-<h2>内核模块调试<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<h2>内核模块调试<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
 <p>与调试常规程序相比，调试内核模块要复杂得多。首先，内核模块中的错误可能导致整个系统阻塞。因此，故障排除的速度会大大降低。为了避免重新启动，建议使用虚拟机（qemu、virtualbox 或者 vmware）。</p>
 <p>当插入包含错误的模块到内核中时，它最终会生成一个 <a class="reference external" href="https://zh.wikipedia.org/wiki/Oops_(Linux内核)">内核 oops</a> 。内核 oops 是内核检测到的无效操作，只可能由内核生成。对于稳定的内核版本，这几乎可以肯定意味着模块含有错误。在 oops 出现后，内核仍将继续工作。</p>
 <p>出现内核 oops 时，保存生成的消息非常重要。如上所述，内核生成的消息保存在日志中，并可使用 <strong class="command">dmesg</strong> 命令显示。为了确保不丢失任何内核消息，建议直接从控制台插入/测试内核，或定期检查内核消息。值得注意的是，oops 不止可能是由于编程错误，也有可能是硬件错误引起的。</p>
@@ -460,7 +461,7 @@ EIP: <span class="o">[</span>&lt;c89c3016&gt;<span class="o">]</span> my_oops_in
 </pre></div>
 </div>
 <div class="section" id="objdump">
-<h3>objdump<a class="headerlink" href="#objdump" title="Permalink to this headline">¶</a></h3>
+<h3>objdump<a class="headerlink" href="#objdump" title="永久链接至标题">¶</a></h3>
 <p>可以使用 <strong class="command">objdump</strong> 程序找到造成 oops 的指令（instruction）的详细信息。常用的选项有 <strong class="command">-d</strong> 用于反汇编代码， <strong class="command">-S</strong> 用于将 C 代码与汇编语言代码交错显示。然而，为了进行高效的解码，我们需要找到内核模块被加载到的地址。这可以在 <code class="file docutils literal"><span class="pre">/proc/modules</span></code> 中找到。</p>
 <p>以下是在上述模块上使用 <strong class="command">objdump</strong> 的示例，以确定造成 oops 的指令：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>faust:~/lab-01/modul-oops# cat /proc/modules
@@ -551,7 +552,7 @@ c89d4027:       <span class="m">90</span>                      nop
 <p><code class="file docutils literal"><span class="pre">/proc/modules</span></code> 用于查找加载的内核模块的地址。<strong class="command">--adjust-vma</strong> 选项允许你相对于 <code class="docutils literal"><span class="pre">0xc89d4000</span></code> 位置显示指令。<strong class="command">-l</strong> 选项将显示源代码中每行的编号，源代码与汇编语言代码交错显示。</p>
 </div>
 <div class="section" id="addr2line">
-<h3>addr2line<a class="headerlink" href="#addr2line" title="Permalink to this headline">¶</a></h3>
+<h3>addr2line<a class="headerlink" href="#addr2line" title="永久链接至标题">¶</a></h3>
 <p>寻找造成 oops 的代码的一种更简单的方法是使用 <strong class="command">addr2line</strong> 实用程序：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>faust:~/lab-01/modul-oops# addr2line -e oops.o 0x5
 /root/lab-01/modul-oops/oops.c:23
@@ -560,7 +561,7 @@ c89d4027:       <span class="m">90</span>                      nop
 <p>其中``0x5``是生成 oops 的程序计数器的值（<code class="docutils literal"><span class="pre">EIP</span> <span class="pre">=</span> <span class="pre">c89d4005</span></code>），减去根据 <code class="file docutils literal"><span class="pre">/proc/modules</span></code> 的信息得出的模块的基地址（<code class="docutils literal"><span class="pre">0xc89d4000</span></code>），。</p>
 </div>
 <div class="section" id="minicom">
-<h3>minicom<a class="headerlink" href="#minicom" title="Permalink to this headline">¶</a></h3>
+<h3>minicom<a class="headerlink" href="#minicom" title="永久链接至标题">¶</a></h3>
 <p><strong class="command">Minicom`（或其他等效程序，例如 :command:`picocom</strong> 以及 <strong class="command">screen</strong> ）是一种用于与串行端口（serial port）连接和交互的程序。串行端口是在开发阶段分析内核消息（kernel message）或与嵌入式系统进行交互的基本方法。有两种常见的连接方式：</p>
 <ul class="simple">
 <li>使用串行端口，设备路径为 <code class="file docutils literal"><span class="pre">/dev/ttyS0</span></code></li>
@@ -583,7 +584,7 @@ minicom -D /dev/pts/20
 </div>
 </div>
 <div class="section" id="netconsole">
-<h3>netconsole<a class="headerlink" href="#netconsole" title="Permalink to this headline">¶</a></h3>
+<h3>netconsole<a class="headerlink" href="#netconsole" title="永久链接至标题">¶</a></h3>
 <p><strong class="command">Netconsole</strong> 是允许通过网络记录内核调试消息的程序。当磁盘日志系统不起作用、串行端口不可用或终端不响应命令时，这非常有用。<strong class="command">Netconsole</strong> 是内核模块。</p>
 <p>要想正常工作，它需要以下参数：</p>
 <blockquote>
@@ -605,7 +606,7 @@ minicom -D /dev/pts/20
 <p>或者，目标站点可以配置 <strong class="command">syslogd</strong> 来拦截这些消息。更多信息可以在 <code class="file docutils literal"><span class="pre">Documentation/networking/netconsole.txt</span></code> 中找到。</p>
 </div>
 <div class="section" id="printk">
-<h3>Printk 调试<a class="headerlink" href="#printk" title="Permalink to this headline">¶</a></h3>
+<h3>Printk 调试<a class="headerlink" href="#printk" title="永久链接至标题">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">最古老且最有用的两种调试辅助工具是你的大脑和</span> <span class="pre">Printf</span></code>。</p>
 <p>在调试过程中，通常会使用一种原始但非常有效的方法：<code class="code docutils literal"><span class="pre">printk</span></code> 调试。尽管也可以使用调试器，但通常并不是非常有用：简单的错误（未初始化的变量、内存管理问题等）可以通过控制消息和内核解码的 oops 消息轻松找到。</p>
 <p>对于更复杂的错误，即使是调试器也无法提供太多帮助，除非你对操作系统的结构非常熟悉。在调试内核模块时，其中存在许多未知因素：多个上下文（我们同时运行多个进程和线程）、中断以及虚拟内存等等。</p>
@@ -622,7 +623,7 @@ KERN_DEBUG——n = 7
 </div>
 <p>所有日志级别的定义都可以在 <code class="file docutils literal"><span class="pre">linux/kern_levels.h</span></code> 中找到。基本上，系统凭借这些日志级别将消息发送到各种输出：控制台、位于 <code class="file docutils literal"><span class="pre">/var/log</span></code> 中的日志文件等等。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">要在用户空间显示 <code class="code docutils literal"><span class="pre">printk</span></code> 消息，<code class="code docutils literal"><span class="pre">printk</span></code> 日志级别必须比 <cite>console_loglevel</cite> 变量的优先级高。可以从 <code class="file docutils literal"><span class="pre">/proc/sys/kernel/printk</span></code> 配置默认的控制台日志级别。</p>
 </div>
 <p>例如，以下命令：</p>
@@ -651,7 +652,7 @@ $ <span class="nb">echo</span> <span class="s2">&quot;新调试会话&quot;</spa
 </ul>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last"><code class="code docutils literal"><span class="pre">__FILE__</span></code> 和 <code class="code docutils literal"><span class="pre">__LINE__</span></code> 是 ANSI C 规范的一部分，<code class="code docutils literal"><span class="pre">__func__</span></code> 是 C99 规范的一部分；<code class="code docutils literal"><span class="pre">__FUNCTION__</span></code> 是 GNU 的一个 C 扩展，不具有可移植性；然而，由于我们编写的代码是针对 Linux 内核的，所以可以毫无问题地使用它们。</p>
 </div>
 <p>可以在这种情况下使用以下宏定义：</p>
@@ -672,7 +673,7 @@ $ <span class="nb">echo</span> <span class="s2">&quot;新调试会话&quot;</spa
 </div>
 </div>
 <div class="section" id="section-8">
-<h3>动态调试<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>动态调试<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>动态调试（ <a class="reference external" href="https://www.kernel.org/doc/html/v4.15/admin-guide/dynamic-debug-howto.html">dyndbg</a> ）技术可以动态地激活/停用调试。与 <code class="code docutils literal"><span class="pre">printk</span></code> 不同，它提供了更高级的 <code class="code docutils literal"><span class="pre">printk</span></code> 选项，可以用于仅显示我们想要的消息；其对于复杂模块或故障排除子系统非常有用。这显著减少了显示的消息数量，只留下与调试上下文相关的消息。要启用 <code class="docutils literal"><span class="pre">dyndbg</span></code> ，内核必须编译时启用 <code class="docutils literal"><span class="pre">CONFIG_DYNAMIC_DEBUG</span></code> 选项。一旦配置了这个选项，就可以每次调用时动态启用 <code class="code docutils literal"><span class="pre">pr_debug()</span></code> 、 <code class="code docutils literal"><span class="pre">dev_dbg()</span></code> 和 <code class="code docutils literal"><span class="pre">print_hex_dump_debug()</span></code> 、 <code class="code docutils literal"><span class="pre">print_hex_dump_bytes()</span></code>。</p>
 <p>debugfs 中的 <code class="file docutils literal"><span class="pre">/sys/kernel/debug/dynamic_debug/control</span></code> 文件可以用于过滤消息或查看现有过滤器。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">debugfs</span> <span class="n">none</span> <span class="o">/</span><span class="n">debug</span>
@@ -689,7 +690,7 @@ $ <span class="nb">echo</span> <span class="s2">&quot;新调试会话&quot;</spa
 </div>
 <p><code class="file docutils literal"><span class="pre">/debug/dynamic_debug/control</span></code> 文件不是普通文件。它显示了过滤器的 <code class="docutils literal"><span class="pre">dyndbg</span></code> 设置。使用 echo 在其中写入会更改这些设置（实际上不会进行写入）。请注意，该文件包含了 <code class="docutils literal"><span class="pre">dyndbg</span></code> 调试消息的设置。不要在该文件中进行日志记录。</p>
 <div class="section" id="dyndbg-1">
-<h4>Dyndbg 选项<a class="headerlink" href="#dyndbg-1" title="Permalink to this headline">¶</a></h4>
+<h4>Dyndbg 选项<a class="headerlink" href="#dyndbg-1" title="永久链接至标题">¶</a></h4>
 <ul>
 <li><p class="first"><code class="docutils literal"><span class="pre">func</span></code> ——只显示与过滤器中定义的函数名称相同的函数的调试消息。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;func svc_tcp_accept +p&#39;</span> &gt; /debug/dynamic_debug/control
@@ -736,7 +737,7 @@ $ <span class="nb">echo</span> <span class="s1">&#39;file svcsock.c line -1605 +
 </div>
 </div>
 <div class="section" id="kdb">
-<h3>KDB：内核调试器<a class="headerlink" href="#kdb" title="Permalink to this headline">¶</a></h3>
+<h3>KDB：内核调试器<a class="headerlink" href="#kdb" title="永久链接至标题">¶</a></h3>
 <p>内核调试器已被证明在开发和调试过程中非常有用。其主要优势之一是可以进行实时调试。这使得我们能够实时监视对内存的访问，甚至在调试过程中修改内存。内核调试器从版本 2.6.26-rc1 开始，已集成到主线内核中。KDB 不是一个*源代码调试器*，但在进行完整分析时，可以与 gdb 和符号文件并行使用——请参见 <a class="reference internal" href="../so2/lab1-intro.html#gdb-intro"><span class="std std-ref">GDB调试部分</span></a></p>
 <p>要使用KDB，你有以下选项：</p>
 <blockquote>
@@ -778,9 +779,9 @@ kdb&gt; go
 </div>
 </div>
 <div class="section" id="section-9">
-<h2>练习<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
 <div class="admonition important" id="exercises-summary">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -814,13 +815,13 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-9">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="section" id="section-10">
-<h3>0. 引言<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<h3>0. 引言<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <p>使用 <strong class="command">cscope</strong> 或 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> 在 Linux 内核源代码中查找以下符号的定义：</p>
 <ul class="simple">
 <li><code class="xref c c-func docutils literal"><span class="pre">module_init()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">module_exit()</span></code><ul>
@@ -833,14 +834,14 @@ tools/labs $ make boot
 </li>
 </ul>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>如果使用 <strong class="command">cscope</strong> 时遇到问题，可能是数据库没有生成。要生成数据库，请在内核目录中使用以下命令：</p>
 <div class="last highlight-bash"><div class="highlight"><pre><span></span>make <span class="nv">ARCH</span><span class="o">=</span>x86 cscope
 </pre></div>
 </div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>在使用 <strong class="command">cscope</strong> 搜索结构时，只使用结构名（不包括 <code class="code docutils literal"><span class="pre">struct</span></code>）。所以，要搜索结构 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">module</span></code>，可以使用以下命令：</p>
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span>vim -t module
@@ -855,12 +856,12 @@ tools/labs $ make boot
 </div></blockquote>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">有关使用 <strong class="command">cscope</strong> 的更多信息，请阅读上一个实验的 <a class="reference internal" href="../so2/lab1-intro.html#cscope-intro"><span class="std std-ref">cscope 章节</span></a>。</p>
 </div>
 </div>
 <div class="section" id="section-11">
-<h3>1. 内核模块<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<h3>1. 内核模块<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <p>为了使用内核模块，我们将按照 <span class="xref std std-ref">上述</span> 步骤进行操作。</p>
 <p>首先在 <cite>tools/labs</cite> 目录下运行以下命令生成名为 <strong>1-2-test-mod</strong> 的任务骨架，然后构建并复制模块到虚拟机中。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nv">LABS</span><span class="o">=</span>kernel_modules make skels
@@ -870,7 +871,7 @@ $ make copy
 </div>
 <p>这些命令将构建并复制当前实验骨架中的所有模块。</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p class="last">在解决练习 3 之前，编译 <code class="docutils literal"><span class="pre">3-error-mod</span></code> 时会出现编译错误。为了避免此问题，删除 <code class="file docutils literal"><span class="pre">skels/kernel_modules/3-error-mod/</span></code> 目录，并从 <code class="docutils literal"><span class="pre">skels/Kbuild</span></code> 中删除相应的行。</p>
 </div>
 <p>使用 <strong class="command">make boot</strong> 启动虚拟机，使用 <cite>minicom -D serial.pts</cite> 连接到串行控制台，并执行以下任务：</p>
@@ -881,70 +882,70 @@ $ make copy
 <li>使用 <strong class="command">dmesg</strong> 命令查看加载/卸载内核模块时显示的消息。</li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">请阅读 <a class="reference internal" href="#section-6">加载/卸载内核模块</a> 部分。在卸载内核模块时，只需指定模块名称（不包括扩展名）。</p>
 </div>
 </div>
 <div class="section" id="printk-1">
-<h3>2. Printk<a class="headerlink" href="#printk-1" title="Permalink to this headline">¶</a></h3>
+<h3>2. Printk<a class="headerlink" href="#printk-1" title="永久链接至标题">¶</a></h3>
 <p>观察虚拟机控制台。为什么消息直接显示在虚拟机控制台上？</p>
 <p>配置系统，使消息不直接显示在串行控制台上，只能使用 <code class="docutils literal"><span class="pre">dmesg</span></code> 命令来查看。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">一种方法是通过将所需级别写入 <code class="docutils literal"><span class="pre">/proc/sys/kernel/printk</span></code> 来设置控制台日志级别。使用的值应小于模块源代码中用于打印消息的级别。</p>
 </div>
 <p>重新加载/卸载该模块。消息不应该打印到虚拟机控制台上，但是在运行 <code class="docutils literal"><span class="pre">dmesg</span></code> 命令时应该可见。</p>
 </div>
 <div class="section" id="section-12">
-<h3>3. 错误<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<h3>3. 错误<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
 <p>生成名为 <strong>3-error-mod</strong> 的任务的框架。编译源代码并得到相应的内核模块。</p>
 <p>为什么会出现编译错误？<a href="#system-message-2"><span class="problematic" id="problematic-2">**</span></a>提示：<a href="#system-message-3"><span class="problematic" id="problematic-3">**</span></a>这个模块与前一个模块有什么不同？</p>
 <p>修改该模块以解决这些错误的原因，然后编译和测试该模块。</p>
 </div>
 <div class="section" id="section-13">
-<h3>4. 子模块<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<h3>4. 子模块<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <p>查看 <code class="file docutils literal"><span class="pre">4-multi-mod/</span></code> 目录中的 C 源代码文件 <code class="docutils literal"><span class="pre">mod1.c</span></code> 和 <code class="docutils literal"><span class="pre">mod2.c</span></code>。模块 2 仅包含模块 1 使用的函数的定义。</p>
 <p>修改 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件，从这两个 C 源文件创建 <code class="docutils literal"><span class="pre">multi_mod.ko</span></code> 模块。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">阅读实验室中的 <a class="reference internal" href="#section-5">编译内核模块</a> 部分。</p>
 </div>
 <p>编译、复制、启动虚拟机、加载和卸载内核模块。确保消息在控制台上正确显示。</p>
 </div>
 <div class="section" id="oops-1">
-<h3>5. 内核 oops<a class="headerlink" href="#oops-1" title="Permalink to this headline">¶</a></h3>
+<h3>5. 内核 oops<a class="headerlink" href="#oops-1" title="永久链接至标题">¶</a></h3>
 <p>进入任务目录 <strong>5-oops-mod</strong> 并检查 C 源代码文件。注意问题将在哪里发生。在 Kbuild 文件中添加编译标记 <code class="docutils literal"><span class="pre">-g</span></code>。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">阅读实验中的 <a class="reference internal" href="#section-5">编译内核模块</a> 部分。</p>
 </div>
 <p>编译相应的模块并将其加载到内核中。识别 oops 出现的内存地址。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">阅读实验中的 <a href="#system-message-4"><span class="problematic" id="problematic-4">`调试`_</span></a> 部分。要识别地址，请遵循 oops 消息并提取指令指针 (<code class="docutils literal"><span class="pre">EIP</span></code>) 寄存器的值。</p>
 </div>
 <p>确定是哪条指令触发了 oops。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">使用 <code class="file docutils literal"><span class="pre">proc/modules</span></code> 信息获取内核模块的加载地址。在物理机上使用 objdump 和/或 addr2line。Objdump 需要编译时开启调试支持！请阅读实验中的 <a class="reference internal" href="#objdump">objdump</a> 和 <a class="reference internal" href="#addr2line">addr2line</a> 部分。</p>
 </div>
 <p>尝试卸载内核模块。请注意，该操作无法成功，因为自 oops 发生以来，内核模块内部仍然存在对内核的引用；在释放这些引用之前（在 oops 的情况下几乎不可能），模块无法卸载。</p>
 </div>
 <div class="section" id="section-14">
-<h3>6. 模块参数<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<h3>6. 模块参数<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
 <p>进入任务目录 <strong>6-cmd-mod</strong> 并检查 C 源代码文件 <code class="docutils literal"><span class="pre">cmd_mod.c</span></code>。编译并复制相关的模块，然后加载内核模块以查看 printk 消息。然后从内核中卸载该模块。</p>
 <p>在不修改源代码的情况下，加载内核模块以显示消息 <code class="docutils literal"><span class="pre">Early</span> <span class="pre">bird</span> <span class="pre">gets</span> <span class="pre">tired</span></code>。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">可以通过向模块传递参数来更改 str 变量。在 <a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x323.html">这里</a> 找到更多相关信息。</p>
 </div>
 <span class="target" id="proc-info"></span></div>
 <div class="section" id="section-15">
-<h3>7. 进程信息<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<h3>7. 进程信息<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>检查名为 <strong>7-list-proc</strong> 的任务的框架。添加代码来显示当前进程的进程 ID（ <code class="docutils literal"><span class="pre">PID</span></code> ）和可执行文件名。</p>
 <p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span></code> 的命令进行操作。在加载和卸载模块时，必须显示这些信息。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <ul class="last simple">
 <li>在Linux内核中，进程由 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 描述。使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/latest/source">LXR</a> 或 <code class="docutils literal"><span class="pre">cscope</span></code> 来查找 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 的定义。</li>
 <li>要找到包含可执行文件名的结构字段，请查找“executable”的注释。</li>
@@ -952,7 +953,7 @@ $ make copy
 </ul>
 </div>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">要使用 <code class="xref c c-macro docutils literal"><span class="pre">current</span></code>，你需要包含定义 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 的头文件，即 <code class="docutils literal"><span class="pre">linux/sched.h</span></code>。</p>
 </div>
 <p>编译、复制、启动虚拟机并加载模块。卸载内核模块。</p>
@@ -960,12 +961,12 @@ $ make copy
 </div>
 </div>
 <div class="section" id="extra-exercises">
-<h2>Extra Exercises<a class="headerlink" href="#extra-exercises" title="Permalink to this headline">¶</a></h2>
+<h2>Extra Exercises<a class="headerlink" href="#extra-exercises" title="永久链接至标题">¶</a></h2>
 </div>
 <div class="section" id="section-16">
-<h2>额外练习<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h2>
+<h2>额外练习<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h2>
 <div class="section" id="kdb-1">
-<h3>1. KDB<a class="headerlink" href="#kdb-1" title="Permalink to this headline">¶</a></h3>
+<h3>1. KDB<a class="headerlink" href="#kdb-1" title="永久链接至标题">¶</a></h3>
 <p>进入 <strong>8-kdb</strong> 目录。使用 <strong class="command">SysRq</strong> 命令通过串口激活 KDB 并进入 KDB 模式。使用 <strong class="command">minicom</strong> 连接到与 virtiocon0 相链接的伪终端，配置 KDB 使用 hvc0 串口：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">echo</span> hvc0 &gt; /sys/module/kgdboc/parameters/kgdboc
 </pre></div>
@@ -979,7 +980,7 @@ $ make copy
 <p>分析堆栈跟踪并确定导致错误的代码。我们如何从 KDB 中找到模块加载的地址？</p>
 <p>同时，在一个新窗口中使用 GDB 并根据 KDB 提供的信息查看代码。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">加载符号文件。使用 <strong class="command">info line</strong> 命令。</p>
 </div>
 <p>当写入 <code class="file docutils literal"><span class="pre">/proc/hello_kdb_break</span></code> 时，模块将递增 <code class="xref c c-data docutils literal"><span class="pre">kdb_write_address</span></code> 变量。进入 KDB 并设置每次对 <code class="xref c c-data docutils literal"><span class="pre">kdb_write_address</span></code> 变量进行写入访问的断点。返回内核以触发写入，使用以下命令：</p>
@@ -988,10 +989,10 @@ $ make copy
 </div>
 </div>
 <div class="section" id="ps">
-<h3>2. PS模块<a class="headerlink" href="#ps" title="Permalink to this headline">¶</a></h3>
+<h3>2. PS模块<a class="headerlink" href="#ps" title="永久链接至标题">¶</a></h3>
 <p>更新在 <span class="xref std std-ref">proc-info</span> 处创建的内核模块，以便在插入内核模块时显示有关系统中所有进程的信息，而不仅仅是当前进程的信息。然后，将获得的结果与 <strong class="command">ps</strong> 命令的输出进行比较。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <ul class="last simple">
 <li>系统中的进程以循环列表的形式组织。</li>
 <li><code class="xref c c-macro docutils literal"><span class="pre">for_each_...</span></code> 宏（例如 <code class="xref c c-macro docutils literal"><span class="pre">for_each_process</span></code>）在你希望遍历列表中的项目时非常有用。</li>
@@ -1000,10 +1001,10 @@ $ make copy
 </div>
 </div>
 <div class="section" id="section-17">
-<h3>3. 内存信息<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<h3>3. 内存信息<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h3>
 <p>创建一个内核模块，显示当前进程的虚拟内存区域；对于每个内存区域，它将显示起始地址和结束地址。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <ul class="last simple">
 <li>从现有的内核模块开始。</li>
 <li>研究结构 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>、<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code>。内存区域由类型为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> 的结构表示。</li>
@@ -1012,7 +1013,7 @@ $ make copy
 </div>
 </div>
 <div class="section" id="section-18">
-<h3>4. 动态调试<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h3>
+<h3>4. 动态调试<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h3>
 <p>进入 <strong>9-dyndbg</strong> 目录并编译 <code class="code docutils literal"><span class="pre">dyndbg.ko</span></code> 模块。</p>
 <p>熟悉挂载在 <code class="file docutils literal"><span class="pre">/debug</span></code> 中的 <code class="code docutils literal"><span class="pre">debugfs</span></code> 文件系统，并分析文件 <code class="file docutils literal"><span class="pre">/debug/dynamic_debug/control</span></code> 的内容。插入 <code class="code docutils literal"><span class="pre">dyndbg.ko</span></code> 模块并注意 <code class="file docutils literal"><span class="pre">dynamic_debug/control</span></code> 文件的新内容。</p>
 <p>在相应的文件中出现了什么额外内容？运行以下命令：</p>
@@ -1022,30 +1023,30 @@ $ make copy
 <p>配置 <strong class="command">dyndbg</strong>，以便在卸载模块时仅显示来自 <code class="xref c c-func docutils literal"><span class="pre">my_debug_func()</span></code> 的标记为“Important”的消息，本练习仅过滤掉 <code class="xref c c-func docutils literal"><span class="pre">pr_debug()</span></code> 调用；始终显示 <code class="xref c c-func docutils literal"><span class="pre">printk()</span></code> 调用。</p>
 <p>请指定两种过滤方式。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">阅读 <a href="#system-message-5"><span class="problematic" id="problematic-5">`Dynamic debugging`_</span></a> 部分并查看 <strong class="command">dyndbg</strong> 的选项（例如 <strong class="command">line</strong> 、<strong class="command">format</strong>）。</p>
 </div>
 <p>执行过滤操作并检查 <code class="file docutils literal"><span class="pre">dynamic_debug/control</span></code> 文件。发生了什么变化？如何知道哪些调用被激活了？</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">检查 <strong class="command">dyndbg</strong> 标志。卸载内核模块并观察日志消息。</p>
 </div>
 </div>
 <div class="section" id="section-19">
-<h3>5. 初始化期间的动态调试<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h3>
+<h3>5. 初始化期间的动态调试<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h3>
 <p>正如你注意到的那样，只有在插入模块后才能激活/过滤 <code class="xref c c-func docutils literal"><span class="pre">pr_debug()</span></code> 调用。在某些情况下，查看模块初始化期间的消息可能会很有帮助。可以通过使用一个名为 <strong class="command">dyndbg</strong> 的默认（伪）参数作为初始化模块的参数来实现。使用此参数，你可以添加/删除 <strong class="command">dyndbg</strong> 标志。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">阅读 <a href="#system-message-6"><span class="problematic" id="problematic-6">`Dynamic debugging`_</span></a> 部分的最后一部分，查看可用的标志（例如： <strong class="command">+/- p</strong>）。</p>
 </div>
 <p>阅读 <a class="reference external" href="https://01.org/linuxgraphics/gfx-docs/drm/admin-guide/dynamic-debug-howto.html#debug-messages-at-module-initialization-time">模块初始化时的调试消息部分</a> ，并插入模块以便在初始化期间显示 <code class="xref c c-func docutils literal"><span class="pre">my_debug_func`（即</span> <span class="pre">:c:func:`dyndbg_init()</span></code>）中的消息。</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p class="last">在实验的虚拟机中，你需要使用 <strong class="command">insmod</strong> 而不是 <strong class="command">modprobe</strong>。</p>
 </div>
 <p>在不卸载模块的情况下，停用 <code class="xref c c-func docutils literal"><span class="pre">pr_debug()</span></code> 调用。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last">你可以删除设置的标志。卸载内核模块。</p>
 </div>
 </div>

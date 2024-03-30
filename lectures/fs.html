@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Debugging" href="debugging.html" />
     <link rel="prev" title="Memory Management" href="memory-management.html" /> 
 </head>
@@ -148,10 +149,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="filesystem-management">
-<h1>Filesystem Management<a class="headerlink" href="#filesystem-management" title="Permalink to this headline">¶</a></h1>
+<h1>Filesystem Management<a class="headerlink" href="#filesystem-management" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="fs-slides.html">View slides</a></p>
 <div class="section" id="lecture-objectives">
-<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="Permalink to this headline">¶</a></h2>
+<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="永久链接至标题">¶</a></h2>
 <ul class="admonition-filesystem-management simple">
 <li>Filesystem abstractions</li>
 <li>Filesystem operations</li>
@@ -160,7 +161,7 @@
 </ul>
 </div>
 <div class="section" id="filesystem-abstractions">
-<h2>Filesystem Abstractions<a class="headerlink" href="#filesystem-abstractions" title="Permalink to this headline">¶</a></h2>
+<h2>Filesystem Abstractions<a class="headerlink" href="#filesystem-abstractions" title="永久链接至标题">¶</a></h2>
 <p>A fileystem is a way to organize files and directories on storage
 devices such as hard disks, SSDs or flash memory. There are many types
 of filesystems (e.g. FAT, ext4, btrfs, ntfs) and on one running system
@@ -187,7 +188,7 @@ and in memory (for caching purposes). An inode identifies a file in a
 unique way and has various properties such as the file size, access
 rights, file type, etc.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">The file name is not a property of the file.</p>
 </div>
 <p>The <em>dentry</em> associates a name with an inode. It exists both on
@@ -227,7 +228,7 @@ all blocks the DZONE area</li>
 <img alt="../_images/ditaa-8b59fc3f5245ffb5d7089dc80cf2e306c39a62d8.png" src="../_images/ditaa-8b59fc3f5245ffb5d7089dc80cf2e306c39a62d8.png" />
 </div>
 <div class="section" id="filesystem-operations">
-<h2>Filesystem Operations<a class="headerlink" href="#filesystem-operations" title="Permalink to this headline">¶</a></h2>
+<h2>Filesystem Operations<a class="headerlink" href="#filesystem-operations" title="永久链接至标题">¶</a></h2>
 <p>The following diagram shows a high level overview of how the file
 system drivers interact with the rest of the file system &quot;stack&quot;. In
 order to support multiple filesystem types and instances Linux
@@ -249,7 +250,7 @@ are some of the operations that a file system must implement:</p>
 </ul>
 <p>The next sections will look in-depth at some of these operations.</p>
 <div class="section" id="mounting-a-filesystem">
-<h3>Mounting a filesystem<a class="headerlink" href="#mounting-a-filesystem" title="Permalink to this headline">¶</a></h3>
+<h3>Mounting a filesystem<a class="headerlink" href="#mounting-a-filesystem" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-mounting-a-filesystem simple">
 <li>Input: a storage device (partition)</li>
@@ -259,7 +260,7 @@ are some of the operations that a file system must implement:</p>
 </ul>
 </div>
 <div class="section" id="opening-a-file">
-<h3>Opening a file<a class="headerlink" href="#opening-a-file" title="Permalink to this headline">¶</a></h3>
+<h3>Opening a file<a class="headerlink" href="#opening-a-file" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-opening-a-file simple">
 <li>Input: path</li>
@@ -275,7 +276,7 @@ load data, find dentry</li>
 </ul>
 </div>
 <div class="section" id="querying-file-attributes">
-<h3>Querying file attributes<a class="headerlink" href="#querying-file-attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Querying file attributes<a class="headerlink" href="#querying-file-attributes" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-querying-file-attributes simple">
 <li>Input: path</li>
@@ -288,7 +289,7 @@ load data, find dentry</li>
 </ul>
 </div>
 <div class="section" id="reading-data-from-a-file">
-<h3>Reading data from a file<a class="headerlink" href="#reading-data-from-a-file" title="Permalink to this headline">¶</a></h3>
+<h3>Reading data from a file<a class="headerlink" href="#reading-data-from-a-file" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-reading-data-from-a-file simple">
 <li>Input: file descriptor, offset, length</li>
@@ -302,7 +303,7 @@ load data, find dentry</li>
 </ul>
 </div>
 <div class="section" id="writing-data-to-a-file">
-<h3>Writing data to a file<a class="headerlink" href="#writing-data-to-a-file" title="Permalink to this headline">¶</a></h3>
+<h3>Writing data to a file<a class="headerlink" href="#writing-data-to-a-file" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-writing-data-to-a-file simple">
 <li>Input: file descriptor, offset, length, data</li>
@@ -317,7 +318,7 @@ storage</li>
 </ul>
 </div>
 <div class="section" id="closing-a-file">
-<h3>Closing a file<a class="headerlink" href="#closing-a-file" title="Permalink to this headline">¶</a></h3>
+<h3>Closing a file<a class="headerlink" href="#closing-a-file" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-closing-a-file simple">
 <li>Input: file descriptor</li>
@@ -331,11 +332,11 @@ storage</li>
 </ul>
 </div>
 <div class="section" id="directories">
-<h3>Directories<a class="headerlink" href="#directories" title="Permalink to this headline">¶</a></h3>
+<h3>Directories<a class="headerlink" href="#directories" title="永久链接至标题">¶</a></h3>
 <p class="admonition-directories">Directories are special files which contain one or more dentries.</p>
 </div>
 <div class="section" id="creating-a-file">
-<h3>Creating a file<a class="headerlink" href="#creating-a-file" title="Permalink to this headline">¶</a></h3>
+<h3>Creating a file<a class="headerlink" href="#creating-a-file" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-creating-a-file simple">
 <li>Input: path</li>
@@ -349,7 +350,7 @@ storage</li>
 </ul>
 </div>
 <div class="section" id="deleting-a-file">
-<h3>Deleting a file<a class="headerlink" href="#deleting-a-file" title="Permalink to this headline">¶</a></h3>
+<h3>Deleting a file<a class="headerlink" href="#deleting-a-file" title="永久链接至标题">¶</a></h3>
 <p>A summary of a typical implementation is presented below:</p>
 <ul class="admonition-deleting-a-file simple">
 <li>Input: path</li>
@@ -365,7 +366,7 @@ storage</li>
 </div>
 </div>
 <div class="section" id="linux-virtual-file-system">
-<h2>Linux Virtual File System<a class="headerlink" href="#linux-virtual-file-system" title="Permalink to this headline">¶</a></h2>
+<h2>Linux Virtual File System<a class="headerlink" href="#linux-virtual-file-system" title="永久链接至标题">¶</a></h2>
 <p>Although the main purpose for the original introduction of VFS in UNIX
 kernels was to support multiple filesystem types and instances, a side
 effect was that it simplified fileystem device driver development
@@ -382,7 +383,7 @@ VFS - always in memory, and two for a particular filesystem - one in
 memory used by the filesystem driver, and one on storage.</p>
 <a class="admonition-virtual-file-system reference internal image-reference" href="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png"><img alt="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png" class="admonition-virtual-file-system" src="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png" style="height: 100%;" /></a>
 <div class="section" id="superblock-operations">
-<h3>Superblock Operations<a class="headerlink" href="#superblock-operations" title="Permalink to this headline">¶</a></h3>
+<h3>Superblock Operations<a class="headerlink" href="#superblock-operations" title="永久链接至标题">¶</a></h3>
 <p>VFS requires that all filesystem implement a set of &quot;superblock
 operations&quot;.</p>
 <p>They deal with initializing, updating and freeing the VFS superblock:</p>
@@ -417,7 +418,7 @@ so, they will convert in between them as necessary.</p>
 </td></tr></table>
 </div>
 <div class="section" id="inode-operations">
-<h3>Inode Operations<a class="headerlink" href="#inode-operations" title="Permalink to this headline">¶</a></h3>
+<h3>Inode Operations<a class="headerlink" href="#inode-operations" title="永久链接至标题">¶</a></h3>
 <p>The next set of operations that VFS calls when interacting with
 filesystem device drivers are the &quot;inode operations&quot;. Non-intuitively
 these mostly deal with manipulating dentries - looking up a file name,
@@ -443,7 +444,7 @@ creating and removing directories.</p>
 </td></tr></table>
 </div>
 <div class="section" id="the-inode-cache">
-<h3>The Inode Cache<a class="headerlink" href="#the-inode-cache" title="Permalink to this headline">¶</a></h3>
+<h3>The Inode Cache<a class="headerlink" href="#the-inode-cache" title="永久链接至标题">¶</a></h3>
 <p>The inode cache is used to avoid reading and writing inodes to and
 from storage every time we need to read or update them. The cache uses
 a hash table and inodes are indexed with a hash function which takes
@@ -463,7 +464,7 @@ inputs</li>
 </ul>
 </div>
 <div class="section" id="the-dentry-cache">
-<h3>The Dentry Cache<a class="headerlink" href="#the-dentry-cache" title="Permalink to this headline">¶</a></h3>
+<h3>The Dentry Cache<a class="headerlink" href="#the-dentry-cache" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-the-dentry-cache simple">
 <li>State:<ul>
 <li>Used – <em>d_inode</em> is valid and the <em>dentry</em> object is in use</li>
@@ -481,7 +482,7 @@ or the file was erased</li>
 </ul>
 </div>
 <div class="section" id="the-page-cache">
-<h3>The Page Cache<a class="headerlink" href="#the-page-cache" title="Permalink to this headline">¶</a></h3>
+<h3>The Page Cache<a class="headerlink" href="#the-page-cache" title="永久链接至标题">¶</a></h3>
 <ul class="admonition-the-page-cache simple">
 <li>Caches file data and not block device data</li>
 <li>Uses the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space</span></code> to translate file offsets

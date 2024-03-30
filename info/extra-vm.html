@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="对 Linux 内核实验室项目做贡献" href="contributing.html" />
     <link rel="prev" title="虚拟机配置" href="vm.html" /> 
 </head>
@@ -130,9 +131,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>自定义虚拟机配置<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>自定义虚拟机配置<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="ssh">
-<h2>通过 SSH 连接到虚拟机<a class="headerlink" href="#ssh" title="Permalink to this headline">¶</a></h2>
+<h2>通过 SSH 连接到虚拟机<a class="headerlink" href="#ssh" title="永久链接至标题">¶</a></h2>
 <p>QEMU 虚拟机的默认 Yocto 镜像（core-image-minimal-qemu）仅提供了运行内核和内核模块所需要的最小功能。要使用额外的功能，例如 SSH 连接，需要一个更完整的镜像，例如 core-image-sato-dev-qemu。</p>
 <p>要使用新的镜像，需要更改 <code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code> 中的 <code class="docutils literal"><span class="pre">YOCTO_IMAGE</span></code> 变量：</p>
 <p>… code-block:: shell</p>
@@ -171,7 +172,7 @@ Linux qemux86 4.19.0+ #3 SMP Sat Apr 4 22:45:18 EEST 2020 i686 GNU/Linux
 </div>
 </div>
 <div class="section" id="debugger">
-<h2>将调试器（debugger）连接到虚拟机内核<a class="headerlink" href="#debugger" title="Permalink to this headline">¶</a></h2>
+<h2>将调试器（debugger）连接到虚拟机内核<a class="headerlink" href="#debugger" title="永久链接至标题">¶</a></h2>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>.../linux/tools/labs$ make gdb
 ln -fs /home/tavi/src/linux/vmlinux vmlinux
 gdb -ex <span class="s2">&quot;target remote localhost:1234&quot;</span> vmlinux
@@ -211,7 +212,7 @@ at kernel/sched/idle.c:350
 </div>
 </div>
 <div class="section" id="section-2">
-<h2>重建内核镜像<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>重建内核镜像<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <p>内核镜像是在虚拟机第一次启动时构建的。要重建内核，删除由在 <code class="docutils literal"><span class="pre">tools/labs/qemu/Makefile</span></code> 中的 <code class="docutils literal"><span class="pre">ZIMAGE</span></code> 变量定义的内核镜像文件：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span><span class="nv">ZIMAGE</span> <span class="o">=</span> <span class="k">$(</span>KDIR<span class="k">)</span>/arch/<span class="k">$(</span>ARCH<span class="k">)</span>/boot/<span class="k">$(</span>b<span class="k">)</span>zImage
 </pre></div>
@@ -227,7 +228,7 @@ at kernel/sched/idle.c:350
 </div>
 </div>
 <div class="section" id="docker">
-<h2>使用 Docker 容器<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<h2>使用 Docker 容器<a class="headerlink" href="#docker" title="永久链接至标题">¶</a></h2>
 <p>如果你的设备不允许安装实验室配置所需的软件包，你可以构建和运行一个容器，它已经为虚拟机环境准备好了所有的配置。</p>
 <p>为了运行容器化的配置，你需要安装以下软件包：</p>
 <ul class="simple">

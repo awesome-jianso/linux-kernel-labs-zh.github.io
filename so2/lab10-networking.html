@@ -16,7 +16,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -27,9 +27,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="SO2 Lab 11 - Kernel Development on ARM" href="lab11-arm-kernel-development.html" />
     <link rel="prev" title="SO2 Lab 09 - File system drivers (Part 2)" href="lab9-filesystems-part2.html" /> 
 </head>
@@ -184,9 +185,9 @@
            <div itemprop="articleBody">
              
   <div class="section" id="so2-lab-10-networking">
-<h1>SO2 Lab 10 - Networking<a class="headerlink" href="#so2-lab-10-networking" title="Permalink to this headline">¶</a></h1>
+<h1>SO2 Lab 10 - Networking<a class="headerlink" href="#so2-lab-10-networking" title="永久链接至标题">¶</a></h1>
 <div class="section" id="section-1">
-<h2>实验目标<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<h2>实验目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li>理解 Linux 内核网络架构</li>
@@ -196,17 +197,17 @@
 </div></blockquote>
 </div>
 <div class="section" id="section-2">
-<h2>概述<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>概述<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <p>互联网的发展导致网络应用程序呈指数增长，因此操作系统的网络子系统对速度和生产力的要求也在不断增加。网络子系统并非操作系统内核的必需组件（Linux 内核可以选择在编译时不包含网络支持）。然而，由于对连接的需要，计算机系统（甚至嵌入式设备）很少会使用不支持网络的操作系统。现代操作系统使用 <a class="reference external" href="https://zh.wikipedia.org/zh-cn/TCP/IP协议族">TCP/IP 协议栈</a>。它们的内核实现了传输层以下的协议，而应用层协议通常在用户空间实现（如 HTTP、FTP 以及 SSH 等）。</p>
 <div class="section" id="section-3">
-<h3>用户空间中的网络编程<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h3>
+<h3>用户空间中的网络编程<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h3>
 <p>套接字（socket）是在用户空间中，对于网络通信的抽象。套接字抽象了通信通道，也是基于内核的 TCP/IP 栈交互接口。IP 套接字与 IP 地址、所使用的传输层协议（如 TCP、UDP 等）和端口相关联。常用的使用套接字的函数调用有：创建 (<code class="docutils literal"><span class="pre">socket</span></code>)、初始化 (<code class="docutils literal"><span class="pre">bind</span></code>)、连接 (<code class="docutils literal"><span class="pre">connect</span></code>)、等待连接 (<code class="docutils literal"><span class="pre">listen</span></code>, <code class="docutils literal"><span class="pre">accept</span></code>) 以及关闭套接字 (<code class="docutils literal"><span class="pre">close</span></code>)。</p>
 <p>我们通过 <code class="docutils literal"><span class="pre">read</span></code>/<code class="docutils literal"><span class="pre">write</span></code> 或 <code class="docutils literal"><span class="pre">recv</span></code>/<code class="docutils literal"><span class="pre">send</span></code> 调用实现 TCP 套接字的网络通信，通过 <code class="docutils literal"><span class="pre">recvfrom</span></code>/<code class="docutils literal"><span class="pre">sendto</span></code> 调用实现 UDP 套接字的网络通信。传输和接收操作对应用程序来说是透明的，封装和网络传输由内核自行决定。然而，也可以使用原始套接字（创建套接字时使用 <code class="docutils literal"><span class="pre">PF_PACKET</span></code> 选项）在用户空间中实现 TCP/IP 栈，或者在内核中实现应用层协议（例如 <a class="reference external" href="https://zh.wikipedia.org/zh-cn/TUX_Web服务器">TUX web 服务器</a>）。</p>
 <p>有关使用套接字进行用户空间编程的更多详细信息，请参阅 <a class="reference external" href="https://www.beej.us/guide/bgnet/">Beej 的网络套接字编程指南</a>。</p>
 </div>
 </div>
 <div class="section" id="linux">
-<h2>Linux 网络编程<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<h2>Linux 网络编程<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h2>
 <p>Linux 内核提供了三种基本的用于处理网络数据包的结构：<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code>、<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 和 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code>。</p>
 <p>前两者是对套接字的抽象：</p>
 <blockquote>
@@ -218,14 +219,14 @@
 <p>这两个结构有关联: <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 包含 INET 套接字字段，而每个 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 都有一个 BSD 套接字持有它。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构是网络数据包及其状态的表示。当从用户空间或网络接口接收到内核数据包时，该结构被创建。</p>
 <div class="section" id="struct-socket">
-<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构<a class="headerlink" href="#struct-socket" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构<a class="headerlink" href="#struct-socket" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构是 BSD 套接字的内核表示，可以执行在它上面执行的操作类似于内核提供的操作（通过系统调用）。使用套接字的常见操作（创建、初始化/绑定、关闭等）会导致特定的系统调用；它们与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构一起工作。</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 的操作在 <code class="file docutils literal"><span class="pre">net/socket.c</span></code> 中进行描述，且与协议类型无关。因此, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构是特定网络操作实现的通用接口。通常，这些操作的名称以 <code class="docutils literal"><span class="pre">sock_</span></code> 前缀开头。</p>
 <div class="section" id="socket">
-<span id="socketstructops"></span><h4>对 socket 结构的操作<a class="headerlink" href="#socket" title="Permalink to this headline">¶</a></h4>
+<span id="socketstructops"></span><h4>对 socket 结构的操作<a class="headerlink" href="#socket" title="永久链接至标题">¶</a></h4>
 <p>socket 相关操作包括：</p>
 <div class="section" id="section-4">
-<h5>创建<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h5>
+<h5>创建<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h5>
 <p>创建类似于在用户空间调用 <code class="xref c c-func docutils literal"><span class="pre">socket()</span></code> 函数，但创建的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 将存储在 <code class="docutils literal"><span class="pre">res</span></code> 参数中：</p>
 <blockquote>
 <div><ul class="simple">
@@ -294,7 +295,7 @@
 </div>
 </div>
 <div class="section" id="section-5">
-<h5>关闭连接<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h5>
+<h5>关闭连接<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h5>
 <p>关闭连接（对于使用连接的 socket）并释放相关资源：</p>
 <blockquote>
 <div><ul class="simple">
@@ -316,7 +317,7 @@
 </div>
 </div>
 <div class="section" id="section-6">
-<h5>发送/接收消息<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h5>
+<h5>发送/接收消息<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h5>
 <p>使用以下函数来发送/接收消息：</p>
 <blockquote>
 <div><ul class="simple">
@@ -379,7 +380,7 @@
 </div>
 </div>
 <div class="section" id="struct-socket-1">
-<h4><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 字段<a class="headerlink" href="#struct-socket-1" title="Permalink to this headline">¶</a></h4>
+<h4><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 字段<a class="headerlink" href="#struct-socket-1" title="永久链接至标题">¶</a></h4>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> *  struct socket——通用的 BSD socket</span>
 <span class="cm"> *  @state: socket 状态（%SS_CONNECTED 等）</span>
@@ -413,7 +414,7 @@
 </ul>
 </div></blockquote>
 <div class="section" id="struct-proto-ops">
-<h5><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> 结构<a class="headerlink" href="#struct-proto-ops" title="Permalink to this headline">¶</a></h5>
+<h5><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> 结构<a class="headerlink" href="#struct-proto-ops" title="永久链接至标题">¶</a></h5>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> 结构体包含了特定操作（TCP、UDP 等）的实现；这些函数将通过通用函数(如 <code class="xref c c-func docutils literal"><span class="pre">sock_release()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">sock_sendmsg()</span></code> 等)使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 为参数来调用。</p>
 <p>因此, <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">proto_ops</span></code> 结构体包含了一些特定协议实现的函数指针：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">proto_ops</span> <span class="p">{</span>
@@ -468,7 +469,7 @@
 </div>
 </div>
 <div class="section" id="struct-sock">
-<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 结构<a class="headerlink" href="#struct-sock" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 结构<a class="headerlink" href="#struct-sock" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sock</span></code> 结构描述了 <code class="docutils literal"><span class="pre">INET</span></code> 套接字。这样的结构与用户空间的 socket 相关联，并且与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构相关联，其中与 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">socket</span></code> 结构的关联是隐式的。该结构用于存储关于连接状态的信息。结构体的字段和相关操作通常以 <code class="docutils literal"><span class="pre">sk_</span></code> 字符串开头。以下列出了一些字段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sock</span> <span class="p">{</span>
       <span class="c1">//...</span>
@@ -537,7 +538,7 @@
 </div>
 </div>
 <div class="section" id="struct-sk-buff">
-<span id="structskbuff"></span><h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构体<a class="headerlink" href="#struct-sk-buff" title="Permalink to this headline">¶</a></h3>
+<span id="structskbuff"></span><h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构体<a class="headerlink" href="#struct-sk-buff" title="永久链接至标题">¶</a></h3>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> (套接字缓冲区)描述了一个网络数据包。该结构的字段包含有关报头和数据包内容、使用的协议、使用的网络设备以及指向其他 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 的指针的信息。下面是该结构体的内容的概要描述：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="p">{</span>
   <span class="k">union</span> <span class="p">{</span>
@@ -731,7 +732,7 @@
 </div>
 </div>
 <div class="section" id="section-7">
-<span id="conversions"></span><h2>转换<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<span id="conversions"></span><h2>转换<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
 <p>不同系统的字，有多种字节的顺序方式 (<a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序">字节序</a>)，包括: <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#大端序">大端序</a> (最高位字节在前) 和 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#小端序">小端序</a> (最低位字节在前)。由于网络连接了具有不同平台的系统，因此互联网对于数值数据的存储已经强加了一种标准序列，称为 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#网络序">网络字节序</a>。相反，主机计算机上，表示数值数据的字节序列称为主机字节序。从网络接收/发送的数据采用网络字节序格式，并且应该在该格式和主机字节序之间进行转换。</p>
 <p>为了进行转换，我们使用以下宏：</p>
 <blockquote>
@@ -744,7 +745,7 @@
 </div></blockquote>
 </div>
 <div class="section" id="netfilter-1">
-<span id="netfilter"></span><h2>netfilter<a class="headerlink" href="#netfilter-1" title="Permalink to this headline">¶</a></h2>
+<span id="netfilter"></span><h2>netfilter<a class="headerlink" href="#netfilter-1" title="永久链接至标题">¶</a></h2>
 <p>Netfilter 是一个内核接口，用于捕获网络数据包以对其进行修改/分析（用于过滤、NAT 等）。在用户空间中，由 <a class="reference external" href="http://www.frozentux.net/documents/iptables-tutorial/">iptables</a> 使用 <a class="reference external" href="http://www.netfilter.org/">netfilter</a> 接口。</p>
 <p>在 Linux 内核中，使用 netfilter 进行数据包捕获是通过附加钩子（hook）来实现的。钩子可以在内核网络数据包所经过的路径的不同位置指定，你可以根据需要进行配置。你可以在 <a class="reference external" href="http://linux-ip.net/nf/nfk-traversal.png">这里</a> 找到一张组织图，组织图上显示数据包所经过的路径以及钩子可能出现的区域。</p>
 <p>使用 netfilter 时包含的头文件是 <code class="file docutils literal"><span class="pre">linux/netfilter.h</span></code>。</p>
@@ -848,7 +849,7 @@
 </pre></div>
 </div>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
+<p class="first admonition-title">注意</p>
 <p>在 Linux 内核 3.11-rc2 版本之前，作为 netfilter 钩子参数的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sk_buff</span></code> 结构，内部的头部提取函数有一些限制。虽然每次都可以使用 <code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code> 获取 IP 头部，但是用于获取 TCP 和 UDP 头部的 <code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">udp_hdr()</span></code> 函数，却只能对从系统内部，而非外部接收的数据包使用。对于后者的情况，需要手动计算数据包中的头部偏移量：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// TCP 数据包 (iph-&gt;protocol == IPPROTO_TCP)</span>
 <span class="n">tcph</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">tcphdr</span><span class="o">*</span><span class="p">)((</span><span class="n">__u32</span><span class="o">*</span><span class="p">)</span><span class="n">iph</span> <span class="o">+</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">ihl</span><span class="p">);</span>
@@ -900,7 +901,7 @@
 </div>
 </div>
 <div class="section" id="netcat">
-<h2>netcat<a class="headerlink" href="#netcat" title="Permalink to this headline">¶</a></h2>
+<h2>netcat<a class="headerlink" href="#netcat" title="永久链接至标题">¶</a></h2>
 <p>在开发包含网络编程的应用程序时，常用的工具包括 netcat。它也被昵称为“TCP/IP 的瑞士军刀”。它可以用于以下功能：</p>
 <blockquote>
 <div><ul class="simple">
@@ -922,13 +923,13 @@
 </div>
 <p>发送和接收 UDP 数据包，需要添加 <code class="docutils literal"><span class="pre">-u</span></code> 命令行选项。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">命令是 <strong class="command">nc</strong>；通常 <strong class="command">netcat</strong> 是此命令的别名。还有其他实现 netcat 命令的版本，其中一些与经典实现参数略有不同。运行 <strong class="command">man nc</strong> 或 <strong class="command">nc -h</strong> 以查看如何使用它。</p>
 </div>
 <p>有关 netcat 的更多信息，请参阅以下 <a class="reference external" href="https://www.win.tue.nl/~aeb/linux/hh/netcat_tutorial.pdf">教程</a>。</p>
 </div>
 <div class="section" id="section-8">
-<h2>进一步阅读<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h2>
+<h2>进一步阅读<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
 <li>了解 Linux 网络内部</li>
 <li><a class="reference external" href="http://www.cs.unh.edu/cnrg/gherrin/">Linux IP 网络</a></li>
@@ -942,9 +943,9 @@
 </ol>
 </div>
 <div class="section" id="section-9">
-<h2>练习<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<h2>练习<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
@@ -978,23 +979,23 @@ tools/labs $ make boot
 <p class="last">请查看 <a class="reference internal" href="#section-9">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="first admonition-title">警告</p>
 <p>在开始练习或生成骨架之前，请在 Linux 仓库中运行 <strong>git pull</strong> 命令，以确保你拥有最新版本的练习。</p>
 <p>如果你有本地更改，pull 命令将失败。使用 <code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code> 检查本地更改。如果要保留更改，在 <code class="docutils literal"><span class="pre">pull</span></code> 之前运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span></code>，之后运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>。要放弃更改，请运行 <code class="docutils literal"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">master</span></code>。</p>
 <p class="last">如果你在 <code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code> 之前已经生成了骨架，你需要再次生成骨架。</p>
 </div>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="first admonition-title">重要</p>
 <p class="last">你需要确保内核支持 <code class="docutils literal"><span class="pre">netfilter</span></code>。可以通过 <code class="docutils literal"><span class="pre">CONFIG_NETFILTER</span></code> 来启用它。要激活它，请在 <code class="file docutils literal"><span class="pre">linux</span></code> 目录中运行 <strong class="command">make menuconfig</strong>，并在 <code class="docutils literal"><span class="pre">Networking</span> <span class="pre">support</span> <span class="pre">-&gt;</span> <span class="pre">Networking</span> <span class="pre">options</span></code> 中勾选 <code class="docutils literal"><span class="pre">Network</span> <span class="pre">packet</span> <span class="pre">filtering</span> <span class="pre">framework</span> <span class="pre">(Netfilter)</span></code> 选项。如果它未启用，请启用它（作为内置功能，而不是外部模块——必须带有 <code class="docutils literal"><span class="pre">*</span></code> 标记）。</p>
 </div>
 <div class="section" id="section-10">
-<h3>1. 在内核空间中显示数据包<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h3>
+<h3>1. 在内核空间中显示数据包<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <p>编写一个内核模块，显示发起出站连接的 TCP 数据包的源地址和端口。从 <code class="file docutils literal"><span class="pre">1-2-netfilter</span></code> 中的代码开始，并填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的区域，同时考虑下面的注释。</p>
 <p>你需要注册一个类型为 <code class="docutils literal"><span class="pre">NF_INET_LOCAL_OUT</span></code> 的 netfilter 钩子，如 <a href="#system-message-2"><span class="problematic" id="problematic-2">`netfilter`_</span></a> 部分所述。</p>
 <p>借助 <a href="#system-message-3"><span class="problematic" id="problematic-3">`struct sk_buff 结构`_</span></a>, 你可以使用特定的函数访问数据包头部。<code class="xref c c-func docutils literal"><span class="pre">ip_hdr()</span></code> 函数以返回指向 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iphdr</span></code> 结构的指针的形式，返回 IP 头部。<code class="xref c c-func docutils literal"><span class="pre">tcp_hdr()</span></code> 函数以返回指向 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">tcphdr</span></code> 结构的指针的形式，返回 TCP 头部。</p>
 <p><a class="reference external" href="http://www.eventhelix.com/Realtimemantra/Networking/Tcp.pdf">图表</a> 解释了如何建立 TCP 连接。连接初始化数据包在 TCP 头部中设置了 <code class="docutils literal"><span class="pre">SYN</span></code> 标志，并清除了 <code class="docutils literal"><span class="pre">ACK</span></code> 标志。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>要显示源 IP 地址，请使用 printk 函数的 <code class="docutils literal"><span class="pre">%pI4</span></code> 格式。详细信息可以在 <a class="reference external" href="https://www.kernel.org/doc/Documentation/printk-formats.txt">内核文档</a> (<code class="docutils literal"><span class="pre">IPv4</span> <span class="pre">addresses</span></code> 部分)中找到。以下是使用 <code class="docutils literal"><span class="pre">%pI4</span></code> 的示例代码片段：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;IP address is %pI4</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">saddr</span><span class="p">);</span>
 </pre></div>
@@ -1012,11 +1013,11 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="section-11">
-<h3>2. 按目标地址进行过滤<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<h3>2. 按目标地址进行过滤<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <p>扩展练习 1 中的模块，以便你可以通过 <code class="docutils literal"><span class="pre">MY_IOCTL_FILTER_ADDRESS</span></code> ioctl 调用指定目标地址。注意只显示包含指定目标地址的数据包。为了解决这个任务，填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的区域，并按照以下规范进行操作。</p>
 <p>要实现 ioctl 例程，你必须填写 <code class="docutils literal"><span class="pre">my_ioctl</span></code> 函数。请查看 <a class="reference internal" href="lab3-device-drivers.html#ioctl"><span class="std std-ref">ioctl</span></a> 部分的内容。从用户空间发送的地址使用 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/字节序#网络序">网络字节序</a>, 因此 <strong>无需</strong> 进行转换。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">通过 <code class="docutils literal"><span class="pre">ioctl</span></code> 发送的 IP 地址是通过地址发送的，而不是通过值发送的。地址必须存储在 <code class="docutils literal"><span class="pre">ioctl_set_addr</span></code> 变量中。可以使用 <code class="xref c c-func docutils literal"><span class="pre">copy_from_user()</span></code> 进行复制。</p>
 </div>
 <p>要比较地址，请填写 <code class="docutils literal"><span class="pre">test_daddr</span></code> 函数。这里我们无需转换地址，即可将（使用网络字节序的）地址进行比较（如果从左到右相等，则反转后也相等）。</p>
@@ -1039,17 +1040,17 @@ tools/labs $ make boot
 <p>测试首先要求对 <code class="docutils literal"><span class="pre">127.0.0.1</span></code> IP 地址进行数据包过滤，然后对 <code class="docutils literal"><span class="pre">127.0.0.2</span></code> IP 地址进行过滤。第一个连接初始化数据包（到 <code class="docutils literal"><span class="pre">127.0.0.1</span></code>）被过滤器拦截并显示，而第二个数据包（到 <code class="docutils literal"><span class="pre">127.0.0.2</span></code>）则未被拦截。</p>
 </div>
 <div class="section" id="tcp-socket">
-<h3>3. 监听 TCP socket<a class="headerlink" href="#tcp-socket" title="Permalink to this headline">¶</a></h3>
+<h3>3. 监听 TCP socket<a class="headerlink" href="#tcp-socket" title="永久链接至标题">¶</a></h3>
 <p>编写一个内核模块，在回环接口（loopback interface）（在 <code class="docutils literal"><span class="pre">init_module</span></code> 中）上创建监听连接的 TCP 套接字，监听端口为 <code class="docutils literal"><span class="pre">60000</span></code>。从 <code class="file docutils literal"><span class="pre">3-4-tcp-sock</span></code> 中的代码开始，填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">1</span></code> 的区域，同时考虑以下观察结果。</p>
 <p>请阅读 <a class="reference internal" href="#socket">对 socket 结构的操作</a> 和 <a class="reference internal" href="#struct-proto-ops">struct proto_ops 结构</a> 部分。</p>
 <p><code class="docutils literal"><span class="pre">sock</span></code> socket 是 <code class="docutils literal"><span class="pre">服务器套接字</span></code>，因此必须处于监听状态。也就是说，必须对该 socket 执行 <code class="docutils literal"><span class="pre">bind</span></code> 和 <code class="docutils literal"><span class="pre">listen</span></code> 操作。在内核空间中，要执行类似于 <code class="docutils literal"><span class="pre">bind</span></code> 和 <code class="docutils literal"><span class="pre">listen</span></code> 的操作，你需要调用类似 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;...;</span></code> 的函数。你可以调用的示例函数包括 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;bind</span></code>, <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;listen</span></code> 等。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>例如，调用 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;bind</span></code> 或 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;listen</span></code> 函数，查看在 <code class="xref c c-func docutils literal"><span class="pre">sys_bind()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">sys_listen()</span></code> 系统调用处理程序中调用它们的方式。</p>
 <p class="last">在 Linux 内核源代码树的 <code class="docutils literal"><span class="pre">net/socket.c</span></code> 文件中，查找系统调用处理程序。</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">对于 <code class="docutils literal"><span class="pre">listen</span></code> 的第二个参数（backlog），请使用 <code class="docutils literal"><span class="pre">LISTEN_BACKLOG</span></code>。</p>
 </div>
 <p>在模块的退出函数和标有错误标签的区域中记得释放 socket；可以使用 <code class="xref c c-func docutils literal"><span class="pre">sock_release()</span></code> 来释放。</p>
@@ -1057,16 +1058,16 @@ tools/labs $ make boot
 <p>运行测试后，将显示一个 TCP 套接字，通过监听端口 <code class="docutils literal"><span class="pre">60000</span></code> 进行连接。</p>
 </div>
 <div class="section" id="section-12">
-<h3>4. 在内核空间接受连接<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h3>
+<h3>4. 在内核空间接受连接<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
 <p>扩展上一个练习中的模块，以允许外部连接（无需发送任何消息，只需接受新连接）。填写标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">2</span></code> 的区域。</p>
 <p>请阅读 <a class="reference internal" href="#socket">对 socket 结构的操作</a> 和 <a class="reference internal" href="#struct-proto-ops">struct proto_ops 结构</a> 部分。</p>
 <p>对于内核空间的 <code class="docutils literal"><span class="pre">accept</span></code> 等效操作，请参阅 <code class="xref c c-func docutils literal"><span class="pre">sys_accept4()</span></code> 系统调用处理程序。请查看 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.17/source/drivers/staging/lustre/lnet/lnet/lib-socket.c#L511">lnet_sock_accept</a> 实现，以及如何使用 <code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;accept</span></code> 调用。将倒数第二个参数 (<code class="docutils literal"><span class="pre">flags</span></code>) 的值设为 <code class="docutils literal"><span class="pre">0</span></code>，将最后一个参数 (<code class="docutils literal"><span class="pre">kern</span></code>) 的值设为 <code class="docutils literal"><span class="pre">true</span></code>。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p class="last">在 Linux 内核源代码树的 <code class="docutils literal"><span class="pre">net/socket.c</span></code> 文件中查找系统调用处理程序。</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p>必须使用 <code class="xref c c-func docutils literal"><span class="pre">sock_create_lite()</span></code> 函数创建新套接字 (<code class="docutils literal"><span class="pre">new_sock</span></code>)，然后使用以下方式配置其操作：</p>
 <div class="last highlight-console"><div class="highlight"><pre><span></span><span class="go">newsock-&gt;ops = sock-&gt;ops;</span>
 </pre></div>
@@ -1074,7 +1075,7 @@ tools/labs $ make boot
 </div>
 <p>打印目标 socket 的地址和端口。要查找 socket 的对等名称（即地址），请参考 <code class="xref c c-func docutils literal"><span class="pre">sys_getpeername()</span></code> 系统调用处理程序。</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="first admonition-title">注解</p>
 <p><code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;getname</span></code> 函数的第一个参数是连接套接字，即通过 <code class="docutils literal"><span class="pre">accept</span></code> 调用初始化的 <code class="docutils literal"><span class="pre">new_sock</span></code>。</p>
 <p><code class="docutils literal"><span class="pre">sock-&gt;ops-&gt;getname</span></code> 函数的最后一个参数是 <code class="docutils literal"><span class="pre">1</span></code>，表示我们想要了解有关端点或对等点 (<em>远程端</em> 或 <em>对等点</em>) 的信息。</p>
 <p class="last">使用文件中定义的 <code class="docutils literal"><span class="pre">print_sock_address</span></code> 宏显示对等地址（由 <code class="docutils literal"><span class="pre">raddr</span></code> 变量指示）。</p>
@@ -1084,13 +1085,13 @@ tools/labs $ make boot
 <p>不会显示任何特殊内容（在内核缓冲区中）。测试的成功将由连接的建立来确定。然后使用 <code class="docutils literal"><span class="pre">Ctrl+c</span></code> 停止测试脚本，然后可以移除内核模块。</p>
 </div>
 <div class="section" id="udp-1">
-<h3>5. UDP 套接字发送方<a class="headerlink" href="#udp-1" title="Permalink to this headline">¶</a></h3>
+<h3>5. UDP 套接字发送方<a class="headerlink" href="#udp-1" title="永久链接至标题">¶</a></h3>
 <p>编写一个内核模块，其创建一个 UDP socket，并将来自 socket 的 <code class="docutils literal"><span class="pre">MY_TEST_MESSAGE</span></code> 宏的消息发送到回环地址的端口 <code class="docutils literal"><span class="pre">60001</span></code>。</p>
 <p>从 <code class="file docutils literal"><span class="pre">5-udp-sock</span></code> 中的代码开始。</p>
 <p>请阅读 <a class="reference internal" href="#socket">对 socket 结构的操作</a> 和 <a class="reference internal" href="#struct-proto-ops">struct proto_ops 结构</a> 部分。</p>
 <p>要了解如何在内核空间中发送消息，请参阅 <code class="xref c c-func docutils literal"><span class="pre">sys_send()</span></code> 系统调用处理程序或 <a class="reference internal" href="#section-6">发送/接收消息</a>。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> 结构的 <code class="docutils literal"><span class="pre">msg_name</span></code> 字段必须初始化为目标地址（指向 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">sockaddr</span></code> 的指针）, <code class="docutils literal"><span class="pre">msg_namelen</span></code> 字段必须初始化为地址大小。</p>
 <p>将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> 结构的 <code class="docutils literal"><span class="pre">msg_flags</span></code> 字段初始化为 <code class="docutils literal"><span class="pre">0</span></code>。</p>
 <p class="last">将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">msghdr</span></code> 结构的 <code class="docutils literal"><span class="pre">msg_control</span></code> 和 <code class="docutils literal"><span class="pre">msg_controllen</span></code> 字段分别初始化为 <code class="docutils literal"><span class="pre">NULL</span></code> 和 <code class="docutils literal"><span class="pre">0</span></code>。</p>
@@ -1098,7 +1099,7 @@ tools/labs $ make boot
 <p>要发送消息，请使用 <code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code>。</p>
 <p>消息传输参数从内核空间中检索。在 <code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code> 调用中，将 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">iovec</span></code> 结构指针转换为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">kvec</span></code> 指针。</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
+<p class="first admonition-title">提示</p>
 <p class="last"><code class="xref c c-func docutils literal"><span class="pre">kernel_sendmsg()</span></code> 的最后两个参数分别为 <code class="docutils literal"><span class="pre">1</span></code> (I/O 向量的数量) 和 <code class="docutils literal"><span class="pre">len</span></code> (消息大小)。</p>
 </div>
 <p>要进行测试，请使用 <code class="file docutils literal"><span class="pre">test-5.sh</span></code> 脚本。只有在标记为可执行时，该脚本才会通过 <strong class="command">make copy</strong> 复制到虚拟机上。该脚本使用存储在 <code class="file docutils literal"><span class="pre">skels/networking/netcat</span></code> 中的静态编译的 <code class="docutils literal"><span class="pre">netcat</span></code> 工具；该可执行文件必须具有执行权限。</p>

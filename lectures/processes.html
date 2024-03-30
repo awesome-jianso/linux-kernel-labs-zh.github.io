@@ -15,7 +15,7 @@
           var DOCUMENTATION_OPTIONS = {
               URL_ROOT:'../',
               VERSION:'',
-              LANGUAGE:'zh-CN',
+              LANGUAGE:'zh_CN',
               COLLAPSE_INDEX:false,
               FILE_SUFFIX:'.html',
               HAS_SOURCE:  true,
@@ -26,9 +26,10 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/asciinema-player.js"></script>
+        <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="中断" href="interrupts.html" />
     <link rel="prev" title="系统调用" href="syscalls.html" /> 
 </head>
@@ -162,10 +163,10 @@
            <div itemprop="articleBody">
              
   <div class="section" id="section-1">
-<h1>进程<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h1>
+<h1>进程<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="processes-slides.html">View slides</a></p>
 <div class="section" id="section-2">
-<h2>课程目标<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<h2>课程目标<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
 <ul class="admonition- simple">
 <li>进程和线程</li>
 <li>上下文切换</li>
@@ -174,7 +175,7 @@
 </ul>
 </div>
 <div class="section" id="section-3">
-<h2>进程和线程<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<h2>进程和线程<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
 <p>进程是操作系统的抽象概念，用于组织多个资源：</p>
 <table class="hlist"><tr><td><ul class="simple">
 <li>地址空间</li>
@@ -192,7 +193,7 @@
 </td></tr></table>
 <p>所有这些信息都被组织在进程控制块（PCB）中。在 Linux 中，PCB 对应的结构体是 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>。</p>
 <div class="section" id="section-4">
-<h3>进程资源概述<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h3>
+<h3>进程资源概述<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
 <p>我们可以在 <cite>/proc/&lt;pid&gt;</cite> 目录中获取关于进程资源的摘要信息，其中 <cite>&lt;pid&gt;</cite> 是我们要查看的进程的进程 ID。</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>                +-------------------------------------------------------------------+
                 | dr-x------    2 tavi tavi 0  2021 03 14 12:34 .                   |
@@ -227,7 +228,7 @@ wchan        +------&gt;|  Pid: 18205                |
 </div>
 </div>
 <div class="section" id="struct-task-struct">
-<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code><a class="headerlink" href="#struct-task-struct" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code><a class="headerlink" href="#struct-task-struct" title="永久链接至标题">¶</a></h3>
 <p>让我们仔细分析 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>。为此，我们可以查看源代码，但在这里我们将使用一个名为 <cite>pahole</cite> 的工具（它是 dwarves 安装包的一部分），来获取有关这个结构的一些见解：</p>
 <div class="admonition-struct-task-struct highlight-c"><div class="highlight"><pre><span></span>$ pahole -C task_struct vmlinux
 
@@ -252,12 +253,12 @@ struct task_struct {
 <p>可以看出，这是一个相当大的数据结构：大小接近 8KB，具有 155 个字段（field）。</p>
 </div>
 <div class="section" id="task-struct">
-<h3>检查 task_struct<a class="headerlink" href="#task-struct" title="Permalink to this headline">¶</a></h3>
+<h3>检查 task_struct<a class="headerlink" href="#task-struct" title="永久链接至标题">¶</a></h3>
 <p>以下屏幕录像（screencast）将演示如何通过连接调试器到正在运行的虚拟机来检查进程控制块（<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code>）。我们将使用辅助的 gdb 命令 <cite>lx-ps</cite> 来列出进程以及每个进程的 task_struct 地址。</p>
 <p class="admonition-inspecting-task-struct">&nbsp;</p>
 <asciinema-player src="../_images/inspect_task_struct.cast"></asciinema-player></div>
 <div class="section" id="section-5">
-<h3>测验：查看任务以确定打开的文件<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h3>
+<h3>测验：查看任务以确定打开的文件<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
 <p class="admonition-">使用调试器来检查名为 syslogd 的进程。</p>
 <ul class="simple">
 <li>我们应该使用什么命令列出已打开的文件描述符？</li>
@@ -267,7 +268,7 @@ struct task_struct {
 </ul>
 </div>
 <div class="section" id="section-6">
-<h3>线程<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h3>
+<h3>线程<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
 <p>线程是内核进程调度器允许应用程序在 CPU 上运行的基本单位。线程具有以下特点：</p>
 <ul class="admonition- simple">
 <li>每个线程都拥有独立的堆栈，这个堆栈与线程的寄存器的值共同决定了线程的运行状态</li>
@@ -283,7 +284,7 @@ struct task_struct {
 <img alt="../_images/ditaa-fd771038e88b95def30ae9bd4df0b7bd6b7b3503.png" src="../_images/ditaa-fd771038e88b95def30ae9bd4df0b7bd6b7b3503.png" />
 </div>
 <div class="section" id="section-7">
-<h3>克隆系统调用<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h3>
+<h3>克隆系统调用<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
 <p>在 Linux 中，使用 <code class="xref c c-func docutils literal"><span class="pre">clone()</span></code> 系统调用可以创建新的线程或进程。无论是 <code class="xref c c-func docutils literal"><span class="pre">fork()</span></code> 系统调用，还是 <code class="xref c c-func docutils literal"><span class="pre">pthread_create()</span></code> 函数都使用了 <code class="xref c c-func docutils literal"><span class="pre">clone()</span></code> 系统调用来实现。</p>
 <p>它允许调用者决定与父进程共享哪些资源，以及哪些资源应该被复制或隔离：</p>
 <ul class="admonition- simple">
@@ -297,14 +298,14 @@ struct task_struct {
 <p>例如，如果调用者使用了 <cite>CLONE_FILES | CLONE_VM | CLONE_FS</cite>，则实际上创建了一个新的线程。如果未使用这些标志，则创建了一个新的进程。</p>
 </div>
 <div class="section" id="section-8">
-<h3>命名空间和“容器”<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h3>
+<h3>命名空间和“容器”<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
 <p>“容器”是一种轻量级虚拟机，它们共享相同的内核实例。这与正常的虚拟化相反，在正常的虚拟化中，一个虚拟机监视程序（hypervisor）运行多个虚拟机，每个虚拟机都有自己的内核实例。</p>
 <p>容器技术的例子包括 LXC（允许运行轻量级的“虚拟机”）和 Docker（一种专门用于运行单个应用程序的容器）。</p>
 <p>容器是建立在一些内核特性之上的，其中之一就是命名空间（namespace）。内核空间技术允许隔离不同的资源，如果不隔离的话这些资源将在全局可见。例如，如果没有容器，所有进程都将在 /proc 中可见。有了容器后，一个容器中的进程对其他容器来说是不可见的（在 /proc 中不可见，也不能被终止）。</p>
 <p>为了实现这种分区，容器技术使用了 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">nsproxy</span></code> 结构来分组我们想要分区的资源类型。它目前支持 IPC、网络、cgroup、挂载、PID、时间命名空间。例如，我们不再使用全局的网络接口列表，而是选择将网络接口列表作为 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">net</span></code> 结构的一部分。在系统初始化时，会创建一个默认的命名空间，名为 <code class="xref c c-data docutils literal"><span class="pre">init_net</span></code>。默认情况下，所有的进程都会共享这个命名空间。但是，当我们创建一个新的命名空间时，系统会相应地创建一个新的网络命名空间。这样，新的进程就可以选择指向这个新创建的命名空间，而不是默认的命名空间。</p>
 <span class="admonition-"></span></div>
 <div class="section" id="section-9">
-<h3>访问当前进程<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h3>
+<h3>访问当前进程<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
 <p class="admonition-">访问当前进程是一个频繁的操作：</p>
 <ul class="simple">
 <li>打开文件需要访问 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">task_struct</span></code> 的 file 字段</li>
@@ -330,13 +331,13 @@ static inline struct thread_info *current_thread_info(void)
 </div>
 </div>
 <div class="section" id="current-x86">
-<h3>测验：current 宏的先前实现（x86）<a class="headerlink" href="#current-x86" title="Permalink to this headline">¶</a></h3>
+<h3>测验：current 宏的先前实现（x86）<a class="headerlink" href="#current-x86" title="永久链接至标题">¶</a></h3>
 <p class="admonition-quiz-current-x86">结构体 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">thread_info</span></code> 的大小是多少？</p>
 <p>下列哪个是可能的有效大小：4095、4096、4097？</p>
 </div>
 </div>
 <div class="section" id="section-10">
-<h2>上下文切换<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h2>
+<h2>上下文切换<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h2>
 <p>以下图表展示了 Linux 内核上下文切换过程的概述：</p>
 <img alt="../_images/ditaa-f6b228332baf165f498d8a1bb0bc0bdb91ae50c5.png" class="admonition-" src="../_images/ditaa-f6b228332baf165f498d8a1bb0bc0bdb91ae50c5.png" />
 <p>请注意，在发生上下文切换之前，我们必须进行内核转换，这可以通过系统调用或中断来实现。此时，用户空间的寄存器会保存在内核堆栈上。在某个时刻，可能会调用 <code class="xref c c-func docutils literal"><span class="pre">schedule()</span></code> 函数，该函数决定从线程 T0 切换到线程 T1（例如，因为当前线程正在阻塞等待 I/O 操作完成，或者因为它的时间片已经耗尽）。</p>
@@ -463,7 +464,7 @@ static inline struct thread_info *current_thread_info(void)
 <p>以下屏幕录像使用调试器在 __switch_to_asm 中设置断点，并在上下文切换期间检查堆栈：</p>
 <p class="admonition-task-struct">&nbsp;</p>
 <asciinema-player src="../_images/context_switch.cast"></asciinema-player><div class="section" id="section-11">
-<h3>测验：上下文切换<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h3>
+<h3>测验：上下文切换<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <p class="admonition-">假设我们正在执行上下文切换，请选择所有正确的陈述。</p>
 <ul class="simple">
 <li>ESP 寄存器被保存在 task 结构中</li>
@@ -476,14 +477,14 @@ static inline struct thread_info *current_thread_info(void)
 </div>
 </div>
 <div class="section" id="section-12">
-<h2>阻塞和唤醒任务<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h2>
+<h2>阻塞和唤醒任务<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h2>
 <div class="section" id="section-13">
-<h3>任务状态<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h3>
+<h3>任务状态<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <p>以下图表显示了任务（线程）的状态及其之间可能的转换：</p>
 <img alt="../_images/ditaa-54b40ea6fbe752f6485ac3d42063a1ec47a2ef69.png" class="admonition-" src="../_images/ditaa-54b40ea6fbe752f6485ac3d42063a1ec47a2ef69.png" />
 </div>
 <div class="section" id="section-14">
-<h3>阻塞当前线程<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h3>
+<h3>阻塞当前线程<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
 <p>阻塞当前线程是一项重要的操作，我们需要执行它来实现高效的任务调度——我们希望在 I/O 操作完成时运行其他线程。</p>
 <p>为了实现这一目标，需要执行以下操作：</p>
 <ul class="admonition- simple">
@@ -625,7 +626,7 @@ static inline struct thread_info *current_thread_info(void)
 </div>
 </div>
 <div class="section" id="section-15">
-<h3>唤醒任务<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h3>
+<h3>唤醒任务<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>我们可以使用 <code class="xref c c-macro docutils literal"><span class="pre">wake_up</span></code> 原语来唤醒任务。唤醒任务需要执行以下高级操作：</p>
 <ul class="admonition- simple">
 <li>从等待队列中选择一个任务</li>
@@ -773,10 +774,10 @@ static inline struct thread_info *current_thread_info(void)
 </div>
 </div>
 <div class="section" id="section-16">
-<h2>任务抢占<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h2>
+<h2>任务抢占<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h2>
 <p>到目前为止，我们已经讨论了线程之间如何自愿进行上下文切换。接下来，我们将讨论任务抢占的处理方式。我们将从内核配置为非抢占式的简单情况开始，然后再转向抢占式内核的情况。</p>
 <div class="section" id="section-17">
-<h3>非抢占式内核<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h3>
+<h3>非抢占式内核<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h3>
 <ul class="admonition- simple">
 <li>每个时钟滴答，内核会检查当前进程是否已经用完了它的时间片</li>
 <li>如果发生这种情况，会在中断上下文中设置一个标志位</li>
@@ -785,21 +786,21 @@ static inline struct thread_info *current_thread_info(void)
 </ul>
 </div>
 <div class="section" id="section-18">
-<h3>抢占式内核<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h3>
+<h3>抢占式内核<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h3>
 <p>在这种情况下，即使我们在内核模式下执行系统调用，当前任务也可以被抢占。这需要使用特殊的同步原语：<code class="xref c c-macro docutils literal"><span class="pre">preempt_disable</span></code> 和 <code class="xref c c-macro docutils literal"><span class="pre">preempt_enable</span></code>。</p>
 <p>为了简化抢占式内核的处理，并且由于在 SMP （对称多处理） 情况下需要使用同步原语，当使用自旋锁时会自动禁用抢占。</p>
 <p>与之前一样，如果我们遇到需要抢占当前任务的条件（例如时间片用完），会设置一个标志位。每当重新激活抢占时，例如通过 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> 退出临界区时，会检查这个标志位，并在需要时调用调度器以选择一个新的任务。</p>
 <span class="admonition-"></span></div>
 </div>
 <div class="section" id="section-19">
-<h2>进程上下文<a class="headerlink" href="#section-19" title="Permalink to this headline">¶</a></h2>
+<h2>进程上下文<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h2>
 <p>在我们研究了进程和线程（任务）的实现、上下文切换的方式以及如何阻塞、唤醒和抢占任务之后，我们最终可以定义进程上下文及其属性：</p>
 <p class="admonition-">当内核执行系统调用时，它处于进程上下文中。</p>
 <p>在进程上下文中，存在一个明确定义的上下文，我们可以使用 <code class="xref c c-macro docutils literal"><span class="pre">current</span></code> 来访问当前进程的数据。</p>
 <p>在进程上下文中，我们可以睡眠（等待条件）。</p>
 <p>在进程上下文中，我们可以访问用户空间（除非我们在内核线程上下文中运行）。</p>
 <div class="section" id="section-20">
-<h3>内核线程<a class="headerlink" href="#section-20" title="Permalink to this headline">¶</a></h3>
+<h3>内核线程<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h3>
 <p class="admonition-">有时候内核核心或设备驱动程序需要执行阻塞操作，因此需要在进程上下文中运行。</p>
 <p>内核线程就是为此而使用的一种特殊类别的任务，它们不使用“用户空间”资源（例如没有地址空间或打开的文件）。</p>
 <p>以下屏幕录像将更详细地介绍内核线程：</p>
@@ -807,7 +808,7 @@ static inline struct thread_info *current_thread_info(void)
 <asciinema-player src="../_images/kernel_threads.cast"></asciinema-player></div>
 </div>
 <div class="section" id="gdb">
-<h2>使用 gdb 脚本进行内核检查<a class="headerlink" href="#gdb" title="Permalink to this headline">¶</a></h2>
+<h2>使用 gdb 脚本进行内核检查<a class="headerlink" href="#gdb" title="永久链接至标题">¶</a></h2>
 <p>Linux 内核附带了一组预定义的 gdb 扩展命令，我们可以在调试过程中使用它们来检查内核。只要正确设置了 gdbinit，它们就会自动加载。</p>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>ubuntu@so2:/linux/tools/labs$ cat ~/.gdbinit
 add-auto-load-safe-path /linux/scripts/gdb/vmlinux-gdb.py
@@ -864,7 +865,7 @@ lx-device-list-tree   lx-lsmod
 </pre></div>
 </div>
 <div class="section" id="gdb-1">
-<h3>测验：内核 gdb 脚本<a class="headerlink" href="#gdb-1" title="Permalink to this headline">¶</a></h3>
+<h3>测验：内核 gdb 脚本<a class="headerlink" href="#gdb-1" title="永久链接至标题">¶</a></h3>
 <p class="admonition-gdb">下面对 lx-ps 脚本的修改是为了实现什么目的？</p>
 <div class="highlight-diff"><div class="highlight"><pre><span></span><span class="gh">diff --git a/scripts/gdb/linux/tasks.py b/scripts/gdb/linux/tasks.py</span>
 <span class="gh">index 17ec19e9b5bf..7e43c163832f 100644</span>
