@@ -89,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="labs/arm_kernel_development.html">ARM 内核开发</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/memory_mapping.html">内存映射</a></li>
 <li class="toctree-l1"><a class="reference internal" href="labs/device_model.html">Linux 设备模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="labs/kernel_profiling.html">Kernel Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="labs/kernel_profiling.html">内核分析</a></li>
 </ul>
 <p class="caption"><span class="caption-text">有用信息</span></p>
 <ul>
@@ -896,23 +896,23 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lab12-kernel-profiling.html">SO2 Lab 12 - Kernel Profiling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#lab-objectives">Lab Objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#profiling-tools">Profiling Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#section-2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#section-3">分析工具</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#perf">perf</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#ps">ps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#time">time</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#top">top</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#profiling-methodology">Profiling Methodology</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#exercises">Exercises</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#demo-profiling-i-o-problems">0. Demo: Profiling I/O Problems</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#investigating-reduced-responsiveness">1. Investigating Reduced Responsiveness</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#launching-new-threads">2. Launching New Threads</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#tuning-cp">3. Tuning <code class="docutils literal"><span class="pre">cp</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#i-o-latency">4. I/O Latency</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#bad-elf">5. Bad ELF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#section-4">性能分析方法论</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#section-5">练习</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lab12-kernel-profiling.html#i-o">0. 演示：I/O 问题的性能分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#section-6">1. 调查降低响应性的问题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#section-7">2. 启动新线程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#cp">3. 调整 <code class="docutils literal"><span class="pre">cp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#i-o-1">4. I/O 延迟</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lab12-kernel-profiling.html#elf">5. 错误的 ELF 文件</a></li>
 </ul>
 </li>
 </ul>
@@ -1844,24 +1844,24 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="labs/kernel_profiling.html">Kernel Profiling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#lab-objectives">Lab Objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#profiling-tools">Profiling Tools</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="labs/kernel_profiling.html">内核分析</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#section-2">实验目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#section-3">概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#section-4">分析工具</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#perf">perf</a></li>
 <li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#ps">ps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#time">time</a></li>
 <li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#top">top</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#profiling-methodology">Profiling Methodology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#exercises">Exercises</a></li>
-<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#demo-profiling-i-o-problems">0. Demo: Profiling I/O Problems</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#investigating-reduced-responsiveness">1. Investigating Reduced Responsiveness</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#launching-new-threads">2. Launching New Threads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#tuning-cp">3. Tuning <code class="docutils literal"><span class="pre">cp</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#i-o-latency">4. I/O Latency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#bad-elf">5. Bad ELF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#section-5">性能分析方法论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#section-6">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="labs/kernel_profiling.html#i-o">0. 演示：I/O 问题的性能分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#section-7">1. 调查降低响应性的问题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#section-8">2. 启动新线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#cp">3. 调整 <code class="docutils literal"><span class="pre">cp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#i-o-1">4. I/O 延迟</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labs/kernel_profiling.html#elf">5. 错误的 ELF 文件</a></li>
 </ul>
 </li>
 </ul>

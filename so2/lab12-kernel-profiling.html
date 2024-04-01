@@ -82,23 +82,23 @@
 <li class="toctree-l2"><a class="reference internal" href="lab10-networking.html">SO2 Lab 10 - Networking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab11-arm-kernel-development.html">SO2 Lab 11 - Kernel Development on ARM</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lab 12 - Kernel Profiling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lab-objectives">Lab Objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#profiling-tools">Profiling Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">实验目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">分析工具</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#perf">perf</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ps">ps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#time">time</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#top">top</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#profiling-methodology">Profiling Methodology</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#demo-profiling-i-o-problems">0. Demo: Profiling I/O Problems</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#investigating-reduced-responsiveness">1. Investigating Reduced Responsiveness</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#launching-new-threads">2. Launching New Threads</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tuning-cp">3. Tuning <code class="docutils literal"><span class="pre">cp</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#i-o-latency">4. I/O Latency</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#bad-elf">5. Bad ELF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">性能分析方法论</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">练习</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#i-o">0. 演示：I/O 问题的性能分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-6">1. 调查降低响应性的问题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">2. 启动新线程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cp">3. 调整 <code class="docutils literal"><span class="pre">cp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i-o-1">4. I/O 延迟</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elf">5. 错误的 ELF 文件</a></li>
 </ul>
 </li>
 </ul>
@@ -144,7 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../labs/arm_kernel_development.html">ARM 内核开发</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/memory_mapping.html">内存映射</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../labs/device_model.html">Linux 设备模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../labs/kernel_profiling.html">Kernel Profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../labs/kernel_profiling.html">内核分析</a></li>
 </ul>
 <p class="caption"><span class="caption-text">有用信息</span></p>
 <ul>
@@ -181,52 +181,34 @@
              
   <div class="section" id="so2-lab-12-kernel-profiling">
 <h1>SO2 Lab 12 - Kernel Profiling<a class="headerlink" href="#so2-lab-12-kernel-profiling" title="永久链接至标题">¶</a></h1>
-<div class="section" id="lab-objectives">
-<h2>Lab Objectives<a class="headerlink" href="#lab-objectives" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-1">
+<h2>实验目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>Familiarize yourself with the basics of Linux kernel profiling</li>
-<li>Understanding basic profiling tools</li>
-<li>Learning profiling methodologies and good practices</li>
+<li>熟悉 Linux 内核分析的基础知识</li>
+<li>理解基本的分析工具</li>
+<li>学习分析方法和良好实践</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="永久链接至标题">¶</a></h2>
-<p>Up until now we have studied how the different components of the Linux kernel
-work, and how to write drivers that interface with them in order to provide
-support for devices or protocols. This has helped us understand how the Linux
-kernel works, but most people will not get to write kernel drivers.</p>
-<p>Nonetheless, the skills learned will help us to write applications that better
-integrate with the whole operating system. In order to do this, one has to have
-a good view of both the user space and the kernel space.</p>
-<p>This session aims to merge the work we have done up until now in the kernel
-space with real world use cases where we do not write kernel space code, but we
-look through the kernel using profiling tools, in order to debug issues that
-we're having when writing regular, low-level, applications.</p>
-<p>Another focus of this session will be learning a general methodology for
-debugging software issues, and we will approach some tools that give us insight
-from the kernel on the way our application runs.</p>
+<div class="section" id="section-2">
+<h2>概述<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<p>到目前为止，我们已经学习了 Linux 内核不同组件的工作方式，以及如何编写与它们交互的驱动程序，以支持设备或协议。这帮助我们了解了 Linux 内核的工作原理，虽然大多数人并不会去编写内核驱动程序。</p>
+<p>尽管如此，所学的技能将帮助我们使应用程序更好地与整个操作系统集成。为了做到这一点，我们必须对用户空间和内核空间有全面的认知。</p>
+<p>本课程旨在将我们在内核空间的工作与实际应用场景相结合，我们在实际场景中不编写内核空间代码，而是使用分析工具查看内核，以便调试我们编写常规低级别应用程序时遇到的问题。</p>
+<p>本课程的另一个重点是学习一些通用的调试软件问题的方法论，并介绍一些工具，帮助我们从内核中获得应用程序运行信息。</p>
 </div>
-<div class="section" id="profiling-tools">
-<h2>Profiling Tools<a class="headerlink" href="#profiling-tools" title="永久链接至标题">¶</a></h2>
-<p>The main tool that we will focus our attention on is <code class="docutils literal"><span class="pre">perf</span></code>, which offers
-support for tracing applications, and also inspecting general aspects of the
-system. We will also be using debugging tools that most people have used in
-their day to day life, such as <code class="docutils literal"><span class="pre">htop</span></code>, <code class="docutils literal"><span class="pre">ps</span></code>, <code class="docutils literal"><span class="pre">lsof</span></code> and others.</p>
+<div class="section" id="section-3">
+<h2>分析工具<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<p>我们主要关注的工具是 <code class="docutils literal"><span class="pre">perf</span></code>，它支持跟踪应用程序，并从一些通用层面检查系统。我们还将使用大多数人在日常生活中会用到的调试工具，如 <code class="docutils literal"><span class="pre">htop</span></code>, <code class="docutils literal"><span class="pre">ps</span></code> 以及 <code class="docutils literal"><span class="pre">lsof</span></code> 等。</p>
 <div class="section" id="perf">
 <h3>perf<a class="headerlink" href="#perf" title="永久链接至标题">¶</a></h3>
-<p><code class="docutils literal"><span class="pre">perf</span></code> is a tool that instruments the CPU using
-tracepoints, kprobes and uprobes. This tool allows us to take a look at what
-functions are being called at a given point. This allows us to take a peak at
-where the kernel is pending the most time, print out call stacks of functions,
-and in general log what the CPU is running.</p>
-<p><code class="docutils literal"><span class="pre">perf</span></code> integrates modules such as:
-* static tracing
-* dynamic tracing
-* resource monitoring</p>
-<p>The tracing interface that is offered by perf can be used by itself, using the
-<code class="docutils literal"><span class="pre">perf</span></code> command together with its subcommands.</p>
+<p><code class="docutils literal"><span class="pre">perf</span></code> 是一个使用跟踪点、kprobes 和 uprobes 来对 CPU 进行插装的工具。该工具允许我们查看在给定点调用了哪些函数。这使我们能够了解内核在哪里花费了最多的时间，打印函数的调用栈，以及记录 CPU 正在运行的内容。</p>
+<p><code class="docutils literal"><span class="pre">perf</span></code> 集成了以下模块：
+* 静态跟踪
+* 动态跟踪
+* 资源监控</p>
+<p>perf 提供的跟踪接口可以通过 <code class="docutils literal"><span class="pre">perf</span></code> 命令及其子命令来使用。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~# ./skels/kernel_profiling/perf
 
  usage: perf [--version] [--help] [OPTIONS] COMMAND [ARGS]
@@ -264,36 +246,21 @@ and in general log what the CPU is running.</p>
  See &#39;perf help COMMAND&#39; for more information on a specific command.
 </pre></div>
 </div>
-<p>In the output above we can see all of perf's subcommands together with a
-description of their functionality, the most significant of which are:</p>
+<p>在上述输出中，我们可以看到 perf 的所有子命令以及它们的功能描述，其中最重要的是：</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">stat</span></code> - displays statistics such as the number of context switches and page
-faults;</li>
-<li><code class="docutils literal"><span class="pre">top</span></code> - an interactive interface where we can inspect the most frequent
-function calls and their caller. This interface allows us direct feedback
-while profiling;</li>
-<li><code class="docutils literal"><span class="pre">list</span></code> - lists the static trace point that we can instrument inside the
-kernel. These are useful when trying to get an insight from inside the kernel;</li>
-<li><code class="docutils literal"><span class="pre">probe</span></code> - add a dynamic trace point that instruments a function call in
-order to be recorded by perf;</li>
-<li><code class="docutils literal"><span class="pre">record</span></code> - records function calls and stack traces based on tracing points
-defined by the user; It can also record specific function calls and their
-stack traces. The record is saved in a file, named <code class="docutils literal"><span class="pre">perf.data</span></code> by default;</li>
-<li><code class="docutils literal"><span class="pre">report</span></code> - displays the information saved in a perf recording.</li>
+<li><code class="docutils literal"><span class="pre">stat</span></code> ——显示统计信息，如上下文切换和缺页错误的次数；</li>
+<li><code class="docutils literal"><span class="pre">top</span></code> ——一个交互式界面，可以查看最频繁的函数调用及其调用者。通过这个界面，我们在进行分析时可以直接提供反馈；</li>
+<li><code class="docutils literal"><span class="pre">list</span></code> ——列出内核中可以插装的静态跟踪点。它可以帮助我们从内核内部获取信息；</li>
+<li><code class="docutils literal"><span class="pre">probe</span></code> ——添加动态跟踪点，插装函数调用，以便被 perf 记录；</li>
+<li><code class="docutils literal"><span class="pre">record</span></code> ——根据用户定义的跟踪点记录函数调用和堆栈跟踪。它还可以记录特定的函数调用及其堆栈跟踪。记录默认保存在一个名为 <code class="docutils literal"><span class="pre">perf.data</span></code> 的文件中；</li>
+<li><code class="docutils literal"><span class="pre">report</span></code> ——显示 perf 记录中保存的信息。</li>
 </ul>
-<p>Another way to use perf's interface is through scripts that wrap over perf that
-offer a higher level way of looking at events or data, without needing to know
-the intricacies of the command. An example of this is the <code class="docutils literal"><span class="pre">iosnoop.sh</span></code> script,
-which displays what I/O transfers are taking place.</p>
+<p>另一种使用 perf 接口的方法是通过封装 perf 的脚本，这些脚本以更高级的方式查看事件或数据，而无需了解复杂的命令。其中一个例子是 <code class="docutils literal"><span class="pre">iosnoop.sh</span></code> 脚本，它显示正在进行的 I/O 传输。</p>
 </div>
 <div class="section" id="ps">
 <h3>ps<a class="headerlink" href="#ps" title="永久链接至标题">¶</a></h3>
-<p><code class="docutils literal"><span class="pre">ps</span></code> is the Linux tool that allows us to monitor the processes that are
-running at a given time on the machine, including the kernel threads. This is a
-simple and easy to use way of checking at a glance what processes are running on
-the CPU, and what is their CPU and memory usage.</p>
-<p>In order to list all the processes running, we use to <code class="docutils literal"><span class="pre">ps</span> <span class="pre">aux</span></code> command in the
-following way:</p>
+<p><code class="docutils literal"><span class="pre">ps</span></code> 是 Linux 上的工具，我们借此可以监视机器在给定时间运行的进程，包括内核线程。这个工具简单易用，可以一目了然地查看 CPU 上正在运行的进程以及它们的 CPU 和内存使用情况。</p>
+<p>为了列出所有正在运行的进程，我们使用 <a href="#system-message-1"><span class="problematic" id="problematic-1">``</span></a>ps aux``命令，就像下面这样：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span>TODO
 root@qemux86:~/skels/kernel_profiling/0-demo# cd
  root@qemux86:~# ps aux
@@ -310,17 +277,11 @@ root@qemux86:~/skels/kernel_profiling/0-demo# cd
  root      2392  2.6  0.0      0     0 ?        D    18:31   0:00 test-script
 </pre></div>
 </div>
-<p>One information of note is that the 7th column represents the that of the
-process, <code class="docutils literal"><span class="pre">S</span></code> meaning suspended, <code class="docutils literal"><span class="pre">D</span></code> suspended due to I/O, and <code class="docutils literal"><span class="pre">R</span></code> meaning
-running.</p>
+<p>一个需要注意的信息是，第 7 列表示进程的状态, <code class="docutils literal"><span class="pre">S</span></code> 表示挂起, <code class="docutils literal"><span class="pre">D</span></code> 表示因 I/O 而挂起, <code class="docutils literal"><span class="pre">R</span></code> 表示正在运行。</p>
 </div>
 <div class="section" id="time">
 <h3>time<a class="headerlink" href="#time" title="永久链接至标题">¶</a></h3>
-<p>The <code class="docutils literal"><span class="pre">time</span></code> command allows us to inspect the amount of time spent by a
-process in I/O, running the application code, or running code in kernel space.
-This can be useful in order to find out whether an application's issue comes
-from running too much in kernel space, so it has some overhead when it does
-system calls, or the issue is in the user code.</p>
+<p>我们可以通过 <code class="docutils literal"><span class="pre">time</span></code> 命令检查进程在 I/O、运行应用程序代码或运行内核空间代码上所花费的时间。这可以帮助我们找出应用程序问题的来源（是因为在内核空间中运行太多，因此在进行系统调用时有一些开销，还是问题出在用户代码中）。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span>root@qemux86:~# time dd if=/dev/urandom of=./test-file bs=1K count=10
 10+0 records in
 10+0 records out
@@ -331,42 +292,26 @@ user        0m0.001s
 sys 0m0.015s
 </pre></div>
 </div>
-<p>In the output above we timed the generation of a file using <code class="docutils literal"><span class="pre">dd</span></code>. The result
-of the timing is displayed at the bottom of output. The values outputted by the
-tool are the following:</p>
+<p>在上述输出中，我们测量了使用 <code class="docutils literal"><span class="pre">dd</span></code> 生成文件所用的时间。计时结果显示在输出的底部。工具输出的值如下：</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">real</span></code> - the amount of time has passed from the start of the application to
-its finishing;</li>
-<li><code class="docutils literal"><span class="pre">user</span></code> - time spent running the <code class="docutils literal"><span class="pre">dd</span></code> code;</li>
-<li><code class="docutils literal"><span class="pre">sys</span></code> - time spent running kernel code on behalf of the process.</li>
+<li><code class="docutils literal"><span class="pre">real</span></code> ——从应用程序启动到结束经过的时间；</li>
+<li><code class="docutils literal"><span class="pre">user</span></code> ——运行 <code class="docutils literal"><span class="pre">dd</span></code> 代码所花费的时间；</li>
+<li><code class="docutils literal"><span class="pre">sys</span></code> ——代表进程运行过程中内核代码所花费的时间。</li>
 </ul>
-<p>We see that the sum of the <code class="docutils literal"><span class="pre">user</span></code> and <code class="docutils literal"><span class="pre">sys</span></code> values doesn't add up to the
-<code class="docutils literal"><span class="pre">real</span></code> value. This happens either when the application runs on multiple cores,
-in which case the sum might be higher, or the application sleeps, in which case
-the sum is lower.</p>
+<p>我们可以看到 <code class="docutils literal"><span class="pre">user</span></code> 和 <code class="docutils literal"><span class="pre">sys</span></code> 值的总和并不等于 <code class="docutils literal"><span class="pre">real</span></code> 值。这种情况可能发生在应用程序在多个核心上运行（总和可能较高），或者应用程序休眠（总和较低）的情况下。</p>
 </div>
 <div class="section" id="top">
 <h3>top<a class="headerlink" href="#top" title="永久链接至标题">¶</a></h3>
-<p><code class="docutils literal"><span class="pre">top</span></code> is an application that is found on most systems which lists in real time
-the applications that are running on the system. <code class="docutils literal"><span class="pre">top</span></code> runs interactively, and
-it auto-refreshes its output, as opposed to <code class="docutils literal"><span class="pre">ps</span></code>. We use this tool when we
-want a high level of continuous monitoring.</p>
+<p><code class="docutils literal"><span class="pre">top</span></code> 是一个应用程序，在大多数系统中都可以找到，它实时列出正在系统上运行的应用程序。 <code class="docutils literal"><span class="pre">top</span></code> 以交互方式运行，并自动刷新其输出，这一点与 <code class="docutils literal"><span class="pre">ps</span></code> 不同。当我们需要进行高级别的持续监控时，我们可以使用该工具。</p>
 </div>
 </div>
-<div class="section" id="profiling-methodology">
-<h2>Profiling Methodology<a class="headerlink" href="#profiling-methodology" title="永久链接至标题">¶</a></h2>
-<p>When doing profiling, our goal is to identify the cause of a problem. Usually
-this problem is observed by someone when their application doesn't work as
-expected. When we say that an application did not work as expected, this can
-mean different things for different people. For example, one person might
-complain that the application has a slowdown, while another might say that the
-application runs on the CPU, but it doesn't output anything.</p>
-<p>The first step in any problem solving context is to understand the default
-behaviour of the application we're trying to debug, and to make sure that it is
-now not running in the expected parameters.</p>
+<div class="section" id="section-4">
+<h2>性能分析方法论<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
+<p>在进行性能分析时，我们的目标是找出问题的原因。通常，这个问题是在应用程序无法按预期工作时被观察到的。当我们说应用程序没有按预期工作时，对于不同的人来说可能意味着不同的事情。例如，一个人可能抱怨应用程序变慢了，而另一个人可能说应用程序在 CPU 上运行，但没有输出任何内容。</p>
+<p>在任何问题解决的环境中，第一步是了解我们要调试的应用程序的默认行为，并确保它目前没有在预期的参数范围内运行。</p>
 </div>
-<div class="section" id="exercises">
-<h2>Exercises<a class="headerlink" href="#exercises" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-5">
+<h2>练习<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">重要</p>
 <p>要解决练习，你需要执行以下步骤：</p>
@@ -378,7 +323,7 @@ now not running in the expected parameters.</p>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 kernel_profiling。请参阅任务名称的练习。</p>
+<p>当前实验名称为 内核分析。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
 tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
@@ -397,9 +342,9 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 tools/labs $ make boot
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/kernel_profiling/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/内核分析/&lt;task_name&gt; 目录中。</p>
 <p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
-<p class="last">请查看 <a href="#system-message-1"><span class="problematic" id="problematic-1">`练习`_</span></a> 部分以获取更详细的信息。</p>
+<p class="last">请查看 <a class="reference internal" href="#section-5">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">警告</p>
@@ -409,82 +354,50 @@ tools/labs $ make boot
 </div>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p class="last">This session will require us to use the <code class="docutils literal"><span class="pre">perf</span></code> tracing tool. When running
-natively on our systems, we have to install the
-<code class="docutils literal"><span class="pre">linux-tools-&lt;version&gt;-generic</span></code> package using a package manager in order
-to run it. Because in our visual machine we don't have access to a package
-manager, we will be downloading the <code class="docutils literal"><span class="pre">perf</span></code> binary from <a class="reference external" href="http://swarm.cs.pub.ro/~sweisz/perf">this</a> link. Download the application in
-the <code class="docutils literal"><span class="pre">skels/kernel_profiling</span></code> directory, and grant in execution
-permissions.</p>
+<p class="last">本任务中我们需要使用 <code class="docutils literal"><span class="pre">perf</span></code> 跟踪工具。当在我们的系统上本地运行时，我们需要使用包管理器安装 <code class="docutils literal"><span class="pre">linux-tools-&lt;version&gt;-generic</span></code> 软件包才能运行它。由于我们的虚拟机没有访问包管理器的权限，我们需要从 <a class="reference external" href="http://swarm.cs.pub.ro/~sweisz/perf">这个</a> 链接下载 <code class="docutils literal"><span class="pre">perf</span></code> 二进制文件。将应用程序下载到 <code class="docutils literal"><span class="pre">skels/kernel_profiling</span></code> 目录，并授予执行权限。</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">警告</p>
-<p class="last">When running <code class="docutils literal"><span class="pre">perf</span></code>, make sure that you're running the downloaded version,
-not the version in the <code class="docutils literal"><span class="pre">PATH</span></code> variable.</p>
+<p class="last">运行 <code class="docutils literal"><span class="pre">perf</span></code> 时，请确保运行的是下载的版本，而不是``PATH``变量中的版本。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p class="last">When going through this session's exercises, we will have to run command in
-parallel. In order to do this, we will have to connect to the virtual machine
-using SSH. We recommend using the <code class="docutils literal"><span class="pre">core-image-sato-sdk-qemu</span></code> image, since it
-has the tools that we need. To run the virtual machine using the
-<code class="docutils literal"><span class="pre">core-image-sato-sdk-qemu</span></code> file system, uncomment line 16 in the
-<code class="docutils literal"><span class="pre">qemu/Makefile</span></code> file.</p>
+<p class="last">在完成本课程的练习时，我们将需要同时运行多个命令。为此，我们需要使用 SSH 连接到虚拟机。我们建议使用 <code class="docutils literal"><span class="pre">core-image-sato-sdk-qemu</span></code> 镜像，因为它具备我们所需的工具。要使用 <code class="docutils literal"><span class="pre">core-image-sato-sdk-qemu</span></code> 文件系统运行虚拟机，请取消 <code class="docutils literal"><span class="pre">qemu/Makefile</span></code> 文件中的第 16 行的注释。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p class="last">If you wish to run the <code class="docutils literal"><span class="pre">perf-tools</span></code> based scripts that we have included in
-the repository, such as <code class="docutils literal"><span class="pre">iosnoop.sh</span></code>, you will have to grant it execution
-privilleges, in order to be copied to the virtual machine file system.</p>
+<p class="last">如果你希望运行我们在仓库中包含的基于 <code class="docutils literal"><span class="pre">perf-tools</span></code> 的脚本，例如 <code class="docutils literal"><span class="pre">iosnoop.sh</span></code>，你需要授予其执行权限，以便将其复制到虚拟机的文件系统中。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p>In order to improve the course of SO2, its components and the way it is
-conducted, your opinions are very useful to us. Please fill the feedback form
-on <a class="reference external" href="https://curs.upb.ro/2022/mod/feedbackadm/view.php?id=15292">curs.upb.ro platform</a>.</p>
-<p>The form is anonymous and is active between May 22 and June 2, 2023. The
-results will be visible to the SO2 team after all the grades have been
-marked.</p>
-<p>We invite you to evaluate the activity of the SO2 team and specify its
-strengths and weaknesses and your suggestions for improving the subject.
-Your feedback is very important to us to increase the quality of the subject
-in the coming years.</p>
-<p>We are particularly interested in:</p>
+<p>你的意见对我们有很大帮助，可以帮助我们改进 SO2 课程的组成部分和开展方式。请填写 <a class="reference external" href="https://curs.upb.ro/2022/mod/feedbackadm/view.php?id=15292">curs.upb.ro 平台上的反馈表格</a>。</p>
+<p>该表格是匿名的，活动时间为 2023 年 5 月 22 日至 6 月 2 日。在所有成绩评定完成后，SO2 团队将能够查看结果。</p>
+<p>我们邀请你评估 SO2 团队的活动，并说明其优点和缺点，以及改进课程的建议。你的反馈对我们来说非常重要，我们借此可以提高未来几年的课程质量。</p>
+<p>我们特别关注以下问题：</p>
 <blockquote class="last">
 <div><ul class="simple">
-<li>What did you not like and what do you think did not go well?</li>
-<li>Why didn't you like it and why do you think it didn't go well?</li>
-<li>What should we do to make things better?</li>
+<li>有哪些内容你不喜欢以及你认为做得不好的地方有哪些？</li>
+<li>为什么你不喜欢它，为什么你认为它做得不好？</li>
+<li>我们应该做些什么来改善情况？</li>
 </ul>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="demo-profiling-i-o-problems">
-<h2>0. Demo: Profiling I/O Problems<a class="headerlink" href="#demo-profiling-i-o-problems" title="永久链接至标题">¶</a></h2>
-<p>When working with I/O, we have to keep in mind that it is one of the slowest
-systems in the operating system, compared to memory, which is an order of
-magnitude faster, and scheduling, which deals with what is currently running on
-the CPU.</p>
-<p>Because of this, I/O operations have do be thought out, because you might starve
-you application by saturating the system with requests. Another issue that you
-might face is that the I/O's slow speed might affect your application's
-responsiveness, if it waits for the I/O operations to finish.</p>
-<p>Let's take a look at an application and debug its issues.</p>
-<p>We are going to run the <code class="docutils literal"><span class="pre">io-app</span></code> application, from the <code class="docutils literal"><span class="pre">0-demo</span></code> directory.</p>
-<p>In order to inspect what is running on the CPU, and look at the stack of the
-process, we can use the <code class="docutils literal"><span class="pre">perf</span> <span class="pre">record</span></code> subcommand in the following way:</p>
+<div class="section" id="i-o">
+<h2>0. 演示：I/O 问题的性能分析<a class="headerlink" href="#i-o" title="永久链接至标题">¶</a></h2>
+<p>在处理 I/O 时，我们必须记住，与内存相比，I/O 是操作系统中速度最慢的系统之一，与之相比内存和进程调度（处理运行在 CPU 上的内容）的速度要快上一个数量级。</p>
+<p>因此，我们必须谨慎考虑 I/O 操作，因为如果系统忙于处理 I/O 请求的话，应用程序可能就无法正常运行。另一个可能遇到的问题是，如果应用程序需要等待 I/O 操作完成的话，I/O 可能因其速度慢而影响应用程序的响应性。</p>
+<p>让我们来看一个应用程序并调试其中的问题。</p>
+<p>我们将运行 <code class="docutils literal"><span class="pre">0-demo</span></code> 目录的 <code class="docutils literal"><span class="pre">io-app</span></code> 应用程序。</p>
+<p>为了检查运行在 CPU 上的内容，并查看进程的堆栈，我们可以使用 <a href="#system-message-2"><span class="problematic" id="problematic-2">``</span></a>perf record``子命令，就像下面这样：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~# ./perf record -a -g
 Couldn&#39;t synthesize bpf events.
 ^C[ perf record: Woken up 7 times to write data ]
 [ perf record: Captured and wrote 1.724 MB perf.data (8376 samples) ]
 </pre></div>
 </div>
-<p>perf will record values indefinitely, but we can close it using the <code class="docutils literal"><span class="pre">Ctrl+c</span></code>
-hotkey. We used the <code class="docutils literal"><span class="pre">-a</span></code> option in order to probe all CPUs, and <code class="docutils literal"><span class="pre">-g</span></code> option,
-which record the whole call stack.</p>
-<p>To visualize the recorded information, we will use the <code class="docutils literal"><span class="pre">perf</span> <span class="pre">report</span></code> command,
-which will bring up a pager which will display the most frequent function calls
-that were found on the CPU, and their call stack.</p>
+<p>perf 将无限期记录值，但我们可以使用 <code class="docutils literal"><span class="pre">Ctrl+c</span></code> 快捷键关闭它。我们使用了 <code class="docutils literal"><span class="pre">-a</span></code> 选项来探测所有 CPU，并使用 <code class="docutils literal"><span class="pre">-g</span></code> 选项记录整个调用堆栈。</p>
+<p>为了可视化记录的信息，我们需要使用 <code class="docutils literal"><span class="pre">perf</span> <span class="pre">report</span></code> 命令，它将打开一个页面，显示在 CPU 上的最频繁的函数调用及其调用堆栈。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~# ./perf report --header -F overhead,comm,parent
 <span class="c1"># Total Lost Samples: 0</span>
 <span class="c1">#</span>
@@ -513,14 +426,9 @@ that were found on the CPU, and their call stack.</p>
 <span class="o">[</span>...<span class="o">]</span>
 </pre></div>
 </div>
-<p>We have used the <code class="docutils literal"><span class="pre">--header</span></code> in order to print the table header, and <code class="docutils literal"><span class="pre">-F</span>
-<span class="pre">overhead,comm,parent</span></code>, in order to print the percentage of time where the call
-stack, the command and the caller.</p>
-<p>We can see that the <code class="docutils literal"><span class="pre">io-app</span></code> command is doing some writes in the file system,
-and this contributes to much of the load on the system.</p>
-<p>Armed with this information, we know that there are many I/O calls being done by
-the application. In order to look at the size of these requests, we can use the
-<code class="docutils literal"><span class="pre">iosnoop.sh</span></code> script in order to see how big these requests are.</p>
+<p>我们使用 <code class="docutils literal"><span class="pre">--header</span></code> 选项打印表头，并使用 <code class="docutils literal"><span class="pre">-F</span> <span class="pre">overhead,comm,parent</span></code> 选项打印调用堆栈、命令和调用者的时间百分比。</p>
+<p>我们可以看到 <code class="docutils literal"><span class="pre">io-app</span></code> 命令在文件系统中进行了一些写操作，这在很大程度上增加了系统的负载。</p>
+<p>有了这些信息，我们知道了应用程序正在进行许多 I/O 调用。为了查看这些请求的大小，我们可以使用 <code class="docutils literal"><span class="pre">iosnoop.sh</span></code> 脚本。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~/skels/kernel_profiling# ./iosnoop.sh <span class="m">1</span>
 Tracing block I/O. Ctrl-C to end.
 COMM         PID    TYPE DEV      BLOCK        BYTES     LATms
@@ -540,83 +448,52 @@ io-app       <span class="m">889</span>    WS   <span class="m">254</span>,0    
 <span class="o">[</span>...<span class="o">]</span>
 </pre></div>
 </div>
-<p>From this output we see that the <code class="docutils literal"><span class="pre">io-app</span></code> is reading in a loop from the fact
-that the first block <code class="docutils literal"><span class="pre">4800512</span></code> is repeating, and that it is doing big reads,
-since it is reading one megabyte fer request. This constant looping adds the
-load to the system that we're experiencing.</p>
-<div class="section" id="investigating-reduced-responsiveness">
-<h3>1. Investigating Reduced Responsiveness<a class="headerlink" href="#investigating-reduced-responsiveness" title="永久链接至标题">¶</a></h3>
-<p>The <code class="docutils literal"><span class="pre">io.ko</span></code> module, located in the <code class="docutils literal"><span class="pre">kernel_profiling/1-io</span></code> directory,
-decreases the system's responsiveness when inserted. We see that the command
-line stutters when typing commands, but when running top, we see that the
-system's load is not high, and there aren't any processes that are hogging
-resources.</p>
-<p>Find out what the <code class="docutils literal"><span class="pre">io.ko</span></code> module is doing and why is it leading to the
-stuttering effect that we experience.</p>
+<p>根据这个输出，我们可以看到 <code class="docutils literal"><span class="pre">io-app</span></code> 在进行循环读取，因为第一个块 <code class="docutils literal"><span class="pre">4800512</span></code> 重复出现，并且它进行了大块读取，因为它每次读取一兆字节。这个不断循环的过程增加了我们所经历的系统负载。</p>
+<div class="section" id="section-6">
+<h3>1. 调查降低响应性的问题<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">io.ko</span></code> 模块位于 <code class="docutils literal"><span class="pre">kernel_profiling/1-io</span></code> 目录中，在插入后会降低系统的响应性。我们注意到在输入命令时命令行会出现卡顿，但是在运行 <code class="docutils literal"><span class="pre">top</span></code> 命令时，我们发现系统的负载并不高，并且没有任何占用资源的进程。</p>
+<p>找出 <code class="docutils literal"><span class="pre">io.ko</span></code> 模块在做什么，以及为什么它会导致卡顿。</p>
 <div class="admonition hint">
 <p class="first admonition-title">提示</p>
-<p class="last">Trace all the functions being called and check where the CPU is
-spending most of its time. In order to do this, you can run either <code class="docutils literal"><span class="pre">perf</span>
-<span class="pre">record</span></code> and <code class="docutils literal"><span class="pre">perf</span> <span class="pre">report</span></code> to view the output, or <code class="docutils literal"><span class="pre">perf</span> <span class="pre">top</span></code>.</p>
+<p class="last">跟踪所有被调用的函数，并检查 CPU 在哪里花费了大部分时间。为此，你可以运行 <code class="docutils literal"><span class="pre">perf</span> <span class="pre">record</span></code> 和 <code class="docutils literal"><span class="pre">perf</span> <span class="pre">report</span></code> 并查看输出，或者使用 <code class="docutils literal"><span class="pre">perf</span> <span class="pre">top</span></code> 命令。</p>
 </div>
 </div>
-<div class="section" id="launching-new-threads">
-<h3>2. Launching New Threads<a class="headerlink" href="#launching-new-threads" title="永久链接至标题">¶</a></h3>
-<p>We want to run the same function in a loop 100 times in parallel. We have
-implemented two solutions inside the <code class="docutils literal"><span class="pre">scheduling</span></code> binary file, located in the
-<code class="docutils literal"><span class="pre">kernel_profiling/2-scheduling</span></code> directory.</p>
-<p>When executing the <code class="docutils literal"><span class="pre">scheduling</span></code> binary, it prints a message in parallel from
-100 running instances. We can tune this execution by running the application
-either with the first parameter <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code>.</p>
-<p>Find out which solution is better, and why.</p>
+<div class="section" id="section-7">
+<h3>2. 启动新线程<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<p>我们希望以并行方式将同一个函数循环运行 100 次。我们在 <code class="docutils literal"><span class="pre">kernel_profiling/2-scheduling</span></code> 目录下的 <code class="docutils literal"><span class="pre">scheduling</span></code> 可执行文件中实现了两种解决方案。</p>
+<p>当执行 <code class="docutils literal"><span class="pre">scheduling</span></code> 可执行文件时，它会并行打印 100 个运行实例的消息。我们可以通过将第一个参数设为 <code class="docutils literal"><span class="pre">0</span></code> 或 <code class="docutils literal"><span class="pre">1</span></code> 来调整执行方式。</p>
+<p>找出哪种解决方案更好，以及原因是什么。</p>
 </div>
-<div class="section" id="tuning-cp">
-<h3>3. Tuning <code class="docutils literal"><span class="pre">cp</span></code><a class="headerlink" href="#tuning-cp" title="永久链接至标题">¶</a></h3>
-<p>Our goal is to write a copy of the <code class="docutils literal"><span class="pre">cp</span></code> tool integrated in Linux, which has
-been implemented by the <code class="docutils literal"><span class="pre">memory</span></code> binary, in the <code class="docutils literal"><span class="pre">kernel_profiling/3-memory</span></code>
-directory. It implements two approaches that we can take for the copy operation:</p>
+<div class="section" id="cp">
+<h3>3. 调整 <code class="docutils literal"><span class="pre">cp</span></code><a class="headerlink" href="#cp" title="永久链接至标题">¶</a></h3>
+<p>我们的目标是编写一个集成在 Linux 中的 <code class="docutils literal"><span class="pre">cp</span></code> 工具的副本，该工具已经由 <code class="docutils literal"><span class="pre">kernel_profiling/3-memory</span></code> 目录中的 <code class="docutils literal"><span class="pre">memory</span></code> 可执行文件实现。它对复制操作支持两种实现：</p>
 <ul class="simple">
-<li>reading the contents of the source file in a buffer in memory using the
-<code class="docutils literal"><span class="pre">read()</span></code> system call, and writing that buffer to the destination file using
-the <code class="docutils literal"><span class="pre">write()</span></code> system call;</li>
-<li>mapping the source and destination files to memory using the <code class="docutils literal"><span class="pre">mmap</span></code> system
-call, and copying the contents of the source file to the destination in
-memory.</li>
+<li>使用 <code class="docutils literal"><span class="pre">read()</span></code> 系统调用将源文件的内容读入内存缓冲区，并使用 <code class="docutils literal"><span class="pre">write()</span></code> 系统调用将该缓冲区写入目标文件；</li>
+<li>使用 <code class="docutils literal"><span class="pre">mmap</span></code> 系统调用将源文件和目标文件映射到内存中，然后在内存中将源文件的内容复制到目标文件中。</li>
 </ul>
-<p>Another tunable parameter that we're going to use is the block size of to copies
-that we're going to make, either through reads/writes or in memory.</p>
-<p>1) Investigate which of the two copying mechanisms is faster. For this step, you
-will use the 1024 block size.</p>
-<p>2) Once you have found which copying mechanism is faster, change the block size
-parameter and see which value gives you the best copies. Why?</p>
+<p>另一个我们可以使用的可调参数是复制操作的块大小，无论是通过读取/写入还是在内存中进行都支持这个参数。</p>
+<ol class="arabic simple">
+<li>调查这两种复制机制中哪一种更快。在这一步中，你需要使用 1024 字节的块大小。</li>
+<li>一旦找到哪种复制机制更快，更改块大小参数，看看哪个值能给出最好的复制效果。为什么？</li>
+</ol>
 </div>
-<div class="section" id="i-o-latency">
-<h3>4. I/O Latency<a class="headerlink" href="#i-o-latency" title="永久链接至标题">¶</a></h3>
-<p>We have written a module that reads the content of a disk. Insert the <code class="docutils literal"><span class="pre">bio.ko</span></code>
-module, located in the <code class="docutils literal"><span class="pre">4-bio</span></code> module, we see a large spike in the system's
-load, as can be seen in the <code class="docutils literal"><span class="pre">top</span></code> command, but we see that the system is still
-responsive.</p>
-<p>Investigate what is causing the increased load to the system. Is it an I/O issue,
-or is it a scheduling issue?</p>
+<div class="section" id="i-o-1">
+<h3>4. I/O 延迟<a class="headerlink" href="#i-o-1" title="永久链接至标题">¶</a></h3>
+<p>我们编写了一个模块来读取磁盘的内容。插入位于 <code class="docutils literal"><span class="pre">4-bio</span></code> 目录中的 <code class="docutils literal"><span class="pre">bio.ko</span></code> 模块后，系统负载急剧上升（可以在 <code class="docutils literal"><span class="pre">top</span></code> 命令中看到），但我们发现系统仍然响应良好。</p>
+<p>调查是什么导致系统负载增加。是 I/O 问题还是调度问题？</p>
 <div class="admonition hint">
 <p class="first admonition-title">提示</p>
-<p class="last">Try to trace the I/O operations using <code class="docutils literal"><span class="pre">perf</span></code>, or use the
-<code class="docutils literal"><span class="pre">iosnoop.sh</span></code> script in order to inspect what I/O is happening at a
-certain point.</p>
+<p class="last">尝试使用 <code class="docutils literal"><span class="pre">perf</span></code> 跟踪I/O操作，或使用 <code class="docutils literal"><span class="pre">iosnoop.sh</span></code> 脚本来检查在特定时间点发生了哪些 I/O 操作。</p>
 </div>
 </div>
-<div class="section" id="bad-elf">
-<h3>5. Bad ELF<a class="headerlink" href="#bad-elf" title="永久链接至标题">¶</a></h3>
+<div class="section" id="elf">
+<h3>5. 错误的 ELF 文件<a class="headerlink" href="#elf" title="永久链接至标题">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p class="last">This is a bonus exercise that has been tested on a native Linux system.
-It may run under the QEMU virtual machine, but the behavior was weird in our testing.
-We recommend you used a native (or VirtualBox or VMware) Linux system.</p>
+<p class="last">这是一个额外的练习，已在原生 Linux 系统上进行了测试。它可以在 QEMU 虚拟机中运行，但在我们的测试中行为很奇怪。我们建议你使用原生（也可以是 VirtualBox 或者 VMware）的 Linux 系统。</p>
 </div>
-<p>We managed to build (as part of a <a class="reference external" href="https://github.com/unikraft/unikraft">Unikraft</a> build) an ELF file that is valid when doing static analysis, but that can't be executed.
-The file is <code class="docutils literal"><span class="pre">bad_elf</span></code>, located in the <code class="docutils literal"><span class="pre">5-bad-elf/</span></code> folder.</p>
-<p>Running it triggers a <em>segmentation fault</em> message.
-Running it using <code class="docutils literal"><span class="pre">strace</span></code> show an error with <code class="docutils literal"><span class="pre">execve()</span></code>.</p>
+<p>我们成功构建了一个 ELF文件（作为 <a class="reference external" href="https://github.com/unikraft/unikraft">Unikraft</a> 构建的一部分），在静态分析中该文件是有效的，但无法执行。该文件名为 <code class="docutils literal"><span class="pre">bad_elf</span></code>，位于 <code class="docutils literal"><span class="pre">5-bad-elf/</span></code> 文件夹中。</p>
+<p>运行它会触发“段错误（segmentation fault）”消息。如果使用 <code class="docutils literal"><span class="pre">strace</span></code> 运行它则会显示 <code class="docutils literal"><span class="pre">execve()</span></code> 出现错误。</p>
 <div class="code highlight-none"><div class="highlight"><pre><span></span>... skels/kernel_profiling/5-bad-elf$ ./bad_elf
 Segmentation fault
 
@@ -627,15 +504,12 @@ execve(&quot;./bad_elf&quot;, [&quot;./bad_elf&quot;], 0x7ffc3349ba50 /* 70 vars
 Segmentation fault (core dumped)
 </pre></div>
 </div>
-<p>The ELF file itself is valid:</p>
+<p>ELF 文件本身是有效的：</p>
 <div class="code highlight-none"><div class="highlight"><pre><span></span>... skels/kernel_profiling/5-bad-elf$ readelf -a bad_elf
 </pre></div>
 </div>
-<p>The issue is to be detected in the kernel.</p>
-<p>Use either <code class="docutils literal"><span class="pre">perf</span></code>, or, better yet <a class="reference external" href="https://jvns.ca/blog/2017/03/19/getting-started-with-ftrace/">ftrace</a> to inspect the kernel function calls done by the program.
-Identify the function call that sends out the <code class="docutils literal"><span class="pre">SIGSEGV</span></code> signal.
-Identify the cause of the issue.
-Find that cause in the <a class="reference external" href="https://linux.die.net/man/5/elf">manual page elf(5)</a>.</p>
+<p>问题可以在内核中检测到。</p>
+<p>使用 <code class="docutils literal"><span class="pre">perf</span></code> 或更好的 <a class="reference external" href="https://jvns.ca/blog/2017/03/19/getting-started-with-ftrace/">ftrace</a> 来检查程序调用的内核函数。确定发送 <code class="docutils literal"><span class="pre">SIGSEGV</span></code> 信号的函数调用。找出问题的原因。在 <a class="reference external" href="https://linux.die.net/man/5/elf">elf(5)手册页</a> 中找到该原因。</p>
 </div>
 </div>
 </div>
