@@ -66,7 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lectures/interrupts.html">中断</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/smp.html">对称多处理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">地址空间</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">Memory Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">内存管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">Filesystem Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">Network Management</a></li>
@@ -331,16 +331,21 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec7-memory-management.html">SO2 Lecture 07 - Memory Management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#physical-memory-management">Physical Memory Management</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#memory-zones">Memory zones</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#non-uniform-memory-access">Non-Uniform Memory Access</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#page-allocation">Page allocation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#small-allocations">Small allocations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#section-1">课程目标：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#section-2">物理内存管理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#section-3">内存区域</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#section-4">非均匀内存访问</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#section-5">页面分配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#linux">Linux 的实现</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#section-6">小型分配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#slab">SLAB 架构</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#virtual-memory-management">Virtual memory management</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#fault-page-handling">Fault page handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#section-7">虚拟内存管理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec7-memory-management.html#section-8">地址空间描述符</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec7-memory-management.html#section-9">缺页处理</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec8-filesystems.html">SO2 Lecture 08 - Filesystem Management</a><ul>
@@ -1219,17 +1224,22 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">Memory Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#physical-memory-management">Physical Memory Management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#memory-zones">Memory zones</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#non-uniform-memory-access">Non-Uniform Memory Access</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#page-allocation">Page allocation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#small-allocations">Small allocations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">内存管理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#section-2">课程目标：</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#section-3">物理内存管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#section-4">内存区域</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#section-5">非均匀内存访问</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#section-6">页面分配</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#linux">Linux 的实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#section-7">小型分配</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#slab">SLAB 架构</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#virtual-memory-management">Virtual memory management</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#fault-page-handling">Fault page handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#section-8">虚拟内存管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/memory-management.html#section-9">地址空间描述符</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#section-10">缺页处理</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">Filesystem Management</a><ul>
