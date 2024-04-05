@@ -66,26 +66,26 @@
 <li class="toctree-l2"><a class="reference internal" href="lec6-address-space.html">SO2 Lecture 06 - Address Space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lec7-memory-management.html">SO2 Lecture 07 - Memory Management</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lecture 08 - Filesystem Management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#filesystem-abstractions">Filesystem Abstractions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#filesystem-operations">Filesystem Operations</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mounting-a-filesystem">Mounting a filesystem</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#opening-a-file">Opening a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#querying-file-attributes">Querying file attributes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#reading-data-from-a-file">Reading data from a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#writing-data-to-a-file">Writing data to a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#closing-a-file">Closing a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#directories">Directories</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-a-file">Creating a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#deleting-a-file">Deleting a file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">课程目标：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">文件系统抽象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">文件系统操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-4">挂载文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-5">打开文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-6">查询文件属性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">从文件读取数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">向文件写入数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">关闭文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-10">目录</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-11">创建文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-12">删除文件</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#linux-virtual-file-system">Linux Virtual File System</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#superblock-operations">Superblock Operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#inode-operations">Inode Operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-inode-cache">The Inode Cache</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-dentry-cache">The Dentry Cache</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-page-cache">The Page Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux 虚拟文件系统</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">超级块操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inode">Inode 操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inode-1">Inode 缓存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-14">目录项缓存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-15">页面缓存</a></li>
 </ul>
 </li>
 </ul>
@@ -125,7 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../lectures/smp.html">对称多处理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/address-space.html">地址空间</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/memory-management.html">内存管理</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lectures/fs.html">Filesystem Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures/fs.html">文件系统管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/debugging.html">Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/networking.html">Network Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/arch.html">Architecture Layer</a></li>
@@ -185,258 +185,199 @@
   <div class="section" id="so2-lecture-08-filesystem-management">
 <h1>SO2 Lecture 08 - Filesystem Management<a class="headerlink" href="#so2-lecture-08-filesystem-management" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="lec8-filesystems-slides.html">View slides</a></p>
-<span class="admonition-so2-lecture-08-filesystem-management"></span><div class="section" id="lecture-objectives">
-<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="永久链接至标题">¶</a></h2>
-<ul class="admonition-filesystem-management simple">
-<li>Filesystem abstractions</li>
-<li>Filesystem operations</li>
+<span class="admonition-so2-lecture-08-filesystem-management"></span><div class="section" id="section-1">
+<h2>课程目标：<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
+<ul class="admonition- simple">
+<li>文件系统抽象</li>
+<li>文件系统操作</li>
 <li>Linux VFS</li>
-<li>Overview of Linux I/O Management</li>
+<li>Linux I/O 管理概述</li>
 </ul>
 </div>
-<div class="section" id="filesystem-abstractions">
-<h2>Filesystem Abstractions<a class="headerlink" href="#filesystem-abstractions" title="永久链接至标题">¶</a></h2>
-<p>A fileystem is a way to organize files and directories on storage
-devices such as hard disks, SSDs or flash memory. There are many types
-of filesystems (e.g. FAT, ext4, btrfs, ntfs) and on one running system
-we can have multiple instances of the same filesystem type in use.</p>
-<p>While filesystems use different data structures to organizing the
-files, directories, user data and meta (internal) data on storage
-devices there are a few common abstractions that are used in almost
-all filesystems:</p>
-<ul class="admonition-filesystem-abstractions simple">
-<li>superblock</li>
-<li>file</li>
-<li>inode</li>
-<li>dentry</li>
+<div class="section" id="section-2">
+<h2>文件系统抽象<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<p>文件系统是一种在存储设备（如硬盘、固态硬盘或闪存）上组织文件和目录的方式。有许多类型的文件系统（例如FAT、ext4、btrfs、ntfs），在单个运行的系统上，我们可以同时使用同一种文件系统的多个实例。</p>
+<p>尽管不同文件系统用来组织存储设备上的文件、目录、用户数据和元数据（内部数据）的数据结构不一致，但几乎所有文件系统都使用了一些常见的抽象：</p>
+<ul class="admonition- simple">
+<li>超级块（superblock）</li>
+<li>文件（file）</li>
+<li>索引节点（inode）</li>
+<li>目录项（dentry）</li>
 </ul>
-<p>Some of these abstractions are present both on disk and in memory
-while some are only present in memory.</p>
-<p>The <em>superblock</em> abstraction contains information about the filesystem
-instance such as the block size, the root inode, filesystem size. It
-is present both on storage and in memory (for caching purposes).</p>
-<p>The <em>file</em> abstraction contains information about an opened file such
-as the current file pointer. It only exists in memory.</p>
-<p>The <em>inode</em> is identifying a file on disk. It exists both on storage
-and in memory (for caching purposes). An inode identifies a file in a
-unique way and has various properties such as the file size, access
-rights, file type, etc.</p>
+<p>其中一些抽象同时存在于磁盘和内存中，而另一些只存在于内存中。</p>
+<p><em>超级块</em> 抽象包含有关文件系统实例的信息，如块大小、根索引节点、文件系统大小。它既存在于存储中，也存在于内存中（用于缓存目的）。</p>
+<p><em>文件</em> 抽象包含有关已打开文件的信息，如指向当前文件的指针。它只存在于内存中。</p>
+<p><em>索引节点</em> 用于标识磁盘上的文件。它既存在于存储中，也存在于内存中（用于缓存目的）。每个索引节点全系统唯一，用于标识文件，并具有各种属性，如文件大小、访问权限、文件类型等。</p>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p class="last">The file name is not a property of the file.</p>
+<p class="last">文件名不是 file 的属性。</p>
 </div>
-<p>The <em>dentry</em> associates a name with an inode. It exists both on
-storage and in memory (for caching purposes).</p>
-<p>The following diagram shows the relationship between the various filesystem
-abstractions as they used in memory:</p>
-<img alt="../_images/ditaa-29f54aaa1a85b819ff29cb7d101a4d646b3b0b06.png" class="admonition-filesystem-abstractions-in-memory" src="../_images/ditaa-29f54aaa1a85b819ff29cb7d101a4d646b3b0b06.png" />
-<p>Note that not all of the one to many relationships between the various
-abstractions are depicted.</p>
-<p>Multiple file descriptors can point to the same <em>file</em> because we can
-use the <code class="xref c c-func docutils literal"><span class="pre">dup()</span></code> system call to duplicate a file descriptor.</p>
-<p>Multiple <em>file</em> abstractions can point to the same <em>dentry</em> if we open
-the same path multiple times.</p>
-<p>Multiple <em>dentries</em> can point to the same <em>inode</em> when hard links are
-used.</p>
-<p>The following diagram shows the relationship of the filesystem
-abstraction on storage:</p>
-<img alt="../_images/ditaa-bc662dab7bb3d9ba3a37efbf69b82c513dcaadd4.png" class="admonition-filesystem-abstractions-on-storage" src="../_images/ditaa-bc662dab7bb3d9ba3a37efbf69b82c513dcaadd4.png" />
-<p>The diagram shows that the <em>superblock</em> is typically stored at the
-beginning of the fileystem and that various blocks are used with
-different purposes: some to store dentries, some to store inodes and
-some to store user data blocks. There are also blocks used to manage
-the available free blocks (e.g. bitmaps for the simple filesystems).</p>
-<p>The next diagram show a very simple filesystem where blocks are
-grouped together by function:</p>
+<p><em>目录项</em> 将名称与索引节点关联起来。它既存在于存储中，也存在于内存中（用于缓存目的）。</p>
+<p>下图显示了各种文件系统抽象在内存中的关系：</p>
+<img alt="../_images/ditaa-29f54aaa1a85b819ff29cb7d101a4d646b3b0b06.png" class="admonition-" src="../_images/ditaa-29f54aaa1a85b819ff29cb7d101a4d646b3b0b06.png" />
+<p>请注意，并非所有抽象之间的一对多关系都在图示中表示出来。</p>
+<p>多个文件描述符可以指向同一个 <em>file</em>，因为我们可以使用 <code class="xref c c-func docutils literal"><span class="pre">dup()</span></code> 系统调用来复制文件描述符。</p>
+<p>如果我们多次打开相同的路径，多个 <em>file</em> 抽象可以指向同一个 <em>dentry</em>。</p>
+<p>如果使用硬链接的话，多个 <em>dentry</em> 可以指向同一个 <em>inode</em>。</p>
+<p>下图显示了存储中文件系统抽象之间的关系：</p>
+<img alt="../_images/ditaa-bc662dab7bb3d9ba3a37efbf69b82c513dcaadd4.png" class="admonition-" src="../_images/ditaa-bc662dab7bb3d9ba3a37efbf69b82c513dcaadd4.png" />
+<p>该图示显示, <em>超级块</em> 通常存储在文件系统的开头，各种块用于不同的目的：一些用于存储 <em>dentry</em>，一些用于存储 <em>inode</em>，还有一些用于存储用户数据块。还有用于管理可用空闲块的块（例如简单文件系统的位图）。</p>
+<p>下图显示了一个非常简单的文件系统，其中块按功能分组：</p>
 <ul class="simple">
-<li>the superblock contains information about the block size as well as
-the IMAP, DMAP, IZONE and DZONE areas.</li>
-<li>the IMAP area is comprised of multiple blocks which contains a
-bitmap for inode allocation; it maintains the allocated/free state
-for all inodes in the IZONE area</li>
-<li>the DMAP area is comprised of multiple blocks which contains a
-bitmap for data blocks; it maintains the allocated/free state for
-all blocks the DZONE area</li>
+<li>超级块包含有关块大小以及 IMAP、DMAP、IZONE 和 DZONE 区域的信息。</li>
+<li>IMAP 区域由多个块组成，其中包含用于 inode 分配的位图；它维护 IZONE 区域中所有 inode 的已分配/空闲状态。</li>
+<li>DMAP 区域由多个块组成，其中包含用于数据块的位图；它维护 DZONE 区域中所有块的已分配/空闲状态。</li>
 </ul>
-<p class="admonition-simple-filesystem-example">&nbsp;</p>
+<p class="admonition-">&nbsp;</p>
 <img alt="../_images/ditaa-8b59fc3f5245ffb5d7089dc80cf2e306c39a62d8.png" src="../_images/ditaa-8b59fc3f5245ffb5d7089dc80cf2e306c39a62d8.png" />
 </div>
-<div class="section" id="filesystem-operations">
-<h2>Filesystem Operations<a class="headerlink" href="#filesystem-operations" title="永久链接至标题">¶</a></h2>
-<p>The following diagram shows a high level overview of how the file
-system drivers interact with the rest of the file system &quot;stack&quot;. In
-order to support multiple filesystem types and instances Linux
-implements a large and complex subsystem that deals with filesystem
-management. This is called Virtual File System (or sometimes Virtual
-File Switch) and it is abbreviated with VFS.</p>
-<img alt="../_images/ditaa-6d39f541805ae8197b413ec9c79116382abc4dbc.png" class="admonition-overview" src="../_images/ditaa-6d39f541805ae8197b413ec9c79116382abc4dbc.png" />
-<p>VFS translates the complex file management related system calls to
-simpler operations that are implemented by the device drivers. These
-are some of the operations that a file system must implement:</p>
-<ul class="admonition-filesystem-operations simple">
-<li>Mount</li>
-<li>Open a file</li>
-<li>Querying file attributes</li>
-<li>Reading data from a file</li>
-<li>Writing file to a file</li>
-<li>Creating a file</li>
-<li>Deleting a file</li>
+<div class="section" id="section-3">
+<h2>文件系统操作<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<p>下图显示了文件系统驱动程序与文件系统“堆栈”的其他部分之间交互的高级概述。为了支持多种文件系统类型和实例，Linux 实现了一个庞大而复杂的子系统来处理文件系统管理。这被称为虚拟文件系统（有时也称为虚拟文件切换），英文简称为 VFS。</p>
+<img alt="../_images/ditaa-6d39f541805ae8197b413ec9c79116382abc4dbc.png" class="admonition-" src="../_images/ditaa-6d39f541805ae8197b413ec9c79116382abc4dbc.png" />
+<p>VFS 将与复杂的文件管理相关的系统调用转换为由设备驱动程序实现的简化操作。文件系统必须实现以下一些操作：</p>
+<ul class="admonition- simple">
+<li>挂载</li>
+<li>打开文件</li>
+<li>查询文件属性</li>
+<li>从文件读取数据</li>
+<li>将数据写入文件</li>
+<li>创建文件</li>
+<li>删除文件</li>
 </ul>
-<p>The next sections will look in-depth at some of these operations.</p>
-<div class="section" id="mounting-a-filesystem">
-<h3>Mounting a filesystem<a class="headerlink" href="#mounting-a-filesystem" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-mounting-a-filesystem simple">
-<li>Input: a storage device (partition)</li>
-<li>Output: dentry pointing to the root directory</li>
-<li>Steps: check device, determine filesystem parameters, locate the root inode</li>
-<li>Example: check magic, determine block size, read the root inode and create dentry</li>
+<p>接下来的章节将深入讨论其中的一些操作。</p>
+<div class="section" id="section-4">
+<h3>挂载文件系统<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：存储设备（分区）</li>
+<li>输出：指向根目录的 dentry</li>
+<li>步骤：检查设备，确定文件系统参数，定位根 inode</li>
+<li>示例：检查魔数，确定块大小，读取根 inode 并创建 dentry</li>
 </ul>
 </div>
-<div class="section" id="opening-a-file">
-<h3>Opening a file<a class="headerlink" href="#opening-a-file" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-opening-a-file simple">
-<li>Input: path</li>
-<li>Output: file descriptor</li>
-<li>Steps:<ul>
-<li>Determine the filesystem type</li>
-<li>For each name in the path: lookup parent dentry, load inode,
-load data, find dentry</li>
-<li>Create a new <em>file</em> that points to the last <em>dentry</em></li>
-<li>Find a free entry in the file descriptor table and set it to <em>file</em></li>
+<div class="section" id="section-5">
+<h3>打开文件<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：路径</li>
+<li>输出：文件描述符</li>
+<li>步骤：<ul>
+<li>确定文件系统类型</li>
+<li>对于路径中的每个名称：查找父级 dentry，加载 inode，加载数据，找到 dentry</li>
+<li>创建指向最后一个 dentry 的新的 <em>file</em></li>
+<li>在文件描述符表中找到一个空闲条目，并将其设置为 <em>file</em></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="querying-file-attributes">
-<h3>Querying file attributes<a class="headerlink" href="#querying-file-attributes" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-querying-file-attributes simple">
-<li>Input: path</li>
-<li>Output: file attributes</li>
-<li>Steps:<ul>
-<li>Access <cite>file-&gt;dentry-&gt;inode</cite></li>
-<li>Read file attributes from the <em>inode</em></li>
+<div class="section" id="section-6">
+<h3>查询文件属性<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：路径</li>
+<li>输出：文件属性</li>
+<li>步骤：<ul>
+<li>访问 <cite>file-&gt;dentry-&gt;inode</cite></li>
+<li>从 <em>inode</em> 中读取文件属性</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="reading-data-from-a-file">
-<h3>Reading data from a file<a class="headerlink" href="#reading-data-from-a-file" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-reading-data-from-a-file simple">
-<li>Input: file descriptor, offset, length</li>
-<li>Output: data</li>
-<li>Steps:<ul>
-<li>Access <cite>file-&gt;dentry-&gt;inode</cite></li>
-<li>Determine data blocks</li>
-<li>Copy data blocks to memory</li>
+<div class="section" id="section-7">
+<h3>从文件读取数据<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：文件描述符、偏移量、长度</li>
+<li>输出：数据</li>
+<li>步骤：<ul>
+<li>访问 <cite>file-&gt;dentry-&gt;inode</cite></li>
+<li>确定数据块</li>
+<li>将数据块复制到内存中</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="writing-data-to-a-file">
-<h3>Writing data to a file<a class="headerlink" href="#writing-data-to-a-file" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-writing-data-to-a-file simple">
-<li>Input: file descriptor, offset, length, data</li>
-<li>Output:</li>
-<li>Steps:<ul>
-<li>Allocate one or more data blocks</li>
-<li>Add the allocated blocks to the inode and update file size</li>
-<li>Copy data from userspace to internal buffers and write them to
-storage</li>
+<div class="section" id="section-8">
+<h3>向文件写入数据<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：文件描述符、偏移量、长度、数据</li>
+<li>输出：</li>
+<li>步骤：<ul>
+<li>分配一个或多个数据块</li>
+<li>将分配的块添加到 inode 中并更新文件大小</li>
+<li>将数据从用户空间复制到内部缓冲区，并将其写入存储</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="closing-a-file">
-<h3>Closing a file<a class="headerlink" href="#closing-a-file" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-closing-a-file simple">
-<li>Input: file descriptor</li>
-<li>Output:</li>
-<li>Steps:<ul>
-<li>set the file descriptor entry to NULL</li>
-<li>Decrement file reference counter</li>
-<li>When the counter reaches 0 free <em>file</em></li>
+<div class="section" id="section-9">
+<h3>关闭文件<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：文件描述符</li>
+<li>输出：</li>
+<li>步骤：<ul>
+<li>将文件描述符条目设置为 NULL</li>
+<li>减少文件引用计数器</li>
+<li>当计数器达到 0 时释放 <em>file</em></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="directories">
-<h3>Directories<a class="headerlink" href="#directories" title="永久链接至标题">¶</a></h3>
-<p class="admonition-directories">Directories are special files which contain one or more dentries.</p>
+<div class="section" id="section-10">
+<h3>目录<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
+<p class="admonition-">目录是包含一个或多个 <em>dentry</em> 的特殊文件。</p>
 </div>
-<div class="section" id="creating-a-file">
-<h3>Creating a file<a class="headerlink" href="#creating-a-file" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-creating-a-file simple">
-<li>Input: path</li>
-<li>Output:</li>
-<li>Steps:<ul>
-<li>Determine the inode directory</li>
-<li>Read data blocks and find space for a new dentry</li>
-<li>Write back the modified inode directory data blocks</li>
+<div class="section" id="section-11">
+<h3>创建文件<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：路径</li>
+<li>输出：</li>
+<li>步骤：<ul>
+<li>确定 inode 目录</li>
+<li>读取数据块并为新 dentry 找到空间</li>
+<li>写回修改后的 inode 目录数据块</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="deleting-a-file">
-<h3>Deleting a file<a class="headerlink" href="#deleting-a-file" title="永久链接至标题">¶</a></h3>
-<p>A summary of a typical implementation is presented below:</p>
-<ul class="admonition-deleting-a-file simple">
-<li>Input: path</li>
-<li>Output:</li>
-<li>Steps:<ul>
-<li>determine the parent inode</li>
-<li>read parent inode data blocks</li>
-<li>find and erase the dentry (check for links)</li>
-<li>when last file is closed: deallocate data and inode blocks</li>
+<div class="section" id="section-12">
+<h3>删除文件<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
+<p>典型实现总结如下：</p>
+<ul class="admonition- simple">
+<li>输入：路径</li>
+<li>输出：</li>
+<li>步骤：<ul>
+<li>确定父级 inode</li>
+<li>读取父级 inode 数据块</li>
+<li>查找并删除 dentry（检查链接）</li>
+<li>当最后一个 file 关闭时：释放数据块和 inode 块</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div class="section" id="linux-virtual-file-system">
-<h2>Linux Virtual File System<a class="headerlink" href="#linux-virtual-file-system" title="永久链接至标题">¶</a></h2>
-<p>Although the main purpose for the original introduction of VFS in UNIX
-kernels was to support multiple filesystem types and instances, a side
-effect was that it simplified fileystem device driver development
-since command parts are now implement in the VFS. Almost all of the
-caching and buffer management is dealt with VFS, leaving just
-efficient data storage management to the filesystem device driver.</p>
-<p>In order to deal with multiple filesystem types, VFS introduced the
-common filesystem abstractions previously presented. Note that the
-filesystem driver can also use its own particular fileystem
-abstractions in memory (e.g. ext4 inode or dentry) and that there
-might be a different abstraction on storage as well. Thus we may end
-up with three slightly different filesystem abstractions: one for
-VFS - always in memory, and two for a particular filesystem - one in
-memory used by the filesystem driver, and one on storage.</p>
-<a class="admonition-virtual-file-system reference internal image-reference" href="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png"><img alt="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png" class="admonition-virtual-file-system" src="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png" style="height: 100%;" /></a>
-<div class="section" id="superblock-operations">
-<h3>Superblock Operations<a class="headerlink" href="#superblock-operations" title="永久链接至标题">¶</a></h3>
-<p>VFS requires that all filesystem implement a set of &quot;superblock
-operations&quot;.</p>
-<p>They deal with initializing, updating and freeing the VFS superblock:</p>
+<div class="section" id="linux">
+<h2>Linux 虚拟文件系统<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h2>
+<p>尽管最初引入 VFS 到 UNIX 内核的主要目的是支持多个文件系统类型和实例，但一个副作用是简化了文件系统设备驱动程序的开发，因为现在命令的部分是在 VFS 中实现的。几乎所有的缓存和缓冲区管理都由 VFS 处理，只需将高效的数据存储管理留给文件系统设备驱动程序。</p>
+<p>为了处理多个文件系统类型，VFS 引入了先前介绍的通用文件系统抽象。请注意，文件系统驱动程序还可以在内存中使用自己特定的文件系统抽象（例如 ext4 的 inode 或 dentry），而存储上可能存在不同的抽象。因此，我们可能会得到三种略有不同的文件系统抽象：一种是 VFS 的抽象——始终在内存中，另外两种是特定文件系统的抽象——一种是文件系统驱动程序使用的内存抽象，另一种是存储上的抽象。</p>
+<a class="admonition- reference internal image-reference" href="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png"><img alt="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png" class="admonition-" src="../_images/ditaa-e3a27a84dde42de58bcc5c360e1c4b15062507c2.png" style="height: 100%;" /></a>
+<div class="section" id="section-13">
+<h3>超级块操作<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
+<p>VFS 要求所有文件系统实现一组“超级块操作”。</p>
+<p>它们负责初始化、更新和释放 VFS 超级块：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code>) - reads the filesystem statistics (e.g. total
-number of inode, free number of inodes, total number of blocks, free
-number of blocks)</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">write_super()</span></code> - updates the superblock information on storage
-(e.g. updating the number of free inode or data blocks)</li>
-<li><code class="xref c c-func docutils literal"><span class="pre">put_super()</span></code> - free any data associated with the filsystem
-instance, called when unmounting a filesystem</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">fill_super()</span></code>——读取文件系统统计信息（例如总的 inode 数目、空闲的 inode 数目、总块数、空闲的块数）</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">write_super()</span></code>——在存储上更新超级块信息（例如更新空闲 inode 或数据块的数目）</li>
+<li><code class="xref c c-func docutils literal"><span class="pre">put_super()</span></code>——释放与文件系统实例相关联的任何数据，在卸载文件系统时调用</li>
 </ul>
 </div></blockquote>
-<p>The next class of operations are dealing with manipulating fileystem
-inodes. These operations will receive VFS inodes as parameters but the
-filesystem driver may use its own inode structures internally and, if
-so, they will convert in between them as necessary.</p>
-<p>A summary of the superblock operations are presented below:</p>
+<p>下一类操作处理操作文件系统的 inode。这些操作接收 VFS inode 作为参数，但文件系统驱动程序可能在内部使用自己的 inode 结构，如果是这样，它们将根据需要在它们之间进行转换。</p>
+<p>下面是超级块操作的摘要：</p>
 <table class="hlist"><tr><td><ul class="simple">
 <li>fill_super</li>
 <li>put_super</li>
@@ -451,14 +392,10 @@ so, they will convert in between them as necessary.</p>
 </ul>
 </td></tr></table>
 </div>
-<div class="section" id="inode-operations">
-<h3>Inode Operations<a class="headerlink" href="#inode-operations" title="永久链接至标题">¶</a></h3>
-<p>The next set of operations that VFS calls when interacting with
-filesystem device drivers are the &quot;inode operations&quot;. Non-intuitively
-these mostly deal with manipulating dentries - looking up a file name,
-creating, linking and removing files, dealing with symbolic links,
-creating and removing directories.</p>
-<p>This is the list of the most important inode operations:</p>
+<div class="section" id="inode">
+<h3>Inode 操作<a class="headerlink" href="#inode" title="永久链接至标题">¶</a></h3>
+<p>当 VFS 与文件系统设备驱动程序交互时，调用的下一组操作是“inode 操作”。不符直觉的是，这些操作主要处理操作 dentry——查找文件名、创建、链接和删除文件、处理符号链接、创建和删除目录。</p>
+<p>以下是重要 inode 操作列表：</p>
 <table class="hlist"><tr><td><ul class="simple">
 <li>create</li>
 <li>lookup</li>
@@ -477,71 +414,60 @@ creating and removing directories.</p>
 </ul>
 </td></tr></table>
 </div>
-<div class="section" id="the-inode-cache">
-<h3>The Inode Cache<a class="headerlink" href="#the-inode-cache" title="永久链接至标题">¶</a></h3>
-<p>The inode cache is used to avoid reading and writing inodes to and
-from storage every time we need to read or update them. The cache uses
-a hash table and inodes are indexed with a hash function which takes
-as parameters the superblock (of a particular filesystem instance) and
-the inode number associated with an inode.</p>
-<p>inodes are cached until either the filesystem is unmounted, the inode
-deleted or the system enters a memory pressure state. When this
-happens the Linux memory management system will (among other things)
-free inodes from the inode cache based on how often they were
-accessed.</p>
-<ul class="admonition-the-inode-cache simple">
-<li>Caches inodes into memory to avoid costly storage operations</li>
-<li>An inode is cached until low memory conditions are triggered</li>
-<li>inodes are indexed with a hash table</li>
-<li>The inode hash function takes the superblock and inode number as
-inputs</li>
+<div class="section" id="inode-1">
+<h3>Inode 缓存<a class="headerlink" href="#inode-1" title="永久链接至标题">¶</a></h3>
+<p>inode 缓存用于避免每次需要读取或更新 inode 时都要对存储器执行 inode 读取和写入操作。缓存使用哈希表，inode 通过哈希函数进行索引，该哈希函数以超级块（特定文件系统实例的超级块）和与 inode 相关联的 inode 号作为参数。</p>
+<p>inode 被缓存，直到文件系统被卸载、inode 被删除或系统进入内存压力状态。当发生这种情况时，Linux 内存管理系统将根据 inode 的访问频率释放 inode 缓存中的 inode。</p>
+<ul class="admonition-inode simple">
+<li>将 inode 缓存到内存中，以避免昂贵的存储操作</li>
+<li>inode 被缓存，直到触发低内存条件</li>
+<li>inode 使用哈希表进行索引</li>
+<li>inode 哈希函数以超级块和 inode 号作为输入</li>
 </ul>
 </div>
-<div class="section" id="the-dentry-cache">
-<h3>The Dentry Cache<a class="headerlink" href="#the-dentry-cache" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-the-dentry-cache simple">
-<li>State:<ul>
-<li>Used – <em>d_inode</em> is valid and the <em>dentry</em> object is in use</li>
-<li>Unused – <em>d_inode</em> is valid but the dentry object is not in use</li>
-<li>Negative – <em>d_inode</em> is not valid; the inode was not yet loaded
-or the file was erased</li>
+<div class="section" id="section-14">
+<h3>目录项缓存<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>状态：<ul>
+<li>已使用——<em>d_inode</em> 有效且 <em>dentry</em> 对象正在使用中</li>
+<li>未使用——<em>d_inode</em> 有效，但 <em>dentry</em> 对象未在使用中</li>
+<li>负——<em>d_inode</em> 无效；尚未加载 inode 或文件已被删除</li>
 </ul>
 </li>
-<li>Dentry cache<ul>
-<li>List of used dentries (dentry-&gt;d_state == used)</li>
-<li>List of the most recent used dentries (sorted by access time)</li>
-<li>Hash table to avoid searching the tree</li>
+<li>目录项缓存<ul>
+<li>已使用的目录项列表（dentry-&gt;d_state == used）</li>
+<li>最近使用的目录项列表（按访问时间排序）</li>
+<li>哈希表以避免搜索树</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="the-page-cache">
-<h3>The Page Cache<a class="headerlink" href="#the-page-cache" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-the-page-cache simple">
-<li>Caches file data and not block device data</li>
-<li>Uses the <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space</span></code> to translate file offsets
-to block offsets</li>
-<li>Used for both <cite>read</cite> / <cite>write</cite> and <cite>mmap</cite></li>
-<li>Uses a radix tree</li>
+<div class="section" id="section-15">
+<h3>页面缓存<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>缓存文件数据而非块设备数据</li>
+<li>使用 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">address_space</span></code> 将文件偏移转换为块偏移</li>
+<li>用于 <cite>read</cite> / <cite>write</cite> 和 <cite>mmap</cite></li>
+<li>使用基数树（radix tree）</li>
 </ul>
 <div class="admonition-struct-address-space highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm"> * struct address_space - Contents of a cacheable, mappable object.</span>
-<span class="cm"> * @host: Owner, either the inode or the block_device.</span>
-<span class="cm"> * @i_pages: Cached pages.</span>
-<span class="cm"> * @gfp_mask: Memory allocation flags to use for allocating pages.</span>
-<span class="cm"> * @i_mmap_writable: Number of VM_SHARED mappings.</span>
-<span class="cm"> * @nr_thps: Number of THPs in the pagecache (non-shmem only).</span>
-<span class="cm"> * @i_mmap: Tree of private and shared mappings.</span>
-<span class="cm"> * @i_mmap_rwsem: Protects @i_mmap and @i_mmap_writable.</span>
-<span class="cm"> * @nrpages: Number of page entries, protected by the i_pages lock.</span>
-<span class="cm"> * @nrexceptional: Shadow or DAX entries, protected by the i_pages lock.</span>
-<span class="cm"> * @writeback_index: Writeback starts here.</span>
-<span class="cm"> * @a_ops: Methods.</span>
-<span class="cm"> * @flags: Error bits and flags (AS_*).</span>
-<span class="cm"> * @wb_err: The most recent error which has occurred.</span>
-<span class="cm"> * @private_lock: For use by the owner of the address_space.</span>
-<span class="cm"> * @private_list: For use by the owner of the address_space.</span>
-<span class="cm"> * @private_data: For use by the owner of the address_space.</span>
+<span class="cm"> * struct address_space——可缓存、可映射对象的内容。</span>
+<span class="cm"> * @host: 所有者，可以是 inode 或 block_device。</span>
+<span class="cm"> * @i_pages: 缓存的页面。</span>
+<span class="cm"> * @gfp_mask: 用于分配页面的内存分配标志。</span>
+<span class="cm"> * @i_mmap_writable: VM_SHARED 映射的数量。</span>
+<span class="cm"> * @nr_thps: 页面缓存中的 THP 数量（仅用于非 shmem）。</span>
+<span class="cm"> * @i_mmap: 私有和共享映射的树。</span>
+<span class="cm"> * @i_mmap_rwsem: 保护 @i_mmap 和 @i_mmap_writable。</span>
+<span class="cm"> * @nrpages: 页面条目的数量，由 i_pages 锁保护。</span>
+<span class="cm"> * @nrexceptional: 阴影或 DAX 条目，由 i_pages 锁保护。</span>
+<span class="cm"> * @writeback_index: 写回的起始位置。</span>
+<span class="cm"> * @a_ops: 方法。</span>
+<span class="cm"> * @flags: 错误位和标志（AS_*）。</span>
+<span class="cm"> * @wb_err: 最近发生的错误。</span>
+<span class="cm"> * @private_lock: 由 address_space 所有者使用。</span>
+<span class="cm"> * @private_list: 由 address_space 所有者使用。</span>
+<span class="cm"> * @private_data: 由 address_space 所有者使用。</span>
 <span class="cm"> */</span>
 <span class="k">struct</span> <span class="n">address_space</span> <span class="p">{</span>
   <span class="k">struct</span> <span class="n">inode</span>            <span class="o">*</span><span class="n">host</span><span class="p">;</span>
@@ -617,36 +543,27 @@ to block offsets</li>
 <span class="p">};</span>
 </pre></div>
 </div>
-<div class="admonition-reading-data highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm"> * generic_file_read_iter - generic filesystem read routine</span>
-<span class="cm"> * @iocb: kernel I/O control block</span>
-<span class="cm"> * @iter: destination for the data read</span>
+<div class="admonition- highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * generic_file_read_iter——通用的文件系统读取例程</span>
+<span class="cm"> * @iocb: 内核 I/O 控制块</span>
+<span class="cm"> * @iter: 用于存储读取数据的目标</span>
 <span class="cm"> *</span>
-<span class="cm"> * This is the &quot;read_iter()&quot; routine for all filesystems</span>
-<span class="cm"> * that can use the page cache directly.</span>
+<span class="cm"> * 这是所有可以直接使用页面缓存的文件系统的“read_iter()”例程。</span>
 <span class="cm"> *</span>
-<span class="cm"> * The IOCB_NOWAIT flag in iocb-&gt;ki_flags indicates that -EAGAIN shall</span>
-<span class="cm"> * be returned when no data can be read without waiting for I/O requests</span>
-<span class="cm"> * to complete; it doesn&#39;t prevent readahead.</span>
+<span class="cm"> * iocb-&gt;ki_flags 中的 IOCB_NOWAIT 标志表示，当没有数据可以在等待 I/O 请求完成的情况下读取时，应返回 -EAGAIN；它不会阻止预读。</span>
 <span class="cm"> *</span>
-<span class="cm"> * The IOCB_NOIO flag in iocb-&gt;ki_flags indicates that no new I/O</span>
-<span class="cm"> * requests shall be made for the read or for readahead.  When no data</span>
-<span class="cm"> * can be read, -EAGAIN shall be returned.  When readahead would be</span>
-<span class="cm"> * triggered, a partial, possibly empty read shall be returned.</span>
+<span class="cm"> * iocb-&gt;ki_flags 中的 IOCB_NOIO 标志表示，对于读取或预读，不应发起新的 I/O 请求。当无法读取数据时，应返回 -EAGAIN。当触发预读时，应返回部分（可能为空）读取。</span>
 <span class="cm"> *</span>
-<span class="cm"> * Return:</span>
-<span class="cm"> * * number of bytes copied, even for partial reads</span>
-<span class="cm"> * * negative error code (or 0 if IOCB_NOIO) if nothing was read</span>
+<span class="cm"> * 返回：</span>
+<span class="cm"> * * 拷贝的字节数，即使是部分读取</span>
+<span class="cm"> * * 负错误代码（如果 IOCB_NOIO）表示没有读取任何内容</span>
 <span class="cm"> */</span>
 <span class="kt">ssize_t</span>
 <span class="n">generic_file_read_iter</span><span class="p">(</span><span class="k">struct</span> <span class="n">kiocb</span> <span class="o">*</span><span class="n">iocb</span><span class="p">,</span> <span class="k">struct</span> <span class="n">iov_iter</span> <span class="o">*</span><span class="n">iter</span><span class="p">)</span>
 
 <span class="cm">/*</span>
-<span class="cm"> * Generic &quot;read page&quot; function for block devices that have the normal</span>
-<span class="cm"> * get_block functionality. This is most of the block device filesystems.</span>
-<span class="cm"> * Reads the page asynchronously --- the unlock_buffer() and</span>
-<span class="cm"> * set/clear_buffer_uptodate() functions propagate buffer state into the</span>
-<span class="cm"> * page struct once IO has completed.</span>
+<span class="cm"> * 用于具有正常 get_block 功能的块设备的通用“读取页面”函数。这适用于大多数块设备文件系统。</span>
+<span class="cm"> * 异步读取页面——unlock_buffer() 和 set/clear_buffer_uptodate() 函数在 IO 完成后将缓冲区状态传播到页面结构中。</span>
 <span class="cm"> */</span>
 <span class="kt">int</span> <span class="n">block_read_full_page</span><span class="p">(</span><span class="k">struct</span> <span class="n">page</span> <span class="o">*</span><span class="n">page</span><span class="p">,</span> <span class="n">get_block_t</span> <span class="o">*</span><span class="n">get_block</span><span class="p">)</span>
 </pre></div>

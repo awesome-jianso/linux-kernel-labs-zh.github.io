@@ -67,7 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lectures/smp.html">对称多处理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">地址空间</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">内存管理</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">Filesystem Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">文件系统管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">Network Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/arch.html">Architecture Layer</a></li>
@@ -349,26 +349,26 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec8-filesystems.html">SO2 Lecture 08 - Filesystem Management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#filesystem-abstractions">Filesystem Abstractions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#filesystem-operations">Filesystem Operations</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#mounting-a-filesystem">Mounting a filesystem</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#opening-a-file">Opening a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#querying-file-attributes">Querying file attributes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#reading-data-from-a-file">Reading data from a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#writing-data-to-a-file">Writing data to a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#closing-a-file">Closing a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#directories">Directories</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#creating-a-file">Creating a file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#deleting-a-file">Deleting a file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#section-1">课程目标：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#section-2">文件系统抽象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#section-3">文件系统操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-4">挂载文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-5">打开文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-6">查询文件属性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-7">从文件读取数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-8">向文件写入数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-9">关闭文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-10">目录</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-11">创建文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-12">删除文件</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#linux-virtual-file-system">Linux Virtual File System</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#superblock-operations">Superblock Operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#inode-operations">Inode Operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#the-inode-cache">The Inode Cache</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#the-dentry-cache">The Dentry Cache</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#the-page-cache">The Page Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec8-filesystems.html#linux">Linux 虚拟文件系统</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-13">超级块操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#inode">Inode 操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#inode-1">Inode 缓存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-14">目录项缓存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec8-filesystems.html#section-15">页面缓存</a></li>
 </ul>
 </li>
 </ul>
@@ -1242,27 +1242,27 @@
 <li class="toctree-l2"><a class="reference internal" href="lectures/memory-management.html#section-10">缺页处理</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">Filesystem Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#filesystem-abstractions">Filesystem Abstractions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#filesystem-operations">Filesystem Operations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#mounting-a-filesystem">Mounting a filesystem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#opening-a-file">Opening a file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#querying-file-attributes">Querying file attributes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#reading-data-from-a-file">Reading data from a file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#writing-data-to-a-file">Writing data to a file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#closing-a-file">Closing a file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#directories">Directories</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#creating-a-file">Creating a file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#deleting-a-file">Deleting a file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">文件系统管理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#section-2">课程目标：</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#section-3">文件系统抽象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#section-4">文件系统操作</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-5">挂载文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-6">打开文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-7">查询文件属性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-8">从文件读取数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-9">向文件写入数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-10">关闭文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-11">目录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-12">创建文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-13">删除文件</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#linux-virtual-file-system">Linux Virtual File System</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#superblock-operations">Superblock Operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#inode-operations">Inode Operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#the-inode-cache">The Inode Cache</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#the-dentry-cache">The Dentry Cache</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#the-page-cache">The Page Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/fs.html#linux">Linux 虚拟文件系统</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-14">超级块操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#inode">Inode 操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#inode-1">Inode 缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-15">目录项缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/fs.html#section-16">页面缓存</a></li>
 </ul>
 </li>
 </ul>
