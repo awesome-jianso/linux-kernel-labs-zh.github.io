@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Debugging &mdash; Linux 系统内核文档</title>
+    <title>调试 &mdash; Linux 系统内核文档</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -53,25 +53,25 @@
 
 
   
-<article class="admonition-debugging slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Debugging</h2>
+<h2>调试</h2>
 
 <ul class="simple">
-<li>decoding an oops/panic</li>
-<li>list debugging</li>
-<li>memory debugging</li>
-<li>locking debugging</li>
-<li>profiling</li>
+<li>解码 oops/panic</li>
+<li>列表调试</li>
+<li>内存调试</li>
+<li>锁调试</li>
+<li>性能分析</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-oops-module slide level-2">
+<article class="admonition-oops slide level-2">
 
-<h2>Oops module</h2>
+<h2>Oops 模块</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">noinline</span> <span class="kt">void</span> <span class="nf">do_oops</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
@@ -100,9 +100,9 @@
 
 
 </article>
-<article class="admonition-oops-information slide level-2">
+<article class="admonition-oops slide level-2">
 
-<h2>Oops information</h2>
+<h2>Oops 信息</h2>
 
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~/skels/debugging/oops# insmod oops.ko
 BUG: unable to handle kernel NULL pointer dereference at <span class="m">00000042</span>
@@ -128,9 +128,9 @@ Killed
 
 
 </article>
-<article class="admonition-oops-stacktrace slide level-2">
+<article class="admonition-oops slide level-2">
 
-<h2>Oops stacktrace</h2>
+<h2>Oops 堆栈跟踪</h2>
 
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~/skels/debugging/oops# insmod oops.ko
 BUG: unable to handle kernel NULL pointer dereference at <span class="m">00000042</span>
@@ -156,9 +156,9 @@ Killed
 
 
 </article>
-<article class="admonition-debugging slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Debugging</h2>
+<h2>调试</h2>
 
 <ul class="simple">
 <li>CONFIG_DEBUG_INFO</li>
@@ -177,7 +177,7 @@ Killed
 
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ addr2line -e oops.o  0x08
 $ skels/debugging/oops/oops.c:5
-$ <span class="c1"># 0x08 is the offset of the offending instruction inside the oops.ko module</span>
+$ <span class="c1"># 0x08 是 oops.ko 模块中有问题的指令的偏移量</span>
 </pre></div>
 </div>
 
@@ -232,9 +232,9 @@ c8816008:       a3 <span class="m">42</span> <span class="m">00</span> <span cla
 
 
 </article>
-<article class="admonition-kernel-panic slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Kernel panic</h2>
+<h2>内核崩溃</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">timer_list</span> <span class="n">panic_timer</span><span class="p">;</span>
 
@@ -259,9 +259,9 @@ c8816008:       a3 <span class="m">42</span> <span class="m">00</span> <span cla
 
 
 </article>
-<article class="admonition-list-debugging slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>List debugging</h2>
+<h2>列表调试</h2>
 
 <div class="highlight-bash"><div class="highlight"><pre><span></span>static inline void list_del<span class="o">(</span>struct list_head *entry<span class="o">)</span>
 <span class="o">{</span>
@@ -279,12 +279,12 @@ IP: crush+0x80/0xb0 <span class="o">[</span>list<span class="o">]</span>
 
 
 </article>
-<article class="admonition-memory-debugging slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Memory debugging</h2>
+<h2>内存调试</h2>
 
 <ul class="simple">
-<li>SLAB/SLUB debugging</li>
+<li>SLAB/SLUB 调试</li>
 <li>KASAN</li>
 <li>kmemcheck</li>
 <li>DEBUG_PAGEALLOC</li>
@@ -294,13 +294,13 @@ IP: crush+0x80/0xb0 <span class="o">[</span>list<span class="o">]</span>
 
 
 </article>
-<article class="admonition-slab-debugging slide level-2">
+<article class="admonition-slab slide level-2">
 
-<h2>Slab debugging</h2>
+<h2>SLAB 调试</h2>
 
 <ul class="simple">
 <li>CONFIG_DEBUG_SLAB</li>
-<li>poisoned based memory debuggers</li>
+<li>基于毒药的内存调试器</li>
 </ul>
 <img alt="../_images/ditaa-5e6f93e563d6e94c14fe3d483f988e0579b05b38.png" src="../_images/ditaa-5e6f93e563d6e94c14fe3d483f988e0579b05b38.png" />
 
@@ -308,9 +308,9 @@ IP: crush+0x80/0xb0 <span class="o">[</span>list<span class="o">]</span>
 
 
 </article>
-<article class="admonition-use-before-initialize-bugs slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Use before initialize bugs</h2>
+<h2>使用前未初始化错误</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>BUG: unable to handle kernel paging request at 5a5a5a5a
 IP: [&lt;c1225063&gt;] __list_del_entry+0x37/0x71
@@ -340,9 +340,9 @@ Call Trace:
 
 
 </article>
-<article class="admonition-use-after-free-bug slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Use after free bug</h2>
+<h2>释放后使用错误</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>BUG: unable to handle kernel paging request at 6b6b6b6b
 IP: [&lt;c1225063&gt;] __list_del_entry+0x37/0x71
@@ -373,9 +373,9 @@ Call Trace:
 
 
 </article>
-<article class="admonition-use-after-free-bug slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Use after free bug</h2>
+<h2>释放后使用错误</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span># insmod /system/lib/modules/crusher.ko test=use_before_init
 Slab corruption: size-4096 start=ed612000, len=4096
@@ -398,9 +398,9 @@ Slab corruption: size-4096 start=ed612000, len=4096
 
 
 </article>
-<article class="admonition-buffer-overflow-bugs slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Buffer overflow bugs</h2>
+<h2>缓冲区溢出错误</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>slab error in verify_redzone_free(): cache `dummy&#39;: memory outside object was overwritten
 Pid: 1282, comm: insmod Not tainted 3.0.16-mid10-00007-ga4a6b62-dirty #70
@@ -438,12 +438,10 @@ eb002bf8: redzone 1:0xd84156c5635688c0, redzone 2:0x0
 <h2>DEBUG_PAGEALLOC</h2>
 
 <ul class="simple">
-<li>Memory debugger that works at a page level</li>
-<li>Detects invalid accesses either by:<ul>
-<li>Filling pages with poison byte patterns and checking the pattern at
-reallocation</li>
-<li>Unmapping the dellocated pages from kernel space (just a few
-architectures)</li>
+<li>在页面级别上工作的内存调试器</li>
+<li>通过以下方式检测无效访问：<ul>
+<li>使用毒药字节模式填充页面，并在重新分配时检查模式</li>
+<li>从内核空间取消映射已释放的页面（仅适用于少数体系结构）</li>
 </ul>
 </li>
 </ul>
@@ -457,9 +455,9 @@ architectures)</li>
 <h2>KASan</h2>
 
 <ul class="simple">
-<li>dynamic memory error detector</li>
-<li>finds user-after-free or out-of-bound bugs</li>
-<li>uses shadow memory to track memory operations</li>
+<li>动态内存错误检测器</li>
+<li>查找“释放后使用”或越界访问错误</li>
+<li>使用阴影内存跟踪内存操作</li>
 <li>lib/test_kasan.c</li>
 </ul>
 
@@ -471,8 +469,7 @@ architectures)</li>
 
 <h2>KASan vs DEBUG_PAGEALLOC</h2>
 
-<p>KASan is slower than DEBUG_PAGEALLOC, but KASan works on sub-page granularity
-level, so it able to find more bugs.</p>
+<p>KASan 比 DEBUG_PAGEALLOC 慢，但 KASan 可以在子页面粒度级别上工作，因此能够发现更多的错误。</p>
 
 
 
@@ -483,12 +480,9 @@ level, so it able to find more bugs.</p>
 <h2>KASan vs SLUB_DEBUG</h2>
 
 <ul class="simple">
-<li>SLUB_DEBUG has lower overhead than KASan.</li>
-<li>SLUB_DEBUG in most cases are not able to detect bad reads, KASan able to
-detect both reads and writes.</li>
-<li>In some cases (e.g. redzone overwritten) SLUB_DEBUG detect bugs only on
-allocation/freeing of object. KASan catch bugs right before it will happen,
-so we always know exact place of first bad read/write.</li>
+<li>SLUB_DEBUG 的开销较低。</li>
+<li>SLUB_DEBUG 在大多数情况下无法检测到错误的读取，而 KASan 可以同时检测到读取和写入。</li>
+<li>在某些情况下（例如，红区覆盖），SLUB_DEBUG 仅在对象分配/释放时检测到错误。KASan 在临近错误发生前捕捉错误，因此我们可以知道第一次错误读取/写入的确切位置。</li>
 </ul>
 
 
@@ -500,11 +494,11 @@ so we always know exact place of first bad read/write.</li>
 <h2>Kmemleak</h2>
 
 <ul class="simple">
-<li>enable kernel config: <cite>CONFIG_DEBUG_KMEMLEAK</cite></li>
-<li>setup: <cite>mount -t debugfs nodev /sys/kernel/debug</cite></li>
-<li>trigger a memory scan: <cite>echo scan &gt; /sys/kernel/debug/kmemleak</cite></li>
-<li>show memory leaks: <cite>cat /sys/kernel/debug/kmemleak</cite></li>
-<li>clear all possible leaks: <cite>echo clear &gt; /sys/kernel/debug/kmemleak</cite></li>
+<li>启用内核配置: <cite>CONFIG_DEBUG_KMEMLEAK</cite></li>
+<li>设置: <cite>mount -t debugfs nodev /sys/kernel/debug</cite></li>
+<li>触发内存扫描: <cite>echo scan &gt; /sys/kernel/debug/kmemleak</cite></li>
+<li>显示内存泄漏: <cite>cat /sys/kernel/debug/kmemleak</cite></li>
+<li>清除所有可能的泄漏: <cite>echo clear &gt; /sys/kernel/debug/kmemleak</cite></li>
 </ul>
 
 
@@ -533,9 +527,9 @@ so we always know exact place of first bad read/write.</li>
 
 
 </article>
-<article class="admonition-kmemleak-report slide level-2">
+<article class="admonition-kmemleak slide level-2">
 
-<h2>Kmemleak report</h2>
+<h2>Kmemleak 报告</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>root@qemux86:~# insmod skels/debugging/leak/leak.ko
 leak: loading out-of-tree module taints kernel.
@@ -564,25 +558,24 @@ backtrace:
 
 
 </article>
-<article class="admonition-lockdep-checker slide level-2">
+<article class="admonition-lockdep slide level-2">
 
-<h2>Lockdep checker</h2>
+<h2>Lockdep 检查器</h2>
 
 <ul class="simple">
 <li>CONFIG_DEBUG_LOCKDEP</li>
-<li>Detects lock inversio, circular dependencies, incorrect usage of locks
-(including interrupt context)</li>
-<li>Maintains dependency between classes of locks not individual locks</li>
-<li>Each scenario is only checked once and hashed</li>
+<li>检测锁反转、循环依赖、锁的错误使用（包括中断上下文）</li>
+<li>维护锁类之间的依赖关系，而不是个别锁</li>
+<li>每个场景只检查一次并进行哈希处理</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-ab-ba-deadlock-example slide level-2">
+<article class="admonition-ab-ba slide level-2">
 
-<h2>AB BA Deadlock Example</h2>
+<h2>AB BA 死锁示例</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">noinline</span> <span class="kt">int</span> <span class="nf">thread_a</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">unused</span><span class="p">)</span>
 <span class="p">{</span>
@@ -613,9 +606,9 @@ backtrace:
 
 
 </article>
-<article class="admonition-ab-ba-deadlock-report slide level-2">
+<article class="admonition-ab-ba slide level-2">
 
-<h2>AB BA Deadlock Report</h2>
+<h2>AB BA 死锁报告</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>thread_a acquired A
 thread_a acquired B
@@ -639,9 +632,9 @@ which lock already depends on the new lock.
 
 
 </article>
-<article class="admonition-ab-ba-deadlock-report-dependency-chain slide level-2">
+<article class="admonition-ab-ba slide level-2">
 
-<h2>AB BA Deadlock Report (dependency chain)</h2>
+<h2>AB BA 死锁报告（依赖链）</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>the existing dependency chain (in reverse order) is:
 
@@ -666,13 +659,13 @@ which lock already depends on the new lock.
 
 
 </article>
-<article class="admonition-ab-ba-deadlock-report-unsafe-locking-scenario slide level-2">
+<article class="admonition-ab-ba slide level-2">
 
-<h2>AB BA Deadlock Report (unsafe locking scenario)</h2>
+<h2>AB BA 死锁报告（不安全的加锁场景）</h2>
 
-<div class="highlight-none"><div class="highlight"><pre><span></span>other info that might help us debug this:
+<div class="highlight-none"><div class="highlight"><pre><span></span>其他可能帮助我们调试的信息：
 
-Possible unsafe locking scenario:
+可能的不安全加锁场景：
 
 CPU0                    CPU1
 ----                    ----
@@ -681,7 +674,7 @@ lock(b);
                         lock(b);
 lock(a);
 
-*** DEADLOCK ***
+*** 死锁 ***
 </pre></div>
 </div>
 
@@ -689,9 +682,9 @@ lock(a);
 
 
 </article>
-<article class="admonition-irq-deadlock-example slide level-2">
+<article class="admonition-irq slide level-2">
 
-<h2>IRQ Deadlock Example</h2>
+<h2>IRQ 死锁示例</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="nf">DEFINE_SPINLOCK</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span>
 
@@ -720,9 +713,9 @@ lock(a);
 
 
 </article>
-<article class="admonition-irq-deadlock-report slide level-2">
+<article class="admonition-irq slide level-2">
 
-<h2>IRQ Deadlock Report</h2>
+<h2>IRQ 死锁报告</h2>
 
 <div class="highlight-none"><div class="highlight"><pre><span></span>init_module acquiring lock
 init_module acquired lock
@@ -753,11 +746,11 @@ restore_all+0x0/0x8d
 
 
 </article>
-<article class="admonition-irq-deadlock-report slide level-2">
+<article class="admonition-irq slide level-2">
 
-<h2>IRQ Deadlock Report</h2>
+<h2>IRQ 死锁报告</h2>
 
-<div class="highlight-none"><div class="highlight"><pre><span></span>Possible unsafe locking scenario:
+<div class="highlight-none"><div class="highlight"><pre><span></span>可能的不安全加锁场景：
 
        CPU0
        ----
@@ -792,19 +785,19 @@ timerfn+0x25/0x60 [locking2]
 <h2>perf</h2>
 
 <ul class="simple">
-<li>performance counters, tracepoints, kprobes, uprobes</li>
-<li>hardware events: CPU cycles, TLB misses, cache misses</li>
-<li>software events: page fauls , context switches</li>
-<li>collects backtraces (user + kernel)</li>
+<li>性能计数器，跟踪点，kprobes，uprobes</li>
+<li>硬件事件: CPU 周期，TLB 缺失，缓存缺失</li>
+<li>软件事件: 页面错误，上下文切换</li>
+<li>收集回溯信息（用户空间 + 内核空间）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-other-tools slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Other tools</h2>
+<h2>其他工具</h2>
 
 <ul class="simple">
 <li>ftrace</li>

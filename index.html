@@ -68,7 +68,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lectures/address-space.html">地址空间</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">内存管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">文件系统管理</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">Network Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/arch.html">Architecture Layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/virt.html">Virtualization</a></li>
@@ -374,18 +374,18 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec9-debugging.html">SO2 Lecture 09 - Kernel debugging</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#decoding-an-oops-panic">Decoding an oops/panic</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#decoding-an-oops">Decoding an oops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#section-1">课程目标：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#oops-panic">解码 oops/panic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#oops">解码 oops</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#addr2line">addr2line</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#objdump">objdump</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#gdb">gdb</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#kernel-panic">Kernel panic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#section-2">内核崩溃</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#list-debugging">List debugging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#memory-debugging">Memory debugging</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#slab-debugging">Slab debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#section-3">列表调试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#section-4">内存调试</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#slab">SLAB 调试</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#debug-pagealloc">DEBUG_PAGEALLOC</a></li>
 <li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#kasan">KASan</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="so2/lec9-debugging.html#kasan-vs-debug-pagealloc">KASan vs DEBUG_PAGEALLOC</a></li>
@@ -395,9 +395,9 @@
 <li class="toctree-l4"><a class="reference internal" href="so2/lec9-debugging.html#kmemleak">Kmemleak</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#lockdep-checker">Lockdep checker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#lockdep">Lockdep 检查器</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#perf">perf</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#other-tools">Other tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec9-debugging.html#section-5">其他工具</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec10-networking.html">SO2 Lecture 10 - Networking</a><ul>
@@ -1267,19 +1267,19 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">Debugging</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#decoding-an-oops-panic">Decoding an oops/panic</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#decoding-an-oops">Decoding an oops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">调试</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#section-2">课程目标：</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#oops-panic">解码 oops/panic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#oops">解码 oops</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#addr2line">addr2line</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#objdump">objdump</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#gdb">gdb</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#kernel-panic">Kernel panic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#section-3">内核崩溃</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#list-debugging">List debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#memory-debugging">Memory debugging</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#slab-debugging">Slab debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#section-4">列表调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#section-5">内存调试</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#slab">SLAB 调试</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#debug-pagealloc">DEBUG_PAGEALLOC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#kasan">KASan</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="lectures/debugging.html#kasan-vs-debug-pagealloc">KASan vs DEBUG_PAGEALLOC</a></li>
@@ -1289,9 +1289,9 @@
 <li class="toctree-l3"><a class="reference internal" href="lectures/debugging.html#kmemleak">Kmemleak</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#lockdep-checker">Lockdep checker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#lockdep">Lockdep 检查器</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#perf">perf</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#other-tools">Other tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#section-6">其他工具</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">Network Management</a><ul>
