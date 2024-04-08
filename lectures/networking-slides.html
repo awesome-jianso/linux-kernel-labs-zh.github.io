@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Network Management &mdash; Linux 系统内核文档</title>
+    <title>网络管理 &mdash; Linux 系统内核文档</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -53,24 +53,24 @@
 
 
   
-<article class="admonition-network-management slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Network Management</h2>
+<h2>网络管理</h2>
 
 <ul class="simple">
-<li>Socket implementation</li>
-<li>Routing implementation</li>
-<li>Network Device Interface</li>
-<li>Hardware and Software Acceleration Techniques</li>
+<li>套接字实现</li>
+<li>路由实现</li>
+<li>网络设备接口</li>
+<li>硬件和软件加速技术</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-network-management-overview slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Network Management Overview</h2>
+<h2>网络管理概述</h2>
 
 <a class="reference internal image-reference" href="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png"><img alt="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png" src="../_images/ditaa-a2ded49c8b739635d6742479583443fb10ad120a.png" style="height: 100%;" /></a>
 
@@ -78,9 +78,9 @@
 
 
 </article>
-<article class="admonition-sockets-implementation-overview slide level-2">
+<article class="admonition-sockets slide level-2">
 
-<h2>Sockets Implementation Overview</h2>
+<h2>Sockets 实现概述</h2>
 
 <a class="reference internal image-reference" href="../_images/ditaa-79e3734c36891f6c04d684aa5caa39f76915dbaf.png"><img alt="../_images/ditaa-79e3734c36891f6c04d684aa5caa39f76915dbaf.png" src="../_images/ditaa-79e3734c36891f6c04d684aa5caa39f76915dbaf.png" style="height: 100%;" /></a>
 
@@ -88,9 +88,9 @@
 
 
 </article>
-<article class="admonition-sockets-families-and-protocols slide level-2">
+<article class="admonition-sockets slide level-2">
 
-<h2>Sockets Families and Protocols</h2>
+<h2>Sockets 系列和协议</h2>
 
 <a class="reference internal image-reference" href="../_images/ditaa-bf1244d1a5c3d99bd8d40148d81cb3e5748c0b94.png"><img alt="../_images/ditaa-bf1244d1a5c3d99bd8d40148d81cb3e5748c0b94.png" src="../_images/ditaa-bf1244d1a5c3d99bd8d40148d81cb3e5748c0b94.png" style="height: 100%;" /></a>
 
@@ -98,9 +98,9 @@
 
 
 </article>
-<article class="admonition-example-udp-send slide level-2">
+<article class="admonition-udp slide level-2">
 
-<h2>Example: UDP send</h2>
+<h2>示例：UDP 发送</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
 <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">addr</span><span class="p">;</span>
@@ -117,9 +117,9 @@
 
 
 </article>
-<article class="admonition-example-udp-send slide level-2">
+<article class="admonition-udp slide level-2">
 
-<h2>Example: UDP send</h2>
+<h2>示例：UDP 发送</h2>
 
 <img alt="../_images/ditaa-ee04e3e544de75375b914f7645c79d5ae46fe6f3.png" src="../_images/ditaa-ee04e3e544de75375b914f7645c79d5ae46fe6f3.png" />
 
@@ -127,29 +127,23 @@
 
 
 </article>
-<article class="admonition-network-processing-phases slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Network processing phases</h2>
+<h2>网络处理阶段</h2>
 
 <ul class="simple">
-<li>Interrupt handler - device driver fetches data from the RX ring,
-creates a network packet and queues it to the network stack for
-processing</li>
-<li>NET_SOFTIRQ - packet goes through the stack layer and it is
-processed: decapsulate Ethernet frame, check IP packet and route
-it, if local packet decapsulate protocol packet (e.g. TCP) and
-queues it to a socket</li>
-<li>Process context - application fetches data from the socket queue
-or pushes data to the socket queue</li>
+<li>中断处理程序——设备驱动程序从 RX 环获取数据，创建网络数据包，并将其放到网络栈队列等待处理</li>
+<li>NET_SOFTIRQ——数据包通过网络栈层，并进行处理：解封装以太网帧，检查 IP 数据包并进行路由，如果是本地数据包，则解封装协议数据包（例如 TCP）并将其放到套接字里的队列</li>
+<li>进程上下文——应用程序从套接字里的队列获取数据或将数据推送到套接字里的队列</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-packet-routing slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Packet Routing</h2>
+<h2>数据包路由</h2>
 
 <img alt="../_images/ditaa-528948c80a3fd78b89fb6f7bd69503a58b93a4ae.png" src="../_images/ditaa-528948c80a3fd78b89fb6f7bd69503a58b93a4ae.png" />
 
@@ -157,9 +151,9 @@ or pushes data to the socket queue</li>
 
 
 </article>
-<article class="admonition-routing-table slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Routing Table</h2>
+<h2>路由表</h2>
 
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tavi@desktop-tavi:~/src/linux$ ip route list table main
 default via <span class="m">172</span>.30.240.1 dev eth0
@@ -185,52 +179,41 @@ tavi@desktop-tavi:~/src/linux$ ip rule list
 
 
 </article>
-<article class="admonition-routing-policy-database slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Routing Policy Database</h2>
+<h2>路由策略数据库</h2>
 
 <ul class="simple">
-<li>&quot;Regular&quot; routing only uses the destination address</li>
-<li>To increase flexibility a &quot;Routing Policy Database&quot; is used that
-allows different routing based on other fields such as the source
-address, protocol type, transport ports, etc.</li>
-<li>This is encoded as a list of rules that are evaluated based on
-their priority (priority 0 is the highest)</li>
-<li>Each rule has a selector (how to match the packet) and an
-action (what action to take if the packet matches)</li>
-<li>Selectors: source address, destination address, type of service (TOS),
-input interface, output interface, etc.</li>
-<li>Action: lookup / unicast - use given routing table, blackhole -
-drop packet, unreachable - send ICMP unreachable message and drop
-packet, etc.</li>
+<li>“常规”路由仅使用目标地址进行路由</li>
+<li>为了增加灵活性，系统使用了“路由策略数据库”，其可以根据其他字段（如源地址、协议类型、传输端口等）进行不同的路由选择</li>
+<li>这被编码为一系列规则，根据优先级进行评估（优先级 0 最高）</li>
+<li>每个规则都有一个选择器（用于匹配数据包）和一个动作（如果数据包匹配，则采取什么动作）</li>
+<li>选择器：源地址、目标地址、服务类型（TOS）、输入接口、输出接口等</li>
+<li>动作：查找（lookup）/单播（unicast）——使用给定的路由表，黑洞（blackhole）——丢弃数据包，不可达（unreachable）——发送 ICMP 不可达消息并丢弃数据包等。</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-routing-table-processing slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Routing table processing</h2>
+<h2>路由表处理</h2>
 
 <ul class="simple">
-<li>Special table for local addreses -&gt; route packets to sockets
-based on family, type, ports</li>
-<li>Check every routing entry for starting with the most specific
-routes (e.g. 192.168.0.0/24 is checked before 192.168.0.0/16)</li>
-<li>A route matches if the packet destination addreess logical ORed
-with the subnet mask equals the subnet address</li>
-<li>Once a route matches the following information is retrieved:
-interface, link layer next-hop address, network next host address</li>
+<li>本地地址的特殊表 -&gt; 根据地址族、类型、端口将数据包路由到套接字</li>
+<li>从最具体的路由开始检查每个路由条目（例如，192.168.0.0/24 在 192.168.0.0/16 之前）</li>
+<li>如果数据包目标地址与子网掩码进行逻辑 OR 运算后等于子网地址，则表示路由匹配</li>
+<li>一旦路由匹配，将检索以下信息：接口、链路层下一跳地址、网络下一跳地址</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-forward-information-database-removed-in-3-6 slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Forward Information Database (removed in 3.6)</h2>
+<h2>转发信息数据库（在 3.6 版本移除）</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/fidb-overview.png" src="../_images/fidb-overview.png" />
@@ -239,9 +222,9 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-forward-information-database-removed-in-3-6 slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Forward Information Database (removed in 3.6)</h2>
+<h2>转发信息数据库（在 3.6 版本移除）</h2>
 
 <img alt="../_images/fidb-details.png" src="../_images/fidb-details.png" />
 
@@ -249,9 +232,9 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-routing-cache-removed-in-3-6 slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Routing Cache (removed in 3.6)</h2>
+<h2>路由缓存（在 3.6 版本移除）</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/routing-cache.png" src="../_images/routing-cache.png" />
@@ -287,8 +270,8 @@ interface, link layer next-hop address, network next host address</li>
 <h2>Netfilter</h2>
 
 <ul class="simple">
-<li>Framework that implements packet filtering and NAT</li>
-<li>It uses hooks inserted in key places in the packet flow:<ul>
+<li>实现数据包过滤和 NAT 的框架</li>
+<li>它在数据包流中的关键位置插入钩子（hook）：<ul>
 <li>NF_IP_PRE_ROUTING</li>
 <li>NF_IP_LOCAL_IN</li>
 <li>NF_IP_FORWARD</li>
@@ -303,9 +286,9 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-network-packets-skbs slide level-2">
+<article class="admonition-skb slide level-2">
 
-<h2>Network packets (skbs)</h2>
+<h2>网络数据包/skb</h2>
 
 <img alt="../_images/skb.png" src="../_images/skb.png" />
 
@@ -313,9 +296,9 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-struct-sk-buff slide level-2">
+<article class="admonition-sk-buff slide level-2">
 
-<h2>struct sk_buff</h2>
+<h2>结构 sk_buff</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
@@ -354,19 +337,19 @@ interface, link layer next-hop address, network next host address</li>
 
 <h2>skb APIs</h2>
 
-<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* reserve head room */</span>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 预留头部空间 */</span>
 <span class="kt">void</span> <span class="nf">skb_reserve</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
 
-<span class="cm">/* add data to the end */</span>
+<span class="cm">/* 在尾部添加数据 */</span>
 <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="nf">skb_put</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
 
-<span class="cm">/* add data to the top */</span>
+<span class="cm">/* 在顶部添加数据 */</span>
 <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="nf">skb_push</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
 
-<span class="cm">/* discard data at the top */</span>
+<span class="cm">/* 丢弃顶部的数据 */</span>
 <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="nf">skb_pull</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
 
-<span class="cm">/* discard data at the end */</span>
+<span class="cm">/* 丢弃尾部的数据 */</span>
 <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="nf">skb_trim</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
 
 <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="nf">skb_transport_header</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">);</span>
@@ -395,9 +378,9 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-skb-data-management slide level-2">
+<article class="admonition-skb slide level-2">
 
-<h2>skb data management</h2>
+<h2>skb 数据管理</h2>
 
 <p>&nbsp;</p>
 <a class="reference internal image-reference" href="../_images/ditaa-91073cb05a3f537eb54ab10745c307531e6795a0.png"><img alt="../_images/ditaa-91073cb05a3f537eb54ab10745c307531e6795a0.png" src="../_images/ditaa-91073cb05a3f537eb54ab10745c307531e6795a0.png" style="height: 50%;" /></a>
@@ -406,9 +389,9 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-network-device-interface slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Network Device Interface</h2>
+<h2>网络设备接口</h2>
 
 <img alt="../_images/net-dev-hw.png" src="../_images/net-dev-hw.png" />
 
@@ -416,30 +399,30 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-advanced-features slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Advanced features</h2>
+<h2>高级特性</h2>
 
 <ul class="simple">
-<li>Scatter-Gather</li>
-<li>Checksum offloading: Ethernet, IP, UDP, TCP</li>
-<li>Adaptive interrupt handling (coalescence, adaptive)</li>
+<li>Scatter-Gather（散列-聚集）</li>
+<li>校验和外包：以太网、IP、UDP、TCP</li>
+<li>自适应中断处理（聚合、自适应）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-tcp-offload slide level-2">
+<article class="admonition-tcp slide level-2">
 
-<h2>TCP offload</h2>
+<h2>TCP 卸载</h2>
 
 <ul class="simple">
-<li>Full offload - Implement TCP/IP stack in hardware</li>
-<li>Issues:<ul>
-<li>Scaling number of connections</li>
-<li>Security</li>
-<li>Conformance</li>
+<li>完全外包——在硬件中实现 TCP/IP 协议栈</li>
+<li>问题：<ul>
+<li>连接数量的扩展</li>
+<li>安全性</li>
+<li>一致性</li>
 </ul>
 </li>
 </ul>
@@ -448,14 +431,13 @@ interface, link layer next-hop address, network next host address</li>
 
 
 </article>
-<article class="admonition-performance-observation slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Performance observation</h2>
+<h2>性能观察</h2>
 
 <ul class="simple">
-<li>Performance is proportional with the number of packets to be
-processed</li>
-<li>Example: if an end-point can process 60K pps<ul>
+<li>性能与要处理的数据包数量成正比</li>
+<li>例如：如果一个端点可以每秒处理 60K 个数据包<ul>
 <li>1538 MSS -&gt; 738Mbps</li>
 <li>2038 MSS -&gt; 978Mbps</li>
 <li>9038 MSS -&gt; 4.3Gbps</li>
@@ -468,25 +450,23 @@ processed</li>
 
 
 </article>
-<article class="admonition-stateless-offload slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Stateless offload</h2>
+<h2>无状态外包</h2>
 
 <ul class="simple">
-<li>The networking stack processes large packets</li>
-<li>TX path: the hardware splits large packets in smaller packets
-(TCP Segmentation Offload)</li>
-<li>RX path: the hardware aggregates small packets into larger
-packets (Large Receive Offload - LRO)</li>
+<li>网络堆栈处理大数据包</li>
+<li>发送路径：硬件将大数据包分割为较小的数据包（TCP 分段外包）</li>
+<li>接收路径：硬件将小数据包聚合成较大的数据包（大体量接收外包——简称 LRO）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-tcp-segmentation-offload slide level-2">
+<article class="admonition-tcp slide level-2">
 
-<h2>TCP Segmentation Offload)</h2>
+<h2>TCP 分段外包</h2>
 
 <img alt="../_images/tso.png" src="../_images/tso.png" />
 
@@ -494,9 +474,9 @@ packets (Large Receive Offload - LRO)</li>
 
 
 </article>
-<article class="admonition-large-receive-offload slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Large Receive Offload</h2>
+<h2>大体量接收外包</h2>
 
 <img alt="../_images/lro.png" src="../_images/lro.png" />
 

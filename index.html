@@ -69,7 +69,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lectures/memory-management.html">内存管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/fs.html">文件系统管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">调试</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">Network Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">网络管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/arch.html">Architecture Layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/virt.html">Virtualization</a></li>
 </ul>
@@ -401,25 +401,25 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec10-networking.html">SO2 Lecture 10 - Networking</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#network-management-overview">Network Management Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#sockets-implementation-overview">Sockets Implementation Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#sockets-families-and-protocols">Sockets Families and Protocols</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#example-udp-send">Example: UDP send</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#section-1">课程目标：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#section-2">网络管理概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#sockets">Sockets 实现概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#sockets-1">Sockets 系列和协议</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#udp">示例：UDP 发送</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#network-processing-phases">Network processing phases</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#packet-routing">Packet Routing</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#routing-table-s">Routing Table(s)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#routing-policy-database">Routing Policy Database</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#routing-table-processing">Routing table processing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#forwarding-information-database">Forwarding Information Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#section-3">网络处理阶段</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#section-4">数据包路由</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#section-5">路由表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#section-6">路由策略数据库</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#section-7">路由表处理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec10-networking.html#section-8">转发信息数据库</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#netfilter">Netfilter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#network-packets-skbs-struct-sk-buff">Network packets / skbs (struct sk_buff)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#network-device">Network Device</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#hardware-and-software-acceleration-techniques">Hardware and Software Acceleration Techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#skb-sk-buff">网络数据包/skb（结构 sk_buff）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#section-9">网络设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec10-networking.html#section-10">硬件和软件加速技术</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec11-arch.html">SO2 Lecture 11 - Architecture Layer</a><ul>
@@ -1294,26 +1294,26 @@
 <li class="toctree-l2"><a class="reference internal" href="lectures/debugging.html#section-6">其他工具</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">Network Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#network-management-overview">Network Management Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#sockets-implementation-overview">Sockets Implementation Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#sockets-families-and-protocols">Sockets Families and Protocols</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#example-udp-send">Example: UDP send</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">网络管理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#section-2">课程目标：</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#section-3">网络管理概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#sockets">Sockets 实现概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#sockets-1">Sockets 系列和协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#udp">示例：UDP 发送</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#network-processing-phases">Network processing phases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#packet-routing">Packet Routing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#routing-table-s">Routing Table(s)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#routing-policy-database">Routing Policy Database</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#routing-table-processing">Routing table processing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#forwarding-information-database">Forwarding Information Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#section-4">网络处理阶段</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#section-5">数据包路由</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#section-6">路由表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#section-7">路由策略数据库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#section-8">路由表处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/networking.html#section-9">转发信息数据库</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#netfilter">Netfilter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#network-packets-skbs-struct-sk-buff">Network packets / skbs (struct sk_buff)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#network-device">Network Device</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#hardware-and-software-acceleration-techniques">Hardware and Software Acceleration Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#skb-sk-buff">网络数据包/skb（结构 sk_buff）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#section-10">网络设备</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/networking.html#section-11">硬件和软件加速技术</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/arch.html">Architecture Layer</a><ul>
