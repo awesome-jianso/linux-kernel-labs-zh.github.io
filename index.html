@@ -71,7 +71,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lectures/debugging.html">调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/networking.html">网络管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lectures/arch.html">体系结构层</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/virt.html">Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/virt.html">虚拟化</a></li>
 </ul>
 <p class="caption"><span class="caption-text">实验</span></p>
 <ul>
@@ -441,32 +441,32 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="so2/lec12-virtualization.html">SO2 Lecture 12 - Virtualization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#emulation-basics">Emulation basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#virtualization-basics">Virtualization basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#classic-virtualization">Classic virtualization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#software-virtualization">Software virtualization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#mmu-virtualization">MMU virtualization</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#shadow-page-tables">Shadow page tables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#lazy-shadow-sync">Lazy shadow sync</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#section-1">课程目标：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#emulation">模拟（emulation）基础知识</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#virtualization">虚拟化（virtualization）基础知识</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#section-2">经典虚拟化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#section-3">软件虚拟化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#mmu">MMU 虚拟化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#section-4">影子页表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#section-5">延迟影子同步</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#i-o-emulation">I/O emulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#paravirtualization">Paravirtualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#i-o-emulation">I/O 仿真（emulation）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#section-6">部分虚拟化</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#intel-vt-x">Intel VT-x</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#virtual-machine-control-structure">Virtual Machine Control Structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#vm-entry-exit">VM entry &amp; exit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#vm-execution-control-fields">VM execution control fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#section-7">虚拟机控制结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#section-8">虚拟机进入和退出</a></li>
+<li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#section-9">虚拟机执行控制字段</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#extend-page-tables">Extend Page Tables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#section-10">扩展页表</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="so2/lec12-virtualization.html#vpid">VPID</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#i-o-virtualization">I/O virtualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#i-o">I/O 虚拟化</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#qemu">qemu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#kvm">KVM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#type-1-vs-type-2-hypervisors">Type 1 vs Type 2 Hypervisors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#hypervisor">类型 1 和类型 2 的 Hypervisor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="so2/lec12-virtualization.html#xen">Xen</a></li>
 </ul>
 </li>
@@ -1334,33 +1334,33 @@
 <li class="toctree-l2"><a class="reference internal" href="lectures/arch.html#section-12">引导过程概述</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lectures/virt.html">Virtualization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#emulation-basics">Emulation basics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#virtualization-basics">Virtualization basics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#classic-virtualization">Classic virtualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#software-virtualization">Software virtualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#mmu-virtualization">MMU virtualization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#shadow-page-tables">Shadow page tables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#lazy-shadow-sync">Lazy shadow sync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lectures/virt.html">虚拟化</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#section-2">课程目标：</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#emulation">模拟（emulation）基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#virtualization">虚拟化（virtualization）基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#section-3">经典虚拟化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#section-4">软件虚拟化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#mmu">MMU 虚拟化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#section-5">影子页表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#section-6">延迟影子同步</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#i-o-emulation">I/O emulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#paravirtualization">Paravirtualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#i-o-emulation">I/O 仿真（emulation）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#section-7">部分虚拟化</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#intel-vt-x">Intel VT-x</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#virtual-machine-control-structure">Virtual Machine Control Structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#vm-entry-exit">VM entry &amp; exit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#vm-execution-control-fields">VM execution control fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#section-8">虚拟机控制结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#section-9">虚拟机进入和退出</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#section-10">虚拟机执行控制字段</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#extend-page-tables">Extend Page Tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#section-11">扩展页表</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="lectures/virt.html#vpid">VPID</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#i-o-virtualization">I/O virtualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#i-o">I/O 虚拟化</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#qemu">qemu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#kvm">KVM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#type-1-vs-type-2-hypervisors">Type 1 vs Type 2 Hypervisors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#hypervisor">类型 1 和类型 2 的 Hypervisor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lectures/virt.html#xen">Xen</a></li>
 </ul>
 </li>

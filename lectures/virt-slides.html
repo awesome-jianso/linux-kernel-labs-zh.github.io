@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Virtualization &mdash; Linux 系统内核文档</title>
+    <title>虚拟化 &mdash; Linux 系统内核文档</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -53,53 +53,53 @@
 
 
   
-<article class="admonition-virtualization slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Virtualization</h2>
+<h2>虚拟化</h2>
 
 <ul class="simple">
-<li>Emulation basics</li>
-<li>Virtualization basics</li>
-<li>Paravirtualization basics</li>
-<li>Hardware support for virtualization</li>
-<li>Overview of the Xen hypervisor</li>
-<li>Overview of the KVM hypervisor</li>
+<li>模拟基础知识</li>
+<li>虚拟化基础知识</li>
+<li>半虚拟化基础知识</li>
+<li>对虚拟化的硬件支持</li>
+<li>Xen 虚拟机监视器（hypervisor）概述</li>
+<li>KVM 虚拟机监视器概述</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-emulation-basics slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Emulation basics</h2>
+<h2>模拟基础知识</h2>
 
 <ul class="simple">
-<li>Instructions are emulated (each time they are executed)</li>
-<li>The other system components are also emulated:<ul>
+<li>指令被模拟（每次执行时都会模拟）</li>
+<li>其他系统组件也被模拟:<ul>
 <li>MMU</li>
-<li>Physical memory access</li>
-<li>Peripherals</li>
+<li>物理内存访问</li>
+<li>外围设备</li>
 </ul>
 </li>
-<li>Target architecture - the architecture that it is emulated</li>
-<li>Host architecture - the architecture that the emulator runs on</li>
-<li>For emulation target and host architectures can be different</li>
+<li>目标架构——被模拟的架构</li>
+<li>主机架构——模拟器运行所基于的架构</li>
+<li>如果是模拟，目标架构和主机架构可以不同</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-virtualization-basics slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Virtualization basics</h2>
+<h2>虚拟化基础知识</h2>
 
 <ul class="simple">
-<li>Defined in a paper by Popek &amp; Goldberg in 1974</li>
-<li>Fidelity</li>
-<li>Performance</li>
-<li>Security</li>
+<li>由 Popek 和 Goldberg 在 1974 年的一篇论文中定义</li>
+<li>保真度</li>
+<li>性能</li>
+<li>安全性</li>
 </ul>
 <img alt="../_images/ditaa-91f08f7db4b54069e16694eab8d75c06400fc47b.png" src="../_images/ditaa-91f08f7db4b54069e16694eab8d75c06400fc47b.png" />
 
@@ -107,60 +107,58 @@
 
 
 </article>
-<article class="admonition-classic-virtualization slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Classic virtualization</h2>
+<h2>经典虚拟化</h2>
 
 <ul class="simple">
-<li>Trap &amp; Emulate</li>
-<li>Same architecture for host and target</li>
-<li>Most of the target instructions are natively executed</li>
-<li>Target OS runs in non-privilege mode on the host</li>
-<li>Privileged instructions are trapped and emulated</li>
-<li>Two machine states: host and guest</li>
+<li>捕获（trap）和模拟</li>
+<li>主机和目标使用相同的架构</li>
+<li>大多数目标指令可以直接执行</li>
+<li>目标操作系统在主机上以非特权模式运行</li>
+<li>特权指令被捕获和模拟执行</li>
+<li>有两种机器状态：主机和客户机</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-software-virtualization slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Software virtualization</h2>
+<h2>软件虚拟化</h2>
 
 <ul class="simple">
-<li>Not all architecture can be virtualized; e.g. x86:<ul>
-<li>CS register encodes the CPL</li>
-<li>Some instructions don't generate a trap (e.g. popf)</li>
+<li>并非所有架构都可以被虚拟化；例如 x86 架构：<ul>
+<li>CS 寄存器编码当前特权级（CPL）</li>
+<li>一些指令不会引发捕获（例如 popf 指令）</li>
 </ul>
 </li>
-<li>Solution: emulate instructions using binary translation</li>
+<li>解决方案：使用二进制翻译来模拟指令</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-mmu-virtualization slide level-2">
+<article class="admonition-mmu slide level-2">
 
-<h2>MMU virtualization</h2>
+<h2>MMU 虚拟化</h2>
 
 <ul class="simple">
-<li>&quot;Fake&quot; VM physical addresses are translated by the host to actual
-physical addresses</li>
-<li>Guest virtual address -&gt; Guest physical address -&gt; Host Physical Address</li>
-<li>The guest page tables are not directly used by the host hardware</li>
-<li>VM page tables are verified then translated into a new set of page
-tables on the host (shadow page tables)</li>
+<li>“虚假”的虚拟机物理地址由主机转换为实际的物理地址</li>
+<li>客户机虚拟地址 -&gt; 客户机物理地址 -&gt; 主机物理地址</li>
+<li>主机硬件不直接使用客户机页表</li>
+<li>虚拟机页表经过验证后，在主机上被翻译成一组新的页表（影子页表）</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-shadow-page-tables slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Shadow page tables</h2>
+<h2>影子页表</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-8632e22c6d89bd18f97c9cef127444486b5077df.png" src="../_images/ditaa-8632e22c6d89bd18f97c9cef127444486b5077df.png" />
@@ -169,17 +167,16 @@ tables on the host (shadow page tables)</li>
 
 
 </article>
-<article class="admonition-lazy-shadow-sync slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Lazy shadow sync</h2>
+<h2>延迟影子同步</h2>
 
 <ul class="simple">
-<li>Guest page tables changes are typically batched</li>
-<li>To avoid repeated traps, checks and transformations map guest
-page table entries with write access</li>
-<li>Update the shadow page table when<ul>
-<li>The TLB is flushed</li>
-<li>In the host page fault handler</li>
+<li>客户机页表的更改通常通过批处理进行</li>
+<li>为了避免重复的捕获、检查和转换，将具有写访问权限的客户机页表条目进行映射</li>
+<li>在以下情况下更新影子页表：<ul>
+<li>刷新 TLB</li>
+<li>在主机页面故障（page fault）处理程序中</li>
 </ul>
 </li>
 </ul>
@@ -188,9 +185,9 @@ page table entries with write access</li>
 
 
 </article>
-<article class="admonition-i-o-emulation slide level-2">
+<article class="admonition-i-o slide level-2">
 
-<h2>I/O emulation</h2>
+<h2>I/O 仿真</h2>
 
 <p>&nbsp;</p>
 <img alt="../_images/ditaa-bb69666d75b9670e542682753fb8cc9b77ff8894.png" src="../_images/ditaa-bb69666d75b9670e542682753fb8cc9b77ff8894.png" />
@@ -199,9 +196,9 @@ page table entries with write access</li>
 
 
 </article>
-<article class="admonition-example-qemu-sifive-uart-emulation slide level-2">
+<article class="admonition-qemu-sifive-uart slide level-2">
 
-<h2>Example: qemu SiFive UART emulation</h2>
+<h2>示例：qemu SiFive UART 仿真</h2>
 
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm"> * QEMU model of the UART on the SiFive E300 and U500 series SOCs.</span>
@@ -402,24 +399,24 @@ page table entries with write access</li>
 
 
 </article>
-<article class="admonition-paravirtualization slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Paravirtualization</h2>
+<h2>部分虚拟化</h2>
 
 <ul class="simple">
-<li>Change the guest OS so that it cooperates with the VMM<ul>
-<li>CPU paravirtualization</li>
-<li>MMU paravirtualization</li>
-<li>I/O paravirtualization</li>
+<li>修改客户机操作系统以与虚拟机监视器（VMM）合作<ul>
+<li>CPU 部分虚拟化</li>
+<li>MMU 部分虚拟化</li>
+<li>I/O 部分虚拟化</li>
 </ul>
 </li>
-<li>VMM exposes hypercalls for:<ul>
-<li>activate / deactivate the interrupts</li>
-<li>changing page tables</li>
-<li>accessing virtualized peripherals</li>
+<li>VMM 提供超级调用（hypercalls）用于：<ul>
+<li>激活/停用中断</li>
+<li>更改页表</li>
+<li>访问虚拟化外设</li>
 </ul>
 </li>
-<li>VMM uses events to trigger interrupts in the VM</li>
+<li>VMM 使用事件触发虚拟机中的中断</li>
 </ul>
 
 
@@ -431,91 +428,79 @@ page table entries with write access</li>
 <h2>Intel VT-x</h2>
 
 <ul class="simple">
-<li>Hardware extension to transform x86 to the point it can be
-virtualized &quot;classically&quot;</li>
-<li>New execution mode: non-root mode</li>
-<li>Each non-root mode instance uses a Virtual Machine Control
-Structure (VMCS) to store its state</li>
-<li>VMM runs in root mode</li>
-<li>VM-entry and VM-exit are used to transition between the two modes</li>
+<li>硬件扩展，将 x86 架构转换为可以进行经典虚拟化的状态</li>
+<li>新的执行模式：非根模式（non-root mode）</li>
+<li>每个非根模式实例使用虚拟机控制结构（VMCS）来存储其状态</li>
+<li>VMM 在根模式（root mode）下运行</li>
+<li>通过 VM-entry 和 VM-exit 在两种模式之间进行切换</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-virtual-machine-control-structure slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Virtual Machine Control Structure</h2>
+<h2>虚拟机控制结构</h2>
 
 <ul class="simple">
-<li>Guest information: state of the virtual CPU</li>
-<li>Host information: state of the physical CPU</li>
-<li>Saved information:<ul>
-<li>visible state: segment registers, CR3, IDTR, etc.</li>
-<li>internal state</li>
+<li>客户机信息：虚拟 CPU 的状态</li>
+<li>主机信息：物理 CPU 的状态</li>
+<li>保存的信息：<ul>
+<li>可见状态：段寄存器、CR3、IDTR 等</li>
+<li>内部状态</li>
 </ul>
 </li>
-<li>VMCS can not be accessed directly but certain information can be
-accessed with special instructions</li>
+<li>不能直接访问 VMCS，但可以使用特殊指令访问某些信息</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-vm-entry-exit slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>VM entry &amp; exit</h2>
+<h2>虚拟机进入和退出</h2>
 
 <ul class="simple">
-<li>VM entry - new instructions that switches the CPU in non-root
-mode and loads the VM state from a VMCS; host state is saved in
-VMCS</li>
-<li>Allows injecting interrupts and exceptions in the guest</li>
-<li>VM exit will be automatically triggered based on the VMCS
-configuration</li>
-<li>When VM exit occurs host state is loaded from VMCS, guest state
-is saved in VMCS</li>
+<li>虚拟机进入——使用新指令将 CPU 切换到非根模式，并从 VMCS 加载虚拟机状态；主机状态保存在 VMCS 中</li>
+<li>允许在客户机中注入中断和异常</li>
+<li>根据 VMCS 的配置，虚拟机退出将自动触发</li>
+<li>当虚拟机退出时，主机状态从 VMCS 加载，客户机状态保存在 VMCS 中</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-vm-execution-control-fields slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>VM execution control fields</h2>
+<h2>虚拟机执行控制字段</h2>
 
 <ul class="simple">
-<li>Selects conditions which triggers a VM exit; examples:<ul>
-<li>If an external interrupt is generated</li>
-<li>If an external interrupt is generated and EFLAGS.IF is set</li>
-<li>If CR0-CR4 registers are modified</li>
+<li>选择触发虚拟机退出的条件；示例：<ul>
+<li>如果生成外部中断</li>
+<li>如果生成外部中断并且 EFLAGS.IF 被设置</li>
+<li>如果修改了 CR0-CR4 寄存器</li>
 </ul>
 </li>
-<li>Exception bitmap - selects which exceptions will generate a VM
-exit</li>
-<li>IO bitmap - selects which I/O addresses (IN/OUT accesses)
-generates a VM exit</li>
-<li>MSR bitmaps - selects which RDMSR or WRMSR instructions will
-generate a VM exit</li>
+<li>异常位图——选择生成虚拟机退出的异常</li>
+<li>IO 位图——选择生成虚拟机退出的 I/O 地址（IN/OUT 访问）</li>
+<li>MSR 位图——选择生成虚拟机退出的 RDMSR 或 WRMSR 指令</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-extend-page-tables slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Extend Page Tables</h2>
+<h2>扩展页表</h2>
 
 <ul class="simple">
-<li>Reduces the complexity of MMU virtualization and improves
-performance</li>
-<li>Access to CR3, INVLPG and page faults do not require VM exit
-anymore</li>
-<li>The EPT page table is controlled by the VMM</li>
+<li>减少 MMU 虚拟化的复杂性，提高性能</li>
+<li>不再需要通过虚拟机退出来访问 CR3、INVLPG 和页面故障</li>
+<li>EPT 页表由 VMM 控制</li>
 </ul>
 <img alt="../_images/ditaa-cc9a2e995be74ee99646ea4bf0e551d766fa92ef.png" src="../_images/ditaa-cc9a2e995be74ee99646ea4bf0e551d766fa92ef.png" />
 
@@ -528,22 +513,20 @@ anymore</li>
 <h2>VPID</h2>
 
 <ul class="simple">
-<li>VM entry and VM exit forces a TLB flush - loses VMM / VM translations</li>
-<li>To avoid this issue a VPID (Virtual Processor ID) tag is
-associated with each VM (VPID 0 is reserved for the VMM)</li>
-<li>All TLB entries are tagged</li>
-<li>At VM entry and exit just the entries associated with the tags
-are flushed</li>
-<li>When searching the TLB just the current VPID is used</li>
+<li>虚拟机进入和退出会强制 TLB 刷新——丢失 VMM / VM 的转换信息</li>
+<li>为了避免这个问题，每个虚拟机（VPID 0 保留给 VMM）关联一个 VPID（虚拟处理器 ID）标签</li>
+<li>所有 TLB 条目都被标记</li>
+<li>在虚拟机进入和退出时，只刷新与标签相关的条目</li>
+<li>在搜索 TLB 时，只使用当前的 VPID</li>
 </ul>
 
 
 
 
 </article>
-<article class="admonition-i-o-virtualization slide level-2">
+<article class="admonition-i-o slide level-2">
 
-<h2>I/O virtualization</h2>
+<h2>I/O 虚拟化</h2>
 
 <img alt="../_images/ditaa-3901edd823cdc7a6f429ebc37cbc541e650abc96.png" src="../_images/ditaa-3901edd823cdc7a6f429ebc37cbc541e650abc96.png" />
 
@@ -555,32 +538,24 @@ are flushed</li>
 
 <h2>I/O MMU</h2>
 
-<p>VT-d protects and translates VM physical addresses using an I/O
-MMU (DMA remaping)</p>
+<p>VT-d 使用 I/O MMU（DMA 重映射）来保护和转换虚拟机物理地址。</p>
 <img alt="../_images/ditaa-d880751969de8642b2613caaca345d71acea4500.png" src="../_images/ditaa-d880751969de8642b2613caaca345d71acea4500.png" />
 
 
 
 
 </article>
-<article class="admonition-interrupt-posting slide level-2">
+<article class="admonition- slide level-2">
 
-<h2>Interrupt posting</h2>
+<h2>中断投递</h2>
 
 <ul class="simple">
-<li>Messsage Signaled Interrupts (MSI) = DMA writes to the host
-address range of the IRQ controller (e.g. 0xFEExxxxx)</li>
-<li>Low bits of the address and the data indicate which interrupt
-vector to deliver to which CPU</li>
-<li>Interrupt remapping table points to the virtual CPU (VMCS) that
-should receive the interrupt</li>
-<li>I/O MMU will trap the IRQ controller write and look it up in the
-interrupt remmaping table<ul>
-<li>if that virtual CPU is currently running it will take the
-interrupt directly</li>
-<li>otherwise a bit is set in a table (Posted Interrupt Descriptor
-table) and the interrupt will be inject next time that vCPU is
-run</li>
+<li>消息传递中断（MSI）= DMA 写入 IRQ 控制器的主机地址范围（例如 0xFEExxxxx）</li>
+<li>地址的低位和数据指示要发送到哪个 CPU 的哪个中断向量</li>
+<li>中断重映射表指向应该接收中断的虚拟 CPU（VMCS）</li>
+<li>I/O MMU 将捕获 IRQ 控制器的写入并在中断重映射表中查找<ul>
+<li>如果该虚拟 CPU 当前正在运行，则直接接收中断</li>
+<li>否则，在一个表中设置一个位（发布的中断描述符表），下次运行该 vCPU 时将注入中断</li>
 </ul>
 </li>
 </ul>
@@ -589,9 +564,9 @@ run</li>
 
 
 </article>
-<article class="admonition-i-o-virtualization slide level-2">
+<article class="admonition-i-o slide level-2">
 
-<h2>I/O virtualization</h2>
+<h2>I/O 虚拟机</h2>
 
 <img alt="../_images/ditaa-2cb0eb0056bb775d1446843d62241fd660662c96.png" src="../_images/ditaa-2cb0eb0056bb775d1446843d62241fd660662c96.png" />
 
@@ -604,16 +579,14 @@ run</li>
 <h2>SR-IOV</h2>
 
 <ul class="simple">
-<li>Single Root - Input Output Virtualization</li>
-<li>Physical device with multiple Ethernet ports will be shown as
-multiple device on the PCI bus</li>
-<li>Physical Function is used for the control and can be configured<ul>
-<li>to present itself as a new PCI device</li>
-<li>which VLAN to use</li>
+<li>单根——输入输出虚拟化</li>
+<li>具有多个以太网端口的物理设备将显示为 PCI 总线上的多个设备</li>
+<li>物理功能用于控制且能配置<ul>
+<li>呈现自身为新的 PCI 设备</li>
+<li>使用哪个 VLAN</li>
 </ul>
 </li>
-<li>The new virtual function is enumerated on the bus and can be
-assigned to a particular guest</li>
+<li>新的虚拟功能在总线上枚举，并可以分配给特定的客户机</li>
 </ul>
 
 
@@ -625,14 +598,12 @@ assigned to a particular guest</li>
 <h2>qemu</h2>
 
 <ul class="simple">
-<li>Uses binary translation via Tiny Code Generator (TCG) for
-efficient emulation</li>
-<li>Supports different target and host architectures (e.g. running
-ARM VMs on x86)</li>
-<li>Both process and full system level emulation</li>
-<li>MMU emulation</li>
-<li>I/O emulation</li>
-<li>Can be used with KVM for accelerated virtualization</li>
+<li>通过 Tiny Code Generator（TCG）使用二进制翻译进行高效的模拟</li>
+<li>支持不同的目标和主机体系结构（例如，在 x86 上运行 ARM 虚拟机）</li>
+<li>进程级和完全系统级的仿真</li>
+<li>MMU 仿真</li>
+<li>I/O 仿真</li>
+<li>可与 KVM 一起用于加速虚拟化</li>
 </ul>
 
 
@@ -654,12 +625,11 @@ ARM VMs on x86)</li>
 <h2>KVM</h2>
 
 <ul class="simple">
-<li>Linux device driver for hardware virtualization (e.g. Intel VT-x, SVM)</li>
-<li>IOCTL based interface for managing and running virtual CPUs</li>
-<li>VMM components implemented inside the Linux kernel
-(e.g. interrupt controller, timers)</li>
-<li>Shadow page tables or EPT if present</li>
-<li>Uses qemu or virtio for I/O virtualization</li>
+<li>用于硬件虚拟化的 Linux 设备驱动程序（例如 Intel VT-x、SVM）</li>
+<li>基于 IOCTL 的接口，用于管理和运行虚拟 CPU</li>
+<li>VMM 组件在 Linux 内核中实现（例如中断控制器、定时器）</li>
+<li>如果存在，使用影子页表或 EPT</li>
+<li>使用 qemu 或 virtio 进行 I/O 虚拟化</li>
 </ul>
 
 
@@ -671,8 +641,8 @@ ARM VMs on x86)</li>
 <h2>Xen</h2>
 
 <ul class="simple">
-<li>Type 1 = Bare Metal Hypervisor</li>
-<li>Type 2 = Hypervisor embedded in an exist kernel / OS</li>
+<li>类型1 = 裸机 Hypervisor</li>
+<li>类型2 = 嵌入在现有内核/操作系统中的 Hypervisor</li>
 </ul>
 
 
