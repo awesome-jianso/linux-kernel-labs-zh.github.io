@@ -69,21 +69,21 @@
 <li class="toctree-l2"><a class="reference internal" href="lec9-debugging.html">SO2 Lecture 09 - Kernel debugging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lec10-networking.html">SO2 Lecture 10 - Networking</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">SO2 Lecture 11 - Architecture Layer</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lecture-objectives">Lecture objectives:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overview-of-the-arch-layer">Overview of the arch layer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#boot-strap">Boot strap</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#boot-strap-1">Boot strap</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#memory-setup">Memory setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mmu-management">MMU management</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#thread-management">Thread Management</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#time-management">Time Management</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#irqs-and-exception-management">IRQs and exception management</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#system-calls">System calls</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#platform-drivers">Platform Drivers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#machine-specific-code">Machine specific code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">课程目标：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">体系结构层概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#boot">引导（boot）过程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-3">引导过程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-4">内存设置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mmu">MMU 管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-5">线程管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-6">时间管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">中断和异常管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">系统调用</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">平台驱动程序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-10">机器特定代码</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#overview-of-the-boot-process">Overview of the boot process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-11">引导过程概述</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="lec12-virtualization.html">SO2 Lecture 12 - Virtualization</a></li>
@@ -121,7 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../lectures/fs.html">文件系统管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/debugging.html">调试</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/networking.html">网络管理</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lectures/arch.html">Architecture Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures/arch.html">体系结构层</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures/virt.html">Virtualization</a></li>
 </ul>
 <p class="caption"><span class="caption-text">实验</span></p>
@@ -178,108 +178,104 @@
   <div class="section" id="so2-lecture-11-architecture-layer">
 <h1>SO2 Lecture 11 - Architecture Layer<a class="headerlink" href="#so2-lecture-11-architecture-layer" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="lec11-arch-slides.html">View slides</a></p>
-<span class="admonition-so2-lecture-11-architecture-layer"></span><div class="section" id="lecture-objectives">
-<h2>Lecture objectives:<a class="headerlink" href="#lecture-objectives" title="永久链接至标题">¶</a></h2>
-<ul class="admonition-introduction simple">
-<li>Overview of the arch layer</li>
-<li>Overview of the boot process</li>
+<span class="admonition-so2-lecture-11-architecture-layer"></span><div class="section" id="section-1">
+<h2>课程目标：<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
+<ul class="admonition- simple">
+<li>体系结构层概述</li>
+<li>引导过程概述</li>
 </ul>
 </div>
-<div class="section" id="overview-of-the-arch-layer">
-<h2>Overview of the arch layer<a class="headerlink" href="#overview-of-the-arch-layer" title="永久链接至标题">¶</a></h2>
-<a class="admonition-overview-of-the-arch-layer reference internal image-reference" href="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png"><img alt="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png" class="admonition-overview-of-the-arch-layer" src="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png" style="height: 100%;" /></a>
-<div class="section" id="boot-strap">
-<h3>Boot strap<a class="headerlink" href="#boot-strap" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-bootstrap simple">
-<li>The first kernel code that runs</li>
-<li>Typically runs with the MMU disabled</li>
-<li>Move / Relocate kernel code</li>
+<div class="section" id="section-2">
+<h2>体系结构层概述<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<a class="admonition- reference internal image-reference" href="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png"><img alt="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png" class="admonition-" src="../_images/ditaa-ae895f3a8e26b92bf6c6ecbbd71e2c88912d5607.png" style="height: 100%;" /></a>
+<div class="section" id="boot">
+<h3>引导（boot）过程<a class="headerlink" href="#boot" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>第一个运行的内核代码</li>
+<li>通常在 MMU 禁用的情况下运行</li>
+<li>移动/重新定位内核代码</li>
 </ul>
 </div>
-<div class="section" id="boot-strap-1">
-<h3>Boot strap<a class="headerlink" href="#boot-strap-1" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-bootstrap simple">
-<li>The first kernel code that runs</li>
-<li>Typically runs with the MMU disabled</li>
-<li>Copy bootloader arguments and determine kernel run location</li>
-<li>Move / relocate kernel code to final location</li>
-<li>Initial MMU setup - map the kernel</li>
+<div class="section" id="section-3">
+<h3>引导过程<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>第一个运行的内核代码</li>
+<li>通常在 MMU 禁用的情况下运行</li>
+<li>复制引导加载程序（bootloader）参数并确定内核运行位置</li>
+<li>将内核代码移动/重新定位到最终位置</li>
+<li>初始 MMU 设置——映射内核</li>
 </ul>
 </div>
-<div class="section" id="memory-setup">
-<h3>Memory setup<a class="headerlink" href="#memory-setup" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-memory-setup simple">
-<li>Determine available memory and setup the boot memory allocator</li>
-<li>Manages memory regions before the page allocator is setup</li>
-<li>Bootmem - used a bitmap to track free blocks</li>
-<li>Memblock - deprecates bootmem and adds support for memory ranges<ul>
-<li>Supports both physical and virtual addresses</li>
-<li>support NUMA architectures</li>
+<div class="section" id="section-4">
+<h3>内存设置<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>确定可用内存并设置引导内存分配器</li>
+<li>在页面分配器建立之前管理内存区域</li>
+<li>Bootmem——使用位图跟踪空闲块</li>
+<li>Memblock——取代 bootmem 并支持内存范围<ul>
+<li>同时支持物理地址和虚拟地址</li>
+<li>支持 NUMA 架构</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="mmu-management">
-<h3>MMU management<a class="headerlink" href="#mmu-management" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-mmu-management simple">
-<li>Implements the generic page table manipulation APIs: types,
-accessors, flags</li>
-<li>Implement TLB management APIs: flush, invalidate</li>
+<div class="section" id="mmu">
+<h3>MMU 管理<a class="headerlink" href="#mmu" title="永久链接至标题">¶</a></h3>
+<ul class="admonition-mmu simple">
+<li>实现通用的页表操作 API：类型、访问器、标志</li>
+<li>实现 TLB 管理 API：刷新、使无效</li>
 </ul>
 </div>
-<div class="section" id="thread-management">
-<h3>Thread Management<a class="headerlink" href="#thread-management" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-thread-management simple">
-<li>Defines the thread type (struct thread_info) and implements
-functions for allocating threads (if needed)</li>
-<li>Implement <code class="xref c c-func docutils literal"><span class="pre">copy_thread()</span></code> and <code class="xref c c-func docutils literal"><span class="pre">switch_context()</span></code></li>
+<div class="section" id="section-5">
+<h3>线程管理<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>定义线程类型（struct thread_info）并实现分配线程的函数（如果需要）</li>
+<li>实现 <code class="xref c c-func docutils literal"><span class="pre">copy_thread()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">switch_context()</span></code></li>
 </ul>
 </div>
-<div class="section" id="time-management">
-<h3>Time Management<a class="headerlink" href="#time-management" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-timer-management simple">
-<li>Setup the timer tick and provide a time source</li>
-<li>Mostly transitioned to platform drivers<ul>
-<li>clock_event_device - for scheduling timers</li>
-<li>clocksource - for reading the time</li>
+<div class="section" id="section-6">
+<h3>时间管理<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>设置定时器节拍并提供时间源</li>
+<li>大部分转移到平台驱动程序<ul>
+<li>clock_event_device——用于调度定时器</li>
+<li>clocksource——用于读取时间</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="irqs-and-exception-management">
-<h3>IRQs and exception management<a class="headerlink" href="#irqs-and-exception-management" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-irqs-and-exception-management simple">
-<li>Define interrupt and exception handlers / entry points</li>
-<li>Setup priorities</li>
-<li>Platform drivers for interrupt controllers</li>
+<div class="section" id="section-7">
+<h3>中断和异常管理<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>定义中断和异常处理程序/入口点</li>
+<li>设置优先级</li>
+<li>为中断控制器提供平台驱动程序</li>
 </ul>
 </div>
-<div class="section" id="system-calls">
-<h3>System calls<a class="headerlink" href="#system-calls" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-system-calls simple">
-<li>Define system call entry point(s)</li>
-<li>Implement user-space access primitives (e.g. copy_to_user)</li>
+<div class="section" id="section-8">
+<h3>系统调用<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>定义系统调用入口点</li>
+<li>实现用户空间访问原语（例如，copy_to_user）</li>
 </ul>
 </div>
-<div class="section" id="platform-drivers">
-<h3>Platform Drivers<a class="headerlink" href="#platform-drivers" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-platform-drivers simple">
-<li>Platform and architecture specific drivers</li>
-<li>Bindings to platform device enumeration methods (e.g. device tree
-or ACPI)</li>
+<div class="section" id="section-9">
+<h3>平台驱动程序<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>平台和体系结构特定的驱动程序</li>
+<li>与平台设备枚举方法绑定（例如，设备树或 ACPI）</li>
 </ul>
 </div>
-<div class="section" id="machine-specific-code">
-<h3>Machine specific code<a class="headerlink" href="#machine-specific-code" title="永久链接至标题">¶</a></h3>
-<ul class="admonition-machine-specific-code simple">
-<li>Some architectures use a &quot;machine&quot; / &quot;platform&quot; abstraction</li>
-<li>Typical for architecture used in embedded systems with a lot of
-variety (e.g. ARM, powerPC)</li>
+<div class="section" id="section-10">
+<h3>机器特定代码<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
+<ul class="admonition- simple">
+<li>一些体系结构使用“机器”/“平台”抽象</li>
+<li>在使用大量不同种类的嵌入式系统中很常见（例如，ARM、powerPC）</li>
 </ul>
 </div>
 </div>
-<div class="section" id="overview-of-the-boot-process">
-<h2>Overview of the boot process<a class="headerlink" href="#overview-of-the-boot-process" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-11">
+<h2>引导过程概述<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h2>
 <asciinema-player src="../_images/boot.cast"></asciinema-player></div>
 </div>
 
