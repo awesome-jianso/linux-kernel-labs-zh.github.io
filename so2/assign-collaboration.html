@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collaboration &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>合作 &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -82,13 +82,13 @@
 <li class="toctree-l2"><a class="reference internal" href="lab10-networking.html">SO2 实验 10——网络</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab11-arm-kernel-development.html">SO2 实验 11——ARM 内核开发</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab12-kernel-profiling.html">SO2 实验 12——内核分析</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Collaboration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#use-github-gitlab">1. Use Github / Gitlab</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#start-with-a-skeleton-for-the-assignment">2. Start with a skeleton for the assignment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-a-commit-for-each-individual-change">3. Add a commit for each individual change</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#split-the-work-inside-the-team">4. Split the work inside the team</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#do-reviews">5. Do reviews</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#merge-the-work">6. Merge the work</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">合作</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#github-gitlab">1. 使用 Github / Gitlab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">2. 从任务的骨架开始</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">3. 为每个单独的更改添加提交</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">4. 在团队内拆分工作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">5. 进行代码审查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">6. 合并工作</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="assign0-kernel-api.html">Assignment 0 - Kernel API</a></li>
@@ -156,7 +156,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">操作系统 2</a></li>
-      <li class="breadcrumb-item active">Collaboration</li>
+      <li class="breadcrumb-item active">合作</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/so2/assign-collaboration.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -166,26 +166,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="collaboration">
-<h1>Collaboration<a class="headerlink" href="#collaboration" title="永久链接至标题">¶</a></h1>
-<p>Collaboration is essential in open source world and we encourage you
-to pick a team partner to work on selected assignments.</p>
-<p>Here is a simple guide to get you started:</p>
-<div class="section" id="use-github-gitlab">
-<h2>1. Use Github / Gitlab<a class="headerlink" href="#use-github-gitlab" title="永久链接至标题">¶</a></h2>
-<p>Best way to share your work inside the team is to use a version control system (VCS)
-in order to track each change. Mind that you must make your repo private and only allow
-read/write access rights to team members.</p>
+  <div class="section" id="section-1">
+<h1>合作<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h1>
+<p>在开源世界中，合作是至关重要的，我们鼓励你选择一个团队合作伙伴来共同完成选定的任务。</p>
+<p>以下是一个简单的指南，帮助你入门：</p>
+<div class="section" id="github-gitlab">
+<h2>1. 使用 Github / Gitlab<a class="headerlink" href="#github-gitlab" title="永久链接至标题">¶</a></h2>
+<p>在团队内部共享你的工作成果的最佳方式是使用版本控制系统（VCS）来跟踪每一次更改。请注意，你必须将你的存储库设置为私有，并仅授予团队成员读/写访问权限。</p>
 </div>
-<div class="section" id="start-with-a-skeleton-for-the-assignment">
-<h2>2. Start with a skeleton for the assignment<a class="headerlink" href="#start-with-a-skeleton-for-the-assignment" title="永久链接至标题">¶</a></h2>
-<p>Add <cite>init</cite>/<cite>exit</cite> functions, driver operations and global structures that you driver might need.</p>
+<div class="section" id="section-2">
+<h2>2. 从任务的骨架开始<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<p>添加 <cite>init</cite>/<cite>exit</cite> 函数、驱动程序操作和可能需要的全局结构。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-2.0</span>
 <span class="cm">/*</span>
-<span class="cm"> * uart16550.c - UART16550 driver</span>
+<span class="cm"> * uart16550.c——UART16550 驱动程序</span>
 <span class="cm"> *</span>
-<span class="cm"> * Author: John Doe &lt;john.doe@mail.com&gt;</span>
-<span class="cm"> * Author: Ionut Popescu &lt;ionut.popescu@mail.com&gt;</span>
+<span class="cm"> * 作者：John Doe &lt;john.doe@mail.com&gt;</span>
+<span class="cm"> * 作者：Ionut Popescu &lt;ionut.popescu@mail.com&gt;</span>
 <span class="cm"> */</span>
 <span class="k">struct</span> <span class="n">uart16550_dev</span> <span class="p">{</span>
    <span class="k">struct</span> <span class="n">cdev</span> <span class="n">cdev</span><span class="p">;</span>
@@ -254,39 +251,34 @@ read/write access rights to team members.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="add-a-commit-for-each-individual-change">
-<h2>3. Add a commit for each individual change<a class="headerlink" href="#add-a-commit-for-each-individual-change" title="永久链接至标题">¶</a></h2>
-<p>First commit must always be the skeleton file. And the rest of the code should be on top of skeleton file.
-Please write a good commit mesage. Explain briefly what the commit does and <em>why</em> it is necessary.</p>
-<p>Follow the seven rules of writing a good commit message: <a class="reference external" href="https://cbea.ms/git-commit/#seven-rules">https://cbea.ms/git-commit/#seven-rules</a></p>
+<div class="section" id="section-3">
+<h2>3. 为每个单独的更改添加提交<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<p>首个提交必须是骨架文件。而其余的代码应该在骨架文件的基础上进行添加。请认真写提交消息。简要解释该提交的内容以及 <em>为什么</em> 它是必要的。</p>
+<p>遵循良好提交消息的七个规则：[点击这里](<a class="reference external" href="https://cbea.ms/git-commit/#seven-rules">https://cbea.ms/git-commit/#seven-rules</a>)</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">Commit 3c92a02cc52700d2cd7c50a20297eef8553c207a (HEAD -&gt; tema2)</span>
 <span class="go">Author: John Doe &lt;john.doe@mail.com&gt;</span>
 <span class="go">Date:   Mon Apr 4 11:54:39 2022 +0300</span>
 
-<span class="go">  uart16550: Add initial skeleton for ssignment #2</span>
+<span class="go">  uart16550：为任务 #2 添加初始骨架</span>
 
-<span class="go">  This adds simple skeleton file for uart16550 assignment. Notice</span>
-<span class="go">  module init/exit callbacks and file_operations dummy implementation</span>
-<span class="go">  for open/release/read/write/ioctl.</span>
+<span class="go">  这个提交添加了 uart16550 任务的简单骨架文件。请注意模块的 init/exit 回调和 open/release/read/write/ioctl 的 file_operation 的虚拟实现。</span>
 
 <span class="go">  Signed-off-by: John Doe &lt;john.doe@mail.com&gt;</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="split-the-work-inside-the-team">
-<h2>4. Split the work inside the team<a class="headerlink" href="#split-the-work-inside-the-team" title="永久链接至标题">¶</a></h2>
-<p>Add <cite>TODOs</cite> with each team member tasks. Try to split the work evenly.</p>
-<p>Before starting to code, make a plan. On top of your skeleton file, add TODOs with each member tasks. Agree on global
-structures and the overlall driver design. Then start coding.</p>
+<div class="section" id="section-4">
+<h2>4. 在团队内拆分工作<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
+<p>将每个团队成员的任务添加进 <cite>TODO</cite>。尽量平均地拆分工作。</p>
+<p>在开始编码之前，制定一个计划。在骨架文件的顶部，将每个成员的任务添加进 <cite>TODO</cite>。就全局结构和整体驱动程序设计达成一致。然后开始编码。</p>
 </div>
-<div class="section" id="do-reviews">
-<h2>5. Do reviews<a class="headerlink" href="#do-reviews" title="永久链接至标题">¶</a></h2>
-<p>Create Pull Requests with your commits and go through review rounds with your team members. You can follow <cite>How to create a PR</cite> <a class="reference external" href="https://www.youtube.com/watch?v=YvoHJJWvn98">video</a>.</p>
+<div class="section" id="section-5">
+<h2>5. 进行代码审查<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
+<p>创建包含你的提交的 PR，并与团队成员进行审查。你可以参考 <cite>创建拉取请求教程</cite> 的 <a class="reference external" href="https://www.youtube.com/watch?v=YvoHJJWvn98">视频</a>。</p>
 </div>
-<div class="section" id="merge-the-work">
-<h2>6. Merge the work<a class="headerlink" href="#merge-the-work" title="永久链接至标题">¶</a></h2>
-<p>The final work is the result of merging all the pull requests. Following the commit messages
-one should clearly understand the progress of the code and how the work was managed inside the team.</p>
+<div class="section" id="section-6">
+<h2>6. 合并工作<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
+<p>最终的工作是合并所有 PR 的结果。根据提交消息，他人应该能够清楚地了解代码的进展以及在团队内工作是如何管理的。</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">f5118b873294 uart16550: Add uart16550_interrupt implementation</span>
 <span class="go">2115503fc3e3 uart16550: Add uart16550_ioctl implementation</span>
 <span class="go">b31a257fd8b8 uart16550: Add uart16550_write implementation</span>
