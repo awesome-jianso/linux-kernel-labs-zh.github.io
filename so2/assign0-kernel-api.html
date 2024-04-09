@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 0 - Kernel API &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>作业 0——内核 API &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -83,18 +83,18 @@
 <li class="toctree-l2"><a class="reference internal" href="lab11-arm-kernel-development.html">SO2 实验 11——ARM 内核开发</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lab12-kernel-profiling.html">SO2 实验 12——内核分析</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assign-collaboration.html">合作</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 0 - Kernel API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#assignment-s-objectives">Assignment's Objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#statement">Statement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#quickstart">QuickStart</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tips">Tips</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#penalties">Penalties</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#submitting-the-assigment">Submitting the assigment</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">作业 0——内核 API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">作业目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">快速入门</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-5">提示</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-6">处罚</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">提交作业</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#resources">Resources</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#questions">Questions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-8">资源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-9">问题</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="assign1-kprobe-based-tracer.html">Assignment 1 - Kprobe based tracer</a></li>
@@ -161,7 +161,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">操作系统 2</a></li>
-      <li class="breadcrumb-item active">Assignment 0 - Kernel API</li>
+      <li class="breadcrumb-item active">作业 0——内核 API</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/so2/assign0-kernel-api.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -171,60 +171,50 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="assignment-0-kernel-api">
-<h1>Assignment 0 - Kernel API<a class="headerlink" href="#assignment-0-kernel-api" title="永久链接至标题">¶</a></h1>
+  <div class="section" id="api">
+<h1>作业 0——内核 API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h1>
 <ul class="simple">
-<li>Deadline: <strong class="command">Sunday, 26 March 2023, 23:00</strong></li>
+<li>截止日期: <strong class="command">2023 年 3 月 26 日，23:00</strong></li>
 </ul>
-<div class="section" id="assignment-s-objectives">
-<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-1">
+<h2>作业目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
-<li>getting familiar with the qemu setup</li>
-<li>loading/unloading kernel modules</li>
-<li>getting familiar with the list API implemented in the kernel</li>
-<li>have fun :)</li>
+<li>熟悉 qemu 的设置</li>
+<li>加载/卸载内核模块</li>
+<li>熟悉内核中实现的列表 API</li>
+<li>玩得开心 :)</li>
 </ul>
 </div>
-<div class="section" id="statement">
-<h2>Statement<a class="headerlink" href="#statement" title="永久链接至标题">¶</a></h2>
-<p>Write a kernel module called <cite>list</cite> (the resulting file must be called <cite>list.ko</cite>) which stores data (strings)
-in an internal list.</p>
-<p>It is mandatory to use <a class="reference external" href="https://github.com/torvalds/linux/blob/master/include/linux/list.h">the list API</a>
-implemented in the kernel.
-For details you can take a look at <a class="reference external" href="https://linux-kernel-labs.github.io/refs/heads/master/so2/lab2-kernel-api.html">the laboratory 2</a>.</p>
-<p>The module exports a directory named <strong class="command">list</strong> to procfs. The directory contains two files:</p>
+<div class="section" id="section-2">
+<h2>说明<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<p>编写名为 <cite>list</cite> 的内核模块（生成的文件必须命名为 <cite>list.ko</cite>），该模块在内部列表中存储数据（字符串）。</p>
+<p>必须使用内核中实现的 <a class="reference external" href="https://github.com/torvalds/linux/blob/master/include/linux/list.h">列表 API</a>。有关详细信息，请参阅 <a class="reference external" href="/so2/lab2-kernel-api.html">实验 2</a>。</p>
+<p>该模块向 procfs 导出名为 <strong class="command">list</strong> 的目录。该目录包含两个文件：</p>
 <ul class="simple">
-<li><strong class="command">management</strong>: with write-only access; is the interface for transmitting commands to the kernel module</li>
-<li><strong class="command">preview</strong>: with read-only access; is the interface through which the internal contents of the kernel list can be viewed.</li>
+<li><strong class="command">management</strong>：只能写入；用于向内核模块传输命令的接口</li>
+<li><strong class="command">preview</strong>：只读；用于查看内核列表的内部内容的接口。</li>
 </ul>
-<p><a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/0-list/list.c">The code skeleton</a> implements the two procfs files.
-You will need to create a list and implement support for <cite>adding</cite> and <cite>reading</cite> data. Follow the TODOs in the code for details.</p>
-<p>To interact with the kernel list, you must write commands (using the <cite>echo</cite> command) in the <cite>/proc/list/management</cite> file:</p>
+<p><a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/0-list/list.c">代码骨架</a> 实现了这两个 procfs 文件。你需要创建一个列表，并实现对数据的 <cite>添加</cite> 和 <cite>读取</cite> 支持。请按照代码中的 TODO 进行操作。</p>
+<p>要与内核列表进行交互，你必须在 <cite>/proc/list/management</cite> 文件中编写命令（使用 <cite>echo</cite> 命令）：</p>
 <ul class="simple">
-<li><cite>addf name</cite>: adds the <cite>name</cite> element to the top of the list</li>
-<li><cite>adde name</cite>: adds the <cite>name</cite> element to the end of the list</li>
-<li><cite>delf name</cite>: deletes the first appearance of the <cite>name</cite> item from the list</li>
-<li><cite>dela name</cite>: deletes all occurrences of the <cite>name</cite> element in the list</li>
+<li><cite>addf name</cite>：将 <cite>name</cite> 元素添加到列表的顶部</li>
+<li><cite>adde name</cite>：将 <cite>name</cite> 元素添加到列表的末尾</li>
+<li><cite>delf name</cite>：删除列表中第一个 <cite>name</cite> 项</li>
+<li><cite>dela name</cite>：删除列表中所有的 <cite>name</cite> 元素</li>
 </ul>
-<p>Viewing the contents of the list is done by viewing the contents of the <cite>/proc/list/preview</cite> file (use the` cat` command).
-The format contains one element on each line.</p>
+<p>要想查看列表内容，可以查看 <cite>/proc/list/preview</cite> 文件的内容（使用 <cite>cat</cite> 命令）。格式为每行一个元素。</p>
 </div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="永久链接至标题">¶</a></h2>
-<p>In order to simplify the assignment evaluation process, but also to reduce the mistakes of the submitted assignments,
-the assignment evaluation will be done automatically with the help of a
-<a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/0-list/checker/_checker">test script</a> called <cite>_checker</cite>.
-The test script assumes that the kernel module is called <cite>list.ko</cite>.</p>
+<div class="section" id="section-3">
+<h2>测试<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<p>为了简化作业评估过程，同时也为了减少提交作业时的错误，作业评估将通过一个名为 <cite>_checker</cite> 的 <a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/0-list/checker/_checker">测试脚本</a> 自动进行。测试脚本假定内核模块名为 <cite>list.ko</cite>。</p>
 </div>
-<div class="section" id="quickstart">
-<h2>QuickStart<a class="headerlink" href="#quickstart" title="永久链接至标题">¶</a></h2>
-<p>It is mandatory to start the implementation of the assignment from the code skeleton found in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/src/list.c">list.c</a> file.
-You should follow the instructions in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list">assignment's repo</a>.</p>
-<div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
-<p>To increase your chances of getting the highest grade, read and follow the Linux kernel
-coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
-<p>Also, use the following static analysis tools to verify the code:</p>
+<div class="section" id="section-4">
+<h2>快速入门<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
+<p>必须从 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/src/list.c">list.c</a> 文件中找到的代码骨架开始实现作业。你应该按照 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list">任务仓库</a> 的 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md 文件</a> 中的说明进行操作。</p>
+<div class="section" id="section-5">
+<h3>提示<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
+<p>要想增加获得最高分的机会，请阅读并遵循 Linux 内核编码风格，该风格在 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">代码风格文档</a> 中有描述。</p>
+<p>此外，使用以下静态分析工具来验证代码：</p>
 <ul class="simple">
 <li>checkpatch.pl</li>
 </ul>
@@ -247,29 +237,23 @@ coding style described in the <a class="reference external" href="https://elixir
 </pre></div>
 </div>
 </div>
-<div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
-<p>Information about assigments penalties can be found on the
-<a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>.</p>
-<p>In exceptional cases (the assigment passes the tests by not complying with the requirements)
-and if the assigment does not pass all the tests, the grade will may decrease more than mentioned above.</p>
+<div class="section" id="section-6">
+<h3>处罚<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
+<p>有关作业处罚的信息可以在 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">基本说明页面</a> 中找到。</p>
+<p>在特殊情况下（作业通过测试，但不符合要求）会有处罚；如果作业未通过所有测试，成绩可能会降低更多。</p>
 </div>
-<div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
-<p>The assignment will be graded automatically using the <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> infrastructure.
-The submission will be made on moodle on the <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">course's page</a> to the related assignment.
-You will find the submission details in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master">repo</a>.</p>
+<div class="section" id="section-7">
+<h3>提交作业<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<p>使用 <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> 基础设施自动对作业进行评分。提交将在 moodle 上的 <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">课程页面</a> 上与相关作业相关联。你可以在 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master">仓库</a> 的 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md 文件</a> 中找到提交详细信息。</p>
 </div>
 </div>
-<div class="section" id="resources">
-<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
-<p>We recommend that you use gitlab to store your homework. Follow the directions in
-<a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md file</a>.</p>
+<div class="section" id="section-8">
+<h2>资源<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h2>
+<p>我们建议你使用 gitlab 存储作业。请按照 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/0-list/-/blob/master/README.md">README.md 文件</a> 中的说明进行操作。</p>
 </div>
-<div class="section" id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="永久链接至标题">¶</a></h2>
-<p>For questions about the topic, you can consult the mailing <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">list archives</a>
-or you can write a question on the dedicated Teams channel.</p>
+<div class="section" id="section-9">
+<h2>问题<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
+<p>如果你有相关的问题，你可以查阅邮件 <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">列表存档</a>，或在专用的 Teams 频道上提出问题。</p>
 </div>
 </div>
 
