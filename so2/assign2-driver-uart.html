@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 2 - Driver UART &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>作业 2——驱动 UART &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -85,22 +85,22 @@
 <li class="toctree-l2"><a class="reference internal" href="assign-collaboration.html">合作</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assign0-kernel-api.html">作业 0——内核 API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assign1-kprobe-based-tracer.html">作业 1——基于 Kprobe 的跟踪器</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 2 - Driver UART</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#assignment-s-objectives">Assignment's Objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#statement">Statement</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#buffers-scheme">Buffers Scheme</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">作业 2——驱动 UART</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">作业目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">任务描述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-3">缓冲区方案</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#quickstart">QuickStart</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tips">Tips</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#penalties">Penalties</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#submitting-the-assigment">Submitting the assigment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-4">实现细节</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">快速开始</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">提示</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">扣分规则</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">提交作业</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#resources">Resources</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#questions">Questions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-10">资源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-11">问题</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="assign3-software-raid.html">Assignment 3 - Software RAID</a></li>
@@ -165,7 +165,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">操作系统 2</a></li>
-      <li class="breadcrumb-item active">Assignment 2 - Driver UART</li>
+      <li class="breadcrumb-item active">作业 2——驱动 UART</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/so2/assign2-driver-uart.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -175,97 +175,93 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="assignment-2-driver-uart">
-<h1>Assignment 2 - Driver UART<a class="headerlink" href="#assignment-2-driver-uart" title="永久链接至标题">¶</a></h1>
+  <div class="section" id="uart">
+<h1>作业 2——驱动 UART<a class="headerlink" href="#uart" title="永久链接至标题">¶</a></h1>
 <ul class="simple">
-<li>Deadline: <strong class="command">Sunday, 30 April 2023, 23:00</strong></li>
-<li>The assigment is individual</li>
+<li>截止日期: <strong class="command">2023 年 4 月 30 日，23:00</strong></li>
+<li>此作业为个人完成</li>
 </ul>
-<div class="section" id="assignment-s-objectives">
-<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-1">
+<h2>作业目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
-<li>consolidating the knowledge of device drivers</li>
-<li>read hardware documentation and track the desired functionality in the documentation</li>
-<li>work with interrupts; use of non-blocking functions in interrupt context</li>
-<li>use of buffers; synchronization</li>
-<li>kernel modules with parameters</li>
+<li>巩固设备驱动的知识</li>
+<li>阅读硬件文档并在文档中追踪所需功能</li>
+<li>使用中断；在中断上下文中使用非阻塞函数</li>
+<li>使用缓冲区；同步</li>
+<li>带参数的内核模块</li>
 </ul>
 </div>
-<div class="section" id="statement">
-<h2>Statement<a class="headerlink" href="#statement" title="永久链接至标题">¶</a></h2>
-<p>Write a kernel module that implements a driver for the serial port (<cite>UART16550</cite>).
-The device driver must support the two standard serial ports in a PC, <cite>COM1</cite> and <cite>COM2</cite> (<cite>0x3f8</cite> and <cite>0x2f8</cite>,
-in fact the entire range of <cite>8</cite> addresses <cite>0x3f8-0x3ff</cite> and <cite>0x2f8-0x2ff</cite> specific to the two ports).
-In addition to the standard routines (<cite>open</cite>, <cite>read</cite>, <cite>write</cite>, <cite>close</cite>),
-the driver must also have support for changing communication parameters using an <cite>ioctl</cite> operation (<cite>UART16550_IOCTL_SET_LINE</cite>).</p>
-<p>The driver must use interrupts for both reception and transmission to reduce latency and CPU usage time.
-<cite>Read</cite> and <cite>write</cite> calls must also be blocking. <strong class="command">Assignments that do not meet these requirements will not be considered.</strong>
-It is recommended that you use a buffer for the read routine and another buffer for the write routine for each serial port in the driver.</p>
-<p>A blocking read call means that the read routine called from the user-space will be blocked until <strong class="command">at least</strong> one byte is read
-(the read buffer in the kernel is empty and no data can be read).
-A blocking write call means that the write routine called from the user-space will be blocked until <strong class="command">at least</strong> one byte is written
-(the write buffer in the kernel is full and no data can be written).</p>
-<div class="section" id="buffers-scheme">
-<h3>Buffers Scheme<a class="headerlink" href="#buffers-scheme" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-2">
+<h2>任务描述<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<p>编写一个内核模块，实现串口 (<cite>UART16550</cite>) 的驱动程序。该设备驱动程序必须支持计算机中的两个标准串口, <cite>COM1</cite> 和 <cite>COM2</cite> (<cite>0x3f8</cite> 和 <cite>0x2f8</cite>，实际上是两个串口的整个 <cite>8</cite> 地址范围 <cite>0x3f8-0x3ff</cite> 和 <cite>0x2f8-0x2ff</cite>)。除了标准例程 (<cite>open</cite>, <cite>read</cite>, <cite>write</cite>, <cite>close</cite>) 外，驱动程序还必须支持使用 <cite>ioctl</cite> 操作 (<cite>UART16550_IOCTL_SET_LINE</cite>) 更改通信参数。</p>
+<p>驱动程序必须使用中断来进行接收和发送，以减少延迟和 CPU 使用时间。 <cite>read</cite> 和 <cite>write</cite> 调用也必须是阻塞的。 <strong class="command">不符合这些要求的作业将不予考虑。</strong> 建议你为驱动程序中每个串行端口的读取例程使用一个缓冲区，并为写入例程使用另一个缓冲区。</p>
+<p>当用户空间发起读取操作时，如果内核的读缓冲区为空，没有数据可读，那么阻塞读调用将会等待，直到 <strong class="command">至少</strong> 有一个字节被读取。同样，当用户空间发起写入操作时，如果内核的写缓冲区已满，没有空间可写，那么阻塞写调用也将会等待，直到 <strong class="command">至少</strong> 有一个字节被写入。</p>
+<div class="section" id="section-3">
+<h3>缓冲区方案<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h3>
 <img alt="../_images/buffers-scheme.png" src="../_images/buffers-scheme.png" />
-<p>Data transfer between the various buffers is a <a class="reference external" href="https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem">Producer-Consumer</a> problem. Example:</p>
+<p>各个缓冲区之间的数据传输是 <a class="reference external" href="https://zh.wikipedia.org/zh-cn/生产者消费者问题">生产者-消费者</a> 问题。例如：</p>
 <ul class="simple">
-<li>The process is the producer and the device is the consumer if it is written from the process to the device; the process will block until there is at least one free space in the consumer's buffer</li>
-<li>The process is the consumer and the device is the producer if it is read from a process from the device; the process will block until there is at least one element in the producer's buffer.</li>
+<li>如果从进程写入设备，则进程是生产者，设备是消费者；如果消费者缓冲区没有剩余空间，则进程将被阻塞，直到消费者缓冲区至少有一个空闲空间为止。</li>
+<li>如果从设备读取数据到进程中，则进程是消费者，设备是生产者；如果生产者缓冲区没有内容，进程将被阻塞，直到生产者的缓冲区中至少有一个元素为止。</li>
 </ul>
 </div>
 </div>
-<div class="section" id="implementation-details">
-<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-4">
+<h2>实现细节<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h2>
+<ul>
+<li><p class="first">该驱动程序以名为 <strong class="command">uart16550.ko</strong> 的内核模块形式实现。</p>
+</li>
+<li><p class="first">该驱动程序是字符设备驱动，会根据传递给加载模块的参数，提供不同的功能操作。</p>
 <ul class="simple">
-<li>the driver will be implemented as a kernel module named <strong class="command">uart16550.ko</strong></li>
-<li>the driver will be accessed as a character device driver, with different functions depending on the parameters transmitted to the load module:<ul>
-<li>the <cite>major</cite> parameter will specify the major with which the device must be registered</li>
-<li>the <cite>option</cite> parameter will specify how it works:<ul>
-<li>OPTION_BOTH: will also register COM1 and COM2, with the major given by the <cite>major</cite> parameter and the minors 0 (for COM1) and 1 (for COM2);</li>
-<li>OPTION_COM1: will only register COM1, with the major <cite>major</cite> and minor 0;</li>
-<li>OPTION_COM2: will only register COM2, with the major <cite>major</cite> and minor 1;</li>
+<li><cite>major</cite> 参数指定设备必须注册的主设备号。</li>
+<li><cite>option</cite> 参数指定驱动程序的工作方式：<ul>
+<li>OPTION_BOTH：还会注册 COM1 和 COM2，主设备号由 <cite>major</cite> 参数给出，次设备号为 0（对应 COM1）和 1（对应 COM2）；</li>
+<li>OPTION_COM1：仅注册 COM1，主设备号为 <cite>major</cite>，次设备号为 0。</li>
+<li>OPTION_COM2：仅注册 COM2，主设备号为 <cite>major</cite>，次设备号为 1。</li>
 </ul>
 </li>
-<li>to learn how to pass parameters in Linux, see <a class="reference external" href="https://tldp.org/LDP/lkmpg/2.6/html/x323.html">tldp</a></li>
-<li>the default values are <cite>major=42</cite> and <cite>option=OPTION_BOTH</cite>.</li>
+<li>如果你不熟悉如何在 Linux 中传递参数，请参阅 <a class="reference external" href="https://tldp.org/LDP/lkmpg/2.6/html/x323.html">tldp</a>。</li>
+<li>默认值为 <cite>major=42</cite> 和 <cite>option=OPTION_BOTH</cite>。</li>
 </ul>
 </li>
-<li>the interrupt number associated with COM1 is 4 (<cite>IRQ_COM1</cite>) and the interrupt number associated with COM2 is 3 (<cite>IRQ_COM2</cite>)</li>
-<li><a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/src/uart16550.h">the header</a> with the definitions needed for special operations;</li>
-<li>a starting point in implementing read / write routines is the <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/laboratoare/lab04?&amp;#sincronizare_-_cozi_de_asteptare">example</a> of uppercase / lowercase character device driver; the only difference is that you have to use two buffers, one for read and one for write;</li>
-<li>you can use <a class="reference external" href="https://lwn.net/Articles/347619/">kfifo</a> for buffers;</li>
-<li>you do not have to use deferred functions to read / write data from / to ports (you can do everything from interrupt context);</li>
-<li>you will need to synchronize the read / write routines with the interrupt handling routine for the routines to be blocking; it is recommended to use <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/laboratoare/lab04?&amp;#sincronizare_-_cozi_de_asteptare">synchronization with waiting queues</a></li>
-<li>In order for the assigment to work, the <cite>default serial driver</cite> must be disabled:<ul>
-<li><cite>cat /proc/ioports | grep serial</cite> will detect the presence of the default driver on the regions where COM1 and COM2 are defined</li>
-<li>in order to deactivate it, the kernel must be recompiled, either by setting the serial driver as the module, or by deactivating it completely (this modification is already made on the virtual machine)<ul>
+<li><p class="first">COM1 关联的中断号为 4 (<cite>IRQ_COM1</cite>)，COM2 关联的中断号为 3 (<cite>IRQ_COM2</cite>)</p>
+</li>
+<li><p class="first">需要使用 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/src/uart16550.h">header</a> 中的定义来进行特殊操作。</p>
+</li>
+<li><p class="first">在实现读/写例程时，可以参考大写/小写字符设备驱动程序的 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/laboratoare/lab04?&amp;#sincronizare_-_cozi_de_asteptare">示例</a>；唯一的区别是你需要使用两个缓冲区，一个用于读取，另一个用于写入。</p>
+</li>
+<li><p class="first">可以使用 <a class="reference external" href="https://lwn.net/Articles/347619/">kfifo</a> 作为缓冲区。</p>
+</li>
+<li><p class="first">不需要使用延迟函数从端口读取/写入数据（可以在中断上下文中完成所有操作）。</p>
+</li>
+<li><p class="first">需要在读/写例程与中断处理例程之间进行同步，以使例程成为阻塞例程；建议使用 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/laboratoare/lab04?&amp;#sincronizare_-_cozi_de_asteptare">等待队列进行同步</a>。</p>
+</li>
+<li><p class="first">为了使作业正常工作，必须禁用 <cite>默认串口驱动程序</cite>：</p>
+<ul>
+<li><p class="first"><cite>cat /proc/ioports | grep serial</cite> 可以检测到默认驱动程序是否存在于定义 COM1 和 COM2 的区域。</p>
+</li>
+<li><p class="first">为了停用它，必须重新编译内核，可以将串口驱动程序设置为模块，或者完全停用它（虚拟机上已经进行了这个修改）。</p>
+<blockquote>
+<div><ul class="simple">
 <li><cite>Device Drivers -&gt; Character devices -&gt; Serial driver -&gt; 8250/16550 and compatible serial support.</cite></li>
 </ul>
+</div></blockquote>
 </li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="永久链接至标题">¶</a></h2>
-<p>In order to simplify the assignment evaluation process, but also to reduce the mistakes of the submitted assignments,
-the assignment evaluation will be done automatically with the help of a
-<a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/checker/2-uart-checker/_checker">test script</a> called <cite>_checker</cite>.
-The test script assumes that the kernel module is called <cite>uart16550.ko</cite>.</p>
+<div class="section" id="section-5">
+<h2>测试<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
+<p>为了简化作业评估过程，同时也为了减少提交作业时的错误，作业评估将通过一个名为 <cite>_checker</cite> 的 <a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/2-uart-checker/checker/_checker">测试脚本</a> 自动进行。测试脚本假定内核模块名为 <cite>uart16550.ko</cite>。</p>
 </div>
-<div class="section" id="quickstart">
-<h2>QuickStart<a class="headerlink" href="#quickstart" title="永久链接至标题">¶</a></h2>
-<p>It is mandatory to start the implementation of the assignment from the code skeleton found in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/tree/master/src">src</a> directory.
-There is only one header in the skeleton called <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/src/uart16550.h">uart16550.h</a>.
-You will provide the rest of the implementation. You can add as many <cite>*.c`</cite> sources and additional <cite>*.h`</cite> headers.
-You should also provide a Kbuild file that will compile the kernel module called <cite>uart16550.ko</cite>.
-Follow the instructions in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart">assignment's repo</a>.</p>
-<div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
-<p>To increase your chances of getting the highest grade, read and follow the Linux kernel
-coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
-<p>Also, use the following static analysis tools to verify the code:</p>
+<div class="section" id="section-6">
+<h2>快速开始<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
+<p>你必须从 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/tree/master/src">src</a> 目录中的代码模板开始实现作业。模板中只有一个名为 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/1-tracer/-/blob/master/src/uart16550.h">uart16550.h</a> 的头文件。你需要提供其余的实现。你可以添加任意数量的 <cite>*.c</cite> 源文件和额外的 <cite>*.h</cite> 头文件。你还应该提供一个名为 <cite>uart16550.ko</cite> 的 Kbuild 文件来编译内核模块。请按照 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart">作业仓库</a> 的 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/README.md">README.md 文件</a> 中的说明进行操作。</p>
+<div class="section" id="section-7">
+<h3>提示<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<p>要想增加获得最高分的机会，请阅读并遵循 Linux 内核中描述的 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">编码风格规范</a>。</p>
+<p>此外，使用以下静态分析工具来验证代码：</p>
 <ul class="simple">
 <li>checkpatch.pl</li>
 </ul>
@@ -288,35 +284,29 @@ coding style described in the <a class="reference external" href="https://elixir
 </pre></div>
 </div>
 </div>
-<div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
-<p>Information about assigments penalties can be found on the
-<a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>.</p>
-<p>In exceptional cases (the assigment passes the tests by not complying with the requirements)
-and if the assigment does not pass all the tests, the grade will may decrease more than mentioned above.</p>
+<div class="section" id="section-8">
+<h3>扣分规则<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<p>有关作业扣分的信息可以在“基本说明页面 &lt;<a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">https://ocw.cs.pub.ro/courses/so2/teme/general</a>&gt;`__ 上找到。</p>
+<p>在特殊情况下（作业通过了测试但不符合要求），以及如果作业未全部通过测试，成绩可能会降低得更多。</p>
 </div>
-<div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
-<p>The assignment will be graded automatically using the <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> infrastructure.
-The submission will be made on moodle on the <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">course's page</a> to the related assignment.
-You will find the submission details in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart">repo</a>.</p>
+<div class="section" id="section-9">
+<h3>提交作业<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<p>作业将由 <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> 基础设施自动评分。提交作业将在 moodle 的 <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">课程页面</a> 上与相关作业相关联。你可以在 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart">仓库</a> 的 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/README.md">README.md 文件</a> 中找到提交详细信息。</p>
 </div>
 </div>
-<div class="section" id="resources">
-<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-10">
+<h2>资源<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
-<li>serial port documentation can be found on <a class="reference external" href="https://tldp.org/HOWTO/Serial-HOWTO-19.html">tldp</a></li>
-<li><a class="reference external" href="http://www.byterunner.com/16550.html">table with registers</a></li>
-<li><a class="reference external" href="https://pdf1.alldatasheet.com/datasheet-pdf/view/9301/NSC/PC16550D.html">datasheet 16550</a></li>
-<li><a class="reference external" href="https://en.wikibooks.org/wiki/Serial_Programming/8250_UART_Programming">alternative documentation</a></li>
+<li>串口文档可以在 <a class="reference external" href="https://tldp.org/HOWTO/Serial-HOWTO-19.html">tldp</a> 上找到。</li>
+<li><a class="reference external" href="http://www.byterunner.com/16550.html">寄存器表</a></li>
+<li><a class="reference external" href="https://pdf1.alldatasheet.com/datasheet-pdf/view/9301/NSC/PC16550D.html">16550 数据手册</a></li>
+<li><a class="reference external" href="https://en.wikibooks.org/wiki/Serial_Programming/8250_UART_Programming">备选文档</a></li>
 </ul>
-<p>We recommend that you use gitlab to store your homework. Follow the directions in
-<a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/README.md">README</a>.</p>
+<p>我们建议你使用 GitLab 存储作业。请按照 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/2-uart/-/blob/master/README.md">README</a> 中的说明操作。</p>
 </div>
-<div class="section" id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="永久链接至标题">¶</a></h2>
-<p>For questions about the topic, you can consult the mailing <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">list archives</a>
-or you can write a question on the dedicated Teams channel.</p>
+<div class="section" id="section-11">
+<h2>问题<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h2>
+<p>如有相关问题，你可以参考邮件 <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">列表存档</a> 或在专用的 Teams 频道上提问。</p>
 </div>
 </div>
 
