@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 4 - SO2 Transport Protocol &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>作业 4——SO2 传输协议 &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -87,25 +87,25 @@
 <li class="toctree-l2"><a class="reference internal" href="assign1-kprobe-based-tracer.html">作业 1——基于 Kprobe 的跟踪器</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assign2-driver-uart.html">作业 2——驱动 UART</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assign3-software-raid.html">作业 3——软件 RAID</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 4 - SO2 Transport Protocol</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#assignment-s-objectives">Assignment's Objectives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#statement">Statement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#implementation-details">Implementation Details</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#sample-protocol-implementations">Sample Protocol Implementations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">作业 4——SO2 传输协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">作业目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-2">任务描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-3">实现细节</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-4">示例协议实现</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-5">测试</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tcpdump">tcpdump</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#quickstart">QuickStart</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tips">Tips</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#penalties">Penalties</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#submitting-the-assigment">Submitting the assigment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">快速入门</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-7">提示</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-8">扣分项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">提交作业</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#resources">Resources</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#questions">Questions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-10">资源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-11">问题</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="assign7-kvm-vmm.html">Assignment 7 - SO2 Virtual Machine Manager with KVM</a></li>
@@ -168,7 +168,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">操作系统 2</a></li>
-      <li class="breadcrumb-item active">Assignment 4 - SO2 Transport Protocol</li>
+      <li class="breadcrumb-item active">作业 4——SO2 传输协议</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/so2/assign4-transport-protocol.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -178,26 +178,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="assignment-4-so2-transport-protocol">
-<h1>Assignment 4 - SO2 Transport Protocol<a class="headerlink" href="#assignment-4-so2-transport-protocol" title="永久链接至标题">¶</a></h1>
+  <div class="section" id="so2">
+<h1>作业 4——SO2 传输协议<a class="headerlink" href="#so2" title="永久链接至标题">¶</a></h1>
 <ul class="simple">
-<li>Deadline: <strong class="command">Monday, 29 May 2023, 23:00</strong></li>
-<li>This assignment can be made in teams (max 2). Only one of them must submit the assignment, and the names of the student should be listed in a README file.</li>
+<li>截止日期: <strong class="command">星期一，2023 年 5 月 29 日，23:00</strong></li>
+<li>这个作业可以由团队完成（最多 2 人）。只需其中一人提交作业，学生姓名应列在 README 文件中。</li>
 </ul>
-<p>Implement a simple datagram transport protocol - STP (<em>SO2 Transport Protocol</em>).</p>
-<div class="section" id="assignment-s-objectives">
-<h2>Assignment's Objectives<a class="headerlink" href="#assignment-s-objectives" title="永久链接至标题">¶</a></h2>
+<p>实现一个简单的数据报传输协议——STP (<a href="#system-message-1"><span class="problematic" id="problematic-1">*</span></a>SO2 传输协议)。</p>
+<div class="section" id="section-1">
+<h2>作业目标<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
-<li>gaining knowledge about the operation of the networking subsystem in the Linux kernel</li>
-<li>obtaining skills to work with the basic structures of the networking subsystem in Linux</li>
-<li>deepening the notions related to communication and networking protocols by implementing a protocol in an existing protocol stack</li>
+<li>了解 Linux 内核中的网络子系统运行原理</li>
+<li>掌握在 Linux 中使用网络子系统基本结构的技能</li>
+<li>通过在现有协议栈中实现一个协议，加深与通信和网络协议相关的概念</li>
 </ul>
 </div>
-<div class="section" id="statement">
-<h2>Statement<a class="headerlink" href="#statement" title="永久链接至标题">¶</a></h2>
-<p>Implement, in the Linux kernel, a protocol called STP (<em>SO2 Transport Protocol</em>), at network and transport level, that works using datagrams (it is not connection-oriented and does not use flow-control elements).</p>
-<p>The STP protocol acts as a Transport layer protocol (port-based multiplexing) but operates at level 3 (Network) of <a class="reference external" href="http://en.wikipedia.org/wiki/OSI_model">the OSI stack</a>, above the Data Link level.</p>
-<p>The STP header is defined by the <code class="docutils literal"><span class="pre">struct</span> <span class="pre">stp_header</span></code> structure:</p>
+<div class="section" id="section-2">
+<h2>任务描述<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h2>
+<p>在 Linux 内核中实现一个名为 STP (<em>SO2 传输协议</em>) 的协议，该协议在网络和传输层使用数据报（它不面向连接，也不使用流控制元素）。</p>
+<p>STP 协议在作用层面上是传输层协议（基于端口的多路复用），但在 <a class="reference external" href="http://zh.wikipedia.org/zh-cn/OSI模型">OSI 模型</a> 的第 3 层（网络层）上运行，位于数据链路层之上。</p>
+<p>STP 头部由 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">stp_header</span></code> 结构定义：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">stp_header</span> <span class="p">{</span>
         <span class="n">__be16</span> <span class="n">dst</span><span class="p">;</span>
         <span class="n">__be16</span> <span class="n">src</span><span class="p">;</span>
@@ -207,51 +207,48 @@
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>where:</p>
+<p>其中：</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">len</span></code> is the length of the packet in bytes (including the header);</li>
-<li><code class="docutils literal"><span class="pre">dst</span></code> and <code class="docutils literal"><span class="pre">src</span></code> are the destination and source ports, respectively;</li>
-<li><code class="docutils literal"><span class="pre">flags</span></code> contains various flags, currently unused (marked <em>reserved</em>);</li>
-<li><code class="docutils literal"><span class="pre">csum</span></code> is the checksum of the entire package including the header; the checksum is calculated by exclusive OR (XOR) between all bytes.</li>
+<li><code class="docutils literal"><span class="pre">len</span></code> 是数据包的大小（包括头部）（以字节为单位）；</li>
+<li><code class="docutils literal"><span class="pre">dst</span></code> 和 <code class="docutils literal"><span class="pre">src</span></code> 分别是目标端口和源端口；</li>
+<li><code class="docutils literal"><span class="pre">flags</span></code> 包含各种标志，目前未使用（标记为 <em>reserved</em>）；</li>
+<li><code class="docutils literal"><span class="pre">csum</span></code> 是整个包（包括头部）的校验和；校验和通过对所有字节进行异或（XOR）计算得出。</li>
 </ul>
 </div></blockquote>
-<p>Sockets using this protocol will use the <code class="docutils literal"><span class="pre">AF_STP</span></code> family.</p>
-<p>The protocol must work directly over Ethernet. The ports used are between <code class="docutils literal"><span class="pre">1</span></code> and <code class="docutils literal"><span class="pre">65535</span></code>. Port <code class="docutils literal"><span class="pre">0</span></code> is not used.</p>
-<p>The definition of STP-related structures and macros can be found in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">assignment support header</a>.</p>
+<p>使用该协议的套接字将使用 <code class="docutils literal"><span class="pre">AF_STP</span></code> 协议族。</p>
+<p>该协议必须直接在以太网上工作。使用的端口范围为 <code class="docutils literal"><span class="pre">1</span></code> 到 <code class="docutils literal"><span class="pre">65535</span></code>。端口 <code class="docutils literal"><span class="pre">0</span></code> 未使用。</p>
+<p>STP 相关结构和宏的定义可以在 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">作业支持头文件</a> 中找到。</p>
 </div>
-<div class="section" id="implementation-details">
-<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="永久链接至标题">¶</a></h2>
-<p>The kernel module will be named <strong>af_stp.ko</strong>.</p>
-<p>You have to define a structure of type <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/net.h#L211">net_proto_family</a>, which provides the operation to create STP sockets.
-Newly created sockets are not associated with any port or interface and cannot receive / send packets.
-You must initialize the <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/net.h#L125">socket ops field</a> with the list of operations specific to the STP family.
-This field refers to a structure <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/net.h#L139">proto_ops</a> which must include the following functions:</p>
+<div class="section" id="section-3">
+<h2>实现细节<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h2>
+<p>内核模块需要命名为 <strong>af_stp.ko</strong>。</p>
+<p>你必须定义一个类型为 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/net.h#L211">net_proto_family</a> 的结构，该结构可创建 STP 套接字。新创建的套接字不与任何端口或接口相关联，无法接收/发送数据包。你必须使用特定于 STP 协议族的操作来初始化 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/net.h#L125">socket ops 字段</a>。该字段指向结构 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/net.h#L139">proto_ops</a>，其中必须包含以下函数：</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">release</span></code>: releases an STP socket</li>
-<li><code class="docutils literal"><span class="pre">bind</span></code>: associates a socket with a port (possibly also an interface) on which packets will be received / sent:<ul>
-<li>there may be bind sockets only on one port (not on an interface)</li>
-<li>sockets associated with only one port will be able to receive packets sent to that port on all interfaces (analogous to UDP sockets associated with only one port); these sockets cannot send packets because the interface from which they can be sent via the standard sockets API cannot be specified</li>
-<li>two sockets cannot be binded to the same port-interface combination:<ul>
-<li>if there is a socket already binded with a port and an interface then a second socket cannot be binded to the same port and the same interface or without a specified interface</li>
-<li>if there is a socket already binded to a port but without a specified interface then a second socket cannot be binded to the same port (with or without a specified interface)</li>
+<li><code class="docutils literal"><span class="pre">release</span></code>：释放一个 STP 套接字</li>
+<li><code class="docutils literal"><span class="pre">bind</span></code>：将套接字与端口关联（可能还包括接口），以便接收/发送数据包：<ul>
+<li>只能在一个端口上绑定套接字（不能在接口上绑定）</li>
+<li>与一个端口关联的套接字将能够接收发送到该端口的所有接口上的数据包（类似于仅与一个端口关联的 UDP 套接字）；这些套接字不能发送数据包，因为无法指定可以通过标准套接字 API 发送的接口</li>
+<li>两个套接字不能绑定到相同的端口——接口组合：<ul>
+<li>如果已经有一个与端口和接口绑定的套接字，则第二个套接字不能绑定到相同的端口和相同的接口或相同端口接口不指定</li>
+<li>如果已经有一个绑定到端口但没有指定接口的套接字，则不能将第二个套接字绑定到相同的端口（无论是否指定接口）</li>
 </ul>
 </li>
-<li>we recommend using a hash table for bind instead of other data structures (list, array); in the kernel there is a hash table implementation in the <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9.11/source/include/linux/hashtable.h">hashtable.h header</a></li>
+<li>我们建议在绑定操作中使用哈希表而不是其他数据结构（如列表、数组）；在内核 <a class="reference external" href="http://elixir.free-electrons.com/linux/v4.9.11/source/include/linux/hashtable.h">hashtable.h 头文件中</a> 中有一个哈希表实现</li>
 </ul>
 </li>
-<li><code class="docutils literal"><span class="pre">connect</span></code>: associates a socket with a remote port and hardware address (MAC address) to which packets will be sent / received:<ul>
-<li>this should allow <code class="docutils literal"><span class="pre">send</span></code> / <code class="docutils literal"><span class="pre">recv</span></code> operations on the socket instead of <code class="docutils literal"><span class="pre">sendmsg</span></code> / <code class="docutils literal"><span class="pre">recvmsg</span></code> or <code class="docutils literal"><span class="pre">sendto</span></code> / <code class="docutils literal"><span class="pre">recvfrom</span></code></li>
-<li>once connected to a host, sockets will only accept packets from that host</li>
-<li>once connected, the sockets can no longer be disconnected</li>
+<li><code class="docutils literal"><span class="pre">connect</span></code>：将套接字与远程端口和硬件地址（MAC 地址）关联，从而可以发送/接收数据包：<ul>
+<li>这使得套接字可以执行 <code class="docutils literal"><span class="pre">send</span></code> / <code class="docutils literal"><span class="pre">recv</span></code> 操作而不是 <code class="docutils literal"><span class="pre">sendmsg</span></code> / <code class="docutils literal"><span class="pre">recvmsg</span></code> 或 <code class="docutils literal"><span class="pre">sendto</span></code> / <code class="docutils literal"><span class="pre">recvfrom</span></code></li>
+<li>一旦连接到主机，套接字将只接受来自该主机的数据包</li>
+<li>一旦连接，套接字将无法断开连接</li>
 </ul>
 </li>
-<li><code class="docutils literal"><span class="pre">sendmsg</span></code>, <code class="docutils literal"><span class="pre">recvmsg</span></code>: send or receive a datagram on an STP socket:<ul>
-<li>for the <em>receive</em> part, metainformation about the host that sent the packet can be stored in the <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/skbuff.h#L742">cb field in sk_buff</a></li>
+<li><code class="docutils literal"><span class="pre">sendmsg</span></code>, <code class="docutils literal"><span class="pre">recvmsg</span></code>：在 STP 套接字上发送或接收数据报：<ul>
+<li>对于 <em>接收</em> 部分，有关发送数据包的主机的元信息可以存储在 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/skbuff.h#L742">sk_buff 中的 cb 字段</a> 中</li>
 </ul>
 </li>
-<li><code class="docutils literal"><span class="pre">poll</span></code>: the default function <code class="docutils literal"><span class="pre">datagram_poll</span></code> will have to be used</li>
-<li>for the rest of the operations the predefined stubs in the kernel will have to be used (<code class="docutils literal"><span class="pre">sock_no_*</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">poll</span></code>：必须使用默认函数 <code class="docutils literal"><span class="pre">datagram_poll</span></code></li>
+<li>对于其他操作，必须使用内核中预定义的 stub 函数 (<code class="docutils literal"><span class="pre">sock_no_*</span></code>)。</li>
 </ul>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">proto_ops</span> <span class="n">stp_ops</span> <span class="o">=</span> <span class="p">{</span>
         <span class="p">.</span><span class="n">family</span> <span class="o">=</span> <span class="n">PF_STP</span><span class="p">,</span>
@@ -275,50 +272,38 @@ This field refers to a structure <a class="reference external" href="http://elix
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Socket operations use a type of address called <code class="docutils literal"><span class="pre">sockaddr_stp</span></code>, a type defined in the <a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/4-stp/stp.h">assignment support header</a>.
-For the <em>bind</em> operation, only the port and the index of the interface on which the socket is bind will be considered.
-For the <em>receive</em> operation, only the <code class="docutils literal"><span class="pre">addr</span></code> and <code class="docutils literal"><span class="pre">port</span></code> fields in the structure will be filled in with the MAC address of the host that sent the packet and with the port from which it was sent.
-Also, when sending a packet, the destination host will be obtained from the <code class="docutils literal"><span class="pre">addr</span></code> and <code class="docutils literal"><span class="pre">port</span></code> fields of this structure.</p>
-<p>You need to register a structure <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/netdevice.h#L2501">packet_type</a>, using the call <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/core/dev.c#L521">dev_add_pack</a> to be able to receive STP packets from the network layer.</p>
-<p>The protocol will need to provide an interface through the <em>procfs</em> file system for statistics on sent / received packets.
-The file must be named <code class="docutils literal"><span class="pre">/proc/net/stp_stats</span></code>, specified by the <code class="docutils literal"><span class="pre">STP_PROC_FULL_FILENAME</span></code> macro in <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">assignment support header</a>.
-The format must be of simple table type with <code class="docutils literal"><span class="pre">2</span></code> rows: on the first row the header of the table, and on the second row the statistics corresponding to the columns.
-The columns of the table must be in order:</p>
+<p>套接字操作使用一种称为 <code class="docutils literal"><span class="pre">sockaddr_stp</span></code> 的地址类型，这种类型在 <a class="reference external" href="https://github.com/linux-kernel-labs/linux/blob/master/tools/labs/templates/assignments/4-stp/stp.h">作业支持头文件</a> 中定义。对于 <em>bind</em> 操作，只需要考虑套接字绑定的端口和接口索引。对于 <em>receive</em> 操作，只需要使用该结构中的 <code class="docutils literal"><span class="pre">addr</span></code> 和 <code class="docutils literal"><span class="pre">port</span></code> 字段填充发送数据包的主机的 MAC 地址以及发送数据包的端口。此外，在发送数据包时，目标主机将从此结构的 <code class="docutils literal"><span class="pre">addr</span></code> 和 <code class="docutils literal"><span class="pre">port</span></code> 字段获取。</p>
+<p>你需要使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/core/dev.c#L521">dev_add_pack</a> 调用，注册一个 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/netdevice.h#L2501">packet_type</a> 结构，来能够从网络层接收 STP 数据包。</p>
+<p>该协议需要通过 <em>procfs</em> 文件系统提供一个接口，用于统计发送/接收的数据包。该文件必须命名为 <code class="docutils literal"><span class="pre">/proc/net/stp_stats</span></code>，该名称由 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">作业支持头文件</a> 中的 <code class="docutils literal"><span class="pre">STP_PROC_FULL_FILENAME</span></code> 宏指定。格式必须是简单表格类型，具有 <code class="docutils literal"><span class="pre">2</span></code> 行：第一行是表格的标题，第二行是对应列的统计数据。表格的列必须按顺序排列：</p>
 <div class="code highlight-none"><div class="highlight"><pre><span></span>RxPkts HdrErr CsumErr NoSock NoBuffs TxPkts
 </pre></div>
 </div>
-<p>where:</p>
+<p>其中：</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">RxPkts</span></code> - the number of packets received</li>
-<li><code class="docutils literal"><span class="pre">HdrErr</span></code> - the number of packets received with header errors (packets too short or with source or destination 0 ports)</li>
-<li><code class="docutils literal"><span class="pre">CsumErr</span></code> - the number of packets received with checksum errors</li>
-<li><code class="docutils literal"><span class="pre">NoSock</span></code> - the number of received packets for which no destination socket was found</li>
-<li><code class="docutils literal"><span class="pre">NoBuffs</span></code> - the number of received packets that could not be received because the socket queue was full</li>
-<li><code class="docutils literal"><span class="pre">TxPkts</span></code> - the number of packets sent</li>
+<li><code class="docutils literal"><span class="pre">RxPkts</span></code> ——接收到的数据包数量</li>
+<li><code class="docutils literal"><span class="pre">HdrErr</span></code> ——接收到的带有头部错误的数据包数量（数据包过短或源/目标端口为 0）</li>
+<li><code class="docutils literal"><span class="pre">CsumErr</span></code> ——接收到的有校验和错误的数据包数量</li>
+<li><code class="docutils literal"><span class="pre">NoSock</span></code> ——未找到目标套接字的接收数据包数量</li>
+<li><code class="docutils literal"><span class="pre">NoBuffs</span></code> ——接收队列已满而无法接收的数据包数量</li>
+<li><code class="docutils literal"><span class="pre">TxPkts</span></code> ——发送的数据包数量</li>
 </ul>
-<p>To create or delete the entry specified by <code class="docutils literal"><span class="pre">STP_PROC_FULL_FILENAME</span></code> we recommend using the functions <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/proc_fs.h#L108">proc_create</a> and <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/fs/proc/generic.c#L772">proc_remove</a>.</p>
-<div class="section" id="sample-protocol-implementations">
-<h3>Sample Protocol Implementations<a class="headerlink" href="#sample-protocol-implementations" title="永久链接至标题">¶</a></h3>
-<p>For examples of protocol implementation, we recommend the implementation of <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/packet/af_packet.c">PF_PACKET</a> sockets and the various functions in <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/udp.c">UDP implementation</a> or <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/af_inet.c">IP implementation</a>.</p>
+<p>我们建议使用 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/include/linux/proc_fs.h#L108">proc_create</a> 和 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/fs/proc/generic.c#L772">proc_remove</a> 函数来创建或删除由 <code class="docutils literal"><span class="pre">STP_PROC_FULL_FILENAME</span></code> 指定的项。</p>
+<div class="section" id="section-4">
+<h3>示例协议实现<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
+<p>关于协议实现的示例，我们推荐参考 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/packet/af_packet.c">PF_PACKET</a> 套接字的实现以及 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/udp.c">UDP 实现</a> 或 <a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/af_inet.c">IP 实现</a> 中的各种函数。</p>
 </div>
 </div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="永久链接至标题">¶</a></h2>
-<p>In order to simplify the assignment evaluation process, but also to reduce the mistakes of the submitted assignments,
-the assignment evaluation will be done automatically with the help of a
-<a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/checker/4-stp-checker/_checker">test script</a> called <cite>_checker</cite>.
-The test script assumes that the kernel module is called <cite>af_stp.ko</cite>.</p>
+<div class="section" id="section-5">
+<h2>测试<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
+<p>为了简化作业评估过程，同时减少提交作业的错误，作业评估将使用一个名为 <cite>_checker</cite> 的 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/3-raid/-/blob/master/checker/4-stp-checker/_checker">测试脚本</a> 进行自动评估。测试脚本假设内核模块命名为 <cite>af_stp.ko</cite>。</p>
 <div class="section" id="tcpdump">
 <h3>tcpdump<a class="headerlink" href="#tcpdump" title="永久链接至标题">¶</a></h3>
-<p>You can use the <code class="docutils literal"><span class="pre">tcpdump</span></code> utility to troubleshoot sent packets.
-The tests use the loopback interface; to track sent packets you can use a command line of the form:</p>
+<p>你可以使用 <code class="docutils literal"><span class="pre">tcpdump</span></code> 实用程序来排查发送的数据包。测试使用回环接口；要跟踪发送的数据包，可以使用以下形式的命令行：</p>
 <div class="code console highlight-none"><div class="highlight"><pre><span></span>tcpdump -i lo -XX
 </pre></div>
 </div>
-<p>You can use a static version of <a class="reference external" href="http://elf.cs.pub.ro/so2/res/teme/tcpdump">tcpdump</a>.
-To add to the <code class="docutils literal"><span class="pre">PATH</span></code> environment variable in the virtual machine, copy this file to <code class="docutils literal"><span class="pre">/linux/tools/labs/rootfs/bin</span></code>.
-Create the directory if it does not exist. Remember to give the <code class="docutils literal"><span class="pre">tcpdump</span></code> file execution permissions:</p>
-<div class="code console highlight-none"><div class="highlight"><pre><span></span># Connect to the docker using ./local.sh docker interactive
+<p>你可以使用静态版本的 <a class="reference external" href="http://elf.cs.pub.ro/so2/res/teme/tcpdump">tcpdump</a>。要将其添加到虚拟机的 <code class="docutils literal"><span class="pre">PATH</span></code> 环境变量中，请将该文件复制到 <code class="docutils literal"><span class="pre">/linux/tools/labs/rootfs/bin</span></code>。如果该目录不存在，请创建该目录。记得给 <code class="docutils literal"><span class="pre">tcpdump</span></code> 文件赋予执行权限：</p>
+<div class="code console highlight-none"><div class="highlight"><pre><span></span># 使用 ./local.sh docker interactive 连接到 docker
 cd /linux/tools/labs/rootfs/bin
 wget http://elf.cs.pub.ro/so2/res/teme/tcpdump
 chmod +x tcpdump
@@ -326,17 +311,13 @@ chmod +x tcpdump
 </div>
 </div>
 </div>
-<div class="section" id="quickstart">
-<h2>QuickStart<a class="headerlink" href="#quickstart" title="永久链接至标题">¶</a></h2>
-<p>It is mandatory to start the implementation of the assignment from the code skeleton found in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/tree/master/src">src</a> directory.
-There is only one header in the skeleton called <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">stp.h</a>.
-You will provide the rest of the implementation. You can add as many <cite>*.c`</cite> sources and additional <cite>*.h`</cite> headers.
-You should also provide a Kbuild file that will compile the kernel module called <cite>af_stp.ko</cite>.
-Follow the instructions in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp">assignment's repo</a>.</p>
-<div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
-<p>To increase your chances of getting the highest grade, read and follow the Linux kernel coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v5.10/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
-<p>Also, use the following static analysis tools to verify the code:</p>
+<div class="section" id="section-6">
+<h2>快速入门<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
+<p>必须从 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/tree/master/src">src</a> 目录中找到的代码骨架开始实现作业。骨架中只有一个名为 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">stp.h</a> 的头文件。你需要提供其余的实现。你可以添加任意数量的 <cite>*.c`</cite> 源文件和额外的 <cite>*.h`</cite> 头文件。你还应该提供一个名为 <cite>af_stp.ko</cite> 的内核模块的 Kbuild 文件。请按照 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp">作业仓库</a> 的 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/README.md">README.md 文件</a> 中的说明进行操作。</p>
+<div class="section" id="section-7">
+<h3>提示<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
+<p>为了增加获得最高评分的机会，请阅读并遵循 <a class="reference external" href="https://elixir.bootlin.com/linux/v5.10/source/Documentation/process/coding-style.rst">Linux 内核编码风格</a>。</p>
+<p>此外，使用以下静态分析工具验证代码：</p>
 <ul>
 <li><p class="first">checkpatch.pl</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> linux/scripts/checkpatch.pl --no-tree --terse -f /path/to/your/file.c
@@ -358,47 +339,44 @@ Follow the instructions in the <a class="reference external" href="https://gitla
 </li>
 </ul>
 </div>
-<div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
-<p>Information about assigments penalties can be found on the <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>.</p>
-<p>In exceptional cases (the assigment passes the tests by not complying with the requirements) and if the assigment does not pass all the tests, the grade will may decrease more than mentioned above.</p>
+<div class="section" id="section-8">
+<h3>扣分项<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
+<p>有关作业扣分的信息可以在 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">通用指导页面</a> 上找到。</p>
+<p>在特殊情况下（作业通过测试，但不符合要求），以及如果作业未通过所有测试，分数可能会降低得更多。</p>
 </div>
-<div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
-<p>The assignment will be graded automatically using the <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> infrastructure.
-The submission will be made on moodle on the <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">course's page</a> to the related assignment.
-You will find the submission details in the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/README.md">README.md file</a> of the <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp">repo</a>.</p>
+<div class="section" id="section-9">
+<h3>提交作业<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<p>作业将使用 <a class="reference external" href="https://github.com/systems-cs-pub-ro/vmchecker-next/wiki/Student-Handbook">vmchecker-next</a> 基础设施进行自动评分。提交将在 moodle 的 <a class="reference external" href="https://curs.upb.ro/2022/course/view.php?id=5121">课程页面</a> 上与相关作业相关联。你可以在 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp">仓库</a> 的 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/README.md">README.md 文件</a> 中找到提交详细信息。</p>
 </div>
 </div>
-<div class="section" id="resources">
-<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-10">
+<h2>资源<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://linux-kernel-labs.github.io/refs/heads/master/so2/lec10-networking.html">Lecture 10 - Networking</a></li>
-<li><a class="reference external" href="https://linux-kernel-labs.github.io/refs/heads/master/so2/lab10-networking.html">Lab 10 - Networking</a></li>
-<li>Linux kernel sources<ul>
-<li><a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/packet/af_packet.c">Implementing PF_PACKET sockets</a></li>
-<li><a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/udp.c">Implementation of the UDP protocol</a></li>
-<li><a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/af_inet.c">Implementation of the IP protocol</a></li>
+<li><a class="reference external" href="/so2/lec10-networking.html">课程 10 ——网络</a></li>
+<li><a class="reference external" href="/so2/lab10-networking.html">实验 10 ——网络</a></li>
+<li>Linux 内核源代码<ul>
+<li><a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/packet/af_packet.c">PF_PACKET 套接字实现</a></li>
+<li><a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/udp.c">UDP 协议实现</a></li>
+<li><a class="reference external" href="http://elixir.free-electrons.com/linux/v5.10/source/net/ipv4/af_inet.c">IP 协议实现</a></li>
 </ul>
 </li>
-<li>Understanding Linux Network Internals<ul>
-<li>chapters 8-13</li>
+<li>理解 Linux 网络内部的工作原理<ul>
+<li>第 8-13 章</li>
 </ul>
 </li>
-<li><a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">assignment support header</a></li>
+<li><a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/src/stp.h">作业支持头文件</a></li>
 </ul>
-<p>We recommend that you use gitlab to store your homework. Follow the directions in <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/README.md">README</a>.</p>
+<p>我们建议你使用 GitLab 存储你的作业。请按照 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/4-stp/-/blob/master/README.md">README</a> 中的说明进行操作。</p>
 </div>
-<div class="section" id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="永久链接至标题">¶</a></h2>
-<p>For questions about the topic, you can consult the mailing <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">list archives</a>
-or you can write a question on the dedicated Teams channel.</p>
-<p>Before you ask a question, make sure that:</p>
+<div class="section" id="section-11">
+<h2>问题<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h2>
+<p>如果有相关的问题，请查阅邮件 <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">列表归档</a> 或在专用 Teams 频道上提问。</p>
+<p>在提问之前，请确保：</p>
 <blockquote>
 <div><ul class="simple">
-<li>you have read the statement of the assigment well</li>
-<li>the question is not already presented on the <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/tema2/faq">FAQ page</a></li>
-<li>the answer cannot be found in the <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">mailing list archives</a></li>
+<li>你已经仔细阅读了作业说明</li>
+<li>问题在 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/tema2/faq">FAQ 页面</a> 上没有被提出</li>
+<li>答案无法在 <a class="reference external" href="http://cursuri.cs.pub.ro/pipermail/so2/">邮件列表归档</a> 中找到</li>
 </ul>
 </div></blockquote>
 </div>
