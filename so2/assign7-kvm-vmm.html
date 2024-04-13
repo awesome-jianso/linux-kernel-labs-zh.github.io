@@ -98,6 +98,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#long-mode">设置长模式（long mode）</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#section-2">运行</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#section-3">客户机代码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simvirtio">SIMVIRTIO</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#section-4">控制器队列</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#section-5">设备结构</a></li>
 </ul>
@@ -295,15 +296,19 @@
 <li>为了测试 <cite>SIMVIRTIO</cite> 的实现，我们需要</li>
 </ol>
 <p>如何获取客户机代码？客户机代码在以下静态指针 guest16、guest16_end-guest16 中可用。链接器脚本会填充它们。</p>
-<p>## SIMVIRTIO：
-从客户机和 VMM 之间的通信中，我们将实现一种非常简单的协议称为 <code class="docutils literal"><span class="pre">SIMVIRTIO</span></code>。它是现实世界中使用的名为 virtio 的真实协议的简化版本。</p>
+</div>
+<div class="section" id="simvirtio">
+<h3>SIMVIRTIO<a class="headerlink" href="#simvirtio" title="永久链接至标题">¶</a></h3>
+<p>从客户机和 VMM 之间的通信中，我们将实现一种非常简单的协议称为 <code class="docutils literal"><span class="pre">SIMVIRTIO</span></code>。它是现实世界中使用的名为 virtio 的真实协议的简化版本。</p>
 <p>配置空间：</p>
-<p>＋－－－－－－－＋－－－－－－－－－＋－－－－－－－－＋－－－－－－－－－＋－－－－－－－－－－＋－－－－－－－＋－－－－－－－＋
+<div class="highlight-text"><div class="highlight"><pre><span></span>＋－－－－－－－＋－－－－－－－－－＋－－－－－－－－＋－－－－－－－－－＋－－－－－－－－－－＋－－－－－－－＋－－－－－－－＋
 ｜　u32　　　 　｜　u16　　　　　　｜　u8　　　　　　｜　u8　　　　　　　｜　u8　　　　　　　　｜　u8　　　　　｜　u8　　　　　｜
 ＋＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＋
 ｜　魔术值　　　｜　最大队列长度　　｜　设备状态　　　｜　驱动程序状态　　｜　队列选择器　　　　｜　Q0(TX)　CTL｜　Q1(RX)　CTL｜
 ｜　R　　　　 　｜　R　　　　 　　　｜　R　　　　 　　｜　R/W　　　　　　｜　R/W　　 　　　　　｜　R/W　　　　｜　R/w　　 　　｜
-＋－－－－－－－＋－－－－－－－－－＋－－－－－－－－＋－－－－－－－－－＋－－－－－－－－－－＋－－－－－－－＋－－－－－－－＋</p>
+＋－－－－－－－＋－－－－－－－－－＋－－－－－－－－＋－－－－－－－－－＋－－－－－－－－－－＋－－－－－－－＋－－－－－－－＋
+</pre></div>
+</div>
 </div>
 <div class="section" id="section-4">
 <h3>控制器队列<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
