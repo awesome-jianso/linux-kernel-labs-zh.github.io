@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Assignment 7 - SO2 Virtual Machine Manager with KVM &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>作业 7——使用 KVM 的 SO2 虚拟机管理器 &mdash; Linux 系统内核文档</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/asciinema-player.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -88,27 +88,28 @@
 <li class="toctree-l2"><a class="reference internal" href="assign2-driver-uart.html">作业 2——驱动 UART</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assign3-software-raid.html">作业 3——软件 RAID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assign4-transport-protocol.html">作业 4——SO2 传输协议</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Assignment 7 - SO2 Virtual Machine Manager with KVM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#i-virtual-machine-manager">I. Virtual Machine Manager</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#initialize-the-vmm">1. Initialize the VMM</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">作业 7——使用 KVM 的 SO2 虚拟机管理器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#i">I. 虚拟机管理器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vmm">1. 初始化 VMM</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#running-the-vm">Running the VM</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#setup-real-mode">Setup real mode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#setup-long-mode">Setup long mode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#running">Running</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#guest-code">Guest code</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#controller-queues">Controller queues</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#device-structures">Device structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-1">运行虚拟机</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#real-mode">设置实模式（real mode）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#long-mode">设置长模式（long mode）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-2">运行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-3">客户机代码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-4">控制器队列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-5">设备结构</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#using-the-skeleton">Using the skeleton</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#debugging">Debugging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tasks">Tasks</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submitting-the-assigment">Submitting the assigment</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tips">Tips</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#penalties">Penalties</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tldr">TLDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-6">使用骨架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-7">调试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-8">任务</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-9">提交作业</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-10">提示</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-11">扣分项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-12">参考资料</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">太长不看</a></li>
 </ul>
 </li>
 </ul>
@@ -172,7 +173,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">操作系统 2</a></li>
-      <li class="breadcrumb-item active">Assignment 7 - SO2 Virtual Machine Manager with KVM</li>
+      <li class="breadcrumb-item active">作业 7——使用 KVM 的 SO2 虚拟机管理器</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/so2/assign7-kvm-vmm.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -182,22 +183,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="assignment-7-so2-virtual-machine-manager-with-kvm">
-<h1>Assignment 7 - SO2 Virtual Machine Manager with KVM<a class="headerlink" href="#assignment-7-so2-virtual-machine-manager-with-kvm" title="永久链接至标题">¶</a></h1>
+  <div class="section" id="kvm-so2">
+<h1>作业 7——使用 KVM 的 SO2 虚拟机管理器<a class="headerlink" href="#kvm-so2" title="永久链接至标题">¶</a></h1>
 <ul class="simple">
-<li>Deadline: <strong class="command">Tuesday, 29 May 2023, 23:00</strong></li>
-<li>This assignment can be made in teams (max 2). Only one of them must submit the assignment, and the names of the student should be listed in a README file.</li>
+<li>截止日期: <strong class="command">2023 年 5 月 29 日，23:00</strong></li>
+<li>这个作业可以由团队完成（最多 2 人）。只需由其中一人提交作业，并在 README 文件中列出学生的姓名。</li>
 </ul>
-<p>In this assignment we will work on a simple Virtual Machine Manager (VMM). We will be using the KVM API
-from the Linux kernel.</p>
-<p>The assignment has two components: the VM code and the VMM code. We will be using a very simple protocol
-to enable the communication between the two components. The protocol is called SIMVIRTIO.</p>
-<div class="section" id="i-virtual-machine-manager">
-<h2>I. Virtual Machine Manager<a class="headerlink" href="#i-virtual-machine-manager" title="永久链接至标题">¶</a></h2>
-<p>In general, to build a VMM from scratch we will have to implement three main functionalities: initialize the VMM, initialize the virtual CPU and run the guest code. We will split the implementation of the VMM in these three phases.</p>
-<div class="section" id="initialize-the-vmm">
-<h3>1. Initialize the VMM<a class="headerlink" href="#initialize-the-vmm" title="永久链接至标题">¶</a></h3>
-<p>A VM will be represented in general by three elements, a file descriptor used to interact with the KVM API, a file descriptor per VM used to configure it (e.g. set its memory) and a pointer to the VM's memory. We provide you with the following structure to start from when working with a VM.</p>
+<p>在本作业中，我们将使用 Linux 内核中的 KVM API 来开发一个简单的虚拟机管理器（VMM）。</p>
+<p>本作业分为两个部分：虚拟机（VM）代码和 VMM 代码。我们将使用一个非常简单的协议来实现这两个组件之间的通信。该协议名为 SIMVIRTIO。</p>
+<div class="section" id="i">
+<h2>I. 虚拟机管理器<a class="headerlink" href="#i" title="永久链接至标题">¶</a></h2>
+<p>通常情况下，要从零开始构建一个 VMM，我们需要实现三个主要功能：初始化 VMM、初始化虚拟 CPU 和运行客户机代码。我们将把 VMM 的实现分为这三个阶段。</p>
+<div class="section" id="vmm">
+<h3>1. 初始化 VMM<a class="headerlink" href="#vmm" title="永久链接至标题">¶</a></h3>
+<p>一个 VM 通常由三个元素表示，一个是用于与 KVM API 进行交互的文件描述符，一个是用于配置 VM 文件描述符（每个 VM 对应一个）（例如设置其内存），还有一个是指向 VM 内存的指针。我们为你提供了以下结构，用于在使用 VM 时进行参考。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">vm</span> <span class="p">{</span>
         <span class="kt">int</span> <span class="n">sys_fd</span><span class="p">;</span>
         <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
@@ -205,8 +204,8 @@ to enable the communication between the two components. The protocol is called S
 <span class="p">}</span> <span class="n">virtual_machine</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>The first step in initializing the KVM VM is to interract with the [KVM_API](<a class="reference external" href="https://www.kernel.org/doc/html/latest/virt/kvm/api.html">https://www.kernel.org/doc/html/latest/virt/kvm/api.html</a>]. The KVM API is exposed via <code class="docutils literal"><span class="pre">/dev/kvm</span></code>. We will be using ioctl calls to call the API.</p>
-<p>The snippet below shows how one can call <code class="docutils literal"><span class="pre">KVM_GET_API_VERSION</span></code> to get the KVM API Version</p>
+<p>初始化 KVM 虚拟机的第一步是与 [KVM_API](<a class="reference external" href="https://www.kernel.org/doc/html/latest/virt/kvm/api.html">https://www.kernel.org/doc/html/latest/virt/kvm/api.html</a>) 进行交互。KVM API 通过 <code class="docutils literal"><span class="pre">/dev/kvm</span></code> 进行公开。我们需要使用 ioctl 调用来调用该 API。</p>
+<p>下面的代码片段展示了如何调用 <code class="docutils literal"><span class="pre">KVM_GET_API_VERSION</span></code> 来获取 KVM API 版本。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">kvm_fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/kvm&quot;</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">kvm_fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">perror</span><span class="p">(</span><span class="s">&quot;open /dev/kvm&quot;</span><span class="p">);</span>
@@ -220,148 +219,108 @@ to enable the communication between the two components. The protocol is called S
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Let us now go briefly through how a VMM initializes a VM. This is only the bare bones, a VMM may do lots of other things during VM initialization.</p>
+<p>现在让我们简要介绍 VMM 如何初始化 VM。以下只是最基本的步骤，实际上在 VM 初始化过程中，VMM 可能会执行许多其他操作。</p>
 <ol class="arabic simple">
-<li>We first use KVM_GET_API_VERSION to check that we are running the expected version of KVM, <code class="docutils literal"><span class="pre">KVM_API_VERSION</span></code>.</li>
-<li>We now create the VM using <code class="docutils literal"><span class="pre">KVM_CREATE_VM</span></code>. Note that calling <code class="docutils literal"><span class="pre">KVM_CREATE_VM</span></code> returns a file descriptor. We will be using this file descriptor for the next phases of the setup.</li>
-<li>(Optional) On Intel based CPUs we will have to call <code class="docutils literal"><span class="pre">KVM_SET_TSS_ADDR</span></code> with address <code class="docutils literal"><span class="pre">0xfffbd000</span></code></li>
-<li>Next, we allocate the memory for the VM, we will be using <code class="docutils literal"><span class="pre">mmap</span></code> for this with <code class="docutils literal"><span class="pre">PROT_WRITE</span></code>, <code class="docutils literal"><span class="pre">MAP_PRIVATE</span></code>, <code class="docutils literal"><span class="pre">MAP_ANONYMOUS</span></code> and <code class="docutils literal"><span class="pre">MAP_NORESERVE</span></code>. We recommend allocating 0x100000 bytes for the VM.</li>
-<li>We flag the memory as <code class="docutils literal"><span class="pre">MADV_MERGEABLE</span></code> using <code class="docutils literal"><span class="pre">madvise</span></code></li>
-<li>Finally, we use <code class="docutils literal"><span class="pre">KVM_SET_USER_MEMORY_REGION</span></code> to assign the memory to the VM.</li>
+<li>首先，使用 KVM_GET_API_VERSION 检查我们是否运行了预期的 KVM 版本，即 <code class="docutils literal"><span class="pre">KVM_API_VERSION</span></code>。</li>
+<li>然后，使用 <code class="docutils literal"><span class="pre">KVM_CREATE_VM</span></code> 创建虚拟机。请注意，调用 <code class="docutils literal"><span class="pre">KVM_CREATE_VM</span></code> 会返回一个文件描述符。我们将在后续的设置阶段使用这个文件描述符。</li>
+<li>（可选）在基于 Intel 的 CPU 上，我们需要调用 <code class="docutils literal"><span class="pre">KVM_SET_TSS_ADDR</span></code>，并将地址设置为 <code class="docutils literal"><span class="pre">0xfffbd000</span></code>。</li>
+<li>接下来，为虚拟机分配内存。我们需要使用 <code class="docutils literal"><span class="pre">mmap</span></code> 函数进行分配，调用时需要使用 <code class="docutils literal"><span class="pre">PROT_WRITE</span></code>, <code class="docutils literal"><span class="pre">MAP_PRIVATE</span></code>, <code class="docutils literal"><span class="pre">MAP_ANONYMOUS</span></code> 和 <code class="docutils literal"><span class="pre">MAP_NORESERVE</span></code> 参数。我们建议为虚拟机分配 0x100000 字节的内存。</li>
+<li>使用 <code class="docutils literal"><span class="pre">madvise</span></code> 函数将内存标记为 <code class="docutils literal"><span class="pre">MADV_MERGEABLE</span></code>。</li>
+<li>最后，使用 <code class="docutils literal"><span class="pre">KVM_SET_USER_MEMORY_REGION</span></code> 将内存分配给虚拟机。</li>
 </ol>
-<p><strong>Make sure you understand what file descriptor to use and when, we use the KVM fd when calling KVM_CREATE_VM, but when interacting with the vm such as calling KVM_SET_USER_MEMORY_REGION we use the VMs
-file descriptor</strong></p>
-<p>TLDR: API used for VM initialization:</p>
+<p><strong>请确保你理解在何时使用哪个文件描述符，在调用 KVM_CREATE_VM 时我们使用 KVM 文件描述符，但在与虚拟机交互（例如调用 KVM_SET_USER_MEMORY_REGION）时我们使用虚拟机的文件描述符</strong></p>
+<p>简而言之，用于虚拟机初始化的 API 包括：</p>
 <ul class="simple">
 <li>KVM_GET_API_VERSION</li>
 <li>KVM_CREATE_VM</li>
 <li>KVM_SET_TSS_ADDR</li>
-<li>KVM_SET_USER_MEMORY_REGION.</li>
+<li>KVM_SET_USER_MEMORY_REGION。</li>
 </ul>
-<div class="section" id="initialize-a-virtual-cpu">
-<h4>2. Initialize a virtual CPU<a class="headerlink" href="#initialize-a-virtual-cpu" title="永久链接至标题">¶</a></h4>
-<p>We need a Virtual CPU (VCPU) to store registers.</p>
+<div class="section" id="cpu">
+<h4>2. 初始化虚拟 CPU<a class="headerlink" href="#cpu" title="永久链接至标题">¶</a></h4>
+<p>我们需要虚拟 CPU（VCPU）来存储寄存器值。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">vcpu</span> <span class="p">{</span>
         <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
         <span class="k">struct</span> <span class="n">kvm_run</span> <span class="o">*</span><span class="n">kvm_run</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">virtual_cpu</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>To create a virtual CPU we will do the following:
-1. Call <code class="docutils literal"><span class="pre">KVM_CREATE_VCPU</span></code> to create the virtual CPU. This call returns a file descriptor.
-2. Use <code class="docutils literal"><span class="pre">KVM_GET_VCPU_MMAP_SIZE</span></code> to get the size of the shared memory
-3. Allocated the necessary VCPU mem size with <code class="docutils literal"><span class="pre">mmap</span></code>. We will be passing the VCPU file descriptor to the <code class="docutils literal"><span class="pre">mmap</span></code> call. We can store the result in <code class="docutils literal"><span class="pre">kvm_run</span></code>.</p>
-<p>TLDR: API used for VM</p>
+<p>要创建虚拟 CPU，我们需要执行以下操作：
+1. 调用 <code class="docutils literal"><span class="pre">KVM_CREATE_VCPU</span></code> 创建虚拟 CPU。此调用将返回一个文件描述符。
+2. 使用 <code class="docutils literal"><span class="pre">KVM_GET_VCPU_MMAP_SIZE</span></code> 获取共享内存的大小。
+3. 使用 <code class="docutils literal"><span class="pre">mmap</span></code> 分配所需的 VCPU 内存大小。我们需要把 VCPU 文件描述符传递给 <code class="docutils literal"><span class="pre">mmap</span></code> 调用。我们可以将结果存储在 <code class="docutils literal"><span class="pre">kvm_run</span></code> 中。</p>
+<p>简而言之，用于虚拟机的 API 包括：</p>
 <ul class="simple">
 <li>KVM_CREATE_VCPU</li>
 <li>KVM_GET_VCPU_MMAP_SIZE</li>
 </ul>
-<p><strong>We recommend using 2MB pages to simplify the translation process</strong></p>
+<p><strong>我们建议使用 2MB 页面以简化翻译过程。</strong></p>
 </div>
 </div>
 </div>
-<div class="section" id="running-the-vm">
-<h2>Running the VM<a class="headerlink" href="#running-the-vm" title="永久链接至标题">¶</a></h2>
-<div class="section" id="setup-real-mode">
-<h3>Setup real mode<a class="headerlink" href="#setup-real-mode" title="永久链接至标题">¶</a></h3>
-<p>At first, the CPU will start in Protected mode. To do run any meaningful code, we will switch the CPU to [Real mode](<a class="reference external" href="https://wiki.osdev.org/Real_Mode">https://wiki.osdev.org/Real_Mode</a>). To do this we will
-need to configure several CPU registers.</p>
+<div class="section" id="section-1">
+<h2>运行虚拟机<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
+<div class="section" id="real-mode">
+<h3>设置实模式（real mode）<a class="headerlink" href="#real-mode" title="永久链接至标题">¶</a></h3>
+<p>首先，CPU 会以保护模式启动。要想运行任何有意义的代码，我们需要把 CPU 切换到[实模式](<a class="reference external" href="https://wiki.osdev.org/Real_Mode">https://wiki.osdev.org/Real_Mode</a>)。为此，我们需要配置几个 CPU 寄存器。</p>
 <ol class="arabic simple">
-<li>First, we will use <code class="docutils literal"><span class="pre">KVM_GET_SREGS</span></code> to get the registers. We use <code class="docutils literal"><span class="pre">struct</span> <span class="pre">kvm_regs</span></code> for this task.</li>
-<li>We will need to set <code class="docutils literal"><span class="pre">cs.selector</span></code> and <code class="docutils literal"><span class="pre">cs.base</span></code> to 0. We will use <code class="docutils literal"><span class="pre">KVM_SET_SREGS</span></code> to set the registers.</li>
-<li>Next we will clear all <code class="docutils literal"><span class="pre">FLAGS</span></code> bits via the <code class="docutils literal"><span class="pre">rflags</span></code> register, this means setting <code class="docutils literal"><span class="pre">rflags</span></code> to 2 since bit 1 must always be to 1. We alo set the <code class="docutils literal"><span class="pre">RIP</span></code> register to 0.</li>
+<li>首先，我们需要使用 <code class="docutils literal"><span class="pre">KVM_GET_SREGS</span></code> 获取寄存器的值。我们可以使用 <code class="docutils literal"><span class="pre">struct</span> <span class="pre">kvm_regs</span></code> 结构来完成这个任务。</li>
+<li>我们需要将 <code class="docutils literal"><span class="pre">cs.selector</span></code> 和 <code class="docutils literal"><span class="pre">cs.base</span></code> 设置为 0。我们可以使用 <code class="docutils literal"><span class="pre">KVM_SET_SREGS</span></code> 来设置这些寄存器。</li>
+<li>接下来，我们需要通过 <code class="docutils literal"><span class="pre">rflags</span></code> 寄存器清除所有 <code class="docutils literal"><span class="pre">FLAGS</span></code> 位。我们需要将 <code class="docutils literal"><span class="pre">rflags</span></code> 设置为 2，因为第一位必须始终为 1。我们还需要将 <code class="docutils literal"><span class="pre">RIP</span></code> 寄存器设置为 0。</li>
 </ol>
 </div>
-<div class="section" id="setup-long-mode">
-<h3>Setup long mode<a class="headerlink" href="#setup-long-mode" title="永久链接至标题">¶</a></h3>
-<p>Read mode is all right for very simple guests, such as the one found in the folder <cite>guest_16_bits</cite>. But,
-most programs nowdays need 64 bits addresses, and such we will need to switch to long mode. The following article from OSDev presents all the necessary information about  [Setting Up Long Mode](<a class="reference external" href="https://wiki.osdev.org/Setting_Up_Long_Mode">https://wiki.osdev.org/Setting_Up_Long_Mode</a>).</p>
-<p>In <code class="docutils literal"><span class="pre">vcpu.h</span></code>, you may found helpful macros such as CR0_PE, CR0_MP, CR0_ET, etc.</p>
-<p>Since we will running a more complex program, we will also create a small stack for our program
-<code class="docutils literal"><span class="pre">regs.rsp</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">&lt;&lt;</span> <span class="pre">20;</span></code>. Don't forget to set the RIP and RFLAGS registers.</p>
+<div class="section" id="long-mode">
+<h3>设置长模式（long mode）<a class="headerlink" href="#long-mode" title="永久链接至标题">¶</a></h3>
+<p>实模式适用于非常简单的客户机，比如在 <cite>guest_16_bits</cite> 文件夹中的客户机。但是，大多数现代程序需要 64 位地址，因此我们需要切换到长模式。OSDev 上的以下文章提供了[设置长模式](<a class="reference external" href="https://wiki.osdev.org/Setting_Up_Long_Mode">https://wiki.osdev.org/Setting_Up_Long_Mode</a>)所需的所有必要信息。</p>
+<p>在 <code class="docutils literal"><span class="pre">vcpu.h</span></code> 中，你可以找到有用的宏，例如 CR0_PE、CR0_MP 以及 CR0_ET 等。</p>
+<p>由于我们需要运行更复杂的程序，我们还需要为我们的程序创建一个小的堆栈 <code class="docutils literal"><span class="pre">regs.rsp</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">&lt;&lt;</span> <span class="pre">20;</span></code>。不要忘记设置 RIP 和 RFLAGS 寄存器。</p>
 </div>
-<div class="section" id="running">
-<h3>Running<a class="headerlink" href="#running" title="永久链接至标题">¶</a></h3>
-<p>After we setup our VCPU in real or long mode we can finally start running code on the VM.</p>
+<div class="section" id="section-2">
+<h3>运行<a class="headerlink" href="#section-2" title="永久链接至标题">¶</a></h3>
+<p>在设置了实模式或长模式的 VCPU 之后，我们终于可以在虚拟机上运行代码了。</p>
 <ol class="arabic simple">
-<li>We copy to the vm memory the guest code, <cite>memcpy(vm-&gt;mem, guest_code, guest_code_size)</cite> The guest code will be available in two variables which will be discussed below.</li>
-<li>In a infinite loop we run the following:</li>
+<li>我们将客户机代码复制到虚拟机内存中, <cite>memcpy(vm-&gt;mem, guest_code, guest_code_size)</cite>。客户机代码将在下面两个将讨论的变量中提供。</li>
+<li>在无限循环中，我们执行以下操作：
+* 调用 VCPU 文件描述符上的 <code class="docutils literal"><span class="pre">KVM_RUN</span></code> 来运行 VCPU。
+* 通过 VCPU 的共享内存，检查 <code class="docutils literal"><span class="pre">exit_reason</span></code> 参数，以查看客户机是否发出了任何请求：
+* 处理以下 VMEXIT: <code class="docutils literal"><span class="pre">KVM_EXIT_MMIO</span></code>, <code class="docutils literal"><span class="pre">KVM_EXIT_IO</span></code> 以及 <code class="docutils literal"><span class="pre">KVM_EXIT_HLT</span></code>。当 VM 写入 MMIO 地址时，会触发 <code class="docutils literal"><span class="pre">KVM_EXIT_MMIO</span></code>。当 VM 调用 <code class="docutils literal"><span class="pre">inb</span></code> 或 <code class="docutils literal"><span class="pre">outb</span></code> 时，会调用 <code class="docutils literal"><span class="pre">KVM_EXIT_IO</span></code>。当用户执行 <code class="docutils literal"><span class="pre">hlt</span></code> 指令时，会调用 <code class="docutils literal"><span class="pre">KVM_EXIT_HLT</span></code>。</li>
 </ol>
-<blockquote>
-<div><ul class="simple">
-<li>We call <code class="docutils literal"><span class="pre">KVM_RUN</span></code> on the VCPU file descriptor to run the VPCU</li>
-<li>Through the shared memory of the VCPU we check the <code class="docutils literal"><span class="pre">exit_reason</span></code> parameter to see if the guest has made any requests:</li>
-<li>We will handle the following VMEXITs: <cite>KVM_EXIT_MMIO</cite>, <cite>KVM_EXIT_IO</cite> and <code class="docutils literal"><span class="pre">KVM_EXIT_HLT</span></code>. <code class="docutils literal"><span class="pre">KVM_EXIT_MMIO</span></code> is triggered when the VM writes to a MMIO address. <code class="docutils literal"><span class="pre">KVM_EXIT_IO</span></code> is called when the VM calls <code class="docutils literal"><span class="pre">inb</span></code> or <code class="docutils literal"><span class="pre">outb</span></code>. <code class="docutils literal"><span class="pre">KVM_EXIT_HLT</span></code> is called when the user does a <code class="docutils literal"><span class="pre">hlt</span></code> instruction.</li>
-</ul>
-</div></blockquote>
 </div>
-<div class="section" id="guest-code">
-<h3>Guest code<a class="headerlink" href="#guest-code" title="永久链接至标题">¶</a></h3>
-<p>The VM that is running is also called guest. We will be using the guest to test our implementation.</p>
+<div class="section" id="section-3">
+<h3>客户机代码<a class="headerlink" href="#section-3" title="永久链接至标题">¶</a></h3>
+<p>正在运行的虚拟机也被称为客户机。我们将使用客户机来测试我们的实现。</p>
 <ol class="arabic simple">
-<li>To test the implementation before implementing SIMVIRTIO. The guest will write at address 400 and the RAX register the value 42.</li>
-<li>To test a more complicated implementation,we will extend the previous program to also write &quot;Hello, world!n&quot; on port <cite>0xE9</cite> using the <cite>outb</cite> instruction.</li>
-<li>To test the implementation of <cite>SIMVIRTIO</cite>, we will</li>
+<li>在实现 SIMVIRTIO 之前进行测试。客户机会在地址 400 和 RAX 寄存器中写入值 42。</li>
+<li>为了测试更复杂的实现，我们需要扩展上述程序，使用 <cite>outb</cite> 指令在端口 <cite>0xE9</cite> 上也写入“Hello, world!n”。</li>
+<li>为了测试 <cite>SIMVIRTIO</cite> 的实现，我们需要</li>
 </ol>
-<p>How do we get the guest code? The guest code is available at the following static pointers guest16, guest16_end-guest16. The linker script is populating them.</p>
-<p>## SIMVIRTIO:
-From the communication between the guest and the VMM we will implement a very simple protocol called <code class="docutils literal"><span class="pre">SIMVIRTIO</span></code>. It's a simplified version of the real protocol used in the real world called virtio.</p>
-<p>Configuration space:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="13%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
-<col width="17%" />
-<col width="12%" />
-<col width="12%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">u32</th>
-<th class="head">u16</th>
-<th class="head">u8</th>
-<th class="head">u8</th>
-<th class="head">u8</th>
-<th class="head">u8</th>
-<th class="head">u8</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>magic value
-R</td>
-<td>max queue len
-R</td>
-<td>device status
-R</td>
-<td>driver status
-R/W</td>
-<td>queue selector
-R/W</td>
-<td>Q0(TX) CTL
-R/W</td>
-<td>Q1(RX) CTL
-R/w</td>
-</tr>
-</tbody>
-</table>
+<p>如何获取客户机代码？客户机代码在以下静态指针 guest16、guest16_end-guest16 中可用。链接器脚本会填充它们。</p>
+<p>## SIMVIRTIO：
+从客户机和 VMM 之间的通信中，我们将实现一种非常简单的协议称为 <code class="docutils literal"><span class="pre">SIMVIRTIO</span></code>。它是现实世界中使用的名为 virtio 的真实协议的简化版本。</p>
+<p>配置空间：</p>
+<p>＋－－－－－－－＋－－－－－－－－－＋－－－－－－－－＋－－－－－－－－－＋－－－－－－－－－－＋－－－－－－－＋－－－－－－－＋
+｜　u32　　　 　｜　u16　　　　　　｜　u8　　　　　　｜　u8　　　　　　　｜　u8　　　　　　　　｜　u8　　　　　｜　u8　　　　　｜
+＋＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＋＝＝＝＝＝＝＝＋
+｜　魔术值　　　｜　最大队列长度　　｜　设备状态　　　｜　驱动程序状态　　｜　队列选择器　　　　｜　Q0(TX)　CTL｜　Q1(RX)　CTL｜
+｜　R　　　　 　｜　R　　　　 　　　｜　R　　　　 　　｜　R/W　　　　　　｜　R/W　　 　　　　　｜　R/W　　　　｜　R/w　　 　　｜
+＋－－－－－－－＋－－－－－－－－－＋－－－－－－－－＋－－－－－－－－－＋－－－－－－－－－－＋－－－－－－－＋－－－－－－－＋</p>
 </div>
-<div class="section" id="controller-queues">
-<h3>Controller queues<a class="headerlink" href="#controller-queues" title="永久链接至标题">¶</a></h3>
-<p>We provide you with the following structures and methods for the <code class="docutils literal"><span class="pre">SIMVIRTIO</span></code> implementation.</p>
+<div class="section" id="section-4">
+<h3>控制器队列<a class="headerlink" href="#section-4" title="永久链接至标题">¶</a></h3>
+<p>对于 <code class="docutils literal"><span class="pre">SIMVIRTIO</span></code> 实现，我们为你提供了以下结构和方法。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="n">q_elem_t</span><span class="p">;</span>
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">queue_control</span> <span class="p">{</span>
-    <span class="c1">// Ptr to current available head/producer index in &#39;buffer&#39;.</span>
+    <span class="c1">// 指向‘buffer’中当前可用的头部/生产者索引的指针。</span>
     <span class="kt">unsigned</span> <span class="n">head</span><span class="p">;</span>
-    <span class="c1">// Ptr to last index in &#39;buffer&#39; used by consumer.</span>
+    <span class="c1">// 指向消费者使用的‘buffer’中最后一个索引的指针。</span>
     <span class="kt">unsigned</span> <span class="n">tail</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">queue_control_t</span><span class="p">;</span>
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">simqueue</span> <span class="p">{</span>
-    <span class="c1">// MMIO queue control.</span>
+    <span class="c1">// MMIO 队列控制。</span>
     <span class="k">volatile</span> <span class="n">queue_control_t</span> <span class="o">*</span><span class="n">q_ctrl</span><span class="p">;</span>
-    <span class="c1">// Size of the queue buffer/data.</span>
+    <span class="c1">// 队列缓冲区/数据的大小。</span>
     <span class="kt">unsigned</span> <span class="n">maxlen</span><span class="p">;</span>
-    <span class="c1">// Queue data buffer.</span>
+    <span class="c1">// 队列数据缓冲区。</span>
     <span class="n">q_elem_t</span> <span class="o">*</span><span class="n">buffer</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">simqueue_t</span><span class="p">;</span>
 <span class="kt">int</span> <span class="nf">circ_bbuf_push</span><span class="p">(</span><span class="n">simqueue_t</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="n">q_elem_t</span> <span class="n">data</span><span class="p">)</span>
@@ -373,8 +332,8 @@ R/w</td>
 </pre></div>
 </div>
 </div>
-<div class="section" id="device-structures">
-<h3>Device structures<a class="headerlink" href="#device-structures" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-5">
+<h3>设备结构<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define MAGIC_VALUE 0x74726976</span>
 <span class="cp">#define DEVICE_RESET 0x0</span>
 <span class="cp">#define DEVICE_CONFIG 0x2</span>
@@ -395,34 +354,34 @@ R/w</td>
  <span class="p">}</span> <span class="n">device_table_t</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>We will be implementing the following handles:
+<p>我们需要执行以下处理程序：
 * MMIO (read/write) VMEXIT
 * PIO (read/write) VMEXIT</p>
 </div>
 </div>
-<div class="section" id="using-the-skeleton">
-<h2>Using the skeleton<a class="headerlink" href="#using-the-skeleton" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-6">
+<h2>使用骨架<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
 </div>
-<div class="section" id="debugging">
-<h2>Debugging<a class="headerlink" href="#debugging" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-7">
+<h2>调试<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
 </div>
-<div class="section" id="tasks">
-<h2>Tasks<a class="headerlink" href="#tasks" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-8">
+<h2>任务<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h2>
 <ol class="arabic simple">
-<li>30p Implement a simple VMM that runs the code from <cite>guest_16_bits</cite>. We will be running the VCPU in read mode for this task</li>
-<li>20p Extend the previous implementation to run the VCPU in real mode. We will be running the <cite>guest_32_bits</cite> example</li>
-<li>30p Implement the <cite>SIMVIRTIO</cite> protocol.</li>
-<li>10p Implement pooling as opposed to VMEXIT. We will use the macro <cite>USE_POOLING</cite> to switch this option on and off.</li>
-<li>10p Add profiling code. Measure the number of VMEXITs triggered by the VMM.</li>
+<li>30分 实现一个简单的 VMM，运行来自 <cite>guest_16_bits</cite> 的代码。在此任务中，我们需要以读模式运行 VCPU。</li>
+<li>20分 扩展前面的实现，以在实模式下运行 VCPU。我们需要运行 <cite>guest_32_bits</cite> 示例。</li>
+<li>30分 实现 <cite>SIMVIRTIO</cite> 协议。</li>
+<li>10分 实现池化而不是 VMEXIT。我们需要使用宏 <cite>USE_POOLING</cite> 来打开和关闭此选项。</li>
+<li>10分 添加性能分析代码。测量 VMM 触发的 VMEXIT 次数。</li>
 </ol>
-<div class="section" id="submitting-the-assigment">
-<h3>Submitting the assigment<a class="headerlink" href="#submitting-the-assigment" title="永久链接至标题">¶</a></h3>
-<p>The assignment archive will be submitted on <strong>Moodle</strong>, according to the rules on the <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/reguli-notare#reguli_de_trimitere_a_temelor">rules page</a>.</p>
+<div class="section" id="section-9">
+<h3>提交作业<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h3>
+<p>作业存档需要根据 <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/reguli-notare#reguli_de_trimitere_a_temelor">规则页面</a> 上的规定，通过 <strong>Moodle</strong> 提交。</p>
 </div>
-<div class="section" id="tips">
-<h3>Tips<a class="headerlink" href="#tips" title="永久链接至标题">¶</a></h3>
-<p>To increase your chances of getting the highest grade, read and follow the Linux kernel coding style described in the <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">Coding Style document</a>.</p>
-<p>Also, use the following static analysis tools to verify the code:</p>
+<div class="section" id="section-10">
+<h3>提示<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
+<p>为了增加获得最高分的机会，请阅读并遵循 Linux 内核编码风格，该风格在 <a class="reference external" href="https://elixir.bootlin.com/linux/v4.19.19/source/Documentation/process/coding-style.rst">编码风格文档</a> 中有描述。</p>
+<p>此外，使用以下静态分析工具来验证代码：</p>
 <ul>
 <li><p class="first">checkpatch.pl</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> linux/scripts/checkpatch.pl --no-tree --terse -f /path/to/your/file.c
@@ -444,32 +403,33 @@ R/w</td>
 </li>
 </ul>
 </div>
-<div class="section" id="penalties">
-<h3>Penalties<a class="headerlink" href="#penalties" title="永久链接至标题">¶</a></h3>
-<p>Information about assigments penalties can be found on the <a class="reference external" href="https://ocw.cs.pub.ro/courses/so2/teme/general">General Directions page</a>.</p>
-<p>In exceptional cases (the assigment passes the tests by not complying with the requirements) and if the assigment does not pass all the tests, the grade will may decrease more than mentioned above.</p>
-<p>## References
-We recommend you the following readings before starting to work on the homework:
-* [KVM host in a few lines of code](<a class="reference external" href="https://zserge.com/posts/kvm/">https://zserge.com/posts/kvm/</a>)</p>
+<div class="section" id="section-11">
+<h3>扣分项<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
+<p>关于作业扣分项的信息可以在 <a href="#system-message-1"><span class="problematic" id="problematic-1">`常规说明页面&lt;https://ocw.cs.pub.ro/courses/so2/teme/general&gt;`__</span></a> 中找到。</p>
+<p>在特殊情况下（作业通过测试但不符合要求），以及如果作业未通过所有测试，成绩可能会比上述提到的降低更多。</p>
 </div>
-<div class="section" id="tldr">
-<h3>TLDR<a class="headerlink" href="#tldr" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-12">
+<h3>参考资料<a class="headerlink" href="#section-12" title="永久链接至标题">¶</a></h3>
+<p>我们建议你在开始做作业之前阅读以下内容：
+* [用几行代码创建 KVM 主机](<a class="reference external" href="https://zserge.com/posts/kvm/">https://zserge.com/posts/kvm/</a>)</p>
+</div>
+<div class="section" id="section-13">
+<h3>太长不看<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <ol class="arabic simple">
-<li>The VMM creates and initializes a virtual machine and a virtual CPU</li>
-<li>We switch to real mode and check run the simple guest code from <cite>guest_16_bits</cite></li>
-<li>We switch to long mode and run the more complex guest from <cite>guest_32_bits</cite></li>
-<li>We implement the SIMVIRTIO protocol. We will describe how it behaves in the following subtasks.</li>
-<li>The guest writes in the TX queue (queue 0) the ascii code for <cite>R</cite> which will result in a <cite>VMEXIT</cite></li>
+<li>虚拟机管理程序（VMM）创建并初始化虚拟机和虚拟 CPU。</li>
+<li>切换到实模式并运行 <cite>guest_16_bits</cite> 中的简单客户机代码。</li>
+<li>切换到长模式并运行 <cite>guest_32_bits</cite> 中更复杂的客户机代码。</li>
+<li>实现 SIMVIRTIO 协议。我们将在以下子任务中描述其行为。</li>
+<li>客户机在 TX 队列（队列 0）中写入 <cite>R</cite> 的 ASCII 码，这将导致 <cite>VMEXIT</cite>。</li>
+<li>VMM 需要处理由前面在队列中的写入引起的 VMEXIT。当客户端接收到 <cite>R</cite> 字母时，它将启动设备的复位过程，并将设备状态设置为 <cite>DEVICE_RESET</cite>。</li>
+<li>在处理复位后，客户机必须将设备状态设置为 <cite>DRIVER_ACK</cite>。在此之后，客户机需要向 TX 队列中写入字母 <cite>C</cite>。</li>
+<li>在收到字母 <cite>C</cite> 时，VMM 需要初始化配置过程。它会将设备状态设置为 <cite>DEVICE_CONFIG</cite> 并在 device_table 中添加新条目。</li>
+<li>配置过程完成后，客户机会将驱动程序状态设置为 <cite>DRIVER_OK</cite>。</li>
+<li>接下来，VMM 会将设备状态设置为 <cite>DEVICE_READY</cite>。</li>
+<li>客户机需要在 TX 队列中写入“Ana are mere”并执行停机指令。</li>
+<li>VMM 需要向 STDOUT 打印接收到的消息并执行停机请求。</li>
+<li>最后，VMM 需要验证地址 0x400 处和寄存器 RAX 中是否存储了值 42。</li>
 </ol>
-<p>6. the VMM will handle the VMEXIT caused by the previous write in the queue. When the guests receiver the
-<cite>R</cite> letter it will initiate the reser procedure of the device and set the device status to <cite>DEVICE_RESET</cite>
-7. After the reset handling, the guest must set the status of the device to <cite>DRIVER_ACK</cite>. After this, the guest will write to the TX queue the letter <cite>C</cite>
-8. In the VMM we will initialize the config process when letter <cite>C</cite> is received.It will set the device status to <cite>DEVICE_CONFIG</cite> and add a new entry in the device_table
-9. After the configuration process is finished, the guest will set the driver status to <cite>DRIVER_OK</cite>
-10. Nex, the VMM will set the device status to <cite>DEVICE_READY</cite>
-11. The guest will write in the TX queue &quot;Ana are mere&quot; and will execute a halt
-12. The VMM will print to the STDOUT the message received and execute the halt request
-13. Finally, the VMM will verify that at address 0x400 and in register RAX is stored the value 42</p>
 </div>
 </div>
 </div>
