@@ -132,7 +132,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">对 Linux 内核实验室项目做贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
 </ul>
 
@@ -420,7 +420,7 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 <div class="section" id="section-9">
 <h2>打开和释放<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
 <p><code class="docutils literal"><span class="pre">open</span></code> 函数执行设备的初始化。在大多数情况下，这些操作涉及初始化设备并填充特定数据（如果是第一次打开调用）。<a href="#system-message-1"><span class="problematic" id="problematic-1">*</span></a>释放函数*用于释放设备特定资源：在调用全部完成后，解除对特定数据的锁定并关闭设备。</p>
-<p>在大多数情况下，<a href="#system-message-2"><span class="problematic" id="problematic-2">*</span></a>打开函数*的结构如下所示：</p>
+<p>在大多数情况下, <em>打开函数</em> 的结构如下所示：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_open</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">my_device_data</span> <span class="o">*</span><span class="n">my_data</span> <span class="o">=</span>
@@ -796,7 +796,7 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p class="last">命令 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> 不会结束（使用Ctrl+C）。请阅读 <a href="#system-message-3"><span class="problematic" id="problematic-3">`读和写`_</span></a> 和 <a href="#system-message-4"><span class="problematic" id="problematic-4">`访问进程的地址空间`_</span></a> 部分。如果要显示偏移值，请使用以下形式的构造: <code class="docutils literal"><span class="pre">pr_info(&quot;Offset:</span> <span class="pre">%lld</span> <span class="pre">\n&quot;,</span> <span class="pre">*offset)</span></code>；偏移值的数据类型 <code class="docutils literal"><span class="pre">loff_t</span></code> 是 <code class="docutils literal"><span class="pre">long</span> <span class="pre">long</span> <span class="pre">int</span></code> 的 typedef。</p>
+<p class="last">命令 <code class="docutils literal"><span class="pre">cat</span> <span class="pre">/dev/so2_cdev</span></code> 不会结束（使用Ctrl+C）。请阅读 <a class="reference internal" href="#section-10">读取和写入</a> 和 <a class="reference internal" href="#section-8">访问进程地址空间</a> 部分。如果要显示偏移值，请使用以下形式的构造: <code class="docutils literal"><span class="pre">pr_info(&quot;Offset:</span> <span class="pre">%lld</span> <span class="pre">\n&quot;,</span> <span class="pre">*offset)</span></code>；偏移值的数据类型 <code class="docutils literal"><span class="pre">loff_t</span></code> 是 <code class="docutils literal"><span class="pre">long</span> <span class="pre">long</span> <span class="pre">int</span></code> 的 typedef。</p>
 </div>
 <p><code class="docutils literal"><span class="pre">cat</span></code> 命令一直读取到文件的末尾，文件通过读取返回值为 0 来表示读到末尾了。因此，为了正确实现，你需要更新并使用读函数中接收的偏移参数，并在用户达到缓冲区末尾时返回 0。</p>
 <p>修改驱动程序以使 <code class="docutils literal"><span class="pre">cat</span></code> 命令结束：</p>
@@ -823,7 +823,7 @@ schedule_timeout<span class="o">(</span><span class="m">1000</span><span class="
 cat /dev/so2_cdev
 </pre></div>
 </div>
-<p class="last">请阅读 <a href="#system-message-5"><span class="problematic" id="problematic-5">`读和写`_</span></a> 小节和 <a class="reference internal" href="#section-8">访问进程地址空间</a> 小节。</p>
+<p class="last">请阅读 <a class="reference internal" href="#section-10">读取和写入</a> 小节和 <a class="reference internal" href="#section-8">访问进程地址空间</a> 小节。</p>
 </div>
 </div>
 <div class="section" id="ioctl-2">

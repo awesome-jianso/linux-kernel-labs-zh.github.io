@@ -158,7 +158,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">对 Linux 内核实验室项目做贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
 </ul>
 
@@ -802,7 +802,7 @@ tools/labs $ make boot
 </div>
 <div class="section" id="minfs-3">
 <h4>3. 创建和销毁 minfs 索引节点<a class="headerlink" href="#minfs-3" title="永久链接至标题">¶</a></h4>
-<p>挂载操作中，我们需要初始化根索引节点，并且为了获得根索引节点，我们需要实现与索引节点相关的函数。也就是说，你需要实现 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code> 的指示进行操作。你可以将 <code class="xref c c-func docutils literal"><span class="pre">minix_alloc_inode`()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_destroy_inode()</span></code> 函数作为参考。</p>
+<p>挂载操作中，我们需要初始化根索引节点，并且为了获得根索引节点，我们需要实现与索引节点相关的函数。也就是说，你需要实现 <code class="docutils literal"><span class="pre">minfs_alloc_inode</span></code> 和 <code class="docutils literal"><span class="pre">minfs_destroy_inode</span></code> 函数。按照标有 <code class="docutils literal"><span class="pre">TODO</span> <span class="pre">3</span></code> 的指示进行操作。你可以将 <code class="xref c c-func docutils literal"><span class="pre">minix_alloc_inode()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">minix_destroy_inode()</span></code> 函数作为参考。</p>
 <p>为了实现，请查看 <code class="docutils literal"><span class="pre">minfs.h</span></code> 头文件中的宏和结构。</p>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>

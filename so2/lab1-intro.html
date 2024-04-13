@@ -175,7 +175,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">对 Linux 内核实验室项目做贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
 </ul>
 
@@ -321,7 +321,7 @@ clean:
 obj-m        <span class="o">=</span> modul.o
 </pre></div>
 </div>
-<p>正如你所见，在示例中调用 <strong class="command">make</strong> 命令对 <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件进行编译将导致在内核源代码目录（<code class="docutils literal"><span class="pre">/lib/modules/`uname</span> <span class="pre">-r`/build</span></code>）中调用 <strong class="command">make</strong> 并引用当前目录（<code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">`pwd</span></code>）。该过程最终会读取当前目录中的 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件，并按照该文件中的指示编译模块。</p>
+<p>正如你所见，在示例中调用 <strong class="command">make</strong> 命令对 <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件进行编译将导致在内核源代码目录 (<code class="docutils literal"><span class="pre">/lib/modules/`uname</span> <span class="pre">-r`/build</span></code>) 中调用 <strong class="command">make</strong> 并引用当前目录 (<code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">`pwd</span></code>)。该过程最终会读取当前目录中的 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件，并按照该文件中的指示编译模块。</p>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
 <p>对于实验，我们将根据虚拟机的规格配置不同的 <strong class="command">KDIR</strong>：</p>
@@ -642,11 +642,11 @@ c89d4027:       <span class="m">90</span>                      nop
 /root/lab-01/modul-oops/oops.c:23
 </pre></div>
 </div>
-<p>其中``0x5``是生成 oops 的程序计数器的值（<code class="docutils literal"><span class="pre">EIP</span> <span class="pre">=</span> <span class="pre">c89d4005</span></code>），减去根据 <code class="file docutils literal"><span class="pre">/proc/modules</span></code> 的信息得出的模块的基地址（<code class="docutils literal"><span class="pre">0xc89d4000</span></code>），。</p>
+<p>其中 <code class="docutils literal"><span class="pre">0x5</span></code> 是生成 oops 的程序计数器的值（<code class="docutils literal"><span class="pre">EIP</span> <span class="pre">=</span> <span class="pre">c89d4005</span></code>），减去根据 <code class="file docutils literal"><span class="pre">/proc/modules</span></code> 的信息得出的模块的基地址（<code class="docutils literal"><span class="pre">0xc89d4000</span></code>）。</p>
 </div>
 <div class="section" id="minicom">
 <h3>minicom<a class="headerlink" href="#minicom" title="永久链接至标题">¶</a></h3>
-<p><strong class="command">Minicom`（或其他等效程序，例如 :command:`picocom</strong> 以及 <strong class="command">screen</strong> ）是一种用于与串行端口（serial port）连接和交互的程序。串行端口是在开发阶段分析内核消息（kernel message）或与嵌入式系统进行交互的基本方法。有两种常见的连接方式：</p>
+<p><strong class="command">Minicom</strong> (或其他等效程序，例如 <strong class="command">picocom</strong> 以及 <strong class="command">screen</strong>) 是一种用于与串行端口（serial port）连接和交互的程序。串行端口是在开发阶段分析内核消息（kernel message）或与嵌入式系统进行交互的基本方法。有两种常见的连接方式：</p>
 <ul class="simple">
 <li>使用串行端口，设备路径为 <code class="file docutils literal"><span class="pre">/dev/ttyS0</span></code></li>
 <li>使用串行 USB 端口（FTDI），在这种情况下，设备路径为 <code class="file docutils literal"><span class="pre">/dev/ttyUSB</span></code></li>
@@ -682,7 +682,7 @@ minicom -D /dev/pts/20
 <div class="highlight-bash"><div class="highlight"><pre><span></span>alice:~# modprobe netconsole <span class="nv">netconsole</span><span class="o">=</span><span class="m">6666</span>@192.168.191.130/eth0,6000@192.168.191.1/00:50:56:c0:00:08
 </pre></div>
 </div>
-<p>因此，在具有地址 <code class="docutils literal"><span class="pre">192.168.191.130</span></code> 的站点上，调试消息将被发送到 <code class="docutils literal"><span class="pre">eth0</span></code> 接口，源端口为``6666``。消息将被发送到``192.168.191.1``，使用 MAC 地址``00:50:56:c0:00:08``，至端口``6000``上。</p>
+<p>因此，在具有地址 <code class="docutils literal"><span class="pre">192.168.191.130</span></code> 的站点上，调试消息将被发送到 <code class="docutils literal"><span class="pre">eth0</span></code> 接口，源端口为 <code class="docutils literal"><span class="pre">6666</span></code>。消息将被发送到 <code class="docutils literal"><span class="pre">192.168.191.1</span></code>，使用 MAC 地址 <code class="docutils literal"><span class="pre">00:50:56:c0:00:08</span></code>，至端口 <code class="docutils literal"><span class="pre">6000</span></code> 上。</p>
 <p>可以在目标站点上使用 <strong class="command">netcat</strong> 显示消息：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>bob:~ <span class="c1"># nc -l -p 6000 -u</span>
 </pre></div>
@@ -822,8 +822,8 @@ $ <span class="nb">echo</span> <span class="s1">&#39;file svcsock.c line -1605 +
 </div>
 <div class="section" id="kdb">
 <h3>KDB：内核调试器<a class="headerlink" href="#kdb" title="永久链接至标题">¶</a></h3>
-<p>内核调试器已被证明在开发和调试过程中非常有用。其主要优势之一是可以进行实时调试。这使得我们能够实时监视对内存的访问，甚至在调试过程中修改内存。内核调试器从版本 2.6.26-rc1 开始，已集成到主线内核中。KDB 不是一个*源代码调试器*，但在进行完整分析时，可以与 gdb 和符号文件并行使用——请参见 <a class="reference internal" href="#gdb-intro"><span class="std std-ref">GDB调试部分</span></a></p>
-<p>要使用KDB，你有以下选项：</p>
+<p>内核调试器已被证明在开发和调试过程中非常有用。其主要优势之一是可以进行实时调试。这使得我们能够实时监视对内存的访问，甚至在调试过程中修改内存。内核调试器从版本 2.6.26-rc1 开始，已集成到主线内核中。KDB 不是一个 <em>源代码调试器</em>，但在进行完整分析时，可以与 gdb 和符号文件并行使用——请参见 <a class="reference internal" href="#gdb-intro"><span class="std std-ref">GDB调试部分</span></a></p>
+<p>要使用 KDB，你有以下选项：</p>
 <blockquote>
 <div><ul class="simple">
 <li>非 USB 键盘 + VGA 文本控制台</li>
@@ -835,11 +835,11 @@ $ <span class="nb">echo</span> <span class="s1">&#39;file svcsock.c line -1605 +
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">echo</span> hvc0 &gt; /sys/module/kgdboc/parameters/kgdboc
 </pre></div>
 </div>
-<p>KDB 是一种*停止模式调试器*，这意味着在其活动期间，所有其他进程都将停止。可以使用 <a class="reference external" href="http://zh.wikipedia.org/wiki/Magic_SysRq組合鍵">SysRq</a> 命令强制内核在执行过程中进入 KDB</p>
+<p>KDB 是一种 <em>停止模式调试器</em>，这意味着在其活动期间，所有其他进程都将停止。可以使用 <a class="reference external" href="http://zh.wikipedia.org/wiki/Magic_SysRq組合鍵">SysRq</a> 命令强制内核在执行过程中进入 KDB</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">echo</span> g &gt; /proc/sysrq-trigger
 </pre></div>
 </div>
-<p>或者在连接到串口的终端中使用键盘组合键 <a href="#system-message-1"><span class="problematic" id="problematic-1">``</span></a>Ctrl+O g``（例如使用 <strong class="command">minicom</strong>）。</p>
+<p>或者在连接到串口的终端中使用键盘组合键 <code class="docutils literal"><span class="pre">Ctrl+O</span> <span class="pre">g</span></code> (例如使用 <strong class="command">minicom</strong>)。</p>
 <p>KDB 具有各种命令来控制和定义被调试系统的上下文：</p>
 <blockquote>
 <div><ul class="simple">
@@ -887,7 +887,7 @@ kdb&gt; go
 </div>
 <div class="admonition important">
 <p class="first admonition-title">重要</p>
-<p class="last">在解决练习之前，<a href="#system-message-2"><span class="problematic" id="problematic-2">**</span></a>仔细**阅读所有要点。</p>
+<p class="last">在解决练习之前, <strong>仔细</strong> 阅读所有要点。</p>
 </div>
 <div class="admonition important" id="exercises-summary">
 <p class="first admonition-title">重要</p>
@@ -996,7 +996,7 @@ $ make copy
 <div class="section" id="section-15">
 <h3>3. 错误<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>生成名为 <strong>3-error-mod</strong> 的任务的框架。编译源代码并得到相应的内核模块。</p>
-<p>为什么会出现编译错误？<a href="#system-message-3"><span class="problematic" id="problematic-3">**</span></a>提示：<a href="#system-message-4"><span class="problematic" id="problematic-4">**</span></a>这个模块与前一个模块有什么不同？</p>
+<p>为什么会出现编译错误? <strong>提示:</strong> 这个模块与前一个模块有什么不同？</p>
 <p>修改该模块以解决这些错误的原因，然后编译和测试该模块。</p>
 </div>
 <div class="section" id="section-16">
@@ -1019,7 +1019,7 @@ $ make copy
 <p>编译相应的模块并将其加载到内核中。识别 oops 出现的内存地址。</p>
 <div class="admonition hint">
 <p class="first admonition-title">提示</p>
-<p class="last">阅读实验中的 <a href="#system-message-5"><span class="problematic" id="problematic-5">`调试`_</span></a> 部分。要识别地址，请遵循 oops 消息并提取指令指针 (<code class="docutils literal"><span class="pre">EIP</span></code>) 寄存器的值。</p>
+<p class="last">阅读实验中的 <a href="#system-message-1"><span class="problematic" id="problematic-1">`调试`_</span></a> 部分。要识别地址，请遵循 oops 消息并提取指令指针 (<code class="docutils literal"><span class="pre">EIP</span></code>) 寄存器的值。</p>
 </div>
 <p>确定是哪条指令触发了 oops。</p>
 <div class="admonition hint">
@@ -1101,7 +1101,7 @@ $ make copy
 <span class="k">endif</span>
 </pre></div>
 </div>
-<p>脚本在当前目录或父目录中搜索名为 <code class="file docutils literal"><span class="pre">cscope.out</span></code> 的文件。如果 <strong class="command">vim</strong> 找到该文件，你可以使用快捷键 <code class="code docutils literal"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">]</span></code> 或 <code class="code docutils literal"><span class="pre">Ctrl+\</span> <span class="pre">g`（按下</span> <span class="pre">control-\\</span> <span class="pre">然后按</span> <span class="pre">g）直接跳转到光标所在单词的定义（函数、变量、结构等）。类似地，你可以使用</span> <span class="pre">:code:`Ctrl+\</span> <span class="pre">s</span></code> 前往光标所在单词的使用位置。</p>
+<p>脚本在当前目录或父目录中搜索名为 <code class="file docutils literal"><span class="pre">cscope.out</span></code> 的文件。如果 <strong class="command">vim</strong> 找到该文件，你可以使用快捷键 <code class="code docutils literal"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">]</span></code> 或 <code class="code docutils literal"><span class="pre">Ctrl+\</span> <span class="pre">g</span></code> (按下 control-\ 然后按 g) 直接跳转到光标所在单词的定义（函数、变量、结构等）。类似地，你可以使用 <code class="code docutils literal"><span class="pre">Ctrl+\</span> <span class="pre">s</span></code> 前往光标所在单词的使用位置。</p>
 <p>你可以从以下网址获取一个启用了 cscope 的 <code class="file docutils literal"><span class="pre">.vimrc</span></code> 文件（还包含其他好用的东西）：<a class="reference external" href="https://github.com/ddvlad/cfg/blob/master/_vimrc">https://github.com/ddvlad/cfg/blob/master/_vimrc</a>。以下指南基于该文件，同时也展示了具有相同效果的基本 <strong class="command">vim</strong> 命令。</p>
 <p>如果有多个结果（通常会有），你可以使用 <code class="code docutils literal"><span class="pre">F6</span></code> 和 <code class="code docutils literal"><span class="pre">F5</span></code> （<code class="code docutils literal"><span class="pre">:ccnext</span></code> 和 <code class="code docutils literal"><span class="pre">:cprev</span></code>）在它们之间切换。你还可以使用命令 <code class="code docutils literal"><span class="pre">:copen</span></code> 打开一个新的面板来显示结果。要关闭面板，可以使用 <code class="code docutils literal"><span class="pre">:cclose</span></code> 命令。</p>
 <p>要返回到先前的位置，可以使用 <code class="code docutils literal"><span class="pre">Ctrl+o</span></code> （是字母 o，不是零）。该命令可以多次使用，即使 cscope 更改了你当前正在编辑的文件也有效。</p>

@@ -125,9 +125,9 @@
 <h2>避免竟态条件</h2>
 
 <ul class="simple">
-<li>使临界区 <a href="#system-message-1"><span class="problematic" id="problematic-1">**</span></a>原子化**（例如使用原子指令）</li>
-<li>在临界区期间 <a href="#system-message-2"><span class="problematic" id="problematic-2">**</span></a>禁用抢占**（例如禁用中断、后半部分处理程序或线程抢占）</li>
-<li><a href="#system-message-3"><span class="problematic" id="problematic-3">**</span></a>序列化访问**临界区（例如使用自旋锁或互斥锁，同一时间只允许有一个上下文或线程进入临界区）</li>
+<li>使临界区 <strong>原子化</strong> (例如使用原子指令)</li>
+<li>在临界区期间 <strong>禁用抢占</strong> (例如禁用中断、后半部分处理程序或线程抢占)</li>
+<li><strong>序列化访问</strong> 临界区 (例如使用自旋锁或互斥锁，同一时间只允许有一个上下文或线程进入临界区)</li>
 </ul>
 
 
@@ -154,13 +154,13 @@
 
 <ul class="simple">
 <li>基于整数：<ul>
-<li>简单操作：:c:func:<a href="#system-message-4"><span class="problematic" id="problematic-4">`</span></a>atomic_inc`（原子递增）, :c:func:<a href="#system-message-5"><span class="problematic" id="problematic-5">`</span></a>atomic_dec`（原子递减）, :c:func:<a href="#system-message-6"><span class="problematic" id="problematic-6">`</span></a>atomic_add`（原子加法）, :c:func:<a href="#system-message-7"><span class="problematic" id="problematic-7">`</span></a>atomic_sub`（原子减法）</li>
-<li>条件操作：:c:func:<a href="#system-message-8"><span class="problematic" id="problematic-8">`</span></a>atomic_dec_and_test`（原子递减并测试）, :c:func:<a href="#system-message-9"><span class="problematic" id="problematic-9">`</span></a>atomic_sub_and_test`（原子减法并测试）</li>
+<li>简单操作: <code class="xref c c-func docutils literal"><span class="pre">atomic_inc()</span></code> (原子递增), <code class="xref c c-func docutils literal"><span class="pre">atomic_dec()</span></code> (原子递减), <code class="xref c c-func docutils literal"><span class="pre">atomic_add()</span></code> (原子加法), <code class="xref c c-func docutils literal"><span class="pre">atomic_sub()</span></code> (原子减法)</li>
+<li>条件操作: <code class="xref c c-func docutils literal"><span class="pre">atomic_dec_and_test()</span></code> (原子递减并测试), <code class="xref c c-func docutils literal"><span class="pre">atomic_sub_and_test()</span></code> (原子减法并测试)</li>
 </ul>
 </li>
 <li>基于位操作：<ul>
-<li>简单操作：:c:func:<a href="#system-message-10"><span class="problematic" id="problematic-10">`</span></a>test_bit`（测试位）, :c:func:<a href="#system-message-11"><span class="problematic" id="problematic-11">`</span></a>set_bit`（设置位）, :c:func:<a href="#system-message-12"><span class="problematic" id="problematic-12">`</span></a>change_bit`（修改位）</li>
-<li>条件操作：:c:func:<a href="#system-message-13"><span class="problematic" id="problematic-13">`</span></a>test_and_set_bit`（测试并设置位）, :c:func:<a href="#system-message-14"><span class="problematic" id="problematic-14">`</span></a>test_and_clear_bit`（测试并清除位）, :c:func:<a href="#system-message-15"><span class="problematic" id="problematic-15">`</span></a>test_and_change_bit`（测试并修改位）</li>
+<li>简单操作: <code class="xref c c-func docutils literal"><span class="pre">test_bit()</span></code> (测试位), <code class="xref c c-func docutils literal"><span class="pre">set_bit()</span></code> (设置位), <code class="xref c c-func docutils literal"><span class="pre">change_bit()</span></code> (修改位)</li>
+<li>条件操作: <code class="xref c c-func docutils literal"><span class="pre">test_and_set_bit()</span></code> (测试并设置位), <code class="xref c c-func docutils literal"><span class="pre">test_and_clear_bit()</span></code> (测试并清除位), <code class="xref c c-func docutils literal"><span class="pre">test_and_change_bit()</span></code> (测试并修改位)</li>
 </ul>
 </li>
 </ul>
@@ -430,8 +430,8 @@
 <h2>SMP 的软中断同步</h2>
 
 <ul class="simple">
-<li>在进程上下文中使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh`（将</span> <span class="pre">:c:func:`local_bh_disable()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 结合起来）和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh`（将</span> <span class="pre">:c:func:`spin_unlock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> 结合起来）</li>
-<li>在软中断上下文中使用：<code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock`（如果与中断处理程序共享数据，则使用</span> <span class="pre">:c:func:`spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqrestore()</span></code> ）</li>
+<li>在进程上下文中使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh()</span></code> (将 <code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 结合起来) 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh()</span></code> (将 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> 结合起来)</li>
+<li>在软中断上下文中使用：<code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> (如果与中断处理程序共享数据，则使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqrestore()</span></code>)</li>
 </ul>
 
 

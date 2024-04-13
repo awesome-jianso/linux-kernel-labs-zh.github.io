@@ -144,7 +144,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">对 Linux 内核实验室项目做贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
 </ul>
 
@@ -226,9 +226,9 @@
 <p>在上述示例中，最小的临界区从计数器递减开始，到检查计数器的值结束。</p>
 <p>确定了临界区之后，可以使用以下方法之一避免竞态条件：</p>
 <ul class="admonition- simple">
-<li>使临界区 <a href="#system-message-1"><span class="problematic" id="problematic-1">**</span></a>原子化**（例如使用原子指令）</li>
-<li>在临界区期间 <a href="#system-message-2"><span class="problematic" id="problematic-2">**</span></a>禁用抢占**（例如禁用中断、后半部分处理程序或线程抢占）</li>
-<li><a href="#system-message-3"><span class="problematic" id="problematic-3">**</span></a>序列化访问**临界区（例如使用自旋锁或互斥锁，同一时间只允许有一个上下文或线程进入临界区）</li>
+<li>使临界区 <strong>原子化</strong> (例如使用原子指令)</li>
+<li>在临界区期间 <strong>禁用抢占</strong> (例如禁用中断、后半部分处理程序或线程抢占)</li>
+<li><strong>序列化访问</strong> 临界区 (例如使用自旋锁或互斥锁，同一时间只允许有一个上下文或线程进入临界区)</li>
 </ul>
 </div>
 <div class="section" id="linux">
@@ -249,13 +249,13 @@
 <p>在某些情况下，我们可以通过使用硬件提供的原子操作来避免竞态条件。Linux 提供了统一的 API，用来访问原子操作：</p>
 <ul class="admonition- simple">
 <li>基于整数：<ul>
-<li>简单操作：:c:func:<a href="#system-message-4"><span class="problematic" id="problematic-4">`</span></a>atomic_inc`（原子递增）, :c:func:<a href="#system-message-5"><span class="problematic" id="problematic-5">`</span></a>atomic_dec`（原子递减）, :c:func:<a href="#system-message-6"><span class="problematic" id="problematic-6">`</span></a>atomic_add`（原子加法）, :c:func:<a href="#system-message-7"><span class="problematic" id="problematic-7">`</span></a>atomic_sub`（原子减法）</li>
-<li>条件操作：:c:func:<a href="#system-message-8"><span class="problematic" id="problematic-8">`</span></a>atomic_dec_and_test`（原子递减并测试）, :c:func:<a href="#system-message-9"><span class="problematic" id="problematic-9">`</span></a>atomic_sub_and_test`（原子减法并测试）</li>
+<li>简单操作: <code class="xref c c-func docutils literal"><span class="pre">atomic_inc()</span></code> (原子递增), <code class="xref c c-func docutils literal"><span class="pre">atomic_dec()</span></code> (原子递减), <code class="xref c c-func docutils literal"><span class="pre">atomic_add()</span></code> (原子加法), <code class="xref c c-func docutils literal"><span class="pre">atomic_sub()</span></code> (原子减法)</li>
+<li>条件操作: <code class="xref c c-func docutils literal"><span class="pre">atomic_dec_and_test()</span></code> (原子递减并测试), <code class="xref c c-func docutils literal"><span class="pre">atomic_sub_and_test()</span></code> (原子减法并测试)</li>
 </ul>
 </li>
 <li>基于位操作：<ul>
-<li>简单操作：:c:func:<a href="#system-message-10"><span class="problematic" id="problematic-10">`</span></a>test_bit`（测试位）, :c:func:<a href="#system-message-11"><span class="problematic" id="problematic-11">`</span></a>set_bit`（设置位）, :c:func:<a href="#system-message-12"><span class="problematic" id="problematic-12">`</span></a>change_bit`（修改位）</li>
-<li>条件操作：:c:func:<a href="#system-message-13"><span class="problematic" id="problematic-13">`</span></a>test_and_set_bit`（测试并设置位）, :c:func:<a href="#system-message-14"><span class="problematic" id="problematic-14">`</span></a>test_and_clear_bit`（测试并清除位）, :c:func:<a href="#system-message-15"><span class="problematic" id="problematic-15">`</span></a>test_and_change_bit`（测试并修改位）</li>
+<li>简单操作: <code class="xref c c-func docutils literal"><span class="pre">test_bit()</span></code> (测试位), <code class="xref c c-func docutils literal"><span class="pre">set_bit()</span></code> (设置位), <code class="xref c c-func docutils literal"><span class="pre">change_bit()</span></code> (修改位)</li>
+<li>条件操作: <code class="xref c c-func docutils literal"><span class="pre">test_and_set_bit()</span></code> (测试并设置位), <code class="xref c c-func docutils literal"><span class="pre">test_and_clear_bit()</span></code> (测试并清除位), <code class="xref c c-func docutils literal"><span class="pre">test_and_change_bit()</span></code> (测试并修改位)</li>
 </ul>
 </li>
 </ul>
@@ -422,8 +422,8 @@
 </ul>
 <p>对于其他中断上下文处理程序（如 softirqs、tasklets 或定时器），我们也面临相同的问题，尽管禁用中断可能会起作用，但建议使用专用的 API：</p>
 <ul class="admonition-smp simple">
-<li>在进程上下文中使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh`（将</span> <span class="pre">:c:func:`local_bh_disable()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 结合起来）和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh`（将</span> <span class="pre">:c:func:`spin_unlock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> 结合起来）</li>
-<li>在软中断上下文中使用：<code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock`（如果与中断处理程序共享数据，则使用</span> <span class="pre">:c:func:`spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqrestore()</span></code> ）</li>
+<li>在进程上下文中使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_bh()</span></code> (将 <code class="xref c c-func docutils literal"><span class="pre">local_bh_disable()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 结合起来) 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock_bh()</span></code> (将 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">local_bh_enable()</span></code> 结合起来)</li>
+<li>在软中断上下文中使用：<code class="xref c c-func docutils literal"><span class="pre">spin_lock()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_unlock()</span></code> (如果与中断处理程序共享数据，则使用 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqsave()</span></code> 和 <code class="xref c c-func docutils literal"><span class="pre">spin_lock_irqrestore()</span></code>)</li>
 </ul>
 <p>如前所述，考虑到抢占，Linux 内核中的并发源还可以是其他进程。</p>
 <p class="admonition-">&nbsp;</p>
@@ -461,7 +461,7 @@
 <li>不能在中断上下文中使用</li>
 <li>比起自旋锁具有更高的延迟</li>
 </ul>
-<p>从概念上讲，<a href="#system-message-16"><span class="problematic" id="problematic-16">:c:`mutex_lock`</span></a> 操作相对简单：如果互斥锁未被获取，我们可以通过原子交换操作走捷径：</p>
+<p>从概念上讲, <a href="#system-message-1"><span class="problematic" id="problematic-1">:c:`mutex_lock`</span></a> 操作相对简单：如果互斥锁未被获取，我们可以通过原子交换操作走捷径：</p>
 <div class="admonition-c-func-mutex-lock highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">__sched</span> <span class="nf">mutex_lock</span><span class="p">(</span><span class="k">struct</span> <span class="n">mutex</span> <span class="o">*</span><span class="n">lock</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">might_sleep</span><span class="p">();</span>
@@ -624,7 +624,7 @@
 <p class="admonition-rcu">&nbsp;</p>
 <img alt="../_images/ditaa-5193a924360bebc83d2f81188cd0b0093ec01e6a.png" src="../_images/ditaa-5193a924360bebc83d2f81188cd0b0093ec01e6a.png" />
 <p>在第一步中，可以看到在读者遍历列表时，所有元素都被引用。在第二步中，写者移除了元素 B。由于仍然有读者持有对其的引用，回收被推迟。在第三步中，静默周期刚刚过去，可以注意到没有对元素 B 的引用了。其他元素仍然有来自在元素被移除后开始列表遍历的读者的引用。在第四步中，我们最终执行回收（释放元素）。</p>
-<p>现在我们已经介绍了RCU在高层次上的工作原理，让我们看一下用于遍历列表以及向列表中添加和删除元素的API：</p>
+<p>现在我们已经介绍了 RCU 在高层次上的工作原理，让我们看一下用于遍历列表以及向列表中添加和删除元素的 API：</p>
 <div class="admonition-rcu-api highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* 列表遍历 */</span>
 <span class="n">rcu_read_lock</span><span class="p">();</span>
 <span class="n">list_for_each_entry_rcu</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>

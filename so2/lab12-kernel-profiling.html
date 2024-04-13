@@ -151,7 +151,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">对 Linux 内核实验室项目做贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
 </ul>
 
@@ -205,10 +205,14 @@
 <div class="section" id="perf">
 <h3>perf<a class="headerlink" href="#perf" title="永久链接至标题">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">perf</span></code> 是一个使用跟踪点、kprobes 和 uprobes 来对 CPU 进行插装的工具。该工具允许我们查看在给定点调用了哪些函数。这使我们能够了解内核在哪里花费了最多的时间，打印函数的调用栈，以及记录 CPU 正在运行的内容。</p>
-<p><code class="docutils literal"><span class="pre">perf</span></code> 集成了以下模块：
-* 静态跟踪
-* 动态跟踪
-* 资源监控</p>
+<p><code class="docutils literal"><span class="pre">perf</span></code> 集成了以下模块：</p>
+<blockquote>
+<div><ul class="simple">
+<li>静态跟踪</li>
+<li>动态跟踪</li>
+<li>资源监控</li>
+</ul>
+</div></blockquote>
 <p>perf 提供的跟踪接口可以通过 <code class="docutils literal"><span class="pre">perf</span></code> 命令及其子命令来使用。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~# ./skels/kernel_profiling/perf
 
@@ -261,7 +265,7 @@
 <div class="section" id="ps">
 <h3>ps<a class="headerlink" href="#ps" title="永久链接至标题">¶</a></h3>
 <p><code class="docutils literal"><span class="pre">ps</span></code> 是 Linux 上的工具，我们借此可以监视机器在给定时间运行的进程，包括内核线程。这个工具简单易用，可以一目了然地查看 CPU 上正在运行的进程以及它们的 CPU 和内存使用情况。</p>
-<p>为了列出所有正在运行的进程，我们使用 <a href="#system-message-1"><span class="problematic" id="problematic-1">``</span></a>ps aux``命令，就像下面这样：</p>
+<p>为了列出所有正在运行的进程，我们使用 <code class="docutils literal"><span class="pre">ps</span> <span class="pre">aux</span></code> 命令，就像下面这样：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span>TODO
 root@qemux86:~/skels/kernel_profiling/0-demo# cd
  root@qemux86:~# ps aux
@@ -359,7 +363,7 @@ tools/labs $ make boot
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">警告</p>
-<p class="last">运行 <code class="docutils literal"><span class="pre">perf</span></code> 时，请确保运行的是下载的版本，而不是``PATH``变量中的版本。</p>
+<p class="last">运行 <code class="docutils literal"><span class="pre">perf</span></code> 时，请确保运行的是下载的版本，而不是 <code class="docutils literal"><span class="pre">PATH</span></code> 变量中的版本。</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
@@ -390,7 +394,7 @@ tools/labs $ make boot
 <p>因此，我们必须谨慎考虑 I/O 操作，因为如果系统忙于处理 I/O 请求的话，应用程序可能就无法正常运行。另一个可能遇到的问题是，如果应用程序需要等待 I/O 操作完成的话，I/O 可能因其速度慢而影响应用程序的响应性。</p>
 <p>让我们来看一个应用程序并调试其中的问题。</p>
 <p>我们将运行 <code class="docutils literal"><span class="pre">0-demo</span></code> 目录的 <code class="docutils literal"><span class="pre">io-app</span></code> 应用程序。</p>
-<p>为了检查运行在 CPU 上的内容，并查看进程的堆栈，我们可以使用 <a href="#system-message-2"><span class="problematic" id="problematic-2">``</span></a>perf record``子命令，就像下面这样：</p>
+<p>为了检查运行在 CPU 上的内容，并查看进程的堆栈，我们可以使用 <code class="docutils literal"><span class="pre">perf</span> <span class="pre">record</span></code> 子命令，就像下面这样：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>root@qemux86:~# ./perf record -a -g
 Couldn&#39;t synthesize bpf events.
 ^C[ perf record: Woken up 7 times to write data ]

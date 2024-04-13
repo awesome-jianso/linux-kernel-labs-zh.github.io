@@ -117,7 +117,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">对 Linux 内核实验室项目做贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
 </ul>
 
@@ -244,7 +244,7 @@ bfa15000-bfa36000 rw-p <span class="m">00000000</span> <span class="m">00</span>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">mmap</span><span class="p">)(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">,</span> <span class="k">struct</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><em>filp</em> 字段是一个指针，指向在用户空间打开设备时创建的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code>。 <em>vma</em> 字段用于指示设备应该将内存映射到哪一个虚拟地址空间。驱动程序应该分配内存 (使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 或者 <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>), 然后使用辅助函数（如:c:func:<cite>remap_pfn_range</cite>）根据 <em>vma</em> 参数将其映射到用户地址空间。</p>
+<p><em>filp</em> 字段是一个指针，指向在用户空间打开设备时创建的 <code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">file</span></code>。 <em>vma</em> 字段用于指示设备应该将内存映射到哪一个虚拟地址空间。驱动程序应该分配内存 (使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code>, <code class="xref c c-func docutils literal"><span class="pre">vmalloc()</span></code> 或者 <code class="xref c c-func docutils literal"><span class="pre">alloc_pages()</span></code>), 然后使用辅助函数 (如 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>) 根据 <em>vma</em> 参数将其映射到用户地址空间。</p>
 <p><code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 将连续的物理地址空间映射到由 <code class="xref c c-type docutils literal"><span class="pre">vm_area_struct</span></code> 表示的虚拟空间：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">remap_pfn_range</span><span class="p">(</span><span class="k">struct</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">addr</span><span class="p">,</span>
                     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">pfn</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span><span class="p">,</span> <span class="n">pgprot_t</span> <span class="n">prot</span><span class="p">);</span>
@@ -424,9 +424,13 @@ tools/labs $ make boot
 <div class="admonition attention">
 <p class="first admonition-title">注意</p>
 <p>vmalloc 页面不是物理连续的，因此需要为每个页面单独使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code>。</p>
-<p>遍历所有虚拟页面，并对于每个页面:
-* 确定物理地址
-* 使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 进行映射</p>
+<p>遍历所有虚拟页面，并对于每个页面：</p>
+<blockquote>
+<div><ul class="simple">
+<li>确定物理地址</li>
+<li>使用 <code class="xref c c-func docutils literal"><span class="pre">remap_pfn_range()</span></code> 进行映射</li>
+</ul>
+</div></blockquote>
 <p class="last">确保每次都确定物理地址，并且只映射一个页面。</p>
 </div>
 <p>测试的方法是，加载内核模块并运行：</p>
