@@ -135,7 +135,8 @@
 </ul>
 <p class="caption"><span class="caption-text">有用信息</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/vm.html">推荐配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/vm.html#section-2">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
@@ -782,12 +783,12 @@ kdb&gt; go
 <h2>练习<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
 <div class="admonition important" id="exercises-summary">
 <p class="first admonition-title">重要</p>
-<p>要解决练习，你需要执行以下步骤：</p>
+<p>我们强烈建议你使用 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/so2-labs">这个仓库</a> 中的配置。</p>
+<p>要解决练习问题，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
 <li>用模板来准备骨架</li>
 <li>构建模块</li>
-<li>将模块复制到虚拟机</li>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
@@ -805,13 +806,12 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make build
 </pre></div>
 </div>
-<p>然后，复制模块并启动虚拟机：</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make copy
-tools/labs $ make boot
+<p>然后，启动虚拟机：</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make console
 </pre></div>
 </div>
 <p>模块将放置在 /home/root/skels/kernel_modules/&lt;task_name&gt; 目录中。</p>
-<p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
+<p>重新构建模块时，无需停止虚拟机！本地 <cite>skels</cite> 目录与虚拟机共享。</p>
 <p class="last">请查看 <a class="reference internal" href="#section-9">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
@@ -863,18 +863,17 @@ tools/labs $ make boot
 <div class="section" id="section-11">
 <h3>1. 内核模块<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <p>为了使用内核模块，我们将按照 <span class="xref std std-ref">上述</span> 步骤进行操作。</p>
-<p>首先在 <cite>tools/labs</cite> 目录下运行以下命令生成名为 <strong>1-2-test-mod</strong> 的任务骨架，然后构建并复制模块到虚拟机中。</p>
+<p>在 <code class="file docutils literal"><span class="pre">tools/labs</span></code> 目录下运行以下命令生成 <strong>1-2-test-mod</strong> 任务的骨架，然后构建模块。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nv">LABS</span><span class="o">=</span>kernel_modules make skels
 $ make build
-$ make copy
 </pre></div>
 </div>
-<p>这些命令将构建并复制当前实验骨架中的所有模块。</p>
+<p>这些命令将构建当前实验骨架中的所有模块。</p>
 <div class="admonition warning">
 <p class="first admonition-title">警告</p>
 <p class="last">在解决练习 3 之前，编译 <code class="docutils literal"><span class="pre">3-error-mod</span></code> 时会出现编译错误。为了避免此问题，删除 <code class="file docutils literal"><span class="pre">skels/kernel_modules/3-error-mod/</span></code> 目录，并从 <code class="docutils literal"><span class="pre">skels/Kbuild</span></code> 中删除相应的行。</p>
 </div>
-<p>使用 <strong class="command">make boot</strong> 启动虚拟机，使用 <cite>minicom -D serial.pts</cite> 连接到串行控制台，并执行以下任务：</p>
+<p>使用 <strong class="command">make console</strong> 启动虚拟机，并执行以下任务：</p>
 <ul class="simple">
 <li>加载内核模块。</li>
 <li>列出内核模块并检查当前模块是否存在。</li>

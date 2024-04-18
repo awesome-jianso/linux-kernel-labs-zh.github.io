@@ -124,7 +124,8 @@
 </ul>
 <p class="caption"><span class="caption-text">有用信息</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/vm.html">推荐配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/vm.html#section-2">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
@@ -916,12 +917,12 @@
 <h2>练习<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h2>
 <div class="admonition important">
 <p class="first admonition-title">重要</p>
-<p>要解决练习，你需要执行以下步骤：</p>
+<p>我们强烈建议你使用 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/so2-labs">这个仓库</a> 中的配置。</p>
+<p>要解决练习问题，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
 <li>用模板来准备骨架</li>
 <li>构建模块</li>
-<li>将模块复制到虚拟机</li>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
@@ -939,13 +940,12 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make build
 </pre></div>
 </div>
-<p>然后，复制模块并启动虚拟机：</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make copy
-tools/labs $ make boot
+<p>然后，启动虚拟机：</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make console
 </pre></div>
 </div>
 <p>模块将放置在 /home/root/skels/网络/&lt;task_name&gt; 目录中。</p>
-<p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
+<p>重新构建模块时，无需停止虚拟机！本地 <cite>skels</cite> 目录与虚拟机共享。</p>
 <p class="last">请查看 <a class="reference internal" href="#section-10">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">

@@ -91,18 +91,17 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#section-11">练习</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#section-12">备注</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#section-13">启动虚拟机</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#section-14">1. 内核模块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-13">1. 内核模块</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#printk-1">2. Printk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#section-15">3. 错误</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#section-16">4. 子模块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-14">3. 错误</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-15">4. 子模块</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#oops-1">5. 内核 oops</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#section-17">6. 模块参数</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#section-18">7. 进程信息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-16">6. 模块参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-17">7. 进程信息</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#section-19">了解更多</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#section-20">源代码导航</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-18">了解更多</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-19">源代码导航</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#cscope">cscope</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#clangd">clangd</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#kscope">Kscope</a></li>
@@ -110,9 +109,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#sourceweb">SourceWeb</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#section-21">内核调试</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#section-20">内核调试</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#gdb-linux">gdb（Linux）</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#section-22">获取堆栈跟踪</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-21">获取堆栈跟踪</a></li>
 </ul>
 </li>
 </ul>
@@ -173,7 +172,8 @@
 </ul>
 <p class="caption"><span class="caption-text">有用信息</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../info/vm.html">虚拟机配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/vm.html">推荐配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/vm.html#section-2">虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/extra-vm.html">自定义虚拟机配置</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/contributing.html">向 Linux 内核实验项目做贡献</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/chinese-localization-info.html">中文翻译介绍</a></li>
@@ -882,7 +882,7 @@ kdb&gt; go
 </ul>
 </li>
 <li>当使用 cscope 时，请使用文件 <code class="file docutils literal"><span class="pre">~/src/linux</span></code>。如果没有文件 <code class="file docutils literal"><span class="pre">cscope.out</span></code>，可以使用命令 <strong class="command">make ARCH=x86 cscope</strong> 来生成它。</li>
-<li>你可以在 <a class="reference internal" href="../info/vm.html#vm-link"><span class="std std-ref">虚拟机配置</span></a> 找到有关虚拟机的更多详细信息。</li>
+<li>你可以在 <a class="reference internal" href="../info/vm.html#vm-link"><span class="std std-ref">推荐配置</span></a> 找到有关虚拟机的更多详细信息。</li>
 </ul>
 </div>
 <div class="admonition important">
@@ -891,12 +891,12 @@ kdb&gt; go
 </div>
 <div class="admonition important" id="exercises-summary">
 <p class="first admonition-title">重要</p>
-<p>要解决练习，你需要执行以下步骤：</p>
+<p>我们强烈建议你使用 <a class="reference external" href="https://gitlab.cs.pub.ro/so2/so2-labs">这个仓库</a> 中的配置。</p>
+<p>要解决练习问题，你需要执行以下步骤：</p>
 <blockquote>
 <div><ul class="simple">
 <li>用模板来准备骨架</li>
 <li>构建模块</li>
-<li>将模块复制到虚拟机</li>
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
@@ -914,13 +914,12 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make build
 </pre></div>
 </div>
-<p>然后，复制模块并启动虚拟机：</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make copy
-tools/labs $ make boot
+<p>然后，启动虚拟机：</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make console
 </pre></div>
 </div>
 <p>模块将放置在 /home/root/skels/kernel_modules/&lt;task_name&gt; 目录中。</p>
-<p>或者，我们可以通过 <strong class="command">scp</strong> 命令复制文件，以避免重新启动虚拟机。有关通过网络连接到虚拟机的详细信息，请参阅 <a class="reference internal" href="../info/vm.html#vm-interaction-link"><span class="std std-ref">连接到虚拟机</span></a>。</p>
+<p>重新构建模块时，无需停止虚拟机！本地 <cite>skels</cite> 目录与虚拟机共享。</p>
 <p class="last">请查看 <a class="reference internal" href="#section-11">练习</a> 部分以获取更详细的信息。</p>
 </div>
 <div class="admonition warning">
@@ -931,47 +930,19 @@ tools/labs $ make boot
 </div>
 </div>
 <div class="section" id="section-13">
-<h3>启动虚拟机<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
-<p>虚拟机基础设施摘要：</p>
-<ul class="simple">
-<li><code class="file docutils literal"><span class="pre">~/src/linux</span></code> ——Linux 内核源代码，用于编译模块。该目录包含文件 <code class="file docutils literal"><span class="pre">cscope.out</span></code>，用于在源代码树中导航。</li>
-<li><code class="file docutils literal"><span class="pre">~/src/linux/tools/labs/qemu</span></code> ——用于生成和运行 QEMU 虚拟机的脚本和辅助文件。</li>
-</ul>
-<p>要启动虚拟机，请在目录 <code class="file docutils literal"><span class="pre">~/src/linux/tools/labs</span></code> 中运行 <strong class="command">make boot</strong>：</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>student@eg106:~$ <span class="nb">cd</span> ~/src/linux/tools/labs
-student@eg106:~/src/linux/tools/labs$ make boot
-</pre></div>
-</div>
-<p>默认情况下，你将不会获得提示符或任何图形界面，但你可以使用 <strong class="command">minicom</strong> 或 <strong class="command">screen</strong> 连接到虚拟机提供的控制台。</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>student@eg106:~/src/linux/tools/labs$ minicom -D serial.pts
-
-&lt;按回车键&gt;
-
-qemux86 login:
-Poky <span class="o">(</span>Yocto Project Reference Distro<span class="o">)</span> <span class="m">2</span>.3 qemux86 /dev/hvc0
-</pre></div>
-</div>
-<p>另外，也可以使用命令 <strong class="command">QEMU_DISPLAY=gtk make boot</strong> 启动虚拟机，这种情况下虚拟机带有图形界面支持。</p>
-<div class="admonition note">
-<p class="first admonition-title">注解</p>
-<p class="last">要访问虚拟机，请在登录提示符处输入用户名 <code class="code docutils literal"><span class="pre">root</span></code>；无需输入密码。虚拟机将以 root 帐户的权限启动。</p>
-</div>
-</div>
-<div class="section" id="section-14">
-<h3>1. 内核模块<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
+<h3>1. 内核模块<a class="headerlink" href="#section-13" title="永久链接至标题">¶</a></h3>
 <p>为了使用内核模块，我们将按照 <span class="xref std std-ref">上述</span> 步骤进行操作。</p>
-<p>首先在 <cite>tools/labs</cite> 目录下运行以下命令生成名为 <strong>1-2-test-mod</strong> 的任务骨架，然后构建并复制模块到虚拟机中。</p>
+<p>在 <code class="file docutils literal"><span class="pre">tools/labs</span></code> 目录下运行以下命令生成 <strong>1-2-test-mod</strong> 任务的骨架，然后构建模块。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nv">LABS</span><span class="o">=</span>kernel_modules make skels
 $ make build
-$ make copy
 </pre></div>
 </div>
-<p>这些命令将构建并复制当前实验骨架中的所有模块。</p>
+<p>这些命令将构建当前实验骨架中的所有模块。</p>
 <div class="admonition warning">
 <p class="first admonition-title">警告</p>
 <p class="last">在解决练习 3 之前，编译 <code class="docutils literal"><span class="pre">3-error-mod</span></code> 时会出现编译错误。为了避免此问题，删除 <code class="file docutils literal"><span class="pre">skels/kernel_modules/3-error-mod/</span></code> 目录，并从 <code class="docutils literal"><span class="pre">skels/Kbuild</span></code> 中删除相应的行。</p>
 </div>
-<p>使用 <strong class="command">make boot</strong> 启动虚拟机，使用 <cite>minicom -D serial.pts</cite> 连接到串行控制台，并执行以下任务：</p>
+<p>使用 <strong class="command">make console</strong> 启动虚拟机，并执行以下任务：</p>
 <ul class="simple">
 <li>加载内核模块。</li>
 <li>列出内核模块并检查当前模块是否存在。</li>
@@ -993,14 +964,14 @@ $ make copy
 </div>
 <p>重新加载/卸载该模块。消息不应该打印到虚拟机控制台上，但是在运行 <code class="docutils literal"><span class="pre">dmesg</span></code> 命令时应该可见。</p>
 </div>
-<div class="section" id="section-15">
-<h3>3. 错误<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-14">
+<h3>3. 错误<a class="headerlink" href="#section-14" title="永久链接至标题">¶</a></h3>
 <p>生成名为 <strong>3-error-mod</strong> 的任务的框架。编译源代码并得到相应的内核模块。</p>
 <p>为什么会出现编译错误? <strong>提示:</strong> 这个模块与前一个模块有什么不同？</p>
 <p>修改该模块以解决这些错误的原因，然后编译和测试该模块。</p>
 </div>
-<div class="section" id="section-16">
-<h3>4. 子模块<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-15">
+<h3>4. 子模块<a class="headerlink" href="#section-15" title="永久链接至标题">¶</a></h3>
 <p>查看 <code class="file docutils literal"><span class="pre">4-multi-mod/</span></code> 目录中的 C 源代码文件 <code class="docutils literal"><span class="pre">mod1.c</span></code> 和 <code class="docutils literal"><span class="pre">mod2.c</span></code>。模块 2 仅包含模块 1 使用的函数的定义。</p>
 <p>修改 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件，从这两个 C 源文件创建 <code class="docutils literal"><span class="pre">multi_mod.ko</span></code> 模块。</p>
 <div class="admonition hint">
@@ -1028,8 +999,8 @@ $ make copy
 </div>
 <p>尝试卸载内核模块。请注意，该操作无法成功，因为自 oops 发生以来，内核模块内部仍然存在对内核的引用；在释放这些引用之前（在 oops 的情况下几乎不可能），模块无法卸载。</p>
 </div>
-<div class="section" id="section-17">
-<h3>6. 模块参数<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-16">
+<h3>6. 模块参数<a class="headerlink" href="#section-16" title="永久链接至标题">¶</a></h3>
 <p>进入任务目录 <strong>6-cmd-mod</strong> 并检查 C 源代码文件 <code class="docutils literal"><span class="pre">cmd_mod.c</span></code>。编译并复制相关的模块，然后加载内核模块以查看 printk 消息。然后从内核中卸载该模块。</p>
 <p>在不修改源代码的情况下，加载内核模块以显示消息 <code class="docutils literal"><span class="pre">Early</span> <span class="pre">bird</span> <span class="pre">gets</span> <span class="pre">tired</span></code>。</p>
 <div class="admonition hint">
@@ -1037,8 +1008,8 @@ $ make copy
 <p class="last">可以通过向模块传递参数来更改 str 变量。在 <a class="reference external" href="http://tldp.org/LDP/lkmpg/2.6/html/x323.html">这里</a> 找到更多相关信息。</p>
 </div>
 <span class="target" id="proc-info"></span></div>
-<div class="section" id="section-18">
-<h3>7. 进程信息<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-17">
+<h3>7. 进程信息<a class="headerlink" href="#section-17" title="永久链接至标题">¶</a></h3>
 <p>检查名为 <strong>7-list-proc</strong> 的任务的框架。添加代码来显示当前进程的进程 ID（ <code class="docutils literal"><span class="pre">PID</span></code> ）和可执行文件名。</p>
 <p>按照标记为 <code class="docutils literal"><span class="pre">TODO</span></code> 的命令进行操作。在加载和卸载模块时，必须显示这些信息。</p>
 <div class="admonition note">
@@ -1057,12 +1028,12 @@ $ make copy
 <p>重复加载/卸载操作。注意显示的进程 PID 是不同的。这是因为在加载模块时，从可执行文件 <code class="file docutils literal"><span class="pre">/sbin/insmod</span></code> 创建了一个进程，而在卸载模块时，从可执行文件 <code class="file docutils literal"><span class="pre">/sbin/rmmod</span></code> 创建了一个进程。</p>
 </div>
 </div>
-<div class="section" id="section-19">
-<span id="good-to-know"></span><h2>了解更多<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-18">
+<span id="good-to-know"></span><h2>了解更多<a class="headerlink" href="#section-18" title="永久链接至标题">¶</a></h2>
 <p>以下部分包含帮助你适应 Linux 内核代码和调试技术的有用信息。</p>
 </div>
-<div class="section" id="section-20">
-<h2>源代码导航<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-19">
+<h2>源代码导航<a class="headerlink" href="#section-19" title="永久链接至标题">¶</a></h2>
 <div class="section" id="cscope">
 <span id="cscope-intro"></span><h3>cscope<a class="headerlink" href="#cscope" title="永久链接至标题">¶</a></h3>
 <p><a class="reference external" href="http://cscope.sourceforge.net/">Cscope</a> 是一个用于高效导航 C 源代码的工具。要使用它，必须从现有的源代码生成一个 cscope 数据库。在 Linux 树中，执行命令 <strong class="command">make ARCH=x86 cscope</strong> 就足够了。通过 ARCH 变量指定架构不是必须的，但建议这样做；否则，一些依赖于架构的函数会在数据库中出现多次。</p>
@@ -1163,8 +1134,8 @@ sourceweb index
 <p>建议：不要对正在使用的源代码进行索引，而是使用其副本，因为 SourceWeb 目前没有单独重新生成单个文件的索引的功能，你将不得不重新生成完整的索引。</p>
 </div>
 </div>
-<div class="section" id="section-21">
-<h2>内核调试<a class="headerlink" href="#section-21" title="永久链接至标题">¶</a></h2>
+<div class="section" id="section-20">
+<h2>内核调试<a class="headerlink" href="#section-20" title="永久链接至标题">¶</a></h2>
 <p>与调试程序相比，调试内核是一个更加困难的过程，因为操作系统没有提供支持。这就是为什么通常使用两台通过串行接口相互连接的计算机进行此过程。</p>
 <div class="section" id="gdb-linux">
 <span id="gdb-intro"></span><h3>gdb（Linux）<a class="headerlink" href="#gdb-linux" title="永久链接至标题">¶</a></h3>
@@ -1256,8 +1227,8 @@ $3 = 0xc02e535c
 <li><a class="reference external" href="http://user-mode-linux.sf.net/">用户模式 Linux</a></li>
 </ul>
 </div>
-<div class="section" id="section-22">
-<h3>获取堆栈跟踪<a class="headerlink" href="#section-22" title="永久链接至标题">¶</a></h3>
+<div class="section" id="section-21">
+<h3>获取堆栈跟踪<a class="headerlink" href="#section-21" title="永久链接至标题">¶</a></h3>
 <p>有时，你需要获取有关执行路径到达某个特定点的信息。你可以使用 <strong class="command">cscope</strong> 或 LXR 来确定这些信息，但某些函数从许多执行路径调用，这使得这种方法变得困难。</p>
 <p>在这些情况下，使用函数 <code class="code docutils literal"><span class="pre">dump_stack()</span></code> 获取堆栈跟踪非常有用。</p>
 </div>
