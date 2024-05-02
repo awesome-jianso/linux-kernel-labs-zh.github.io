@@ -646,14 +646,14 @@ crw-rw----  <span class="m">1</span> root dialout <span class="m">4</span>, <spa
 <li>启动虚拟机并在虚拟机中测试模块。</li>
 </ul>
 </div></blockquote>
-<p>当前实验名称为 设备驱动。请参阅任务名称的练习。</p>
+<p>当前实验名称为 device_drivers。请参阅任务名称的练习。</p>
 <p>骨架代码是从位于 <code class="file docutils literal"><span class="pre">tools/labs/templates</span></code> 的完整源代码示例中生成的。要解决任务，首先要为所有实验生成骨架代码：</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make clean
-tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt; make skels
+tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;实验名称&gt; make skels
 </pre></div>
 </div>
 <p>你还可以使用以下命令为单个任务生成骨架代码：</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt;/&lt;task name&gt; make skels
+<div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;实验名称&gt;/&lt;任务名称&gt; make skels
 </pre></div>
 </div>
 <p>生成骨架驱动程序后，构建源代码：</p>
@@ -664,7 +664,7 @@ tools/labs $ <span class="nv">LABS</span><span class="o">=</span>&lt;lab name&gt
 <div class="highlight-shell"><div class="highlight"><pre><span></span>tools/labs $ make console
 </pre></div>
 </div>
-<p>模块将放置在 /home/root/skels/设备驱动/&lt;task_name&gt; 目录中。</p>
+<p>模块将放置在 /home/root/skels/device_drivers/&lt;任务名称&gt; 目录中。</p>
 <p>重新构建模块时，无需停止虚拟机！本地 <cite>skels</cite> 目录与虚拟机共享。</p>
 <p class="last">请查看 <a class="reference internal" href="#section-12">练习</a> 部分以获取更详细的信息。</p>
 </div>

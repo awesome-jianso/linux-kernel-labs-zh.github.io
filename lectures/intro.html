@@ -200,7 +200,8 @@
 <div class="section" id="section-6">
 <h3>单体内核<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h3>
 <p>单体内核（也称为宏内核或巨内核）是一种内核设计，其中各个内核子系统之间的访问没有特别的保护措施，允许各个子系统互相直接调用公共函数。</p>
-<img alt="../_images/Monolithic_kernel.svg" class="admonition-" src="../_images/Monolithic_kernel.svg" /><p>尽管如此，大部分单体内核在子系统间都实现了逻辑上的分隔，尤其是核心内核与设备驱动程序之间，它们通常需要通过较为严格的 API 来互相访问服务（这些 API 并非总是固定不变的）。显然，这种做法依赖于内核的具体实现和架构设计。</p>
+<a class="admonition- reference internal image-reference" href="../_images/Monolithic_kernel.svg"><img alt="../_images/Monolithic_kernel.svg" class="admonition-" src="../_images/Monolithic_kernel.svg" width="660px" /></a>
+<p>尽管如此，大部分单体内核在子系统间都实现了逻辑上的分隔，尤其是核心内核与设备驱动程序之间，它们通常需要通过较为严格的 API 来互相访问服务（这些 API 并非总是固定不变的）。显然，这种做法依赖于内核的具体实现和架构设计。</p>
 </div>
 <div class="section" id="section-7">
 <h3>微内核<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h3>
