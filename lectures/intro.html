@@ -193,7 +193,7 @@
 <div class="section" id="section-5">
 <h3>典型的操作系统架构<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h3>
 <p>在典型的操作系统架构中，操作系统内核负责安全且公平地管理多个应用程序对硬件资源的访问和共享。</p>
-<span class="admonition-"></span><p>操作系统内核提供了一组 API 供应用程序调用，通常它们称为“系统调用”。这些 API 与普通的库 API 有所不同，它们标志着执行模式从用户态切换到内核态的界限。</p>
+<img alt="../_images/Typical_operating_system_architecture.svg" class="admonition-" src="../_images/Typical_operating_system_architecture.svg" /><p>操作系统内核提供了一组 API 供应用程序调用，通常它们称为“系统调用”。这些 API 与普通的库 API 有所不同，它们标志着执行模式从用户态切换到内核态的界限。</p>
 <p>为了确保应用程序的兼容性，系统调用的变动非常少。Linux 特别严格地执行这一原则（与那些可能会根据需求进行更改的内核 API 相比）。</p>
 <p>内核代码可以逻辑上划分为核心内核代码和设备驱动程序代码。设备驱动程序负责操作特定的设备，而核心内核代码则是通用的。此外，核心内核代码还可以细分为多个逻辑子系统，如文件访问、网络和进程管理等。</p>
 </div>
@@ -244,7 +244,7 @@
 <h3>用户和内核共享虚拟地址空间<a class="headerlink" href="#section-10" title="永久链接至标题">¶</a></h3>
 <p>一种典型的用户和内核空间的实现方式是将虚拟地址空间在用户进程和内核之间共享。</p>
 <p>在这种情况下，内核空间位于地址空间的顶端，用户空间则位于底部。为了防止用户进程访问内核空间，内核会建立防止用户模式下的进程访问内核空间的映射。</p>
-<span class="admonition-"></span></div>
+<img alt="../_images/User_and_kernel_sharing_the_virtual_address_space.svg" class="admonition-" src="../_images/User_and_kernel_sharing_the_virtual_address_space.svg" /></div>
 <div class="section" id="section-11">
 <h3>执行上下文<a class="headerlink" href="#section-11" title="永久链接至标题">¶</a></h3>
 <span class="admonition-"></span><p>有效处理中断是内核最重要的职责之一。这一点非常重要，以至于它有一个专门的执行上下文与之相关联。</p>
@@ -423,7 +423,7 @@
 </div>
 <div class="section" id="section-22">
 <h4>网络堆栈<a class="headerlink" href="#section-22" title="永久链接至标题">¶</a></h4>
-<img alt="../_images/Monolithic_kernel.svg" class="admonition-" src="../_images/Monolithic_kernel.svg" /></div>
+<img alt="../_images/Networking_stack.svg" class="admonition-" src="../_images/Networking_stack.svg" /></div>
 <div class="section" id="linux-4">
 <h4>Linux 安全模块<a class="headerlink" href="#linux-4" title="永久链接至标题">¶</a></h4>
 <ul class="admonition-linux simple">
