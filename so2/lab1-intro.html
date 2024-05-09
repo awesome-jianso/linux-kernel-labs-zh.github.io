@@ -262,12 +262,12 @@
 </div>
 <div class="section" id="section-5">
 <h2>内核模块概述<a class="headerlink" href="#section-5" title="永久链接至标题">¶</a></h2>
-<p>虽然单体内核比微内核更快，但缺乏模块化和可扩展性。在现代单体内核中，这个问题已经通过使用内核模块来解决。内核模块（或可加载内核模式）是一个包含代码的目标文件（object file），它可以在运行时扩展内核的功能（根据需要加载）；当不需要内核模块时，可以卸载它。大多数设备驱动程序以内核模块的形式使用。</p>
-<p>为了开发 Linux 设备驱动程序，建议下载内核源代码，配置和编译它们，然后将编译后的版本安装在测试/开发工具机上。</p>
+<p>虽然单体内核的运行速度比微内核更快，但它在模块化和可扩展性方面存在不足。在现代的单体内核设计中，这个问题已经通过使用内核模块得到了解决。内核模块（或称为可加载内核模块）是一种包含代码的目标文件（object file），它可以在运行时根据需要加载，以扩展内核的功能；而当这些模块不再需要时，也可以将其卸载。大部分设备驱动程序都是以内核模块的形式实现的。</p>
+<p>要想开发 Linux 设备驱动程序，建议下载内核源代码，配置和编译它们，然后将编译后的版本安装在测试/开发工具机上。</p>
 </div>
 <div class="section" id="section-6">
 <h2>内核模块示例<a class="headerlink" href="#section-6" title="永久链接至标题">¶</a></h2>
-<p>以下是一个非常简单的内核模块示例。当加载到内核中时，它会生成消息 <code class="code docutils literal"><span class="pre">&quot;Hi&quot;</span></code>。当卸载内核模块时，将生成消息 <code class="code docutils literal"><span class="pre">&quot;Bye&quot;</span></code>。</p>
+<p>以下是一个非常简单的内核模块示例。当加载到内核中时，它会生成消息 <code class="code docutils literal"><span class="pre">&quot;Hi&quot;</span></code>。当卸载这个内核模块时，将生成消息 <code class="code docutils literal"><span class="pre">&quot;Bye&quot;</span></code>。</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/kernel.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/init.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
@@ -291,7 +291,7 @@
 <span class="n">module_exit</span><span class="p">(</span><span class="n">dummy_exit</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>生成的消息不会显示在控制台上，而是保存在专门预留的内存区域中，由日志守护程序（syslog）负责将其提取出来。要显示内核消息，你可以使用 <cite>dmesg</cite> 命令或检查日志文件。</p>
+<p>生成的消息不会显示在控制台上，而是保存在专门预留的内存区域中，由日志守护程序（syslog）负责将其提取出来。要显示内核消息，你可以使用 <strong class="command">dmesg</strong> 命令或检查日志文件。</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># cat /var/log/syslog | tail -2</span>
 Feb <span class="m">20</span> <span class="m">13</span>:57:38 asgard kernel: Hi
 Feb <span class="m">20</span> <span class="m">13</span>:57:43 asgard kernel: Bye
@@ -304,7 +304,7 @@ Bye
 </div>
 <div class="section" id="section-7">
 <h2>编译内核模块<a class="headerlink" href="#section-7" title="永久链接至标题">¶</a></h2>
-<p>编译内核模块与编译用户程序不同。首先，需要使用另外的头文件。此外，模块不应链接到库。最重要的是，模块必须使用与加载模块的内核相同的选项进行编译。出于这些原因，有一种标准的编译方法（kbuild）。该方法需要使用两个文件： <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件和 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件。</p>
+<p>编译内核模块与编译用户程序不同。首先，需要使用不同的头文件。此外，模块不应链接到库。最后，模块必须使用与加载模块的内核相同的选项进行编译。出于这些原因，有一种标准的编译方法（kbuild）。该方法需要使用两个文件： <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件和 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件。</p>
 <p>以下是 <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件的示例：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">KDIR</span> <span class="o">=</span> /lib/modules/<span class="sb">`</span>uname -r<span class="sb">`</span>/build
 
@@ -321,16 +321,16 @@ clean:
 obj-m        <span class="o">=</span> modul.o
 </pre></div>
 </div>
-<p>正如你所见，在示例中调用 <strong class="command">make</strong> 命令对 <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件进行编译将导致在内核源代码目录 (<code class="docutils literal"><span class="pre">/lib/modules/`uname</span> <span class="pre">-r`/build</span></code>) 中调用 <strong class="command">make</strong> 并引用当前目录 (<code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">`pwd</span></code>)。该过程最终会读取当前目录中的 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件，并按照该文件中的指示编译模块。</p>
+<p>正如你所见，在示例中调用 <strong class="command">make</strong> 命令对 <code class="file docutils literal"><span class="pre">Makefile</span></code> 文件进行编译时，会在内核源代码目录 (<code class="docutils literal"><span class="pre">/lib/modules/`uname</span> <span class="pre">-r`/build</span></code>) 中执行 <strong class="command">make</strong> 命令，并引用当前目录 (<code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">`pwd</span></code>)。这个过程最终会读取当前目录中的 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件，并按照其中的指示编译模块。</p>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p>对于实验，我们将根据虚拟机的规格配置不同的 <strong class="command">KDIR</strong>：</p>
+<p>对于实验，我们将根据虚拟机的规格，配置不同的 <strong class="command">KDIR</strong>：</p>
 <div class="last highlight-bash"><div class="highlight"><pre><span></span><span class="nv">KDIR</span> <span class="o">=</span> /home/student/src/linux
 <span class="o">[</span>...<span class="o">]</span>
 </pre></div>
 </div>
 </div>
-<p><code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件包含一个或多个指令，用于编译内核模块。其中一个最简单的指令示例是 <code class="docutils literal"><span class="pre">obj-m</span> <span class="pre">=</span> <span class="pre">module.o</span></code>。根据该指令，将从 <code class="docutils literal"><span class="pre">module.o</span></code> 文件开始创建一个内核模块（ <code class="code docutils literal"><span class="pre">ko</span></code> ，即 <code class="code docutils literal"><span class="pre">kernel</span> <span class="pre">object</span></code>，也就是内核对象）。<code class="docutils literal"><span class="pre">module.o</span></code> 将基于 <code class="docutils literal"><span class="pre">module.c</span></code> 或 <code class="docutils literal"><span class="pre">module.S</span></code> 创建。所有这些文件都可以在 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 所在的目录中找到。</p>
+<p><code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件包含了一系列指令，这些指令用于编译内核模块。其中一个最基本的指令例子是 <code class="docutils literal"><span class="pre">obj-m</span> <span class="pre">=</span> <span class="pre">module.o</span></code>。遵循这个指令，系统会基于 <code class="docutils literal"><span class="pre">module.o</span></code> 文件开始构建一个内核模块（也称为 <code class="code docutils literal"><span class="pre">ko</span></code>，即内核对象）。<code class="docutils literal"><span class="pre">module.o</span></code> 文件是基于 <code class="docutils literal"><span class="pre">module.c</span></code> 或 <code class="docutils literal"><span class="pre">module.S</span></code> 生成的。所有这些文件都应该存放在包含 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 的同一目录下。</p>
 <p>下面是一个使用多个子模块的 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 文件示例：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">EXTRA_CFLAGS</span> <span class="o">=</span> -Wall -g
 
@@ -349,14 +349,14 @@ supermodule-y <span class="o">=</span> module-a.o module-b.o
 <p><code class="file docutils literal"><span class="pre">Kbuild</span></code> 中目标（target）的后缀决定了它们的用途，如下所示：</p>
 <blockquote>
 <div><ul class="simple">
-<li>M（modules） 标示目标为可加载内核模块</li>
-<li>Y（yes） 表示目标是用于编译并链接到模块（<code class="docutils literal"><span class="pre">$(模块名称)-y</span></code>）或内核（<code class="docutils literal"><span class="pre">obj-y</span></code>）的对象文件</li>
+<li>M（modules）标示目标为可加载内核模块</li>
+<li>Y（yes）标示目标是编译对象文件然后将其链接到模块（<code class="docutils literal"><span class="pre">$(模块名称)-y</span></code>）或内核（<code class="docutils literal"><span class="pre">obj-y</span></code>）</li>
 <li>其他任何目标后缀都将被 <code class="file docutils literal"><span class="pre">Kbuild</span></code> 忽略，不会被编译</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
-<p class="last">这些后缀使得可以通过运行 <strong class="command">make menuconfig</strong> 命令或直接编辑 <code class="file docutils literal"><span class="pre">.config</span></code> 文件来轻松配置内核。该文件设置了一系列变量，用于确定在构建时向内核添加哪些特性。例如，使用 <strong class="command">make menuconfig</strong> 命令添加 BTRFS 支持时，在 <code class="file docutils literal"><span class="pre">.config</span></code> 文件中添加行 <code class="code docutils literal"><span class="pre">CONFIG_BTRFS_FS</span> <span class="pre">=</span> <span class="pre">y</span></code>。BTRFS kbuild 包含了一行 <code class="docutils literal"><span class="pre">obj-$(CONFIG_BTRFS_FS):=</span> <span class="pre">btrfs.o</span></code>，它会转变成 <code class="docutils literal"><span class="pre">obj-y:=</span> <span class="pre">btrfs.o</span></code>。这将编译 <code class="file docutils literal"><span class="pre">btrfs.o</span></code> 对象，并将其链接到内核。如果没有设置变量，该行会转变成 <code class="docutils literal"><span class="pre">obj:=btrfs.o</span></code>，然后被忽略，进而内核构建时不会包含 BTRFS 支持。</p>
+<p class="last">借助这些后缀，开发者可以通过运行 <strong class="command">make menuconfig</strong> 命令或直接编辑 <code class="file docutils literal"><span class="pre">.config</span></code> 文件来轻松配置内核。该文件设置了一系列变量，这些变量决定了在构建过程中哪些特性会被添加到内核中。例如，当使用 <strong class="command">make menuconfig</strong> 命令添加 BTRFS 支持时，<code class="file docutils literal"><span class="pre">.config</span></code> 文件中会增加 <code class="code docutils literal"><span class="pre">CONFIG_BTRFS_FS</span> <span class="pre">=</span> <span class="pre">y</span></code> 这一行。BTRFS 的 kbuild 包含了一行 <code class="docutils literal"><span class="pre">obj-$(CONFIG_BTRFS_FS):=</span> <span class="pre">btrfs.o</span></code>，如果设置了相应的变量，这行代码会变成 <code class="docutils literal"><span class="pre">obj-y:=</span> <span class="pre">btrfs.o</span></code>。这将导致系统编译 <code class="file docutils literal"><span class="pre">btrfs.o</span></code> 对象，并将其链接到内核中。如果没有设置该变量，这行代码则会变成 <code class="docutils literal"><span class="pre">obj:=</span> <span class="pre">btrfs.o</span></code> 并被忽略，结果是内核构建时不会包含 BTRFS 支持。</p>
 </div>
 <p>要了解更多详细信息，请参阅内核源代码中的 <code class="file docutils literal"><span class="pre">Documentation/kbuild/makefiles.txt</span></code> 和 <code class="file docutils literal"><span class="pre">Documentation/kbuild/modules.txt</span></code> 文件。</p>
 </div>
@@ -367,7 +367,7 @@ supermodule-y <span class="o">=</span> module-a.o module-b.o
 $ rmmod module.ko
 </pre></div>
 </div>
-<p>加载内核模块时，将执行 <code class="docutils literal"><span class="pre">module_init</span></code> 宏（macro）参数指定的函数。同样，当卸载模块时，将执行 <code class="docutils literal"><span class="pre">module_exit</span></code> 宏参数指定的函数。</p>
+<p>加载内核模块时，将执行 <code class="docutils literal"><span class="pre">module_init</span></code> 宏参数指定的例程。同样，当卸载模块时，将执行 <code class="docutils literal"><span class="pre">module_exit</span></code> 宏参数指定的例程。</p>
 <p>下面是一个完整的编译、加载和卸载内核模块的示例：</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>faust:~/lab-01/modul-lin# ls
 Kbuild  Makefile  modul.c
@@ -404,7 +404,7 @@ Bye
 </div>
 <div class="section" id="section-9">
 <h2>内核模块调试<a class="headerlink" href="#section-9" title="永久链接至标题">¶</a></h2>
-<p>与调试常规程序相比，调试内核模块要复杂得多。首先，内核模块中的错误可能导致整个系统阻塞。因此，故障排除的速度会大大降低。为了避免重新启动，建议使用虚拟机（qemu、virtualbox 或者 vmware）。</p>
+<p>与调试常规程序相比，调试内核模块要复杂得多。首先，内核模块中的错误可能导致整个系统阻塞。因此，故障排查的速度会大大降低。为了避免重新启动，建议使用虚拟机（qemu、virtualbox 或者 vmware）。</p>
 <p>当插入包含错误的模块到内核中时，它最终会生成一个 <a class="reference external" href="https://zh.wikipedia.org/wiki/Oops_(Linux内核)">内核 oops</a> 。内核 oops 是内核检测到的无效操作，只可能由内核生成。对于稳定的内核版本，这几乎可以肯定意味着模块含有错误。在 oops 出现后，内核仍将继续工作。</p>
 <p>出现内核 oops 时，保存生成的消息非常重要。如上所述，内核生成的消息保存在日志中，并可使用 <strong class="command">dmesg</strong> 命令显示。为了确保不丢失任何内核消息，建议直接从控制台插入/测试内核，或定期检查内核消息。值得注意的是，oops 不止可能是由于编程错误，也有可能是硬件错误引起的。</p>
 <p>如果发生致命错误，系统无法恢复到稳定状态，将造成 <a class="reference external" href="https://zh.wikipedia.org/wiki/内核错误">内核错误（kernel panic）</a> 。</p>
@@ -493,19 +493,19 @@ EIP: <span class="o">[</span>&lt;c89d4005&gt;<span class="o">]</span> my_oops_in
 EIP: <span class="o">[</span>&lt;c89d4005&gt;<span class="o">]</span> my_oops_init + 0x5 / 0x20 <span class="o">[</span>oops<span class="o">]</span>
 </pre></div>
 </div>
-<p>告诉我们错误的原因和生成错误的指令的地址。在我们的例子中，这是对内存的无效访问。</p>
+<p>告诉我们错误的原因和造成错误的指令的地址。在我们的例子中，这是对内存的无效访问。</p>
 <p>接下来的一行是：</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">Oops:</span> <span class="pre">0002</span> <span class="pre">[#</span> <span class="pre">1]</span> <span class="pre">PREEMPT</span> <span class="pre">DEBUG_PAGEALLOC</span></code></div></blockquote>
-<p>告诉我们这是第一个 oops（#1）。在这个上下文中，这很重要，因为一个 oops 可能会导致其他 oops。通常只有第一个 oops 是相关的。此外，oops 代码（ <code class="docutils literal"><span class="pre">0002</span></code> ）提供了有关错误类型的信息（参见 <code class="file docutils literal"><span class="pre">arch/x86/include/asm/trap_pf.h</span></code> ）：</p>
+<p>告诉我们这是第一个 oops（#1）。在这个上下文中，这很重要，因为一个 oops 可能会导致其他 oops。通常只有第一个 oops 是相关的。此外，oops 代码（<code class="docutils literal"><span class="pre">0002</span></code>）提供了有关错误类型的信息（参见 <code class="file docutils literal"><span class="pre">arch/x86/include/asm/trap_pf.h</span></code> ）：</p>
 <blockquote>
 <div><ul class="simple">
-<li>Bit 0 == 0 表示找不到页面，1 表示保护故障</li>
-<li>Bit 1 == 0 表示读取，1 表示写入</li>
-<li>Bit 2 == 0 表示内核模式，1 表示用户模式</li>
+<li>第 0 位 == 0 表示找不到页面，1 表示保护故障</li>
+<li>第 1 位 == 0 表示读取，1 表示写入</li>
+<li>第 2 位 == 0 表示内核模式，1 表示用户模式</li>
 </ul>
 </div></blockquote>
-<p>在这种情况下，我们有一个写入访问导致了 oops（bit 1 为 1）。</p>
+<p>在这种情况下，我们有一个写入访问导致了 oops（第 1 位为 1）。</p>
 <p>下面是寄存器的转储（dump）。它解码了指令指针 (<code class="docutils literal"><span class="pre">EIP</span></code>) 的值，并指出错误出现在 <code class="code docutils literal"><span class="pre">my_oops_init</span></code> 函数中，偏移为 5 个字节（<code class="docutils literal"><span class="pre">EIP:</span> <span class="pre">[&lt;c89d4005&gt;]</span> <span class="pre">my_oops_init+0x5</span></code>）。该消息还显示了堆栈内容和到目前为止的调用回溯。</p>
 <p>如果发生了无效的读取调用 (<code class="docutils literal"><span class="pre">#define</span> <span class="pre">OP_OOPS</span> <span class="pre">OP_READ</span></code>)，消息将是相同的，但是 oops 代码将不同，现在将是 <code class="docutils literal"><span class="pre">0000</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>faust:~/lab-01/modul-oops# dmesg <span class="p">|</span> tail -33
@@ -629,10 +629,10 @@ c89d4026:       <span class="m">90</span>                      nop
 c89d4027:       <span class="m">90</span>                      nop
 </pre></div>
 </div>
-<p>请注意，生成 oops 的指令（先前确定为 <code class="docutils literal"><span class="pre">c89d4005</span></code> ）是：</p>
+<p>请注意，生成 oops 的指令（先前确定为 <code class="docutils literal"><span class="pre">c89d4005</span></code>）是：</p>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">`C89d4005:</span> <span class="pre">c7</span> <span class="pre">05</span> <span class="pre">34</span> <span class="pre">12</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">03</span> <span class="pre">movl</span> <span class="pre">$</span> <span class="pre">0x3,0x1234</span></code></div></blockquote>
-<p>这正是预期的结果 - 将值 3 存储在地址 0x0001234 上。</p>
+<div><code class="docutils literal"><span class="pre">C89d4005:</span> <span class="pre">c7</span> <span class="pre">05</span> <span class="pre">34</span> <span class="pre">12</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">03</span> <span class="pre">movl</span> <span class="pre">$</span> <span class="pre">0x3,0x1234</span></code></div></blockquote>
+<p>这正是预期的结果——将值 3 存储在地址 0x0001234 上。</p>
 <p><code class="file docutils literal"><span class="pre">/proc/modules</span></code> 用于查找加载的内核模块的地址。<strong class="command">--adjust-vma</strong> 选项允许你相对于 <code class="docutils literal"><span class="pre">0xc89d4000</span></code> 位置显示指令。<strong class="command">-l</strong> 选项将显示源代码中每行的编号，源代码与汇编语言代码交错显示。</p>
 </div>
 <div class="section" id="addr2line">
@@ -940,7 +940,7 @@ $ make build
 <p>这些命令将构建当前实验骨架中的所有模块。</p>
 <div class="admonition warning">
 <p class="first admonition-title">警告</p>
-<p class="last">在解决练习 3 之前，编译 <code class="docutils literal"><span class="pre">3-error-mod</span></code> 时会出现编译错误。为了避免此问题，删除 <code class="file docutils literal"><span class="pre">skels/kernel_modules/3-error-mod/</span></code> 目录，并从 <code class="docutils literal"><span class="pre">skels/Kbuild</span></code> 中删除相应的行。</p>
+<p class="last">在解决练习 3 之前，编译 <code class="docutils literal"><span class="pre">3-error-mod</span></code> 时会出现编译错误。为了避免此问题，请删除 <code class="file docutils literal"><span class="pre">skels/kernel_modules/3-error-mod/</span></code> 目录，并从 <code class="docutils literal"><span class="pre">skels/Kbuild</span></code> 中删除相应的行。</p>
 </div>
 <p>使用 <strong class="command">make console</strong> 启动虚拟机，并执行以下任务：</p>
 <ul class="simple">
