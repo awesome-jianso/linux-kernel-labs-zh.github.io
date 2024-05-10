@@ -383,7 +383,7 @@
 </pre></div>
 </div>
 <p>列表的演变可以在下图中看到：</p>
-<a class="reference internal image-reference" href="../_images/list_evolution1.png"><img alt="../_images/list_evolution1.png" src="../_images/list_evolution1.png" style="width: 85%;" /></a>
+<a class="reference internal image-reference" href="so2/../img/list_evolution.svg"><img alt="so2/../img/list_evolution.svg" src="so2/../img/list_evolution.svg" width="1000px" /></a>
 <p>从上面的例子可以看出，通过 <code class="xref c c-macro docutils literal"><span class="pre">list_add</span></code> 宏引入了堆栈类型的行为，并使用了标记。</p>
 <p>通过上述示例可以看出，定义和使用一个（双向）列表的方法是通用的，并且同时不引入额外的开销。<code class="xref c c-type docutils literal"><span class="pre">struct</span> <span class="pre">list_head</span></code> 用于维护列表元素之间的链接。可以注意到，对列表的迭代也是使用这个结构进行的，使用 <code class="xref c c-macro docutils literal"><span class="pre">list_entry</span></code> 可以获取列表元素。这种实现和使用列表的思想并不新鲜，在 20 世纪 80 年代，Donald Knuth 的《计算机程序设计艺术》中已经有描述。</p>
 <p>在 <code class="file docutils literal"><span class="pre">include/linux/list.h</span></code> 头文件中介绍并且解释了几个内核列表函数和宏定义。</p>
