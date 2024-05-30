@@ -185,7 +185,18 @@
   <div class="section" id="so2-09">
 <h1>SO2 课程 09——内核调试<a class="headerlink" href="#so2-09" title="永久链接至标题">¶</a></h1>
 <p><a class="reference external" href="lec9-debugging-slides.html">查看幻灯片</a></p>
-<span class="admonition-so2-09"></span><div class="section" id="section-1">
+<span class="admonition-so2-09"></span><blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">keywords:</th><td class="field-body">Linux 内核, 调试, oops, panic, 内存调试, 锁调试, 性能分析</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p><a class="reference external" href="debugging-slides.html">查看幻灯片</a></p>
+<div class="section" id="section-1">
 <h2>课程目标：<a class="headerlink" href="#section-1" title="永久链接至标题">¶</a></h2>
 <p>调试是 Linux 内核开发的一个重要部分。在用户空间中，我们可以依靠内核的支持，轻松地停止进程并使用 gdb 来检查它们的行为。在内核中，为了使用 gdb，我们需要使用像 QEMU 或基于 JTAG 的硬件接口这样的虚拟化程序，然而这些并不总是可用的。Linux 内核提供了一组有用的工具和调试选项，用于调查异常行为。</p>
 <p>在本课程中，我们将学习以下内容：</p>
