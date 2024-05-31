@@ -255,7 +255,7 @@
 </div>
 <div class="section" id="section-8">
 <h3>内存分配<a class="headerlink" href="#section-8" title="永久链接至标题">¶</a></h3>
-<p>在 Linux 内核中，只能分配驻留内存。要想分配驻留内存，可以使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用。下面是一个典型的 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用示例：</p>
+<p>在 Linux 中，常驻内存只能使用 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用来分配。下面是一个典型的 <code class="xref c c-func docutils literal"><span class="pre">kmalloc()</span></code> 调用示例：</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;linux/slab.h&gt;</span><span class="cp"></span>
 
 <span class="n">string</span> <span class="o">=</span> <span class="n">kmalloc</span> <span class="p">(</span><span class="n">string_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">GFP_KERNEL</span><span class="p">);</span>
