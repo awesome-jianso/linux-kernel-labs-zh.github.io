@@ -1139,7 +1139,7 @@ sourceweb index
 <p>与调试程序相比，调试内核更加困难，因为操作系统没有提供支持。这就是为什么通常使用两台通过串行接口相互连接的计算机进行此过程。</p>
 <div class="section" id="gdb-linux">
 <span id="gdb-intro"></span><h3>gdb（Linux）<a class="headerlink" href="#gdb-linux" title="永久链接至标题">¶</a></h3>
-<p>在 Linux 上，一种更简单但也具有许多缺点的调试方法是使用 <a class="reference external" href="http://www.gnu.org/software/gdb/">gdb</a> 进行本地调试，其中涉及到未压缩的内核镜像（<code class="file docutils literal"><span class="pre">vmlinux</span></code> ）和文件：<code class="file docutils literal"><span class="pre">/proc/kcore</span></code> （实时内核镜像）。这种方法通常用于检查内核并在其运行时检测特定的不一致性。特别是如果内核是使用 <code class="code docutils literal"><span class="pre">-g</span></code> 选项编译的（该选项会保留调试信息）这种方法就非常有用。但是，这种方法无法使用一些常用的调试技术，例如数据修改的断点。</p>
+<p>在 Linux 上，一种更简单但也具有许多缺点的调试方法是使用 <a class="reference external" href="http://www.gnu.org/software/gdb/">gdb</a> 进行本地调试，其中涉及到未压缩的内核镜像 (<code class="file docutils literal"><span class="pre">vmlinux</span></code>) 和文件：<code class="file docutils literal"><span class="pre">/proc/kcore</span></code> (实时内核镜像)。这种方法通常用于检查内核并在其运行时检测特定的不一致性。特别是如果内核是使用 <code class="code docutils literal"><span class="pre">-g</span></code> 选项编译的（该选项会保留调试信息）这种方法就非常有用。但是，这种方法无法使用一些常用的调试技术，例如数据修改的断点。</p>
 <div class="admonition note">
 <p class="first admonition-title">注解</p>
 <p>因为 <code class="file docutils literal"><span class="pre">/proc</span></code> 是一个虚拟文件系统，<code class="file docutils literal"><span class="pre">/proc/kcore</span></code> 在磁盘上并不存在。当程序尝试访问 <code class="file docutils literal"><span class="pre">/proc/kcore</span></code> 时，内核会即时生成它。它用于调试目的。</p>
